@@ -237,6 +237,9 @@
 \newcommand\backmatter{\if@openright\cleardoublepage\else\clearpage\fi
       \@mainmatterfalse}
 
+\newcommand{\@supervisors}{}
+\newcommand{\supervisors}[1]{\renewcommand{\@supervisors}{#1}}
+
 \renewcommand\part{\cleardoublepage
                  \thispagestyle{empty}%
                  \if@twocolumn
@@ -1008,6 +1011,8 @@ to0pt{\kern0.55\wd0\vrule height0.45\ht0\hss}\box0}}}}
 \noindent\ignorespaces
 \@author\vskip.35cm}
  {\small\institutename}
+ {\small Supervisors: {\@supervisors} \par}
+ \vspace*{1ex}
  \end{center}%
  }
 

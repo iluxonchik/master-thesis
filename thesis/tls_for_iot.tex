@@ -10,6 +10,30 @@
 % \documentclass[runningheads,a4paper]{llncs}
 \documentclass{llncs}
 %
+%%% WARN: custom extension
+\usepackage{xcolor}
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}\PackageWarning{TODO:}{#1!}}
+
+%%% GLOSSARIES
+\usepackage{glossaries}
+
+%%% inline code
+\usepackage{xparse}
+
+\NewDocumentCommand{\codeword}{v}{%
+\texttt{\textcolor{blue}{#1}}%
+}
+
+\makeglossaries
+
+\newacronym{tls}{TLS}{Transport Layer Security}%
+\newacronym{ssl}{SSL}{Secure Sockets Layer}%
+\newacronym{ietf}{IETF}{Internet Engineering Task Force}%
+\newacronym{mac}{MAC}{Message Authentication Code}%
+\newacronym{psk}{PSK}{Pre-Shared Key}%
+\newacronym{aead}{AEAD}{Authenticated Encryption With Associated Data}%
+
+
 %%% WARN: added as specified here:
 % https://tex.stackexchange.com/questions/272200/table-of-contents-showing-the-title-as-only-entry-latex
 \setcounter{tocdepth}{2}
@@ -62,26 +86,84 @@ There will be two blank lines before and after the Abstract. \dots
 \keywords{TLS, IoT, cryptography, protocol, lightweight cryptography}
 \end{abstract}
 %
-\section{Section 1 Title}
+\section{Intoduction}
 %
-Section text goes here.
+\todo{Intruduce the topic: explain what is IoT; what is TLS; what are the issues with
+using RAW TLS with IoT(power, computation, limited resources).}
 %
-\subsection{Subsection 1 Title}
+\subsection{Goals}
 %
-Subsection text goes here. Maybe we need to like put more commnets here?
-Like yeah boi
+\section{Related Work}
 %
-\subsubsection{Subsubsection 1 Title}
+\todo{Tell that first I describe the parts of TLS that are common to both and then
+specialize for TLS 1.2 and TLS 1.3}
 %
-This is a subsubsection. You can put text here. Note how this part isn't
-numbered.
+\subsection{The TLS Protocol}
+TLS stands for Transport Layer Security, it's a \textbf{client-server} protocol
+that runs on top a \textbf{connection-oriented and reliable transport protocol},
+such as \textbf{TCP}. Its main goal is to provide \textbf{privacy} and \textbf{integrity}
+between the two communicating peers. Privacy implies that a third party will not
+be able to read the data, while integrity means that a third party will not be
+able to alter the data.
+
+In the TCP/IP Protocol Stack, \gls{tls} is placed between the \textbf{Transport}
+and \textbf{Application} layers. It's designed to make the application developer's
+life easier: all the developer has to do is create a "secure" connection, instead
+of a "normal" one.
+
+%%% NOTE: place this in intro? Is this even needed?
+%%% NOTE: review, rephrase
+%%% NOTE: find better placement
+\subsubsection{SSL vs TLS: What's The Difference?}
+You will find the names \gls{ssl} and \gls{tls} used interchangeably in the literature,
+so I think it's important to distinguish both. \gls{tls} is an evolution of the \gls{ssl} protocol. The protocol changed
+its name from \gls{ssl} to \gls{tls} when it was
+standardized by the \gls{ietf}.\gls{ssl}
+was a proprietary protocol owned by Netscape Communications, and The \gls{ietf}
+decided that it was a good idea to standarize it, which resulted in \textbf{RFC 2246},
+specifying \gls{tls} 1.0, which was nothing more than a new version \gls{ssl} 3.0,
+very few changes were made.
 %
-\subsection{Subsection 2 Titles}
-And... you've guessed it! Subsection 2 text goes right here.
+% TODO: add some data supporting the TLS 1.2 usage claim
+In this document, I'll be concentrating on \gls{tls} 1.2 and \gls{tls} 1.3 protocols.
+The first one is the most recently standardized version of \gls{tls} and the latter
+is currently and in-draft version with many improvements and optimizations relevant
+for the topic of this dissertation.
+%
+
+\todo{Explain what RFCs are?}
+%
+\subsection{Security Services}
+%
+\gls{tls} provides the following security services:
+\begin{itemize}
+\item \textbf{authentication} - both, \textbf{peer entity} and \textbf{data origin} (or \textbf{integrity})
+authentication.
+\subitem \textbf{peer entity authentication} - we can be sure that we’re talking to certain entity, for example, \codeword{www.google.com}.
+This is achieved thought the use of \textbf{asymmetric} or \textbf{public key cryptography} (for example, \codeword{RSA} and \codeword{DSA})
+or \textbf{symmetric cryptography}, using a \gls{psk}.
+\item \textbf{confidentiality} - the data transmitted between the communicating
+entities (the client and the server) is encrypted. Symmetric cryptography is
+used of data encryption (for exmaple, \codeword{AES}).
+\item \textbf{integrity} (also called \textbf{data origin authentication}) - we can be sure that the data was not modified or forged,
+\textit{i.e.}, be sure that the data that we’re receiving is coming from the expected entity (for example, we can be sure
+that the \codeword{index.html} file sent to us when we connected to \codeword{www.google.com} in fact
+came from \codeword{www.google.com} and that it was not modified (i.e tampered with) en
+route by an attacker (\textbf{data integrity}). This is achieved through the use
+of a keyed \gls{mac} or an \gls{aead} cipher.
+\end{itemize}
+
+\subsection{TLS 1.2}
+The current version in use is \gls{tls} 1.2.
+
 %
 \paragraph{Notes and Comments.}
 This is an example of a paragraph. Note the styling.
 
+\subsection{TLS 1.3}
+Despite the protocol name not suggesting it \gls{tls} 1.3 is
+very different from \gls{tls} 1.2, in fact, it should've probably been called
+\gls{tls} 2.0 instead.
 
 %
 % ---- Bibliography ----
@@ -89,5 +171,7 @@ This is an example of a paragraph. Note the styling.
 \nocite{*}
 \bibliographystyle{splncs03}
 \bibliography{tls_for_iot}
+%
+\printglossary[style=long]
 %
 \end{document}

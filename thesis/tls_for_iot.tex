@@ -39,6 +39,7 @@
 \newacronym{hkdf}{hkdf}{HMAC-based Extract-and-Expand Key Derivation Function}%
 
 
+
 %%% WARN: added as specified here:
 % https://tex.stackexchange.com/questions/272200/table-of-contents-showing-the-title-as-only-entry-latex
 \setcounter{tocdepth}{2}
@@ -125,7 +126,7 @@ so I think it's important to distinguish both. \gls{tls} is an evolution of the 
 its name from \gls{ssl} to \gls{tls} when it was
 standardized by the \gls{ietf}.\gls{ssl}
 was a proprietary protocol owned by Netscape Communications, and The \gls{ietf}
-decided that it was a good idea to standarize it, which resulted in \textbf{RFC 2246},
+decided that it was a good idea to standarize it, which resulted in \codeword{RFC 2246} \cite{RFC2246},
 specifying \gls{tls} 1.0, which was nothing more than a new version \gls{ssl} 3.0,
 very few changes were made.
 %
@@ -195,7 +196,11 @@ as well as the  \textbf{key exchange} algorithm. In \gls{tls} 1.3, the
 In reality \gls{tls} is composed of several protocols, a brief description of each
 one of which follows:
 \begin{itemize}
-  \item \textbf{\gls{tls} Record Protocol} -
+  \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}. It's
+  the layer that runs directly on top of \textbf{TCP/IP} and it serves as an
+   \textbf{encapsulation for the remaining sub-protocols} (\codeword{4} in case of \gls{tls} 1.2
+   and \codeword{3} in case of \gls{tls} 1.3). To the  \textbf{Record Protocol},
+   the remaining sub-protocols are what \codeword{TCP/IP} is to \codeword{HTTP}.
   \item \textbf{\gls{tls} Handshake Protocol} - the core protocol of \gls{tls}.
   Allows the communicating peers to \textbf{authenticate} one to another and negotiate
   a \textbf{cipher suite} (\textbf{cipher suite} and key exchange algorithm in case of \gls{tls} 1.3) which will be used to provide the security services. For \gls{tls} 1.2,
@@ -207,13 +212,6 @@ one of which follows:
   used to activate the initial \textbf{cipher spec} or change it during the connection.
 \end{itemize}
 
-
-%\begin{figure}
-%  \includegraphics[width=0.5\textwidth]{img/tls-sub-protocols.png}
-%  \caption{TLS (Sub)protocols and Layers}
-%  \label{fig:tls-subprotocols}
-%\end{figure}
-
 \begin{wrapfigure}{R}{0.3\textwidth}
 \centering
 \includegraphics[width=0.25\textwidth]{img/tls-sub-protocols.png}
@@ -222,9 +220,42 @@ one of which follows:
 
 Figure \ref{fig:tls-subprotocols} shows the subprotocols composing tls.
 
+\subsubsection{\gls{tls} Record Processing}
+A \gls{tls} record must go through some processing before it can tbe sent over the netwrok.
+This processing involves the following steps (\codeword{4} for \gls{tls} 1.2 and \codeword{3} for \gls{tls} 1.3):
+
+\begin{enumerate}
+  \item \textbf{Fragmentation} - the \codeword{\gls{tls} Record Layer} takes arbitrary-length data and \textbf{fragments}
+  it into manageable pieces: each one of the resulting fragments is called a \codeword{TLS Plaintext}.
+  \item  \textbf{Compression} (removed in \gls{tls} 1.3) - the \codeword{TLS Record Layer} compresses the
+  \codeword{TLSPlaintext} structure according to the negotiated compression method,
+  outputting \codeword{TLSCompressed}. Compression is optional. If the negotiated compression
+  method is \codeword{null}, \codeword{TLSCompressed} is the same as \codeword{TLSPlaintext}.
+  \item \textbf{Cryptographic Protection} - in case of \gls{tls} 1.2, either an
+  \gls{aead} cipher or a separate encryption and \gls{mac} functions transform a
+  \codeword{TLSCompressed} fragment into a \codeword{TLSCipherText} fragment. In case
+  of \gls{tls} 1.3, the \codeword{TLSPlaintext} fragment is transformed into a \codeword{TLSCipherText}
+  by applying an \gls{aead} cipher.
+  \item Append the \textbf{TLS Record Header} - encapsulate \codeword{TLSCipherText}
+  in a \codeword{TLS Record}.
+\end{enumerate}
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+\centering
+\includegraphics[width=0.7\textwidth]{img/tls-record-processing.jpg}
+\caption{\label{fig:tls-record-processing}TLS Record Processing}
+\end{wrapfigure}
+
+The process described above, as well as the structure names are depicted in figure \ref{fig:tls-record-processing}.
+Step \codeword{2} is not present in \gls{tls} 1.3. The structure names are exactly as the appear in the \gls{tls} specifications.
+
+With this the common description of the \gls{tls} of protocols ends and we'll jump
+into the specifics of the two verions. I'll be mostly concentrating on the
+ \textbf{Handshake Protocol}, since this is where my work will be concentrated and
+ it's the main part, where the most interesting and important things happen.
 
 \subsection{TLS 1.2}
-The current version in use is \gls{tls} 1.2.
+The latest standardized version of \gls{tls} is 1.2.
 
 %
 \paragraph{Notes and Comments.}
@@ -234,6 +265,15 @@ This is an example of a paragraph. Note the styling.
 Despite the protocol name not suggesting it \gls{tls} 1.3 is
 very different from \gls{tls} 1.2, in fact, it should've probably been called
 \gls{tls} 2.0 instead.
+
+\subsubsection{How Do Peers Distinguish Different TLS Versions?}
+
+\todo{Talk about version numbers}
+
+\subsection{TLS Extension Mechanism}
+
+\todo{Describe the Extended ClientHello/ServerHello. Use one description for both,
+ TLS 1.2 and TLS 1.3}
 
 %
 % ---- Bibliography ----

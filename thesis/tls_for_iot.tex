@@ -19,10 +19,13 @@
 
 %%% inline code
 \usepackage{xparse}
-
 \NewDocumentCommand{\codeword}{v}{%
 \texttt{\textcolor{blue}{#1}}%
 }
+
+%%% figures
+\usepackage{graphicx}
+\usepackage{wrapfig}
 
 \makeglossaries
 
@@ -32,6 +35,8 @@
 \newacronym{mac}{MAC}{Message Authentication Code}%
 \newacronym{psk}{PSK}{Pre-Shared Key}%
 \newacronym{aead}{AEAD}{Authenticated Encryption With Associated Data}%
+\newacronym{pkc}{PKC}{Public Key Cryptography}%
+\newacronym{hkdf}{hkdf}{HMAC-based Extract-and-Expand Key Derivation Function}%
 
 
 %%% WARN: added as specified here:
@@ -128,20 +133,23 @@ very few changes were made.
 In this document, I'll be concentrating on \gls{tls} 1.2 and \gls{tls} 1.3 protocols.
 The first one is the most recently standardized version of \gls{tls} and the latter
 is currently and in-draft version with many improvements and optimizations relevant
-for the topic of this dissertation.
+for the topic of this dissertation. Despite the protocol name not suggesting it \gls{tls} 1.3 is
+very different from \gls{tls} 1.2, in fact, it should've probably been called
+\gls{tls} 2.0 instead. For this reason, I will first describe what is common to
+both protocols and then go into the relevant details about each one.
 %
 
 \todo{Explain what RFCs are?}
 %
 \subsection{Security Services}
 %
-\gls{tls} provides the following security services:
+\gls{tls} provides the following 3 security services:
 \begin{itemize}
 \item \textbf{authentication} - both, \textbf{peer entity} and \textbf{data origin} (or \textbf{integrity})
 authentication.
 \subitem \textbf{peer entity authentication} - we can be sure that we’re talking to certain entity, for example, \codeword{www.google.com}.
-This is achieved thought the use of \textbf{asymmetric} or \textbf{public key cryptography} (for example, \codeword{RSA} and \codeword{DSA})
-or \textbf{symmetric cryptography}, using a \gls{psk}.
+This is achieved thought the use of \textbf{asymmetrical} or \gls{pkc} (for example, \codeword{RSA} and \codeword{DSA})
+or \textbf{symmetric key cryptography}, using a \gls{psk}.
 \item \textbf{confidentiality} - the data transmitted between the communicating
 entities (the client and the server) is encrypted. Symmetric cryptography is
 used of data encryption (for exmaple, \codeword{AES}).
@@ -152,6 +160,68 @@ came from \codeword{www.google.com} and that it was not modified (i.e tampered w
 route by an attacker (\textbf{data integrity}). This is achieved through the use
 of a keyed \gls{mac} or an \gls{aead} cipher.
 \end{itemize}
+
+Despite using \gls{pkc}, \gls{tls} does \textbf{not} provide \textbf{non-repudiation services}:
+neither \textbf{non-repudiation with proof of origin}, which addresses the user denying
+having sent a message, not \textbf{non-repudiation with proof of delivery}, which
+addresses the user denying the receipt of a message. This is due to the fact, that
+instead of using \textbf{digital signatures}, either a keyed \gls{mac} or an \gls{aead}
+cipher is used, both of which require a \textbf{shared secret} to be used.
+
+You are not required to use all of the 3 security services in every situation.
+You can think of \gls{tls} as a framework that allows you to select which security
+services you want to use for a communication session. As an example, you might
+ignore certificate validation, which means you're ignoring the \textbf{authentication}
+guarantee. There are some differences regarding this claim between \gls{tls} 1.2
+and \gls{tls} 1.3, for example, while in the first you have a \codeword{null}
+cipher (no authentication, no confidentiality, no integrity), in the latter
+this is not true, since it deprecated all non-\gls{aead} ciphers in favor of
+\gls{aead} ones.
+
+\subsubsection{Cipher Spec vs Cipher Suite}
+
+The meaning of these terms differs in \gls{tls} 1.2 and \gls{tls} 1.3. For \gls{tls} 1.2,
+\textbf{cipher spec} is the message encryption algorithm and the message
+authentication algorithm, while the \textbf{cipher suite} is the \textbf{cipher spec},
+as well as the  \textbf{key exchange} algorithm. In \gls{tls} 1.3, the
+ \textbf{cipher spec} has been removed altogether, since the  \textbf{ChangeCipherSpec}
+ protocol has been removed. The concept of \textbf{cipher suite} has been updated
+ to define the pair of \gls{aead} algorithm and hash function to be used with
+ \gls{hkdf}: in \gls{tls} 1.3 the  \textbf{key exchange} algorithm is negotiated via
+ extensions. You'll find more details on this below.
+
+\subsection{TLS (Sub)Protocols}
+
+In reality \gls{tls} is composed of several protocols, a brief description of each
+one of which follows:
+\begin{itemize}
+  \item \textbf{\gls{tls} Record Protocol} -
+  \item \textbf{\gls{tls} Handshake Protocol} - the core protocol of \gls{tls}.
+  Allows the communicating peers to \textbf{authenticate} one to another and negotiate
+  a \textbf{cipher suite} (\textbf{cipher suite} and key exchange algorithm in case of \gls{tls} 1.3) which will be used to provide the security services. For \gls{tls} 1.2,
+  \textbf{compression} method is also negotiated here.
+  \item \textbf{\gls{tls} Alert Protocol} - allows the communicating peers to
+  signal potential problems.
+  \item \textbf{\gls{tls} Application Data Protocol} - used to transmit data securely.
+  \item \textbf{\gls{tls} Change Cipher Spec Protocol} (removed in \gls{tls} 1.3) -
+  used to activate the initial \textbf{cipher spec} or change it during the connection.
+\end{itemize}
+
+
+%\begin{figure}
+%  \includegraphics[width=0.5\textwidth]{img/tls-sub-protocols.png}
+%  \caption{TLS (Sub)protocols and Layers}
+%  \label{fig:tls-subprotocols}
+%\end{figure}
+
+\begin{wrapfigure}{R}{0.3\textwidth}
+\centering
+\includegraphics[width=0.25\textwidth]{img/tls-sub-protocols.png}
+\caption{\label{fig:tls-subprotocols} TLS (Sub)protocols and Layers}
+\end{wrapfigure}
+
+Figure \ref{fig:tls-subprotocols} shows the subprotocols composing tls.
+
 
 \subsection{TLS 1.2}
 The current version in use is \gls{tls} 1.2.

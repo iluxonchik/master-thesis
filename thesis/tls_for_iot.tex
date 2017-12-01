@@ -36,7 +36,9 @@
 \newacronym{psk}{PSK}{Pre-Shared Key}%
 \newacronym{aead}{AEAD}{Authenticated Encryption With Associated Data}%
 \newacronym{pkc}{PKC}{Public Key Cryptography}%
-\newacronym{hkdf}{hkdf}{HMAC-based Extract-and-Expand Key Derivation Function}%
+\newacronym{hkdf}{HKDF}{HMAC-based Extract-and-Expand Key Derivation Function}%
+\newacronym{html}{HTML}{Hypertext Markup Language}%
+\newacronym{https}{HTTPS}{Hypertext Transfer Protocol Secure}%
 
 
 
@@ -116,6 +118,21 @@ In the TCP/IP Protocol Stack, \gls{tls} is placed between the \textbf{Transport}
 and \textbf{Application} layers. It's designed to make the application developer's
 life easier: all the developer has to do is create a "secure" connection, instead
 of a "normal" one.
+
+\todo{Re-write what's below. It's good to include something like this,
+but I need to work on the wording.}
+From the top-level view, in a typical connection, there are three basic steps
+that \gls{tls} is responsible for:
+\begin{enumerate}
+  \item \textbf{Negotiate security parameters} - the communicating peers agree on
+  a set of security parameters to be used in a \gls{tls} connection, such as the
+  algorithm used for bulk data encrytion, as well as the secret keys.
+  \item \textbf{Authenticate one to another} - usually only the server authenticates
+  to the client.
+  \item \textbf{Communicate securely} - use the negotiated security parameters
+  to encrypt and authenticate the data, communicating securely one with another.
+\end{enumerate}
+
 
 %%% NOTE: place this in intro? Is this even needed?
 %%% NOTE: review, rephrase
@@ -285,6 +302,10 @@ into the specifics of the two verions. I'll be mostly concentrating on the
 \subsection{TLS 1.2}
 The latest standardized version of \gls{tls} is 1.2 and it's defined in \codeword{RFC 5246} \cite{RFC5246}.
 
+\subsection{TLS 1.2 Handshake Protocol}
+
+
+
 %
 \paragraph{Notes and Comments.}
 This is an example of a paragraph. Note the styling.
@@ -302,6 +323,15 @@ very different from \gls{tls} 1.2, in fact, it should've probably been called
 
 \todo{Describe the Extended ClientHello/ServerHello. Use one description for both,
  TLS 1.2 and TLS 1.3}
+
+\subsection{The Problem With Compression In TLS}
+
+\todo{explain why compression was removed (BEAST and CRIME attacks) and how it
+can be fixed.}
+
+\subsection{Theory}
+
+\todo{Explain: public key crypto, certificates, AEAD ciphers}
 
 %
 % ---- Bibliography ----

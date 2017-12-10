@@ -39,6 +39,13 @@
 \newacronym{hkdf}{HKDF}{HMAC-based Extract-and-Expand Key Derivation Function}%
 \newacronym{html}{HTML}{Hypertext Markup Language}%
 \newacronym{https}{HTTPS}{Hypertext Transfer Protocol Secure}%
+\newacronym{ecc}{ECC}{Elliptic Curve Cryptography}%
+\newacronym{iv}{IV}{Initialization Vector}%
+\newacronym{ecdh}{ECDH}{Elliptic Curve Diffie-Hellman}%
+\newacronym{ecdhe}{ECDHE}{Elliptic Curve Diffie-Hellman Ephemeral}%
+\newacronym{ecdsa}{ECDSA}{Elliptic Curve Digital Signature Algorithm}%
+\newacronym{rfc}{RFC}{Request For Comment}%
+\newacronym{prf}{PRF}{Pseudo-Random Function}%
 
 
 
@@ -270,7 +277,7 @@ A \gls{tls} record must go through some processing before it can tbe sent over t
 This processing involves the following steps (\codeword{4} for \gls{tls} 1.2 and \codeword{3} for \gls{tls} 1.3):
 
 \begin{enumerate}
-  \item \textbf{Fragmentation} - the \codeword{\gls{tls} Record Layer} takes arbitrary-length data and \textbf{fragments}
+  \item \textbf{Fragmentation} - the \gls{tls} \codeword{Record Layer} takes arbitrary-length data and \textbf{fragments}
   it into manageable pieces: each one of the resulting fragments is called a \codeword{TLS Plaintext}.
   \item  \textbf{Compression} (removed in \gls{tls} 1.3) - the \codeword{TLS Record Layer} compresses the
   \codeword{TLSPlaintext} structure according to the negotiated compression method,
@@ -307,12 +314,24 @@ that it receives from the server. This means that in order to deal with data
 encryption and decryption, both of the communicating entities have two keys:
 one to encrypt the outgoing data and one to decrypt the incoming data. Those keys
 have different names in \gls{tls} 1.2 and \gls{tls} 1.3, but they serve the same
-basic purpose. In this general description, I'll refer to them as \codeword{client_write key},
-\codeword{client_read_key}, \codeword{server_write_key}, \codeword{server_read_key}.
+basic purpose. In this general description, I'll refer to them as \codeword{client_write key}
+(used by the client to encrypt the data to be sent), \codeword{client_read_key}(used by the client to
+decrypt the incoming data from the server), \codeword{server_write_key}(used by the server to encrypt
+the data to be sent) and \codeword{server_read_key}(used by the server to decrypt the incoming
+data from the client). Note, that the following relationships must hold:
+\codeword{client_write_key == server_write_key} and \codeword{client_read_key == server_write_key}.
 
-\todo{RESEARCH if the above is true for TLS 1.3. I think it actually uses the same key}
+Besides the secret keys mentioned previously, in \gls{tls} 1.2 you might also have other ones,
+depending on the cipher suite in use. \todo{Describe this in a little more detail,
+giving examples, when describing TLS 1.2 Key Managment}.
 
-
+\gls{tls} 1.3's keying material generation is a little more complex, since different
+keys are used to encrypt data throughout the Handshake Protocol, as well a new key
+is generated for the Application Data protocol. This can be explained by the fact
+that while in \gls{tls} 1.2 the data only begins to be encrypted after the handshake
+is complete, in the Application Data protocol, the encryption begins earlier,
+\gls{tls} 1.3, with some of the Hanshake messages encrypted, as well as features
+such as \textbf{early client/server data} and \textbf{0-RTT Data}.
 
 With this the common description of the \gls{tls} of protocols ends and we'll jump
 into the specifics of the two verions. I'll be mostly concentrating on the
@@ -321,8 +340,10 @@ into the specifics of the two verions. I'll be mostly concentrating on the
 
 \subsection{TLS 1.2}
 The latest standardized version of \gls{tls} is 1.2 and it's defined in \codeword{RFC 5246} \cite{RFC5246}.
+\todo{DESCRIBE TLS 1.2 in genreal, put images of handshakes here, later refer to them
+in the specific parts, just like the tls RFCs do}.
 
-\subsection{TLS 1.2 Keying Material Generation}
+\section{TLS 1.2 Keying Material Generation}
 The generation of secret keys, used for various cryptographic operations involves the
 following steps (in order):
 
@@ -333,10 +354,32 @@ following steps (in order):
   will be used in the cryptographic operations.
 \end{itemize}
 
+\todo{talk about all of the keys present in TLS 1.2 HERE}
+
+\section{TLS 1.2 Key Exchange Methods}
 The way the \textbf{permaster secret} is generated depends on the key exchange
 method used. In fact, this is the only phase of the keying material generation
 phase that is variable for a fixed cipher suite (because a cipher suite defines
-the \gls{prf} function to be used), the rest remains exactly the same.
+the \gls{prf} function to be used), the rest remains exactly the same. The derivation
+of the \textbf{master secret} from the \textbf{premaster secret}, as well as the
+derivation of the bulk encryption keys, \gls{mac} keys and \gls{iv}s from the \textbf{master secret}
+that follows \textbf{is not impacted by the key exchange method} in use.
+
+You have quite a few choices when it comes to key exchange methods. Some of them
+are defined in the base spec (\codeword{RFC5246} \cite{RFC5246}), while others
+in separate \codeword{RFCs} (such as the \gls{ecc} based key exchange, specified
+in \codeword{RFC4492} \cite{RFC4492}).
+
+The \gls{ecc}-based key exchange (\gls{ecdh} and \gls{ecdhe}) and authentication (\gls{ecdsa})
+algorithms are defined in \codeword{RFC4292} \cite{RFC4292}, which is also referrenced
+in \codeword{RFC5246} \cite{RFC4256}. The document introduces five new
+\gls{ecc}-based key exchange algorithms, all of which use \gls{ecc} to compute
+the \textbf{premaster secret}, differing only in whether the negotiated
+keys are epehemeral (\gls{ecdh}) or long-term (\gls{ecdhe}), as well as the mechanism (if any) used to
+authenticate them. Three new \gls{ecdsa} \textbf{client authentication} mechanisms are also defined,
+differing in the algorithms that the certificate must be signed with, as well
+as the key exchange algorithms that they can be used with.
+Those features are negotiated through the \gls{tls} Extension Mechanism.
 
 \subsection{TLS 1.2 Handshake Protocol}
 

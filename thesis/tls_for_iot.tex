@@ -27,6 +27,7 @@
 \usepackage{graphicx}
 \usepackage{wrapfig}
 
+
 \makeglossaries
 
 \newacronym{tls}{TLS}{Transport Layer Security}%
@@ -46,6 +47,14 @@
 \newacronym{ecdsa}{ECDSA}{Elliptic Curve Digital Signature Algorithm}%
 \newacronym{rfc}{RFC}{Request For Comment}%
 \newacronym{prf}{PRF}{Pseudo-Random Function}%
+\newacronym{rsa}{RSA}{Rivest-Shamir-Adleman}%
+\newacronym{dh}{DH}{Diffie-Hellman}%
+\newacronym{pms}{PMS}{premaster secret}%
+\newacronym{pubk}{PubK}{Public Key}%
+\newacronym{privk}{PrivK}{Private Key}%
+\newacronym{dsa}{DSA}{Private Key}%
+\newacronym{pfs}{PFS}{Perfect Forward Secrecy}%
+\newacronym{mitm}{MITM}{Man In The Middle}%
 
 
 
@@ -370,8 +379,62 @@ are defined in the base spec (\codeword{RFC5246} \cite{RFC5246}), while others
 in separate \codeword{RFCs} (such as the \gls{ecc} based key exchange, specified
 in \codeword{RFC4492} \cite{RFC4492}).
 
+The base spec specifies 4 key exchange methods, one using \gls{rsa} and 3 using
+\gls{dh}:
+
+\begin{itemize}
+  \item static \gls{rsa} (\codeword{RSA}) [removed in \gls{tls} 1.3] - the client generates the \gls{pms}, encrypts it with the
+  server's \gls{pubk} (which it obtained from the server's \codeword{X.509}certificate),
+  sending it to the server, which decrypts it using the corresponding \gls{privk}.
+  This key exchange method offers authenticity, but does not offer \gls{pfs}.
+  \item anonymous \gls{dh} (\codeword{DH_annon}) [removed in \gls{tls} 1.3] - a \gls{dh} key exchange is
+  performed and an \textbf{ephemeral} key is generated, but the exchanged \gls{dh}
+  parameters are \textbf{not authenticated}, making the resulting key exchange
+  vulnerable to \gls{mitm} attacks. \gls{tls} 1.2 spec states that cipher suites
+  using \codeword{DH_annon} \textbf{must not} be used, unless the application
+  layer explicitly requests so. This key exchange offers \gls{pfs}, but no
+  authenticity.
+  \item fixed/static \gls{dh} (\codeword{DH}) [removed in \gls{tls} 1.3] - the server's/client's public \gls{dh} parameter
+  is embedded in its certificate. This key exchange method offers authenticity,
+  but does not offer \gls{pfs}.
+  \item epehemeral \gls{dh} (\codeword{DHE}) - each run of the protocol, uses
+  different pubic \gls{dh} parameters, which are generated dynamically. This results
+  in a different, epehemeral key being generated every time. The public parameters
+  are then digitally signed in some way, usually using the sender's private
+  \gls{rsa} (\codeword(DHE_RSA)) or \gls{dsa} (\codeword{DHE_DSS}) key. This key
+  exchange offers both authenticity and \gls{pfs}.
+\end{itemize}
+
+When either of the \gls{dh} variants is used, the value resulting from the exchange is used
+as the \gls{pms} (without the leading \codeword{0}'s). Usually, only the server's
+authenticity is desired, but client's can also be achieved if it provides the
+server its certificate. Below is a table that summarizes the security properties
+offered by each key exchange method.
+
+\begin{table}[]
+\centering
+\caption{Key exchange methods and security properties}
+\label{kemsp}
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Key Exch Meth} & \multicolumn{1}{l|}{Authentication} & PFS                    \\ \hline
+RSA                          & X                                   &                        \\ \hline
+DH\_anon                     & \multicolumn{1}{l|}{}               & \multicolumn{1}{c|}{X} \\ \hline
+DH                           & X                                   &                        \\ \hline
+DHE                          & X                                   & \multicolumn{1}{c|}{X} \\ \hline
+\end{tabular}
+\end{table}
+
+Note that in \gls{tls} 1.3, all of static \gls{rsa} and \gls{dh} cipher suites
+have been removed: all of the \gls{pubk} exchange methods now provide \gls{pfs}.
+Even though, anonymous \gls{dh} has also been removed from \gls{tls} 1.3, you can
+still have unauthenticated connections by either using \textbf{raw public keys} \cite{RFC7250}
+or by not verifying the certificate chain and any of it's contents.
+
+\todo{NOTE: I did't cover specifics of how the client generates the premaster secret, etc}
+
 The \gls{ecc}-based key exchange (\gls{ecdh} and \gls{ecdhe}) and authentication (\gls{ecdsa})
-algorithms are defined in \codeword{RFC4292} \cite{RFC4292}, which is also referrenced
+algorithms are defined in \codeword{RFC4292} \cite{RFC4292}, which is also referenced
 in \codeword{RFC5246} \cite{RFC4256}. The document introduces five new
 \gls{ecc}-based key exchange algorithms, all of which use \gls{ecc} to compute
 the \textbf{premaster secret}, differing only in whether the negotiated

@@ -215,9 +215,9 @@ this is not true, since it deprecated all non-\gls{aead} ciphers in favor of
 \subsubsection{Cipher Spec vs Cipher Suite}
 
 The meaning of these terms differs in \gls{tls} 1.2 and \gls{tls} 1.3. For \gls{tls} 1.2,
-\textbf{cipher spec} is the message encryption algorithm and the message
+\textbf{cipher spec} defines the message encryption algorithm and the message
 authentication algorithm, while the \textbf{cipher suite} is the \textbf{cipher spec},
-as well as the  \textbf{key exchange} algorithm. In \gls{tls} 1.3, the
+alongside the definition of the \textbf{key exchange} algorithm and the \gls{prf} (used in key generation). In \gls{tls} 1.3, the
  \textbf{cipher spec} has been removed altogether, since the  \textbf{ChangeCipherSpec}
  protocol has been removed. The concept of \textbf{cipher suite} has been updated
  to define the pair of \gls{aead} algorithm and hash function to be used with
@@ -234,10 +234,12 @@ one of which follows:
    \textbf{encapsulation for the remaining sub-protocols} (\codeword{4} in case of \gls{tls} 1.2
    and \codeword{3} in case of \gls{tls} 1.3). To the  \textbf{Record Protocol},
    the remaining sub-protocols are what \codeword{TCP/IP} is to \codeword{HTTP}.
-   The \gls{tls} Record header is comprised of 4 fields: a 1-byte \codeword{record type},
+   A \gls{tls} Record is comprised of 4 fields, with the first 3 comprising the
+   \gls{tls} Record header: a 1-byte record \codeword{type},
    specifying the type of record that's encapsulated (ex: value \codeword{0x16}
    for the handshake protocol), a 2-byte \codeword{TLS version} field, a
-   2-byte \codeword{length} field, specifying the length of the data in the record, excluding
+   2-byte \codeword{length} field (which means that a maximum \gls{tls} Record size
+   is of \codeword{16384} bytes), specifying the length of the data in the record, excluding
    the header itself and a \codeword{fragment} field whose size in bytes is specified
    by the \codeword{length} field, which contains data that's
    transparent to the Record layer and should be dealt by a higher-level protocol,
@@ -253,6 +255,7 @@ one of which follows:
   used to activate the initial \textbf{cipher spec} or change it during the connection.
 \end{itemize}
 
+% src: https://tex.stackexchange.com/questions/5769/two-figures-side-by-side
 \begin{figure}
     \centering
     \begin{minipage}{0.5\textwidth}
@@ -425,7 +428,8 @@ The base spec specifies 4 key exchange methods, one using \gls{rsa} and 3 using
 When either of the \gls{dh} variants is used, the value resulting from the exchange is used
 as the \gls{pms} (without the leading \codeword{0}'s). Usually, only the server's
 authenticity is desired, but client's can also be achieved if it provides the
-server its certificate. Below is a table that summarizes the security properties
+server its certificate. Whenever the server is authenticated, the server is secure
+against \gls{mitm} attacks. Below is a table that summarizes the security properties
 offered by each key exchange method.
 
 \begin{table}[]
@@ -478,8 +482,33 @@ full \gls{tls} 1.2 handshake. Note that \codeword{*} indicates situation-depende
 messages that are not always sent, while \codeword{ChangeCiperSpec} is a separate
 protocol, rather than a message type.
 
-Every message sent in \gls{tls} comes with a \gls{tls} Record header. Each record
-header has 4 fields:
+As I explained before every \gls{tls} Handshake message is encapsulated within
+a \gls{tls} Record. The actual Handshake message is contained within the
+\codeword{fragment} of the \gls{tls} Record. The Record type for a Handshake
+message is \codeword{0x16}. The Handshake message has the following structure:
+a 1-byte \codeword{msg_type} field (specifies the Handshake message type),
+a 2-byte \codeword{length} field (specifies the length of the \codeword{body})
+and a \codeword{body} field, which contains a structure depending on the
+\codeword{msh_type} (similar to \codeword{fragment} field in a \gls{tls} Record).
+
+Now, I will describe a typical handshake message flow. I will only be mentioning
+the most important field of each message.
+
+\todo{I don't have space to put all of the structures and things sent in every
+handshake message type (ex: ClientHello.session\_id)}
+
+The connections begins with the client sending a \codeword{ClientHello}, containing
+.\codeword{random}, \codeword{cipher_suites} and \codeword{compresison_methods},
+among other fields. A 32-byte \codeword{random}
+(3-bytes gmt unix time + 27 cryptographically random bytes) value that are used
+as an input to the \gls{prf} when generating the \textbf{master secret}, which
+will cause to
+contains a \textbf{list} of cipher suites (\codeword{cipher_suites}) and
+compression methods (\codeword{compression_methods}) that the client supports, ordered by
+preference, with the most preferred one appearing first.
+
+\subsection{Do We Really Need Two Randoms: One From Client and One From Server?}
+\todo{YES, replay attacks.}
 
 \todo{Mention HelloRequest}
 %

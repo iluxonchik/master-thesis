@@ -226,7 +226,7 @@ as well as the  \textbf{key exchange} algorithm. In \gls{tls} 1.3, the
 
 \subsection{TLS (Sub)Protocols}
 
-In reality \gls{tls} is composed of several protocols, a brief description of each
+In reality \gls{tls} is composed of several protocols(illustrated in \ref{fig:tls-subprotocols}), a brief description of each
 one of which follows:
 \begin{itemize}
   \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}. It's
@@ -234,6 +234,14 @@ one of which follows:
    \textbf{encapsulation for the remaining sub-protocols} (\codeword{4} in case of \gls{tls} 1.2
    and \codeword{3} in case of \gls{tls} 1.3). To the  \textbf{Record Protocol},
    the remaining sub-protocols are what \codeword{TCP/IP} is to \codeword{HTTP}.
+   The \gls{tls} Record header is comprised of 4 fields: a 1-byte \codeword{record type},
+   specifying the type of record that's encapsulated (ex: value \codeword{0x16}
+   for the handshake protocol), a 2-byte \codeword{TLS version} field, a
+   2-byte \codeword{length} field, specifying the length of the data in the record, excluding
+   the header itself and a \codeword{fragment} field whose size in bytes is specified
+   by the \codeword{length} field, which contains data that's
+   transparent to the Record layer and should be dealt by a higher-level protocol,
+   specified by the \codeword{type} field. This is illustrated in figure \ref{figure:tls-record-header}.
   \item \textbf{\gls{tls} Handshake Protocol} - the core protocol of \gls{tls}.
   Allows the communicating peers to \textbf{authenticate} one to another and negotiate
   a \textbf{cipher suite} (\textbf{cipher suite} and key exchange algorithm in case of \gls{tls} 1.3) which will be used to provide the security services. For \gls{tls} 1.2,
@@ -245,13 +253,19 @@ one of which follows:
   used to activate the initial \textbf{cipher spec} or change it during the connection.
 \end{itemize}
 
-\begin{wrapfigure}{R}{0.3\textwidth}
-\centering
-\includegraphics[width=0.25\textwidth]{img/tls-sub-protocols.png}
-\caption{\label{fig:tls-subprotocols} TLS (Sub)protocols and Layers}
-\end{wrapfigure}
-
-Figure \ref{fig:tls-subprotocols} shows the subprotocols composing tls.
+\begin{figure}
+    \centering
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{img/record-header.jpg} % first figure itself
+        \caption{\label{fig:tls-record-header} TLS Record header}
+    \end{minipage}\hfill
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{img/tls-sub-protocols.png} % second figure itself
+        \caption{\label{fig:tls-subprotocols} TLS (Sub)protocols and Layers}
+    \end{minipage}
+\end{figure}
 
 \paragraph{TLS Connections and Sessions}
 
@@ -288,6 +302,9 @@ This processing involves the following steps (\codeword{4} for \gls{tls} 1.2 and
 \begin{enumerate}
   \item \textbf{Fragmentation} - the \gls{tls} \codeword{Record Layer} takes arbitrary-length data and \textbf{fragments}
   it into manageable pieces: each one of the resulting fragments is called a \codeword{TLS Plaintext}.
+  Client message boundaries are not preserved, which means that multiple messages
+  of the same type may be placed into the same fragment or a single message may
+  be fragmented across several records.
   \item  \textbf{Compression} (removed in \gls{tls} 1.3) - the \codeword{TLS Record Layer} compresses the
   \codeword{TLSPlaintext} structure according to the negotiated compression method,
   outputting \codeword{TLSCompressed}. Compression is optional. If the negotiated compression
@@ -446,9 +463,25 @@ Those features are negotiated through the \gls{tls} Extension Mechanism.
 
 \subsection{TLS 1.2 Handshake Protocol}
 
-This phase is responsible for producing the the cryptographic parameters for the
-session state. You can see
 
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{img/tls-12-full-handshake.png}
+\caption{\label{fig:tls-12-handshake} TLS 1.2 message flow for a full handshake}
+\end{figure}
+
+
+In this phase the client and the server agree on which version of the \gls{tls}
+protocol to use, authenticate one to another and negotiate items like
+the cipher suites and the compression method to use. Figure \ref{fig:tls-12-handshake} shows the message flow for the
+full \gls{tls} 1.2 handshake. Note that \codeword{*} indicates situation-dependent
+messages that are not always sent, while \codeword{ChangeCiperSpec} is a separate
+protocol, rather than a message type.
+
+Every message sent in \gls{tls} comes with a \gls{tls} Record header. Each record
+header has 4 fields:
+
+\todo{Mention HelloRequest}
 %
 \paragraph{Notes and Comments.}
 This is an example of a paragraph. Note the styling.

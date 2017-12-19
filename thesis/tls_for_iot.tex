@@ -55,6 +55,9 @@
 \newacronym{dsa}{DSA}{Private Key}%
 \newacronym{pfs}{PFS}{Perfect Forward Secrecy}%
 \newacronym{mitm}{MITM}{Man In The Middle}%
+\newacronym{ac}{AC}{Asymmetrical Cryptography}%
+\newacronym{sc}{SC}{Symmetrical Cryptography}%
+\newacronym{iot}{IoT}{Internet Of Things}%
 
 
 
@@ -117,7 +120,35 @@ using RAW TLS with IoT(power, computation, limited resources).}
 %
 \subsection{Goals}
 %
-\section{Related Work}
+
+\section{Symmetric vs Asymmetric Cryptography (Background Section)}
+
+\gls{ac} more expensive than \gls{sc} in terms of performance. This is mainly due
+to two facts: larger key sizes are required for \gls{ac} system to achieved the
+same level of security as in a \gls{sc} system  and \codeword{CPU}s are slower at performing the underlying
+mathematical operations involved in \gls{ac}, namely exponentiation requires
+\codeword{O(log e)} multiplications for an exponent \codeword{e}. For example,
+the 2016 \codeword{NIST} report \cite{Recommen44:online}
+suggests that an \gls{ac} would need to use a secret key with size of \codeword{15360 bits}
+to have equivalent security to a \codeword{256-bit} secret key for a \gls{sc} algorithm.
+This situation is ameliorated by \gls{ecc}, which requires keys of \codeword{512 bits},
+it is still slower than \gls{sc}, though. The 2017 \codeword{BSI} report \cite{Kryptogr1:online} (from the
+German federal office for information security) suggests similar numbers.
+
+Another argument for avoiding as much as possible of the \gls{ac} functionality
+is that it requires extra storage space to be used and this might be a problem for some \gls{iot} devices,
+like \codeword{class 1} devices according to the terminology of constrained-code
+networks \cite{RFC7228} which have about \codeword{10KB} of RAM and \codeword{100KB}
+of persistent memory. I measured the resulitng size of the complied mbedTLS 2.6.0 library
+\cite{SSLLibra13:online} when compiled with and without the \codeword{RSA} module
+(located in the \codeword{rsa.c} file), from which I concluded that using that module adds an
+extra of \codeword{32KB}.
+
+
+
+%\end{enumerate}
+
+\section{Background}
 %
 \todo{Tell that first I describe the parts of TLS that are common to both and then
 specialize for TLS 1.2 and TLS 1.3}
@@ -429,7 +460,7 @@ When either of the \gls{dh} variants is used, the value resulting from the excha
 as the \gls{pms} (without the leading \codeword{0}'s). Usually, only the server's
 authenticity is desired, but client's can also be achieved if it provides the
 server its certificate. Whenever the server is authenticated, the server is secure
-against \gls{mitm} attacks. Below is a table that summarizes the security properties
+against \gls{mitm} attacks. Table \ref{kemps} summarizes the security properties
 offered by each key exchange method.
 
 \begin{table}[]
@@ -543,7 +574,7 @@ can be fixed.}
 %
 \nocite{*}
 \bibliographystyle{splncs03}
-\bibliography{tls_for_iot}
+\bibliography{tls_for_iot,papers}
 %
 \printglossary[style=long]
 %

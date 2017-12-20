@@ -193,11 +193,7 @@ of \codeword{17.79ms}.
 ability and power to transmit information wirelessly using the \codeword{IPv6}
 protocol. The protocol defines IP Header Compression(IPHC) for the IP header and
 Next Header Compression (NHC) for the IP extension headers and the UDP header in \cite{RFC6282}.
-The compression relies on the shared compress between the communicating peers.
-There is also a proposal for TCP header compression for 6LoWPAN\cite{I-D.draft-aayadi-6lowpan-tcphc-01},
-which if adopted, in many cases can compress the mandatory \codeword{20 bytes} TCP header
-into \codeword{6 bytes}. This means that the same ideas presented in the paragraphs
-below can be applied to TCP as well. (REWERITE ME)
+The compression relies on the shared context between the communicating peers.
 
 \cite{6LoWPANC53:online} uses this same idea, but with the goal of compressing DTLS headers.
 6LoWPAN does not provide ways to compress the UDP payload and layers above, there
@@ -213,31 +209,58 @@ the Record header and the Handshake header and compressing the Record header onl
 which is useful after the handshake has completed and the fragment field of the
 Record layer contains application data, instead of a handshake message.
 
+\begin{figure}
+    \centering
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{img/6lowpan-header.png} % first figure itself
+        \caption{\label{fig:6lowpan-header} IPv6 Next Header Compression}
+    \end{minipage}\hfill
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{img/6lowpan-ghc-rhs.png} % second figure itself
+        \caption{\label{fig:6lowpan-ghc-rhs} LOWPAN\_NHC\_RHS structure}
+    \end{minipage}
+\end{figure}
+
+
 All of the cases follow the same basic idea, for this reason I'll only exemplify
 one of them. Each \gls{dtls} fragment is carried over in the UDP payload. In this case,
 the UDP payload carries a header-like payload (the DTLS record header).
+Figure \ref{fig:6lowpan-header} shows the way IPv6 next header compression is done.
 The authors use the same value for the \codeword{LOWPAN_NHC Encoding} field (defined in \cite{RFC6282})
 as in \codeword{RFC7400} and define the format of the \codeword{In-line Next Header Fields}
-(defined in \cite{RFC6282}), which is the compressed DTLS content.
+(defined in \cite{RFC6282}), which is the compressed DTLS content. The \codeword{LOWPAN_IPHC Encoding}
+and \codeword{In-Line IP Fields} fields are used in the IPv6 header compression
+and are not in the scope of the paper.
 
 I will exemplify the case where both, the record and the Handshake headers are compressed.
-In this case \codeword{LOWPAN_NHC Encoding} will contain the \codeword{LOWPAN_GHC_RHS}
-structure (depicted in \ref{fig:lowpan-ghc-rhs}), which is the compressed form of the Record and Handshake headers. The
+In this case \codeword{LOWPAN_NHC Encoding} will contain the \codeword{LOWPAN_NHC_RHS}
+structure (depicted in figure \ref{fig:6lowpan-ghc-rhs}), which is the compressed form of the Record and Handshake headers. The
 parts that are not compressed will be contained in the \codeword{Payload} part.
 The first four bits represent the ID field and in this case they're fixed to \codeword{1000},
 so that the decompressor knows what is being compressed (\textit{i.e} how to interpret
-the structure that follows the ID bits). If the \codeword{F} field contains the
+the structure that follows the ID bits). If the \codeword{F} field of the \codeword{LOWPAN_NHC_RHS} structure contains the
 bit \codeword{0}, it means that the handshake message is not fragmented, so
 the \codeword{fragment_offset} and \codeword{fragment_length} fields are
 elided from the Handshake header (common case when a handshake message is not bigger than
 the maximum header size), meaning that they're not going to be sent at
 all (\textit{i.e.} they're not going to be present in the \codeword{Payload} part).
-If the \codeword{F} bit has the value \codeword{1} the \codeword{fragment_offset}
+If the \codeword{F} bit has the value \codeword{1}, the \codeword{fragment_offset}
 and \codeword{fragment_length} fields are carried inline (\textit{i.e.} they're
 present in the \codeword{Payload} part). The remaining two fields define similar
-behavior for other header fields. The \codeword{length} field in the Record
-and Handshake headers are always elided, since they can be inferred from the lower
-layers.
+behavior for other header fields (some of them assume that some default value is present, when a field is elided).
+The \codeword{length} field in the Record and Handshake headers are always elided,
+since they can be inferred from the lower layers.
+
+The evaluation showed that the compression can save a significant number of bits:
+the Record header, that is included in all messages can be compressed by \codeword{64 bits}
+(\textit{i.e.} by \codeword{62\%}).
+
+There is also a proposal for TCP header compression for 6LoWPAN\cite{I-D.draft-aayadi-6lowpan-tcphc-01},
+which if adopted, in many cases can compress the mandatory \codeword{20 bytes} TCP header
+into \codeword{6 bytes}. This means that the same ideas can be applied to TCP and
+TLS as well.
 %\end{enumerate}
 
 \section{Background}

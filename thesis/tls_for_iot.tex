@@ -59,6 +59,7 @@
 \newacronym{sc}{SC}{Symmetrical Cryptography}%
 \newacronym{iot}{IoT}{Internet Of Things}%
 \newacronym{rpk}{RPK}{Raw Public Key}%
+\newacronym{dtls}{DTLS}{Datagram TLS}%
 
 
 
@@ -150,9 +151,7 @@ extra of \codeword{32KB}.
 \todo{talk about RAW PK}
 
 For the reasons specifed above, the main key exchange mechanism used in IoT
-is PSKs... (write about paper here)
-
-SK3\cite{todo} proposes a key management architecture for resource-constrained devices,
+are \gls{psk}s. SK3\cite{todo} proposes a key management architecture for resource-constrained devices,
 which allows devices that have no previous, direct security relation to use
 TLS or DTLS using one of two approaches: shared symmetric keys or raw public keys.
 The resource-constrained device is a server that offers one or more resources,
@@ -169,7 +168,7 @@ the client will then send the \codeword{psk_identity} that it received in the
 the (D)TLS handshake and the server will derive the \codeword{Kc}, using the
 \codeword{P_hash()} function defined in \cite{RFC5246}.
 
-The second approach consists in the requesting an APK (the authors never defined
+The second approach consists in the   requesting an APK (the authors never defined
 what this acronym stands for, but I assume they mean "Authorization Public Key")
 from the TA. In his request,
 the client includes his \gls{rpk}, which is used for authorization. The TA
@@ -190,6 +189,55 @@ data over the network and other parts of the handshake, the longest one being
 the \codeword{ChangeCiperSpec} message which required the longest processing time
 of \codeword{17.79ms}.
 
+6LoWPAN\cite{RFC4944} is a protocol that allows devices with limited processing
+ability and power to transmit information wirelessly using the \codeword{IPv6}
+protocol. The protocol defines IP Header Compression(IPHC) for the IP header and
+Next Header Compression (NHC) for the IP extension headers and the UDP header in \cite{RFC6282}.
+The compression relies on the shared compress between the communicating peers.
+There is also a proposal for TCP header compression for 6LoWPAN\cite{I-D.draft-aayadi-6lowpan-tcphc-01},
+which if adopted, in many cases can compress the mandatory \codeword{20 bytes} TCP header
+into \codeword{6 bytes}. This means that the same ideas presented in the paragraphs
+below can be applied to TCP as well. (REWERITE ME)
+
+\cite{6LoWPANC53:online} uses this same idea, but with the goal of compressing DTLS headers.
+6LoWPAN does not provide ways to compress the UDP payload and layers above, there
+is however, a proposed standard\cite{RFC7400} for generic header compression
+for 6LoWPANs that can be used to compress the UDP payload. The authors propose
+a way to compress DTLS headers and messages using this mechanism.
+
+The paper \cite{6LoWPANC53:online} defines how the \gls{dtls} Record header, the \gls{dtls} Handshake header,
+the ClientHello and the ServerHello messages can be compressed, but notes that
+the same compression techniques can be used to compress the remaining Handshake
+messages. They explore two cases for the header compression: compressing both,
+the Record header and the Handshake header and compressing the Record header only,
+which is useful after the handshake has completed and the fragment field of the
+Record layer contains application data, instead of a handshake message.
+
+All of the cases follow the same basic idea, for this reason I'll only exemplify
+one of them. Each \gls{dtls} fragment is carried over in the UDP payload. In this case,
+the UDP payload carries a header-like payload (the DTLS record header).
+The authors use the same value for the \codeword{LOWPAN_NHC Encoding} field (defined in \cite{RFC6282})
+as in \codeword{RFC7400} and define the format of the \codeword{In-line Next Header Fields}
+(defined in \cite{RFC6282}), which is the compressed DTLS content.
+
+I will exemplify the case where both, the record and the Handshake headers are compressed.
+In this case \codeword{LOWPAN_NHC Encoding} will contain the \codeword{LOWPAN_GHC_RHS}
+structure (depicted in \ref{fig:lowpan-ghc-rhs}), which is the compressed form of the Record and Handshake headers. The
+parts that are not compressed will be contained in the \codeword{Payload} part.
+The first four bits represent the ID field and in this case they're fixed to \codeword{1000},
+so that the decompressor knows what is being compressed (\textit{i.e} how to interpret
+the structure that follows the ID bits). If the \codeword{F} field contains the
+bit \codeword{0}, it means that the handshake message is not fragmented, so
+the \codeword{fragment_offset} and \codeword{fragment_length} fields are
+elided from the Handshake header (common case when a handshake message is not bigger than
+the maximum header size), meaning that they're not going to be sent at
+all (\textit{i.e.} they're not going to be present in the \codeword{Payload} part).
+If the \codeword{F} bit has the value \codeword{1} the \codeword{fragment_offset}
+and \codeword{fragment_length} fields are carried inline (\textit{i.e.} they're
+present in the \codeword{Payload} part). The remaining two fields define similar
+behavior for other header fields. The \codeword{length} field in the Record
+and Handshake headers are always elided, since they can be inferred from the lower
+layers.
 %\end{enumerate}
 
 \section{Background}

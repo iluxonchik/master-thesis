@@ -58,6 +58,7 @@
 \newacronym{ac}{AC}{Asymmetrical Cryptography}%
 \newacronym{sc}{SC}{Symmetrical Cryptography}%
 \newacronym{iot}{IoT}{Internet Of Things}%
+\newacronym{rpk}{RPK}{Raw Public Key}%
 
 
 
@@ -144,7 +145,50 @@ of persistent memory. I measured the resulitng size of the complied mbedTLS 2.6.
 (located in the \codeword{rsa.c} file), from which I concluded that using that module adds an
 extra of \codeword{32KB}.
 
+\section{Related Work}
 
+\todo{talk about RAW PK}
+
+For the reasons specifed above, the main key exchange mechanism used in IoT
+is PSKs... (write about paper here)
+
+SK3\cite{todo} proposes a key management architecture for resource-constrained devices,
+which allows devices that have no previous, direct security relation to use
+TLS or DTLS using one of two approaches: shared symmetric keys or raw public keys.
+The resource-constrained device is a server that offers one or more resources,
+such as temperature readings. The idea in both approaches is to introduce a third-party
+\codeword{trust anchor (TA)} that both, the client and the server use to establish
+trust relationships between them.
+
+The first approach is similar to Kerberos\cite{todo}, without requiring any
+changes to the original protocol. A client can request a \gls{psk} \codeword{Kc} from the \codeword{TA},
+which will generate it and send it back to the client via a secure channel, alongside
+a \codeword{psk_identity} which has the same meaning and is used in the same way
+as defined in \codeword{RFC PSK}\cite{todo}. When connecting to the server,
+the client will then send the \codeword{psk_identity} that it received in the
+the (D)TLS handshake and the server will derive the \codeword{Kc}, using the
+\codeword{P_hash()} function defined in \cite{RFC5246}.
+
+The second approach consists in the requesting an APK (the authors never defined
+what this acronym stands for, but I assume they mean "Authorization Public Key")
+from the TA. In his request,
+the client includes his \gls{rpk}, which is used for authorization. The TA
+creates an authorizaton certificate, protects it with a MAC and sends it
+to the client alongside the server's \gls{pubk}.
+The client then sends this APK (instead of the \gls{rpk})
+when connecting to the server, which verifies the APK (to authorize the client)
+and proceeds with the handshake in the \gls{rpk} mode, as defined in \cite{todo psk rfc}.
+To achieve this, a new certificate structure is defined, alongside a new \codeword{certificate_type}.
+The new certificate strucure is just the RFC7250 \cite{RFC7250} structure, with an
+additonal MAC.
+
+The has function used for key derivation is SHA256. The authors evaluated the
+performance of their solution with and without SHA2 hardware acceleration and
+concluded that while it had significant impact on key derivation, it had little
+impact on the total handshake time (\codeword{711.11 ms} instead of \codeword{775.05 ms}), since most of the time was spent in sending
+data over the network and other parts of the handshake, the longest one being
+the \codeword{ChangeCiperSpec} message which required the longest processing time
+of \codeword{17.79ms}.
 
 %\end{enumerate}
 

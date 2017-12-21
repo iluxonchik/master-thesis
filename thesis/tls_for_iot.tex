@@ -274,9 +274,9 @@ which is a lightweight security solution for \gls{coap} that uses the same DTLS 
 compression technique as in \cite{6LoWPANC53:online} with the goal of implementing
 it as a security support for \gls{coap}.\gls{coap}\cite{RFC7959} is a specialized
 RESTful Internet Application Protocol for constrained devices. It's designed to easily
-translate to \gls{http}, in order to simplify its integration with the web,
+translate to HTTP, in order to simplify its integration with the web,
 while also meeting requirements such as multicast support and low overhead.
-\gls{coap} is like "\gls{http} for constrained devices".
+\gls{coap} is like "HTTP for constrained devices".
 \gls{coap} can run on most devices that support UDP or a UDP-like protocol.
 \gls{coap} mandates the use of \gls{dlts} as the underlying security protocol for
 authenticated and confidential communication.
@@ -286,7 +286,9 @@ they obtained significant gains in terms of packet size (similiar numbers to the
 ones obsever in \cite{6LoWPANC53:online}), energy consumption (in average \codeword{15\%} less
 energy is used to transmitting and receive compressed packets), processing time
 (the compression and decompression time of DTLS headers is almost negligible)
-and network-wide response times (TODO!)
+and network-wide response times(up to \codeword{50\%} smaller RTT). The
+gains in the mentioned measures are the largest when the compression avoids
+fragmentation (in the paper, for payload size of \codeword{48 bytes}).
 
 
 %\end{enumerate}

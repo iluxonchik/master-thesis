@@ -60,6 +60,7 @@
 \newacronym{iot}{IoT}{Internet Of Things}%
 \newacronym{rpk}{RPK}{Raw Public Key}%
 \newacronym{dtls}{DTLS}{Datagram TLS}%
+\newacronym{coap}{CoAP}{Constrained Application Protocol}%
 
 
 
@@ -119,6 +120,12 @@ There will be two blank lines before and after the Abstract. \dots
 %
 \todo{Intruduce the topic: explain what is IoT; what is TLS; what are the issues with
 using RAW TLS with IoT(power, computation, limited resources).}
+
+TCP performance is known to be inefficient in wireless
+networks, due to its congestion control algorithm, and the
+situation is exacerbated with the low-power radios and lossy
+links found in sensor networks. Therefore, the connectionless
+UDP is mostly used in the IoT.
 %
 \subsection{Goals}
 %
@@ -261,6 +268,27 @@ There is also a proposal for TCP header compression for 6LoWPAN\cite{I-D.draft-a
 which if adopted, in many cases can compress the mandatory \codeword{20 bytes} TCP header
 into \codeword{6 bytes}. This means that the same ideas can be applied to TCP and
 TLS as well.
+
+Later, in 2013, Raza \textit{et al.} proposed a security scheme called Lithe\cite{LitheLig40:online},
+which is a lightweight security solution for \gls{coap} that uses the same DTLS header
+compression technique as in \cite{6LoWPANC53:online} with the goal of implementing
+it as a security support for \gls{coap}.\gls{coap}\cite{RFC7959} is a specialized
+RESTful Internet Application Protocol for constrained devices. It's designed to easily
+translate to \gls{http}, in order to simplify its integration with the web,
+while also meeting requirements such as multicast support and low overhead.
+\gls{coap} is like "\gls{http} for constrained devices".
+\gls{coap} can run on most devices that support UDP or a UDP-like protocol.
+\gls{coap} mandates the use of \gls{dlts} as the underlying security protocol for
+authenticated and confidential communication.
+
+The authors evaluated their system in a simulated environment in Contiki OS and
+they obtained significant gains in terms of packet size (similiar numbers to the
+ones obsever in \cite{6LoWPANC53:online}), energy consumption (in average \codeword{15\%} less
+energy is used to transmitting and receive compressed packets), processing time
+(the compression and decompression time of DTLS headers is almost negligible)
+and network-wide response times (TODO!)
+
+
 %\end{enumerate}
 
 \section{Background}

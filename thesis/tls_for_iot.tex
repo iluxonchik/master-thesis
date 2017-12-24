@@ -290,6 +290,49 @@ and network-wide response times(up to \codeword{50\%} smaller RTT). The
 gains in the mentioned measures are the largest when the compression avoids
 fragmentation (in the paper, for payload size of \codeword{48 bytes}).
 
+Angelo \textit{et al} \cite{Security5:online} proposed to integrate the \gls{dtls} protocol
+inside the \gls{coap}, while also exploiting \gls{ecc} optimizations and minimizing
+ROM occupancy. They've implemented their solution on an off-the-shelf mote platform
+and evaluated its performance. The results showed that their \gls{ecc} optimizations
+outperform the scalar multiplication in the state of the art class 1 device platforms,
+while also improving the the network lifetime by a factor of up to $6.5$ with
+respect to a standard, non-optimized implementation.
+
+\gls{dtls} was designed to protect web application communication, as a result,
+it has a big overhead in \gls{iot} scenarios. Besides that, it runs over UDP,
+so additional mechanisms are needed to provide the reliability and ordering
+guarantee. With this in mind, the authors wanted to design a version of \gls{dlts}
+that's both: minimizes the code size and the number of exchanged messages, resulting
+in an optimized Handshake protocol.
+
+This work was based on an informational RFC draft\cite{I-D.draft-keoh-dtls-profile-iot-00}, in which the
+authors profiled \gls{dtls} for \gls{coap}-based \gls{iot} applications and proposed
+the use of a RESTful \gls{dtls} Handshake which relies on \gls{coap} block-wise
+transfer to address the fragmentation issue.
+
+In order to minimize the code size occupied by the \gls{dtls} implementation, they
+decided to delegate the tasks of \textbf{reliability} and \textbf{fragmentation} to
+\gls{coap}. This means that the code responsible for those functionalities,
+can be removed altogether from the \gls{dtls} implementation, thus reducing ROM
+occupancy.
+
+To achieve this they  proposed the use of a RESTful \gls{dtls} connection as a \gls{coap} resource,
+which is created when a new secure session is requested.
+The authors exploit the the \gls{coap}s capability to provide connection-oriented
+communication offered by its message layer. In particular, each \codeword{Confirmable}
+\gls{coap} message requires an \codeword{Acknowledgement} message\cite{RFC7252T66:online},
+which acknowledges that a specific \codeword{Confirmable} message has arrived, thus
+providing reliable retransmission.
+
+Instead of leaving the fragmentation function to \gls{dtls}, the authors
+delegated it to the block-wise transfer feature of \gls{¢oap}\cite{RFC7959}, which was developed
+to support transmission of large payloads. This approach has two advantages: first, the code in the \gls{dtls}
+layer responsible for this function can be removed, thus reducing ROM occupancy
+and second, the fragmentation/reassembly process burdens the lower Layers
+with state that is better managed in the application layer.
+
+The authors also optimized the implementation of basic operations on which
+many security protocols rely upon.
 
 %\end{enumerate}
 

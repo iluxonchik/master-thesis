@@ -169,7 +169,9 @@ so I'll begin with the work done in this area.
 Alex \textit{et al}\cite{todo} explore the topic of lightweight symmetric cryptography,
 providing a summary of the lightweight symmetric
 primitives from the academic community, the government agencies and even proprietary
-algorithms which have been either reverse-engineered or leaked. They also propose
+algorithms which have been either reverse-engineered or leaked. All of those algorithms
+are listed in the paper, alongside relevant metrics. I won't be including the list
+here, due to lack of space. The authors also proposed
 to split the field into two areas: ultra-lightweight and \gls{iot} cryptography.
 
 The authors systematized the knowledge in the area of lightweight cryptography
@@ -183,13 +185,13 @@ the hardware or the software implementations of the primitives are considered.
 
 If the primitive is implemented in hardware, the memory consumption and the implementation
 size are lumped together into its gate area, which is measured in Gate Equivalents (GE),
-a metric quantiying how physically large a circuit implementing primitive is.
+a metric quantifying how physically large a circuit implementing primitive is.
 The throughout is measured in bytes/sec and it corresponds to the amount of plaintext
 processed per time unit. If a primitive is implemented in software (typically for
 use in micro-controllers), the relevant metrics are the RAM consumption, the code
 size and the throughput of the primitive, measured in bytes per CPU cycle.
 
-To acommondate the limitations of constrained devices, most lightweight algorithms
+To accommodate the limitations of constrained devices, most lightweight algorithms
 are designed to use smaller internal states with smaller key sizes. After analysis,
 the authors concluded that even though at least \codeword{128 bit} block and
 key sizes were required from the AES candidates, most of the lightweight

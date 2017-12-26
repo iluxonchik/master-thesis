@@ -61,6 +61,8 @@
 \newacronym{rpk}{RPK}{Raw Public Key}%
 \newacronym{dtls}{DTLS}{Datagram TLS}%
 \newacronym{coap}{CoAP}{Constrained Application Protocol}%
+\newacronym{ec}{EC}{Elliptic Curve}%
+\newacronym{sca}{SCA}{Side-Channel Attack}%
 
 
 
@@ -154,6 +156,68 @@ of persistent memory. I measured the resulitng size of the complied mbedTLS 2.6.
 extra of \codeword{32KB}.
 
 \section{Related Work}
+
+Lightweight cryptography is an important topic in the context of \gls{iot}, since
+cryptography a fundamental part of security and it's fundamental for it to be
+lightweight in order to run on devices with limited memory and processing
+capabilities. A lot of work in \gls{iot} incorporates it in one way or another,
+so I'll begin with the work done in this area.
+
+Alex \textit{et al}\cite{todo} explore the topic of lightweight symmetric cryptography,
+providing a summary of the lightweight symmetric
+primitives from the academic community, the government agencies and even proprietary
+algorithms which have been either reverse-engineered or leaked. They also propose
+to split the field into two areas: ultra-lightweight and \gls{iot} cryptography.
+
+The authors systematized the knowledge in the area of lightweight cryptography
+in order to define "lightweightness" more precisely. They observed that the design
+of lightweight cryptography algorithms vary greatly, the only unifying thread
+between them being the low computing power of the devices they're designed to run on.
+
+The most frequently optimized metrics are the memory consumption, the implementation size
+and the speed or the throughput of the primitive. The specifics depend on whether
+the hardware or the software implementations of the primitives are considered.
+
+If the primitive is implemented in hardware, the memory consumption and the implementation
+size are lumped together into its gate area, which is measured in Gate Equivalents (GE),
+a metric quantiying how physically large a circuit implementing primitive is.
+The throughout is measured in bytes/sec and it corresponds to the amount of plaintext
+processed per time unit. If a primitive is implemented in software (typically for
+use in micro-controllers), the relevant metrics are the RAM consumption, the code
+size and the throughput of the primitive, measured in bytes per CPU cycle.
+
+To acommondate the limitations of constrained devices, most lightweight algorithms
+are designed to use smaller internal states with smaller key sizes. After analysis,
+the authors concluded that even though at least \codeword{128 bit} block and
+key sizes were required from the AES candidates, most of the lightweight
+block ciphers use only \codeword{64-bit} blocks, which leads to a smaller memory
+footprint in both, software and hardware, while also making the algorithm better suited
+for processing smaller messages.
+
+Even though though algorithms can be optimized in implementation: whether it's
+a software or a hardware now, dedicated lightweight algorithms are still needed.
+This comes down mainly to two factors: there are limitations to the the extent of
+the optimizations that you can make and the hardware-accelerated encryption is
+frequently vulnerable to various \gls{sca}s (such as the attack done on the
+Phillips light bulbs \cite{cryptoeprint:2016:1047}, where the authors were able to
+recover a secret key used to authenticate updates, via an \gls{sca}).
+
+It's more difficult to implement a lightweight hash function than a lightweight
+block cipher, since standard hash functions need large amounts
+of memory to store both: their internal states, for example, \codeword{1600 bits} in case of SHA-3
+and the block they're operating on, for example, \codeword{512 bits} in the case of SHA-2.
+The required internal state is acceptable for a desktop computer, but not for a
+constrained device. Taking this into consideration, the most common approach
+taken by the designers is to use a sponge construction with a very small bitate.
+A sponge function is an algorithm with an internal state that takes as an input
+a bit stream of any length and outputs a bit stream of any desired length. Sponge
+functions are used to implement many cryptographic primitives, such as cryptographic
+hashes. The bitrate decides how fast the plain text is processed and how fast the
+final digest is produced. A small bitrate means that the output will take longer
+to be produced, which means that a smaller capacity (the security level)
+can be used, which minimizes the memory footpirnt at the cost of slower data
+processing. A capacity of \codeword{128 bits} and a bitrate of \codeword{8 bits}
+are common values for lighweight hash functions.
 
 \todo{talk about RAW PK}
 
@@ -278,7 +342,7 @@ translate to HTTP, in order to simplify its integration with the web,
 while also meeting requirements such as multicast support and low overhead.
 \gls{coap} is like "HTTP for constrained devices".
 \gls{coap} can run on most devices that support UDP or a UDP-like protocol.
-\gls{coap} mandates the use of \gls{dlts} as the underlying security protocol for
+\gls{coap} mandates the use of \gls{dtls} as the underlying security protocol for
 authenticated and confidential communication.
 
 The authors evaluated their system in a simulated environment in Contiki OS and
@@ -293,28 +357,21 @@ fragmentation (in the paper, for payload size of \codeword{48 bytes}).
 Angelo \textit{et al} \cite{Security5:online} proposed to integrate the \gls{dtls} protocol
 inside the \gls{coap}, while also exploiting \gls{ecc} optimizations and minimizing
 ROM occupancy. They've implemented their solution on an off-the-shelf mote platform
-and evaluated its performance. The results showed that their \gls{ecc} optimizations
-outperform the scalar multiplication in the state of the art class 1 device platforms,
-while also improving the the network lifetime by a factor of up to $6.5$ with
-respect to a standard, non-optimized implementation.
-
-\gls{dtls} was designed to protect web application communication, as a result,
+and evaluated its performance. \gls{dtls} was designed to protect web application communication, as a result,
 it has a big overhead in \gls{iot} scenarios. Besides that, it runs over UDP,
 so additional mechanisms are needed to provide the reliability and ordering
-guarantee. With this in mind, the authors wanted to design a version of \gls{dlts}
+guarantee. With this in mind, the authors wanted to design a version of \gls{dtls}
 that's both: minimizes the code size and the number of exchanged messages, resulting
 in an optimized Handshake protocol.
-
-This work was based on an informational RFC draft\cite{I-D.draft-keoh-dtls-profile-iot-00}, in which the
-authors profiled \gls{dtls} for \gls{coap}-based \gls{iot} applications and proposed
-the use of a RESTful \gls{dtls} Handshake which relies on \gls{coap} block-wise
-transfer to address the fragmentation issue.
 
 In order to minimize the code size occupied by the \gls{dtls} implementation, they
 decided to delegate the tasks of \textbf{reliability} and \textbf{fragmentation} to
 \gls{coap}. This means that the code responsible for those functionalities,
 can be removed altogether from the \gls{dtls} implementation, thus reducing ROM
-occupancy.
+occupancy. This part of their work was based on an informational RFC draft\cite{I-D.draft-keoh-dtls-profile-iot-00}, in which the
+authors profiled \gls{dtls} for \gls{coap}-based \gls{iot} applications and proposed
+the use of a RESTful \gls{dtls} Handshake which relies on \gls{coap} block-wise
+transfer to address the fragmentation issue.
 
 To achieve this they  proposed the use of a RESTful \gls{dtls} connection as a \gls{coap} resource,
 which is created when a new secure session is requested.
@@ -324,15 +381,38 @@ communication offered by its message layer. In particular, each \codeword{Confir
 which acknowledges that a specific \codeword{Confirmable} message has arrived, thus
 providing reliable retransmission.
 
-Instead of leaving the fragmentation function to \gls{dtls}, the authors
-delegated it to the block-wise transfer feature of \gls{¢oap}\cite{RFC7959}, which was developed
+Instead of leaving the fragmentation function to \gls{dtls}, it was
+delegated to the block-wise transfer feature of \gls{coap}\cite{RFC7959}, which was developed
 to support transmission of large payloads. This approach has two advantages: first, the code in the \gls{dtls}
 layer responsible for this function can be removed, thus reducing ROM occupancy
 and second, the fragmentation/reassembly process burdens the lower Layers
 with state that is better managed in the application layer.
 
 The authors also optimized the implementation of basic operations on which
-many security protocols rely upon.
+many security protocols, such as \gls{ecdh} and \gls{ecdsa} rely upon. The first
+optimization had to do with modular arithmetic on large integers. A set of optimized
+assembly routines based on \cite{Comparin25:Online} allow the improved use of
+registers, reducing the number of memory operations needed to perform
+operations such as multiplications and square roots on devices with \codeword{8-bit}
+registers.
+
+Scalar multiplication is often the most expensive operation in \gls{ec} based
+cryptography, therefore optimizing it is of high interest. The authors used a
+technique called \textit{IBPV} described in \cite{LowcostS87:online}, which is based on precumputation
+of a set of Discrete Log pairs. I will refrain from going into the mathematical details,
+since they're not relevant for this description. The \textit{IBPV} technique was used
+to improve the performance of the \gls{ecdsa} signature and was also extended to the
+\gls{ecdh} protocol. In order to reduce the time it takes to do the \gls{ecdsa}
+signature verification, the \textit{Shamir trick} was used, which allows
+to perform the sum of two scalar multiplications (frequent operation in \gls{ec} cryptography)
+faster than performing two independent scalar multiplications.
+
+The results showed that the \gls{ecc} optimizations
+outperform the scalar multiplication in the state of the art class 1 device platforms,
+while also improving the the network lifetime by a factor of up to $6.5$ with
+respect to a standard, non-optimized implementation. Leaving reliability and
+fragmentation tasks to \gls{coap}, reduces the \gls{dtls} implementation code size
+by approximately $23\%$.
 
 %\end{enumerate}
 

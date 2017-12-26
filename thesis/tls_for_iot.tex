@@ -27,6 +27,9 @@
 \usepackage{graphicx}
 \usepackage{wrapfig}
 
+%%% tables
+\usepackage{booktabs}
+
 
 \makeglossaries
 
@@ -218,6 +221,45 @@ to be produced, which means that a smaller capacity (the security level)
 can be used, which minimizes the memory footpirnt at the cost of slower data
 processing. A capacity of \codeword{128 bits} and a bitrate of \codeword{8 bits}
 are common values for lighweight hash functions.
+
+Another trend in the lightweight algorithms noticed by the authors is the
+preference for ARX-based and bitsliced-S-Box based designs, as well as simple
+key schedules.
+
+Finally, a separation of the "lightweight algorithms" defintion into two
+distinct fields has been proposed:
+
+\begin{itemize}
+  \item \textbf{Ultra-Lightweight Crypto} - algorithms running on very cheap
+  devices which are \textbf{not connected to the internet}, which are easily replaceable
+  and have a limited life-time. Examples: RFID tags, smart cards and remote car keys.
+  \item \textbf{IoT Crypto} - algorithms running on a low-power device,
+  \textbf{connected to a global network}, such as the internet. Examples: security cameras,
+  smart light bulbs and smart watches.
+\end{itemize}
+
+Considering the two definitions above, this work focuses on \textbf{IoT Crypto}
+devices. A summary of differences between the both categories is summarized in
+table \ref{ul-iot}.
+
+\begin{table}[]
+\centering
+\caption{A summary of the differences between ultra-lightweight and IoT crypto}
+\label{ul-iot}
+\begin{tabular}{@{}lll@{}}
+\toprule
+                           & \textbf{Ultra-Lightweight}          & \textbf{IoT}                           \\ \midrule
+\textbf{Block Size}        & 64 bits                             & ≥ 128 bits                             \\
+\textbf{Security Level}    & ≥ 80 bits                           & ≥ 128 bits                             \\
+\textbf{Relevant Attacks}  & low data/time complexity            & same as "regular" crypto               \\
+\textbf{Intended Platform} & dedicated circuit (ASIC, RFID...)   & micro-controllers, low-end CPUs        \\
+\textbf{SCA Resilience}    & important                           & important                              \\
+\textbf{Functionality}     & one per device, e.g. authentication & encryption, authentication, hashing... \\
+\textbf{Connection}        & temporary, only to a given hub      & permanent, to a global network         \\ \bottomrule
+\end{tabular}
+\end{table}
+
+
 
 \todo{talk about RAW PK}
 

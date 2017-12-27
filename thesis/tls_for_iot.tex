@@ -131,11 +131,11 @@ networks, due to its congestion control algorithm, and the
 situation is exacerbated with the low-power radios and lossy
 links found in sensor networks. Therefore, the connectionless
 UDP is mostly used in the IoT.
-%
-\subsection{Goals}
-%
 
-\section{Symmetric vs Asymmetric Cryptography (Background Section)}
+\todo{MOTIVATION goes here}
+%
+\section{Theoretical Background}
+\subsection{Symmetric vs Asymmetric Cryptography (Background Section)}
 
 \gls{ac} more expensive than \gls{sc} in terms of performance. This is mainly due
 to two facts: larger key sizes are required for \gls{ac} system to achieved the
@@ -158,6 +158,14 @@ of persistent memory. I measured the resulitng size of the complied mbedTLS 2.6.
 (located in the \codeword{rsa.c} file), from which I concluded that using that module adds an
 extra of \codeword{32KB}.
 
+\subsection{Public Certificates}
+\todo{todo}
+
+
+\subsection{AEAD Ciphers}
+\todo{Already have this written, need to shorten}
+
+
 \section{Related Work}
 
 Lightweight cryptography is an important topic in the context of \gls{iot}, since
@@ -166,7 +174,7 @@ lightweight in order to run on devices with limited memory and processing
 capabilities. A lot of work in \gls{iot} incorporates it in one way or another,
 so I'll begin with the work done in this area.
 
-Alex \textit{et al}\cite{todo} explore the topic of lightweight symmetric cryptography,
+Alex \textit{et al}\cite{Stateoft96:online} explore the topic of lightweight symmetric cryptography,
 providing a summary of the lightweight symmetric
 primitives from the academic community, the government agencies and even proprietary
 algorithms which have been either reverse-engineered or leaked. All of those algorithms
@@ -262,6 +270,15 @@ table \ref{ul-iot}.
 \end{table}
 
 
+\todo{WRITE ABOUT LIGHTWEIGHT PUBLIC CRYPTO HERE}
+
+Lightweight cryptography is an important part of my work and there are papers detailing
+various algorithms. While an important topic for my solution, I do consider that
+I've done sufficient coverage on it, by specifically choosing recent works that
+provide an overview of the different areas, rather than focusing on specific
+implementations, since the length of this section is limited. The remaining text
+in this seciton will be used to describe work done on the (D)TLS protocol in the
+context of \gls{iot}.
 
 \todo{talk about RAW PK}
 
@@ -372,7 +389,7 @@ The evaluation showed that the compression can save a significant number of bits
 the Record header, that is included in all messages can be compressed by \codeword{64 bits}
 (\textit{i.e.} by \codeword{62\%}).
 
-There is also a proposal for TCP header compression for 6LoWPAN\cite{I-D.draft-aayadi-6lowpan-tcphc-01},
+There is also a proposal for TCP header compression for 6LoWPAN\cite{I-D.aayadi-6lowpan-tcphc},
 which if adopted, in many cases can compress the mandatory \codeword{20 bytes} TCP header
 into \codeword{6 bytes}. This means that the same ideas can be applied to TCP and
 TLS as well.
@@ -412,7 +429,7 @@ In order to minimize the code size occupied by the \gls{dtls} implementation, th
 decided to delegate the tasks of \textbf{reliability} and \textbf{fragmentation} to
 \gls{coap}. This means that the code responsible for those functionalities,
 can be removed altogether from the \gls{dtls} implementation, thus reducing ROM
-occupancy. This part of their work was based on an informational RFC draft\cite{I-D.draft-keoh-dtls-profile-iot-00}, in which the
+occupancy. This part of their work was based on an informational RFC draft\cite{I-D.draft-keoh-dtls-profile-iot}, in which the
 authors profiled \gls{dtls} for \gls{coap}-based \gls{iot} applications and proposed
 the use of a RESTful \gls{dtls} Handshake which relies on \gls{coap} block-wise
 transfer to address the fragmentation issue.
@@ -457,6 +474,16 @@ while also improving the the network lifetime by a factor of up to $6.5$ with
 respect to a standard, non-optimized implementation. Leaving reliability and
 fragmentation tasks to \gls{coap}, reduces the \gls{dtls} implementation code size
 by approximately $23\%$.
+
+\todo{Tell how my work differs from everything described here} In short, right now
+I'm thinking of adding something in lines of: the work described above is either
+specific to some algorithm or requires introduction of third-party features/intermediaries.
+In my solution, I want to take the approach of developing a fully backwards-compatible
+solution, while meeting the lighweight requirements of IoT devices. I will explore the
+solution that would be general enough to work with both, (D)TLS 1.2 and (D)TLS 1.3.
+I will explore TLS specifically, since little work has been done in that area and
+everything has been centered around DTLS. I can achieve the previous through
+the extension mechanism.
 
 %\end{enumerate}
 
@@ -851,7 +878,8 @@ compression methods (\codeword{compression_methods}) that the client supports, o
 preference, with the most preferred one appearing first.
 
 \subsection{Do We Really Need Two Randoms: One From Client and One From Server?}
-\todo{YES, replay attacks.}
+\todo{YES, replay attacks. THIS WILL NOT BE A SECTION. It's here so that I will remember
+to mention it}
 
 \todo{Mention HelloRequest}
 %
@@ -862,6 +890,8 @@ This is an example of a paragraph. Note the styling.
 Despite the protocol name not suggesting it \gls{tls} 1.3 is
 very different from \gls{tls} 1.2, in fact, it should've probably been called
 \gls{tls} 2.0 instead.
+
+\todo{mention that I contributed to the TLS 1.3 standard}
 
 \subsubsection{How Do Peers Distinguish Different TLS Versions?}
 
@@ -877,9 +907,15 @@ very different from \gls{tls} 1.2, in fact, it should've probably been called
 \todo{explain why compression was removed (BEAST and CRIME attacks) and how it
 can be fixed.}
 
-\subsection{Theory}
+\section{Proposed Solution}
+\todo{STILL TODO (max 3 pages) Below is a draft, a brainstorm of sentences}
 
-\todo{Explain: public key crypto, certificates, AEAD ciphers}
+I will use the extension mechanism to specify a profile for a lightweight
+communication. The extension will be designed in such a way that the number
+of exchanged messages is limited to a minimum. This extension(s) can eventually
+be used to even negotiate the header compression as described in \cite{6LoWPANC53:online}.
+Extensions can change what they want, as confirmed by one of the TLS designers,
+when I asked him the question: https://www.ietf.org/mail-archive/web/tls/current/msg24932.html
 
 %
 % ---- Bibliography ----

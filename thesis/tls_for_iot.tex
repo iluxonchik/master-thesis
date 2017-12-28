@@ -38,6 +38,7 @@
 \newacronym{ietf}{IETF}{Internet Engineering Task Force}%
 \newacronym{mac}{MAC}{Message Authentication Code}%
 \newacronym{psk}{PSK}{Pre-Shared Key}%
+\newacronym{rpk}{RPK}{Raw Public Key}%
 \newacronym{aead}{AEAD}{Authenticated Encryption With Associated Data}%
 \newacronym{pkc}{PKC}{Public Key Cryptography}%
 \newacronym{hkdf}{HKDF}{HMAC-based Extract-and-Expand Key Derivation Function}%
@@ -61,7 +62,6 @@
 \newacronym{ac}{AC}{Asymmetrical Cryptography}%
 \newacronym{sc}{SC}{Symmetrical Cryptography}%
 \newacronym{iot}{IoT}{Internet Of Things}%
-\newacronym{rpk}{RPK}{Raw Public Key}%
 \newacronym{dtls}{DTLS}{Datagram TLS}%
 \newacronym{coap}{CoAP}{Constrained Application Protocol}%
 \newacronym{ec}{EC}{Elliptic Curve}%
@@ -404,7 +404,11 @@ while also meeting requirements such as multicast support and low overhead.
 \gls{coap} is like "HTTP for constrained devices".
 \gls{coap} can run on most devices that support UDP or a UDP-like protocol.
 \gls{coap} mandates the use of \gls{dtls} as the underlying security protocol for
-authenticated and confidential communication.
+authenticated and confidential communication. There is also a specification \gls{coap}
+running on top of TCP, which uses \gls{tls} as its underlying security protocol
+currently being proposed \cite{I.D.draft-ietf-core-coap-tcp-tls},
+with active work being done in this area.
+
 
 The authors evaluated their system in a simulated environment in Contiki OS and
 they obtained significant gains in terms of packet size (similiar numbers to the
@@ -475,6 +479,44 @@ respect to a standard, non-optimized implementation. Leaving reliability and
 fragmentation tasks to \gls{coap}, reduces the \gls{dtls} implementation code size
 by approximately $23\%$.
 
+\codeword{RFC 7925}\cite{rfc7925} describes a \gls{tls} and \gls{dtls} 1.2
+profile for \gls{iot} devices that offers communication security services
+for \gls{iot} applications and is reasonably implementable on many constrained devices.
+In this context, "profile" means available configuration options (ex: which
+cipher suites to use) and protocol extensions that are best suited for \gls{iot} devices.
+The document is rather lengthy, so I'll summarize the most important parts. I will
+also provide a brief description of some RFCs that I consider to be relevant for
+my work.
+
+The RFC explores both cases constrained clients and constrained servers, specifying
+a profile for each one and describing the main challenges faced in each scenario.
+The profile specifications for constrained clients and servers are very similar.
+Code reuse in order to minimize the implementation size is recommended. For example, an \gls{iot} device
+using a network access solution based on \gls{tls}, such as EAP-TLS\cite{rfc5216}
+can reuse most parts of the code for (D)TLS at the application layer.
+
+For the credential types the document considers 3 cases:
+
+\begin{itemize}
+  \item \gls{psk} - authentication based on \gls{psk}s is described in
+  \codeword{RFC 4249}\cite{rfc4279}. When using \gls{psk}s, the client indicates which
+  key it uses by including a \gls{psk} identity in its ClientKeyExchange message.
+  A server can have different \gls{psk} identities shared with different clients.
+  An identity can have any size, up to a maximum of \codeword{128 bytes}.
+  The profile recommends the use of shorter \gls{psk} identities. The only
+  mandatory-to-implement ciphersuite to be used wit h\gps{psk}s is \codeword{TLS_PSK_WITH_AES_128_CCM_8},
+  which is also mandated by \gls{coap}.
+
+  \item \gls{rpk} - the use of \gls{rpk}s in (D)TLS is described in \codeword{RFC 7250}\cite{rfc7250}.
+
+
+\end{itemize}
+
+\gls{psk}\cite{rfc4279}, \gls{rpk}\cite{rfc7250}
+and certificates. If \gls{psk}
+
+
+
 \todo{Tell how my work differs from everything described here} In short, right now
 I'm thinking of adding something in lines of: the work described above is either
 specific to some algorithm or requires introduction of third-party features/intermediaries.
@@ -483,7 +525,9 @@ solution, while meeting the lighweight requirements of IoT devices. I will explo
 solution that would be general enough to work with both, (D)TLS 1.2 and (D)TLS 1.3.
 I will explore TLS specifically, since little work has been done in that area and
 everything has been centered around DTLS. I can achieve the previous through
-the extension mechanism.
+the extension mechanism. There has been no work like RFC 7925 done for TLS 1.3,
+I wanna explore that. CoAp over TCP and tls is being proposed, so we need work
+done in optimizing tls.
 
 %\end{enumerate}
 
@@ -707,7 +751,7 @@ using symmetric cyrpto aglorithms, they need to \textbf{share} the same key
 somehow. In \gls{tls}, both, the client and a server derive the \textbf{same set of keys}
 independetely, through the exchanged messages in the \gls{tls} Handshake Protocol.
 
-When communicating with one anohter, the client uses one key to
+When communicating with one another, the client uses one key to
 encrypt the data to be sent to the server and another different key to decrypt the data
 that it receives from the server. This means that in order to deal with data
 encryption and decryption, both of the communicating entities have two keys:
@@ -883,8 +927,10 @@ to mention it}
 
 \todo{Mention HelloRequest}
 %
-\paragraph{Notes and Comments.}
-This is an example of a paragraph. Note the styling.
+\subsection{DLTS}
+
+Page 6 of RFC 7925
+
 
 \subsection{TLS 1.3}
 Despite the protocol name not suggesting it \gls{tls} 1.3 is

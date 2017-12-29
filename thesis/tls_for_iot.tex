@@ -495,7 +495,7 @@ Code reuse in order to minimize the implementation size is recommended. For exam
 using a network access solution based on \gls{tls}, such as EAP-TLS\cite{rfc5216}
 can reuse most parts of the code for (D)TLS at the application layer.
 
-For the credential types the document considers 3 cases:
+For the credential types the profile considers 3 cases:
 
 \begin{itemize}
   \item \gls{psk} - authentication based on \gls{psk}s is described in
@@ -503,17 +503,31 @@ For the credential types the document considers 3 cases:
   key it uses by including a \gls{psk} identity in its ClientKeyExchange message.
   A server can have different \gls{psk} identities shared with different clients.
   An identity can have any size, up to a maximum of \codeword{128 bytes}.
-  The profile recommends the use of shorter \gls{psk} identities. The only
-  mandatory-to-implement ciphersuite to be used wit h\gps{psk}s is \codeword{TLS_PSK_WITH_AES_128_CCM_8},
-  which is also mandated by \gls{coap}.
+  The profile recommends the use of shorter \gls{psk} identities and specifies
+  \codeword{TLS_PSK_WITH_AES_128_CCM_8} as the only mandatory-to-implement
+  ciphersuite to be used with \gls{psk}s, just like \gls{coap} does.
 
   \item \gls{rpk} - the use of \gls{rpk}s in (D)TLS is described in \codeword{RFC 7250}\cite{rfc7250}.
-
+  With \gls{rpk}s, only a subset of the information is found in typical certificates
+  is used: namely the \codeword{SubjectPublicKeyInfo} structure, which contains
+  the necessary parameters to describe the public key (the algorithm identifier
+  and the public key itself). Other PKIX certificate\cite{rfc5280} parameters are
+  omitted, making the resulted \gls{rpk} smaller in size, when compared to the
+  original certificate and the code to process the keys simpler. In order for the
+  peers to negotiate the \gls{rpk} use, two new extensions have been defined:
+  one for the client to list the certificate types that it supports (sorted by order of preference) and one for
+  the indicate which one it chose. To further reduce the size of the implementation, the \codeword{RFC 7250}
+  recommends the use of the \gls{tls} Cached Information extension\cite{rfc7924}, which
+  enables the \gls{tls} peers to exchange just the fingerprint (a shorter sequence of bytes
+  used to identify a \gls{pubk}) of the \gls{pubk}. The only mandatory-to-implement
+  ciphersuite to be used with \gls{rpk}s is \codeword{TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8},
+  just like with \gls{coap}.
 
 \end{itemize}
 
-\gls{psk}\cite{rfc4279}, \gls{rpk}\cite{rfc7250}
-and certificates. If \gls{psk}
+
+Note that \cite{rfc4279}, \cite{rfc7250}, \cite{rfc7924} can be used with either
+\gls{tls} or \gls{dtls}.
 
 
 
@@ -931,6 +945,9 @@ to mention it}
 
 Page 6 of RFC 7925
 
+It was really designed to be the same as TLS, since even some extensions that
+were defined BEFORE dtls exiseted (the psk) can be used in DTLS without any
+change.
 
 \subsection{TLS 1.3}
 Despite the protocol name not suggesting it \gls{tls} 1.3 is
@@ -952,6 +969,8 @@ very different from \gls{tls} 1.2, in fact, it should've probably been called
 
 \todo{explain why compression was removed (BEAST and CRIME attacks) and how it
 can be fixed.}
+
+
 
 \section{Proposed Solution}
 \todo{STILL TODO (max 3 pages) Below is a draft, a brainstorm of sentences}

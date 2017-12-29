@@ -20,3 +20,5 @@ rfc4256
 draft-ietf-core-coap-tcp-tls-11
 rfc5216
 rfc7250
+rfc5280
+rfc7924

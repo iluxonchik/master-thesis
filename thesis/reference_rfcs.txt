@@ -26,3 +26,6 @@ rfc6960
 rfc5280
 rfc4366
 rfc6066
+rfc5077
+rfc7525
+rfc6520

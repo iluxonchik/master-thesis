@@ -66,6 +66,9 @@
 \newacronym{coap}{CoAP}{Constrained Application Protocol}%
 \newacronym{ec}{EC}{Elliptic Curve}%
 \newacronym{sca}{SCA}{Side-Channel Attack}%
+\newacronym{oscp}{OCSP}{Online Certificate Status Protocol}
+\newacronym{crl}{CRL}{Certificate Revocation List}
+\newacronym{ca}{CA}{Certification Authority}
 
 
 
@@ -511,24 +514,43 @@ For the credential types the profile considers 3 cases:
   With \gls{rpk}s, only a subset of the information is found in typical certificates
   is used: namely the \codeword{SubjectPublicKeyInfo} structure, which contains
   the necessary parameters to describe the public key (the algorithm identifier
-  and the public key itself). Other PKIX certificate\cite{rfc5280} parameters are
+  and the public key itself). Other PKIX certificate\cite{RFC5280} parameters are
   omitted, making the resulted \gls{rpk} smaller in size, when compared to the
   original certificate and the code to process the keys simpler. In order for the
   peers to negotiate the \gls{rpk} use, two new extensions have been defined:
   one for the client to list the certificate types that it supports (sorted by order of preference) and one for
   the indicate which one it chose. To further reduce the size of the implementation, the \codeword{RFC 7250}
-  recommends the use of the \gls{tls} Cached Information extension\cite{rfc7924}, which
+  recommends the use of the \gls{tls} Cached Information extension\cite{RFC7924}, which
   enables the \gls{tls} peers to exchange just the fingerprint (a shorter sequence of bytes
   used to identify a \gls{pubk}) of the \gls{pubk}. The only mandatory-to-implement
   ciphersuite to be used with \gls{rpk}s is \codeword{TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8},
-  just like with \gls{coap}.
+  just like with \gls{coap}. Note that the ciphersuite makes the use of \gls{aead}.
+
+  \item certificate - conventional certificates can also be used. The support
+  for the Cached Information extension\cite{RFC7924} and the \codeword{TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8}
+  ciphersuite is required. The profile restricts the use of named curves to
+  the ones defined in \cite{RFC4492}. For certificate revocation, neither the
+  \gls{ocsp}\cite{RFC6960}, nor the \gls{clr}\cite{RFC5280} mechanisms are used, instead this task is delegated to
+  the software update functionality. The Cached Information extension does not
+  provide any help with caching client certificates. For this reason, in cases
+  where client-side certificates are used and the server is not constrained,
+  the support for client certificate URLs is required. The client certificates URL
+  extension\cite{RFC4366} allows the clients to point the server to a URL from
+  which it can obtain its certificate, which allows constrained clients to
+  save memory and amount of transmitted data. The Trusted CA Indication\cite{RFC6066}
+  extension allows the clients to indicate which trust anchors they support, which is useful
+  for constrained clients that due to memory limitation posses only a small number
+  of \gls{ca} root keys, since it can avoid repeated handshake failures. If the clients interacts with
+  dynamically discovered set of (D)TLS servers, the use of this extension is recommended,
+  if that set is fixed, it is not recommended.
 
 \end{itemize}
 
-
-Note that \cite{rfc4279}, \cite{rfc7250}, \cite{rfc7924} can be used with either
-\gls{tls} or \gls{dtls}.
-
+The signature algorithms extension\cite{RFC5246} allows the client to indicate
+to the server which signature/hash pairs it supports to be used in digital signatures.
+The client must send this extension to indicate the use of \codeword{SHA-256},
+otherwise the defaults defined in \cite{RFC5246} are used. This extension is not
+applicable when the \gls{psk}-based ciphersuites are used.
 
 
 \todo{Tell how my work differs from everything described here} In short, right now

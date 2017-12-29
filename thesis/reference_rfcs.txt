@@ -22,3 +22,7 @@ rfc5216
 rfc7250
 rfc5280
 rfc7924
+rfc6960
+rfc5280
+rfc4366
+rfc6066

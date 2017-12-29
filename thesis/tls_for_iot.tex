@@ -69,6 +69,7 @@
 \newacronym{ocsp}{OCSP}{Online Certificate Status Protocol}
 \newacronym{crl}{CRL}{Certificate Revocation List}
 \newacronym{ca}{CA}{Certification Authority}
+\newacronym{sni}{SNI}{Server Name Indication}
 
 
 
@@ -583,11 +584,44 @@ attacks on (D)TLS that have emerged over the years. Second, for \gls{iot} applic
 the (D)\gls{tls} compression is not needed, since application-layer protocols are hightly
 optimized and compression at the (D)TLS layer increases the implementation's size and complexity.
 
-\codeword{RFC6520} defines a heartbeat mechanism to test whethter the other peer
+\codeword{RFC6520} defines a heartbeat mechanism to test whether the other peer
 is still alive. The implementation of this extension is recommended for server
 initiated messages. Note that since the messages to the client will most likely
 get blocked by the middleboxes, the initial connection set up is initiated by the
 client and then kept alive by the server.
+
+Many of the usual sources of entropy, such as the timing of keystrokes and the
+mouse movements will not be available on many \gls{iot} devices, which means that
+either alternative ones need to be found or dedicated hardware must be added.
+\gls{iot} devices using (D)\gls{tls} must find ways to offer to generate quality
+random numbers, the guidelines and requirements for which can be found in \codeword{RFC4086}\cite{rfc4086},
+since they play an essential role in the overall security of the protocol.
+
+Implementations compliant with this profile must use \gls{aead} ciphers, this means
+that encryption and \gls{mac} computation are no longer independent steps, which means
+that neither encrypt-then-MAC\cite{RFC7366}, nor the truncated MAC\cite{RFC6066} extensions are applicable
+to this specification and must not be used.
+
+The \gls{sni} extension\cite{RFC6066} defines a mechanism for a client to
+tell a (D)TLS server the name of the server it wants to connect to. This is
+crucial in case when multiple websites are hosted under the same IP address.
+The implementation of this extension is required, unless the (D)\gls{tls}
+client does not interact with a server in a hosting environment.
+
+The maximum fragment length extension\cite{RFC6066} lowers the maximum fragment
+length support of the record layer from $2^14$ to $2^9$. This extension allows
+the client to indicate the server how much of the incoming data it's able to buffer,
+allowing the client implementations to lower their RAM requirements, since it doesn't
+not need to accept packets of large size, such as the 16K packets required by
+plain (D)\gls{tls}. For that reason, client implementations must support this
+extension.
+
+The Session Hash Extended Master Secret Extension \cite{RFC7627} defines an extension
+that binds the master secret to the log of the full handshake, thus preventing
+\gls{mitm} attacks, such as the tripple handshake\cite{TODO}. Even though the
+ciphersuites recommended by the profile are not vulnerable to this attack, the
+implementation of this extension is advised.
+
 
 
 \todo{Tell how my work differs from everything described here} In short, right now

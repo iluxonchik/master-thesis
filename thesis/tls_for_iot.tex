@@ -284,7 +284,6 @@ table \ref{ul-iot}.
 \end{tabular}
 \end{table}
 
-
 \todo{WRITE ABOUT LIGHTWEIGHT PUBLIC CRYPTO HERE}
 
 Lightweight cryptography is an important part of my work and there are papers detailing
@@ -294,8 +293,6 @@ provide an overview of the different areas, rather than focusing on specific
 implementations, since the length of this section is limited. The remaining text
 in this seciton will be used to describe work done on the (D)TLS protocol in the
 context of \gls{iot}.
-
-\todo{talk about RAW PK}
 
 For the reasons specifed above, the main key exchange mechanism used in IoT
 are \gls{psk}s. SK3\cite{todo} proposes a key management architecture for resource-constrained devices,
@@ -618,9 +615,32 @@ extension.
 
 The Session Hash Extended Master Secret Extension \cite{RFC7627} defines an extension
 that binds the master secret to the log of the full handshake, thus preventing
-\gls{mitm} attacks, such as the tripple handshake\cite{TODO}. Even though the
+\gls{mitm} attacks, such as the tripple handshake\cite{TripleHa89:online}. Even though the
 ciphersuites recommended by the profile are not vulnerable to this attack, the
-implementation of this extension is advised.
+implementation of this extension is advised. In order to prevent the renegotiation
+attack\cite{RFC5746}, the profile requires the \gls{tls} renegotiation feature
+to be disabled.
+
+With regards to the key size recommendations, the authors recommend symmetric keys
+of at least \codeword{112 bit}, which corresponds to a \codeword{233-bit} \gls{ecc}
+key and to a \codeword{2048} \gls{dh} key. Those recommendations are made
+conservatively under the assumption that \gls{iot} devices have a long expected
+lifetime ($10+$ years) and that those key recommendations refer to the long-term
+keys used for device authentication. Keys that are provisioned dynamically
+and used for protection of transactional data, such as the ones used in
+(D)\gls{tls} ciphersuites, may be shorter, dependent on the sensitivity of
+transmitted data.
+
+The \codeword{RFC7925}\cite{rfc7925} points out the importance of designing a software
+update mechanism into an \gls{iot} system is crucial to ensure that potential vulnerabilities
+can be fixed and that the functionality can be enhanced. The software update mechanism
+is important to change configuration information, such as trust anchors and
+other secret-key related information. Although the profile refers to \codeword{LM2M}\cite{OpenMobi29:online}
+as an example of protocol that comes with a suitable software update mechanism,
+there has been new work done in this area since the release of this profile.
+Namely, there is a document specifying an architecture for a frimware update
+mechanism for \gls{iot} devices\cite{I-D.draft-moran-suit-architecture} currently in "Internet-Draft" state.
+
 
 
 

@@ -295,7 +295,7 @@ in this seciton will be used to describe work done on the (D)TLS protocol in the
 context of \gls{iot}.
 
 For the reasons specifed above, the main key exchange mechanism used in IoT
-are \gls{psk}s. SK3\cite{todo} proposes a key management architecture for resource-constrained devices,
+are \gls{psk}s. SK3\cite{S3KScala62:online} proposes a key management architecture for resource-constrained devices,
 which allows devices that have no previous, direct security relation to use
 TLS or DTLS using one of two approaches: shared symmetric keys or raw public keys.
 The resource-constrained device is a server that offers one or more resources,
@@ -641,22 +641,42 @@ there has been new work done in this area since the release of this profile.
 Namely, there is a document specifying an architecture for a frimware update
 mechanism for \gls{iot} devices\cite{I-D.draft-moran-suit-architecture} currently in "Internet-Draft" state.
 
+\subsection{How My Work Differs From What Already Has Been Done}
 
+Most of the work described above either proposes a solution that's tied to a
+specific protocol, such as \gls{coap}, or requires an introduction of a third-party
+entity, such as the trust anchor in the case of SK3\cite{S3KScala62:online} or
+even both. This two main issues: first, if the developer wants to use (D)\gls{tls}
+without using the specific protocol for which the solution was tuned for (such as \gls{coap}),
+he might see himself in some trouble, and second the requirement of a third-party
+introduces additional cost and complexity, which will be a big <resistance factor>
+in adopting that technology. This is specially true for developers who are doing
+hobby projects or projects for small businesses, leaving the communications insecure
+in the worse case scenario. My goal is to design a solution that can be used out
+of the box and is not tailored towards any specific protocol, that's fully backwards
+compatible with the original protocol and that can be used with either \gls{tls}
+or \gls{dtls}. The solution would be a (D)\gls{tls} version whose details can differ,
+depending on the requirements of the context it's being used in, in that sense,
+it would be similar to a framework.
 
+Most of the work that has been done has been centered around \gls{dtls},
+even though most of the solutions can be applied to both.
+I want explore \gls{tls} optimization more. There is clearly a need for that, specially with \gls{coap} over
+TCP and \gls{tls} standard being currently developed. The \gls{coap} protocol is the HTTP
+for constrained devices and the mentioned standard does not explore any \gls{tls}
+optimizations, and since any \gls{iot} device using it in the future would benefit
+them, this is an important area to explore. None of the related work centered around
+(D)TLS 1.3, mainly this is because the protocol is still in draft stages, I wouldn't expect
+however, major changes to its design at this point.
 
-\todo{Tell how my work differs from everything described here} In short, right now
-I'm thinking of adding something in lines of: the work described above is either
-specific to some algorithm or requires introduction of third-party features/intermediaries.
-In my solution, I want to take the approach of developing a fully backwards-compatible
-solution, while meeting the lighweight requirements of IoT devices. I will explore the
-solution that would be general enough to work with both, (D)TLS 1.2 and (D)TLS 1.3.
-I will explore TLS specifically, since little work has been done in that area and
-everything has been centered around DTLS. I can achieve the previous through
-the extension mechanism. There has been no work like RFC 7925 done for TLS 1.3,
-I wanna explore that. CoAp over TCP and tls is being proposed, so we need work
-done in optimizing tls.
-
-
+In the process of my work on this master thesis, I've made several
+contributions to the \gls{tls} 1.3 specification and have been officially
+recognized as a contributor, my name will be on the final document specifying
+the \gls{tls} 1.3 standard. \gls{tls} 1.3 is significantly different from \gls{tls} 1.2
+and there has been no work like \codeword{RFC 7925}\cite{rfc7925} done for (D)TLS 1.3
+and it would be interesting to explore this. \gls{tls} 1.3 has many fundamental changes
+to the way the handshake is done, bringing many new features, whose ideas can
+be incorporated into my proposed solution and even backported to \gls{tls} 1.2
 
 %\end{enumerate}
 

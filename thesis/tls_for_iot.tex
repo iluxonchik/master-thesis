@@ -1063,6 +1063,21 @@ handshake message type (ex: ClientHello.session\_id)}
 The connections begins with the client sending a \codeword{ClientHello}, containing
 .\codeword{random}, \codeword{cipher_suites} and \codeword{compresison_methods},
 among other fields.
+\codeword{cipher_suites} contains a \textbf{list} of cipher suites and \codeword{compression_methods}
+contains a list of compression methods (\codeword{compression_methods}) that the
+client supports, ordered by preference, with the most preferred one appearing first.
+The \gls{tls} Record contains a \codeword{2-byte} \codeword{version} field which
+indicates the highest version supported by the client.
+
+The server responds to the \codeword{ClientHello} with a \codeword{ServeHello}
+message, which is similar in its contents, except that instead of containing
+a list of supported features, it contains a single item containing the one that it chose,
+\textit{i.e.}, the server responds with the chosen \codeword{cipher_suite} and
+\codeword{compression_method} (note the \textbf{singular} form) that it chose from the
+corresponding list sent by the client. Just like in the client's case, a \codeword{random}
+is also present. The \codeword{version} field in the \gls{tls} Record indicates
+the \gls{tls} version chosen by the server and it's the one that's gonna be
+used for that connection.
 
 \gls{tls} requires cryptographically secure pseudorandom values to be generated
 by both of the parties independetely. Those random number (or nonces) are essential for freshness
@@ -1077,11 +1092,6 @@ GMT UNIX time with \codeword{28} cryptographically random bytes. Note that in \g
 the random number structure has the same length, but is generated in a different manner:
 the client's \codeword{32 bytes} are all random, while the server's last \codeword{8 bytes}
 are fixed when negotiating \gls{tls} 1.2 or 1.3.
-
-\codeword{cipher_suites} contains a \textbf{list} of cipher suites and \codeword{compression_methods}
-contains a list of compression methods (\codeword{compression_methods}) that the
-client supports, ordered by preference, with the most preferred one appearing first.
-
 
 \todo{Mention HelloRequest}
 \todo{Mention Other Handshake Types}

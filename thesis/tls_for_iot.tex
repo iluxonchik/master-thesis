@@ -1146,8 +1146,10 @@ side and make sure that the result is identical to the contents of the other par
 handshake, the result will be a mismatch in computed and received contents of the
 \codeword{Finished} message.
 
-\todo{Mention HelloRequest}
-\todo{Mention Other Handshake Types}
+At any time after a session has been negotiated, the server may send a \codeword{HelloRequest}
+message, to which the client should respond with a \codeword{ClientHello}, thus
+beginning the negotiation process anew.
+
 %
 \subsection{DLTS}
 

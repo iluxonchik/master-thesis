@@ -1150,6 +1150,28 @@ At any time after a session has been negotiated, the server may send a \codeword
 message, to which the client should respond with a \codeword{ClientHello}, thus
 beginning the negotiation process anew.
 
+Besides the full handshake, the \gls{tls} 1.2 specification also specifies an
+abbreviated handshake mechanism, which can be used to either resume a previous session
+or duplicate one, instead of negotiating new security parameters (for example, this is useful
+in the context of multiple \codeword{HTTPS} requests for various resources, when loading
+a typical website). The advantage of this mechanism is that the handshake is reduced
+to \codeword{1.5 RTT}, instead of the usual \codeword{2 RTT} as it's the case in
+the full handshake. In order to do the abbreviated handshake,
+the client and the server must have established a session previously, by performing
+the full handshake. To do this, the clients sends a session ID of the session it wants to
+resume in its \codeword{ClientHello} and its up to the server to decide if he
+wants to resume that session, by responding with a \codeword{ServerHello} containing
+that same session ID value, or if it wants to establish a new session by
+sending a session ID with a different value. The keying material, such as the bulk
+data symmetric encryption keys and the \gls{mac} keys are formed by hashing the new client
+and server random values with the master secret, which means
+that provided that the master secret has not been compromised and that the secure
+hash operations are secure, the new connection will be secure and independent
+from previous connections. The \gls{tls} 1.2 spec, suggests and upper limit
+of $24$ hours for session ID lifetimes, since an attacker who obtains the master secret
+will be able to impersonate the compromised party until the corresponding session
+ID is retired. Note that this mechanism requires state to be maintained in both peers.
+
 %
 \subsection{DLTS}
 

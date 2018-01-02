@@ -70,6 +70,7 @@
 \newacronym{crl}{CRL}{Certificate Revocation List}
 \newacronym{ca}{CA}{Certification Authority}
 \newacronym{sni}{SNI}{Server Name Indication}
+\newacronym{dos}{DoS}{Denial-of-Service}
 
 
 
@@ -1175,11 +1176,38 @@ ID is retired. Note that this mechanism requires state to be maintained in both 
 %
 \subsection{DLTS}
 
-Page 6 of RFC 7925
+The design of \gls{dlts} is intentionally very similar to \gls{tls}, in fact, its specification is written
+in terms of differences from \gls{tls}. The changes are mostly done on the lower level,
+and even extensions that have been defined before \gls{dtls} has even existed can be
+used with \gls{dtls}, The latest version of \gls{dtls} is 1.2 and it's defined
+in \codeword{RFC 6347}\cite{RFC6347}. There a draft of \gls{dtls} 1.3
+\cite{I-D.draft-ietf-tls-dtls13} is currently in active development.
 
-It was really designed to be the same as TLS, since even some extensions that
-were defined BEFORE dtls exiseted (the psk) can be used in DTLS without any
-change.
+Since \gls{dtls} operates on top of an unreliable transport protocol, such as
+UDP, it must explicitly deal with the absence of reliable and ordered assumptions
+that are made by \gls{tls}. The main differences from \gls{dtls} 1.2 to \gls{tls} 1.2 are:
+
+\begin{itemize}
+  \item two new values are added to the record layer: an explicit \codeword{2 byte} sequence
+  number and a \codeword{6 byte} epoch fields. The \gls{dtls} \gls{mac} is the same as of \gls{tls},
+  however, rather than using the implicit sequence number, the \codeword{8 byte} value
+  formed by concatenation of the epoch number and the sequence number is used.
+
+  \item stream ciphers must not be used with \gls{dtls}.
+
+  \item a stateless cookie exchange mechanism has been added to the handshake protocol
+  in order to prevent \gls{dos} attacks. To accomplish this, a new handahke
+  message, the \codeword{HelloVerifyRequest} has been added. After
+  the \codeword{ClientHello}, the server responds with a \codeword{HelloVerifyRequest}
+  containing a cookie, which is returned back to the server in another
+  \codeword{ClientHello} that follows it, after which the handshake proceeds as in \gls{tls}.
+  Although optional for the server, this mechanism highly recommended, and the
+  client must be prepared to respond to it.
+
+  \item the handshake message format has been extended to deal wit message reordering,
+  fragmentation and loss by addition of three new fields: a message sequence field,
+  a fragment offset field and a fragment length field.
+\end{itemize}
 
 \subsection{TLS 1.3}
 Despite the protocol name not suggesting it \gls{tls} 1.3 is

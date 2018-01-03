@@ -632,6 +632,9 @@ and used for protection of transactional data, such as the ones used in
 (D)\gls{tls} ciphersuites, may be shorter, dependent on the sensitivity of
 transmitted data.
 
+Even though \gls{tls} defines a single stream cipher: the RC4, its use is no longer
+recommended due to cryptographic weaknesses described in \codeword{RFC 7465}\cite{RFC 7465}.
+
 The \codeword{RFC7925}\cite{rfc7925} points out the importance of designing a software
 update mechanism into an \gls{iot} system is crucial to ensure that potential vulnerabilities
 can be fixed and that the functionality can be enhanced. The software update mechanism
@@ -1151,6 +1154,10 @@ At any time after a session has been negotiated, the server may send a \codeword
 message, to which the client should respond with a \codeword{ClientHello}, thus
 beginning the negotiation process anew.
 
+At an point in the handshake, the Alert protocol may be used by any of the peers
+to signal any problems or even abort the process by using an appropriate message type.
+
+
 Besides the full handshake, the \gls{tls} 1.2 specification also specifies an
 abbreviated handshake mechanism, which can be used to either resume a previous session
 or duplicate one, instead of negotiating new security parameters (for example, this is useful
@@ -1176,7 +1183,7 @@ ID is retired. Note that this mechanism requires state to be maintained in both 
 %
 \subsection{DLTS}
 
-The design of \gls{dlts} is intentionally very similar to \gls{tls}, in fact, its specification is written
+The design of \gls{dtls} is intentionally very similar to \gls{tls}, in fact, its specification is written
 in terms of differences from \gls{tls}. The changes are mostly done on the lower level,
 and even extensions that have been defined before \gls{dtls} has even existed can be
 used with \gls{dtls}, The latest version of \gls{dtls} is 1.2 and it's defined
@@ -1208,6 +1215,38 @@ that are made by \gls{tls}. The main differences from \gls{dtls} 1.2 to \gls{tls
   fragmentation and loss by addition of three new fields: a message sequence field,
   a fragment offset field and a fragment length field.
 \end{itemize}
+
+\subsection{TLS Extensions}
+
+\gls{tls} extensions were originally defined in \codeword{RFC 4366}\cite{RFC4366}
+and later merged into the \gls{tls} 1.2 base spec. Each extension consists of an
+extension type, which identifies the particular extension type and extension data,
+which contains information specific to a particular extension.
+
+The extension mechanism may be used by \gls{tls} clients and servers; it is backwards
+compatible, which means that the communication is possible between \gls{tls} a
+client that supports a particular extension and a server that does not support it,
+and vice versa. A client may request the use of extensions by sending an extended \codeword{ClientHello}
+message, which is just a "normal" \codeword{ClientHello} with an additional
+block of data that contains a list of extensions. The backwards compatibility is achieved based on the \gls{tls}
+requirement that the servers are not "extensions-aware" ignore the data
+added to the \codeword{ClientHello}s that they don't understand (section \codeword{7.4.1.2} of \codeword{RFC 2246}\cite{rfc2246}),
+meaning that even older servers that don't support extensions, namely the ones with
+version of \gls{tls} prior to 1.2 will not "break".
+
+The presence of extensions can be determined by checking if there are bytes
+following the \codeword{compression_methods} field in the \codeword{ClientHello}.
+If the server understands an extension, it sends back an extended \codeword{ServerHello},
+instead of a regular one. An extended \codeword{ServerHello} is a "normal"
+\codeword{ServerHello} with an additional block of data following the
+\codeword{compression_method} field that contains a list of extensions.
+
+An extended \codeword{ServerHello} message can only be sent in a response to an
+extended \codeword{ClientHello} message. This prevents the possibility that an extended
+\codeword{ServerHello} message could "break" older \gls{tls} clients that do not
+support extensions. An extension type must not appear in the
+extended \codeword{ServerHello}, unless the same extension type appeared in the
+corresponding extended \codeword{CleintHello}, and if this happens, the clients must abort the handshake.
 
 \subsection{TLS 1.3}
 Despite the protocol name not suggesting it \gls{tls} 1.3 is

@@ -370,7 +370,7 @@ one of which follows:
    the header itself and a \codeword{fragment} field whose size in bytes is specified
    by the \codeword{length} field, which contains data that's
    transparent to the Record layer and should be dealt by a higher-level protocol,
-   specified by the \codeword{type} field. This is illustrated in figure \ref{figure:tls-record-header}.
+   specified by the \codeword{type} field. This is illustrated in figure \ref{fig:tls-record-header}.
   \item \textbf{\gls{tls} Handshake Protocol} - the core protocol of \gls{tls}.
   Allows the communicating peers to \textbf{authenticate} one to another and negotiate
   a \textbf{cipher suite} (\textbf{cipher suite} and key exchange algorithm in case of \gls{tls} 1.3) which will be used to provide the security services. For \gls{tls} 1.2,
@@ -399,8 +399,6 @@ one of which follows:
 
 \paragraph{TLS Connections and Sessions}
 
-\todo{define what it means to be cryptographically protected?}
-
 It's important to distinguish between a \textbf{TLS session} and a \textbf{TLS connection}.
 \begin{itemize}
   \item \textbf{TLS sesion} - assosciation between two communicationg peers that's
@@ -417,7 +415,7 @@ It's important to distinguish between a \textbf{TLS session} and a \textbf{TLS c
   saving time and computational resources. Session resumption can be done using various
   approaches, such as \textbf{session identifiers}, described throughout \codeword{Section 7.4}
   of \codeword{RFC 5246} \cite{RFC5246}, \textbf{session tickets}, defined in
-  \codeword{RFC 5077} \cite{RFC5077}. \todo{Re-write example better.}
+  \codeword{RFC 5077} \cite{RFC5077}.
   \item \textbf{TLS connection} - used to actually transmit the cryptographically
   protected data. For the data to be cryptographically protected, some parameters,
   such as the \codeword{secret keys} used to encrypt and authenticate the transmitted
@@ -575,7 +573,7 @@ When either of the \gls{dh} variants is used, the value resulting from the excha
 as the \gls{pms} (without the leading \codeword{0}'s). Usually, only the server's
 authenticity is desired, but client's can also be achieved if it provides the
 server its certificate. Whenever the server is authenticated, the server is secure
-against \gls{mitm} attacks. Table \ref{kemps} summarizes the security properties
+against \gls{mitm} attacks. Table \ref{kemsp} summarizes the security properties
 offered by each key exchange method.
 
 \begin{table}[]
@@ -598,8 +596,6 @@ Even though, anonymous \gls{dh} has also been removed from \gls{tls} 1.3, you ca
 still have unauthenticated connections by either using \textbf{raw public keys} \cite{RFC7250}
 or by not verifying the certificate chain and any of it's contents.
 
-\todo{NOTE: I did't cover specifics of how the client generates the premaster secret, etc}
-
 The \gls{ecc}-based key exchange (\gls{ecdh} and \gls{ecdhe}) and authentication (\gls{ecdsa})
 algorithms are defined in \codeword{RFC4292} \cite{RFC4292}, which is also referenced
 in \codeword{RFC5246} \cite{RFC4256}. The document introduces five new
@@ -616,7 +612,7 @@ Those features are negotiated through the \gls{tls} Extension Mechanism.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.9\textwidth]{img/tls-12-full-handshake.png}
+\includegraphics[width=0.9\textwidth]{img/tls-12-full-handshake2.png}
 \caption{\label{fig:tls-12-handshake} TLS 1.2 message flow for a full handshake}
 \end{figure}
 
@@ -639,9 +635,6 @@ and a \codeword{body} field, which contains a structure depending on the
 
 Now, I will describe a typical handshake message flow. I will only be mentioning
 the most important field of each message.
-
-\todo{I don't have space to put all of the structures and things sent in every
-handshake message type (ex: ClientHello.session\_id)}
 
 The connections begins with the client sending a \codeword{ClientHello}, containing
 .\codeword{random}, \codeword{cipher_suites} and \codeword{compresison_methods},
@@ -772,7 +765,7 @@ and vice versa. A client may request the use of extensions by sending an extende
 message, which is just a "normal" \codeword{ClientHello} with an additional
 block of data that contains a list of extensions. The backwards compatibility is achieved based on the \gls{tls}
 requirement that the servers are not "extensions-aware" ignore the data
-added to the \codeword{ClientHello}s that they don't understand (section \codeword{7.4.1.2} of \codeword{RFC 2246}\cite{rfc2246}),
+added to the \codeword{ClientHello}s that they don't understand (section \codeword{7.4.1.2} of \codeword{RFC 2246}\cite{RFC2246}),
 meaning that even older servers that don't support extensions, namely the ones with
 version of \gls{tls} prior to 1.2 will not "break".
 
@@ -849,8 +842,8 @@ The design of \gls{dtls} is intentionally very similar to \gls{tls}, in fact, it
 in terms of differences from \gls{tls}. The changes are mostly done on the lower level,
 and even extensions that have been defined before \gls{dtls} has even existed can be
 used with \gls{dtls}, The latest version of \gls{dtls} is 1.2 and it's defined
-in \codeword{RFC 6347}\cite{RFC6347}. There a draft of \gls{dtls} 1.3
-\cite{I-D.draft-ietf-tls-dtls13} is currently in active development.
+in \codeword{RFC 6347}\cite{RFC6347}. There is a draft of \gls{dtls} 1.3
+\cite{I-D.ietf-tls-dtls13} that is currently under active development.
 
 Since \gls{dtls} operates on top of an unreliable transport protocol, such as
 UDP, it must explicitly deal with the absence of reliable and ordered assumptions
@@ -992,7 +985,7 @@ in this seciton will be used to describe work done on the (D)TLS protocol in the
 context of \gls{iot}.
 
 For the reasons specifed above, the main key exchange mechanism used in IoT
-are \gls{psk}s. SK3\cite{S3KScala62:online} proposes a key management architecture for resource-constrained devices,
+are \gls{psk}s. S3K\cite{S3KScala62:online} proposes a key management architecture for resource-constrained devices,
 which allows devices that have no previous, direct security relation to use
 TLS or DTLS using one of two approaches: shared symmetric keys or raw public keys.
 The resource-constrained device is a server that offers one or more resources,
@@ -1000,11 +993,11 @@ such as temperature readings. The idea in both approaches is to introduce a thir
 \codeword{trust anchor (TA)} that both, the client and the server use to establish
 trust relationships between them.
 
-The first approach is similar to Kerberos\cite{todo}, without requiring any
+The first approach is similar to Kerberos\cite{RFC4120}, without requiring any
 changes to the original protocol. A client can request a \gls{psk} \codeword{Kc} from the \codeword{TA},
 which will generate it and send it back to the client via a secure channel, alongside
 a \codeword{psk_identity} which has the same meaning and is used in the same way
-as defined in \codeword{RFC PSK}\cite{todo}. When connecting to the server,
+as defined in \codeword{RFC 4279}\cite{RFC4279}. When connecting to the server,
 the client will then send the \codeword{psk_identity} that it received in the
 the (D)TLS handshake and the server will derive the \codeword{Kc}, using the
 \codeword{P_hash()} function defined in \cite{RFC5246}.
@@ -1017,7 +1010,7 @@ creates an authorizaton certificate, protects it with a MAC and sends it
 to the client alongside the server's \gls{pubk}.
 The client then sends this APK (instead of the \gls{rpk})
 when connecting to the server, which verifies the APK (to authorize the client)
-and proceeds with the handshake in the \gls{rpk} mode, as defined in \cite{todo psk rfc}.
+and proceeds with the handshake in the \gls{rpk} mode, as defined in \cite{RFC4279}.
 To achieve this, a new certificate structure is defined, alongside a new \codeword{certificate_type}.
 The new certificate strucure is just the RFC7250 \cite{RFC7250} structure, with an
 additonal MAC.
@@ -1115,7 +1108,7 @@ while also meeting requirements such as multicast support and low overhead.
 \gls{coap} mandates the use of \gls{dtls} as the underlying security protocol for
 authenticated and confidential communication. There is also a specification \gls{coap}
 running on top of TCP, which uses \gls{tls} as its underlying security protocol
-currently being proposed \cite{I.D.draft-ietf-core-coap-tcp-tls},
+currently being proposed \cite{I-D.ietf-core-coap-tcp-tls},
 with active work being done in this area.
 
 
@@ -1142,7 +1135,7 @@ In order to minimize the code size occupied by the \gls{dtls} implementation, th
 decided to delegate the tasks of \textbf{reliability} and \textbf{fragmentation} to
 \gls{coap}. This means that the code responsible for those functionalities,
 can be removed altogether from the \gls{dtls} implementation, thus reducing ROM
-occupancy. This part of their work was based on an informational RFC draft\cite{I-D.draft-keoh-dtls-profile-iot}, in which the
+occupancy. This part of their work was based on an informational RFC draft\cite{I-D.keoh-dtls-profile-iot}, in which the
 authors profiled \gls{dtls} for \gls{coap}-based \gls{iot} applications and proposed
 the use of a RESTful \gls{dtls} Handshake which relies on \gls{coap} block-wise
 transfer to address the fragmentation issue.
@@ -1188,7 +1181,7 @@ respect to a standard, non-optimized implementation. Leaving reliability and
 fragmentation tasks to \gls{coap}, reduces the \gls{dtls} implementation code size
 by approximately $23\%$.
 
-\codeword{RFC 7925}\cite{rfc7925} describes a \gls{tls} and \gls{dtls} 1.2
+\codeword{RFC 7925}\cite{RFC7925} describes a \gls{tls} and \gls{dtls} 1.2
 profile for \gls{iot} devices that offers communication security services
 for \gls{iot} applications and is reasonably implementable on many constrained devices.
 In this context, "profile" means available configuration options (ex: which
@@ -1208,7 +1201,7 @@ For the credential types the profile considers 3 cases:
 
 \begin{itemize}
   \item \gls{psk} - authentication based on \gls{psk}s is described in
-  \codeword{RFC 4249}\cite{rfc4279}. When using \gls{psk}s, the client indicates which
+  \codeword{RFC 4249}\cite{RFC4279}. When using \gls{psk}s, the client indicates which
   key it uses by including a \gls{psk} identity in its ClientKeyExchange message.
   A server can have different \gls{psk} identities shared with different clients.
   An identity can have any size, up to a maximum of \codeword{128 bytes}.
@@ -1219,11 +1212,11 @@ For the credential types the profile considers 3 cases:
   long-term secret is compromised. If a \gls{pfs} ciphersuite is used, ephemeral
   \gls{dh} keys should not be reused over multiple protocol exchanges.
 
-  \item \gls{rpk} - the use of \gls{rpk}s in (D)TLS is described in \codeword{RFC 7250}\cite{rfc7250}.
+  \item \gls{rpk} - the use of \gls{rpk}s in (D)TLS is described in \codeword{RFC 7250}\cite{RFC7250}.
   With \gls{rpk}s, only a subset of the information is found in typical certificates
   is used: namely the \codeword{SubjectPublicKeyInfo} structure, which contains
   the necessary parameters to describe the public key (the algorithm identifier
-  and the public key itself). Other PKIX certificate\cite{RFC5280} parameters are
+  and the public key itself). Other PKIX certificate\cite{RFCabc} parameters are
   omitted, making the resulted \gls{rpk} smaller in size, when compared to the
   original certificate and the code to process the keys simpler. In order for the
   peers to negotiate the \gls{rpk} use, two new extensions have been defined:
@@ -1239,7 +1232,7 @@ For the credential types the profile considers 3 cases:
   for the Cached Information extension\cite{RFC7924} and the \codeword{TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8}
   ciphersuite is required. The profile restricts the use of named curves to
   the ones defined in \cite{RFC4492}. For certificate revocation, neither the
-  \gls{ocsp}\cite{RFC6960}, nor the \gls{crl}\cite{RFC5280} mechanisms are used, instead this task is delegated to
+  \gls{ocsp}\cite{RFC6960}, nor the \gls{crl}\cite{RFCabc} mechanisms are used, instead this task is delegated to
   the software update functionality. The Cached Information extension does not
   provide any help with caching client certificates. For this reason, in cases
   where client-side certificates are used and the server is not constrained,
@@ -1273,7 +1266,7 @@ If both, the client and the server are constrained, both of them should implemen
 \codeword{RFC 5077}\cite{RFC5077}.
 
 The use of compression is not recommended for two reasons. First, \codeword{RFC7525}\cite{RFC7525}
-recommends disabling (D)TLS level compression, due to attacks such as \codeword{CRIME}\cite{TODO}.
+recommends disabling (D)TLS level compression, due to attacks such as \codeword{CRIME}\cite{Microsof72:online}.
 \codeword{RFC7525} provides recommendations for improving the security of deployed services
 that use \gls{tls} and \gls{dtls} and was published as a response to the various
 attacks on (D)TLS that have emerged over the years. Second, for \gls{iot} applications,
@@ -1331,9 +1324,9 @@ and used for protection of transactional data, such as the ones used in
 transmitted data.
 
 Even though \gls{tls} defines a single stream cipher: the RC4, its use is no longer
-recommended due to cryptographic weaknesses described in \codeword{RFC 7465}\cite{RFC 7465}.
+recommended due to cryptographic weaknesses described in \codeword{RFC 7465}\cite{RFC7465}.
 
-The \codeword{RFC7925}\cite{rfc7925} points out the importance of designing a software
+The \codeword{RFC 7925}\cite{RFC7925} points out the importance of designing a software
 update mechanism into an \gls{iot} system is crucial to ensure that potential vulnerabilities
 can be fixed and that the functionality can be enhanced. The software update mechanism
 is important to change configuration information, such as trust anchors and
@@ -1341,7 +1334,7 @@ other secret-key related information. Although the profile refers to \codeword{L
 as an example of protocol that comes with a suitable software update mechanism,
 there has been new work done in this area since the release of this profile.
 Namely, there is a document specifying an architecture for a frimware update
-mechanism for \gls{iot} devices\cite{I-D.draft-moran-suit-architecture} currently in "Internet-Draft" state.
+mechanism for \gls{iot} devices\cite{I-D.moran-suit-architecture} currently in "Internet-Draft" state.
 
 \section{Proposed Solution}
 
@@ -1357,7 +1350,7 @@ however, major changes to its design at this point.
 
 Most of the work done in this area proposes a solution that's tied to a
 specific protocol, such as \gls{coap}, or requires an introduction of a third-party
-entity, such as the trust anchor in the case of SK2\cite{S2KScala61:online} or
+entity, such as the trust anchor in the case of S3K\cite{S3KScala62:online} or
 even both. This two main issues: first, if the developer wants to use (D)\gls{tls}
 without using any specific protocol for which the solution was tuned for (such as \gls{coap}),
 he might see himself in some trouble, and second the requirement of a third-party
@@ -1398,7 +1391,7 @@ pay the energy and time overhead of encryption. I will take special care in the
 selection of cipher suites and key exchange methods, possibly even developing my own.
 
 (D)\gls{tls} 1.2 is significantly different from (D)\gls{tls} 1.3
-and there has been no work like \codeword{RFC 7924}\cite{rfc7924} done for (D)TLS 1.3
+and there has been no work like \codeword{RFC 7924}\cite{RFC7924} done for (D)TLS 1.3
 and it would be interesting to explore this. \gls{tls} 1.3 has many fundamental changes
 to the way the handshake is done, bringing many new features, whose ideas can
 be incorporated into my proposed solution and even backported to \gls{tls} 1.2.

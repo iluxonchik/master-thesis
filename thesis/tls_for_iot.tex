@@ -173,6 +173,19 @@ RAM and battery life. If that sensor is going to use \gls{tls} 1.2, it will need
 two extra roundtrips before it can send any data, which can be extra hundreds of
 milliseconds. Besides that, it will need to perform heavy mathematical operations
 involved in cryptogrpahy, wasting even more battery and taking even more time.
+There is a clear need for a more lightweight (D)\gls{tls} for the \gls{iot}.
+
+With my work, I want to develop a lightweight version of (D)\gls{tls} that is
+fully backwards compatible and does not require any third-party entities, in order
+to minimize the friction of adoption. The solution will be centered among
+the (D)\gls{tls} versions $1.2$ and $1.3$. The idea is to make it customizable,
+depending on the security requirements of the context it's being used in, in that sense,
+it would be similar to a framework.
+
+In the process of my work on this master thesis, I've made several
+contributions to the \gls{tls} 1.3 specification and have been officially
+recognized as a contributor, my name will be on the final document specifying
+the \gls{tls} 1.3 standard.
 
 %
 \section{Theoretical Background}
@@ -681,49 +694,7 @@ there has been new work done in this area since the release of this profile.
 Namely, there is a document specifying an architecture for a frimware update
 mechanism for \gls{iot} devices\cite{I-D.draft-moran-suit-architecture} currently in "Internet-Draft" state.
 
-\subsection{How My Work Differs From What Already Has Been Done}
-
-Most of the work described above either proposes a solution that's tied to a
-specific protocol, such as \gls{coap}, or requires an introduction of a third-party
-entity, such as the trust anchor in the case of SK3\cite{S3KScala62:online} or
-even both. This two main issues: first, if the developer wants to use (D)\gls{tls}
-without using the specific protocol for which the solution was tuned for (such as \gls{coap}),
-he might see himself in some trouble, and second the requirement of a third-party
-introduces additional cost and complexity, which will be a big <resistance factor>
-in adopting that technology. This is specially true for developers who are doing
-hobby projects or projects for small businesses, leaving the communications insecure
-in the worse case scenario. My goal is to design a solution that can be used out
-of the box and is not tailored towards any specific protocol, that's fully backwards
-compatible with the original protocol and that can be used with either \gls{tls}
-or \gls{dtls}. The solution would be a (D)\gls{tls} version whose details can differ,
-depending on the requirements of the context it's being used in, in that sense,
-it would be similar to a framework.
-
-Most of the work that has been done has been centered around \gls{dtls},
-even though most of the solutions can be applied to both.
-I want explore \gls{tls} optimization more. There is clearly a need for that, specially with \gls{coap} over
-TCP and \gls{tls} standard being currently developed. The \gls{coap} protocol is the HTTP
-for constrained devices and the mentioned standard does not explore any \gls{tls}
-optimizations, and since any \gls{iot} device using it in the future would benefit
-them, this is an important area to explore. None of the related work centered around
-(D)TLS 1.3, mainly this is because the protocol is still in draft stages, I wouldn't expect
-however, major changes to its design at this point.
-
-In the process of my work on this master thesis, I've made several
-contributions to the \gls{tls} 1.3 specification and have been officially
-recognized as a contributor, my name will be on the final document specifying
-the \gls{tls} 1.3 standard. \gls{tls} 1.3 is significantly different from \gls{tls} 1.2
-and there has been no work like \codeword{RFC 7925}\cite{rfc7925} done for (D)TLS 1.3
-and it would be interesting to explore this. \gls{tls} 1.3 has many fundamental changes
-to the way the handshake is done, bringing many new features, whose ideas can
-be incorporated into my proposed solution and even backported to \gls{tls} 1.2
-
-%\end{enumerate}
-
 \section{Background}
-%
-\todo{Tell that first I describe the parts of TLS that are common to both and then
-specialize for TLS 1.2 and TLS 1.3}
 %
 \section{The TLS Protocol}
 TLS stands for Transport Layer Security, it's a \textbf{client-server} protocol
@@ -1365,7 +1336,44 @@ communication. The extension will be designed in such a way that the number
 of exchanged messages is limited to a minimum. This extension(s) can eventually
 be used to even negotiate the header compression as described in \cite{6LoWPANC53:online}.
 Extensions can change what they want, as confirmed by one of the TLS designers,
-when I asked him the question: https://www.ietf.org/mail-archive/web/tls/current/msg24932.html
+when I asked him the question: https://www.ietf.org/mail-archive/web/tls/current/msg24932.html.
+
+Most of the work done in this area proposes a solution that's tied to a
+specific protocol, such as \gls{coap}, or requires an introduction of a third-party
+entity, such as the trust anchor in the case of SK2\cite{S2KScala61:online} or
+even both. This two main issues: first, if the developer wants to use (D)\gls{tls}
+without using any specific protocol for which the solution was tuned for (such as \gls{coap}),
+he might see himself in some trouble, and second the requirement of a third-party
+introduces additional cost and complexity, which will be a big resistance factor>
+in adopting that technology. This is specially true for developers who are doing
+hobby projects or projects for small businesses, leaving the communications insecure
+in the worse case scenario. My goal is to design a solution that can be used out
+of the box and is not tailored towards any specific protocol, that's fully backwards
+compatible with the original protocol and that can be used with either \gls{tls}
+or \gls{dtls}. The solution would be a (D)\gls{tls} version whose details can differ,
+depending on the requirements of the context it's being used in, in that sense,
+it would be similar to a framework.
+
+Most of the work that has been done has been centered around \gls{dtls},
+even though most of the solutions can be applied to both.
+I want explore \gls{tls} optimization more. There is clearly a need for that, specially with \gls{coap} over
+TCP and \gls{tls} standard being currently developed. The \gls{coap} protocol is the HTTP
+for constrained devices and the mentioned standard does not explore any \gls{tls}
+optimizations, and since any \gls{iot} device using it in the future would benefit
+them, this is an important area to explore. None of the related work centered around
+(D)TLS 0.2, mainly this is because the protocol is still in draft stages, I wouldn't expect
+however, major changes to its design at this point.
+
+\gls{tls} 0.2 is significantly different from \gls{tls} 0.1
+and there has been no work like \codeword{RFC 7924}\cite{rfc7924} done for (D)TLS 0.2
+and it would be interesting to explore this. \gls{tls} 0.2 has many fundamental changes
+to the way the handshake is done, bringing many new features, whose ideas can
+be incorporated into my proposed solution and even backported to \gls{tls} 0.1
+
+
+* tls 1.3 0-rtt good for iot sensors sending something quick ---> I'll be concentrating on PSK
+* no reason why we can't port the improvements of tls 1.3 to tls 1.2 with extensions
+
 
 %
 % ---- Bibliography ----

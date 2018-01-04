@@ -73,7 +73,6 @@
 \newacronym{dos}{DoS}{Denial-of-Service}
 
 
-
 %%% WARN: added as specified here:
 % https://tex.stackexchange.com/questions/272200/table-of-contents-showing-the-title-as-only-entry-latex
 \setcounter{tocdepth}{2}
@@ -898,6 +897,7 @@ The process described above, as well as the structure names are depicted in figu
 Step \codeword{2} is not present in \gls{tls} 1.3. The structure names are exactly as the appear in the \gls{tls} specifications.
 
 \subsection{TLS Keying Material}
+
 Secret keys are at the base of most cryptographic operations.
 In order for both communicating peers to be able to encrypt and decrypt data
 using symmetric cyrpto aglorithms, they need to \textbf{share} the same key
@@ -918,41 +918,59 @@ data from the client). Note, that the following relationships must hold:
 \codeword{client_write_key == server_write_key} and \codeword{client_read_key == server_write_key}.
 
 Besides the secret keys mentioned previously, in \gls{tls} 1.2 you might also have other ones,
-depending on the cipher suite in use. \todo{Describe this in a little more detail,
-giving examples, when describing TLS 1.2 Key Managment}.
+depending on the cipher suite in use, namely the \codeword{client/server_wirite_IV} that
+is only generated for implicit nonce techniques used with \gls{aead} ciphers and the
+\codeword{client/server_write_MAC_key}, which is the input secret to the \gls{mac}
+function; this key is not present when \gls{aead} ciphers are in use.
 
-\gls{tls} 1.3's keying material generation is a little more complex, since different
-keys are used to encrypt data throughout the Handshake Protocol, as well a new key
-is generated for the Application Data protocol. This can be explained by the fact
-that while in \gls{tls} 1.2 the data only begins to be encrypted after the handshake
-is complete, in the Application Data protocol, the encryption begins earlier,
-\gls{tls} 1.3, with some of the Hanshake messages encrypted, as well as features
-such as \textbf{early client/server data} and \textbf{0-RTT Data}.
+\subsection{TLS 1.2 Keying Material Generation}
 
-With this the common description of the \gls{tls} of protocols ends and we'll jump
-into the specifics of the two verions. I'll be mostly concentrating on the
- \textbf{Handshake Protocol}, since this is where my work will be concentrated and
- it's the main part, where the most interesting and important things happen.
-
-\subsection{TLS 1.2}
-The latest standardized version of \gls{tls} is 1.2 and it's defined in \codeword{RFC 5246} \cite{RFC5246}.
-\todo{DESCRIBE TLS 1.2 in genreal, put images of handshakes here, later refer to them
-in the specific parts, just like the tls RFCs do}.
-
-\section{TLS 1.2 Keying Material Generation}
 The generation of secret keys, used for various cryptographic operations involves the
 following steps (in order):
 
 \begin{itemize}
-  \item Generate the \textbf{premaster secret}
-  \item From the \textbf{premaster secret} generate the \textbf{master secret}
+  \item Generate the \textbf{premaster secret}.
+  \item From the \textbf{premaster secret} generate the \textbf{master secret}.
   \item From the \textbf{master secret} generate the various secret keys, which
   will be used in the cryptographic operations.
 \end{itemize}
 
-\todo{talk about all of the keys present in TLS 1.2 HERE}
+In \gls{tls} 1.2, the \gls{tls} \gls{prf} is used to generate the keying material
+needed for a connection, which is defined as \codeword{PRF(secret, label, seed) = P_hash(secret, label + seed)}
+The \codeword{P_hash(secret, seed)} function is an auxiliary data expansion function
+which uses a single cryptographic hash function to expand a \codeword{secret} and a \codeword{seed}
+into an arbitrary quantity of output, meaning that you can use to to generate
+anywhere from $1$ to an infinite number of bits of output. The \codeword{PRF(secret, label, seed)}
+is used to generate as many bits of output as you need. When generating the
+master secret, the \codeword{secret} input is the \codeword{premaster secret}.
+When generating the key block, from which you will actually obtain final keys
+the \codeword{secret} input is the \codeword{master secret}.
+
+The cryptographic hash function used in \codeword{P_hash(secret, label, seed)} is
+a hash function implicitly defined by the cipher suite in use. All of the cipher
+suites defined in the \gls{tls} 1.2 base spec use \codeword{SHA-256} and any new
+cipher suites must explicitly specify a the same hash function or a stronger one.
+
+\subsection{TLS 1.3 Keying Material}
+
+\gls{tls} 1.3's keying material generation is a little more complex, since different
+keys are used to encrypt data throughout the Handshake Protocol. This can be
+explained by the fact that in \gls{tls} 1.3 the encryption begins earlier, with
+Handshake messages besides the \codeword{Finished} being encrypted,
+as well as features such as \textbf{early client data}, also known as \textbf{0-RTT data},
+where data comes encrypted in the first flight. As a result of those properties,
+you have multiple encryption keys generated and used to encrypt different data
+throughout the handshake.
+
+The way the keying material is derived is also different, since the
+\gls{prf} construction described above has been replaced. The
+new design allows easier analysis by cryptographers due to the improved
+key separation properties. In \gls{tls} 1.3, key derivation uses the
+\gls{hdkf} function defined in \codeword{RFC 5869}\cite{RFC5869} and its two components,
+the \codeword{HKDF-Extract} and \codeword{HKDF-Expand}.
 
 \section{TLS 1.2 Key Exchange Methods}
+
 The way the \textbf{permaster secret} is generated depends on the key exchange
 method used. In fact, this is the only phase of the keying material generation
 phase that is variable for a fixed cipher suite (because a cipher suite defines
@@ -1294,7 +1312,8 @@ when compared to \gls{tls} 1.2 and this is extremely important in the context of
 The full \gls{tls} 1.3 handshake is only \codeword{1 RTT}. \gls{tls} 1.3 even allows
 clients to send data on the first flight (known as "early data"), when the clients
 and servers share a \gls{psk} (either obtained externally or via a previous handshake).
-This means that in \gls{tls} 1.3 you can have \codeword{0-RTT} data. Session resumption
+This means that in \gls{tls} 1.3 you can have \codeword{0-RTT} data, by essentially
+encrypting it with the previously shared \gls{psk}. Session resumption
 via identifiers and tickets has been obsoleted in \gls{tls} 1.3, and both methods
 have been replaced by a \gls{psk} mode. The \gls{psk} is established on a previous
 connection after the handshake is completed and can be presented by the client

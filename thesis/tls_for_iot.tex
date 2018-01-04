@@ -120,11 +120,19 @@
 \maketitle              % typeset the title of the contribution
 
 \begin{abstract}
-The abstract should summarize the contents of the paper
-using at least 70 and at most 150 words. It will be set in 9-point
-font size and be inset 1.0 cm from the right and left margins.
-There will be two blank lines before and after the Abstract. \dots
-\keywords{TLS, IoT, cryptography, protocol, lightweight cryptography}
+This paper explores the idea of developing a lightweight \gls{tls} protocol
+for the \gls{iot}. I begin by explaining why there is a need for security in
+the \gls{iot} ecosystem and why \gls{tls}, as it is, cannot be used in most cases,
+due to the constrained nature of many \gls{iot} devices. I then describe the state
+of the art in the area, most of which is done for \gls{dtls}, but can
+also be applied to \gls{tls}, since \gls{dtls} is just an adaptation of
+\gls{tls} for unreliable transport protocols, such as UDP. I proceed with a
+summary of \gls{tls} 1.2, outline its main differences from \gls{tls} 1.3
+and give an overview of the how \gls{dtls} differs from \gls{tls}. Finally, I present
+an architecture of the solution that I will be developing, which relies
+heavily on the use of the \gls{tls} extension mechanism.
+
+\keywords{TLS, DTLS, SSL, IoT, cryptography, protocol, lightweight cryptography}
 \end{abstract}
 %
 \section{Intoduction}

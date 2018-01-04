@@ -254,16 +254,6 @@ Some \gls{aead} ciphers have shorter authentication tags (\textit{i.e.} shorter 
 which makes then more suitable for low-bandwidth networks, since the messages to be sent
 are shorter in size.
 
-\subsection{Terminology}
-
-Before describing the related work, I will briefly introduce some terminology that will
-be used throughout the document:
-
-\begin{itemize}
-  \item \gls{pfs} - property that preserves the confidentiality of past interactions
-  even if the long-term secret is compromised.
-\end{itemize}
-
 \section{Related Work}
 
 Lightweight cryptography is an important topic in the context of \gls{iot}, since
@@ -600,8 +590,10 @@ For the credential types the profile considers 3 cases:
   An identity can have any size, up to a maximum of \codeword{128 bytes}.
   The profile recommends the use of shorter \gls{psk} identities and specifies
   \codeword{TLS_PSK_WITH_AES_128_CCM_8} as the only mandatory-to-implement
-  ciphersuite to be used with \gls{psk}s, just like \gls{coap} does. If a \gls{pfs}
-  ciphersuite is used, ephemeral \gls{dh} keys should not be reused over multiple protocol exchanges.
+  ciphersuite to be used with \gls{psk}s, just like \gls{coap} does. \gls{pfs} is
+  a property that preserves the confidentiality of past interactions even if the
+  long-term secret is compromised. If a \gls{pfs} ciphersuite is used, ephemeral
+  \gls{dh} keys should not be reused over multiple protocol exchanges.
 
   \item \gls{rpk} - the use of \gls{rpk}s in (D)TLS is described in \codeword{RFC 7250}\cite{rfc7250}.
   With \gls{rpk}s, only a subset of the information is found in typical certificates

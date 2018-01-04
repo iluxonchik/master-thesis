@@ -71,6 +71,7 @@
 \newacronym{ca}{CA}{Certification Authority}
 \newacronym{sni}{SNI}{Server Name Indication}
 \newacronym{dos}{DoS}{Denial-of-Service}
+\newacronym{ddos}{DDoS}{Distributed Denial-Of-Service}
 
 
 %%% WARN: added as specified here:
@@ -130,13 +131,49 @@ There will be two blank lines before and after the Abstract. \dots
 \todo{Intruduce the topic: explain what is IoT; what is TLS; what are the issues with
 using RAW TLS with IoT(power, computation, limited resources).}
 
-TCP performance is known to be inefficient in wireless
-networks, due to its congestion control algorithm, and the
-situation is exacerbated with the low-power radios and lossy
-links found in sensor networks. Therefore, the connectionless
-UDP is mostly used in the IoT.
+The \gls{iot} is a network of devices, from simple sensors to smartphones and wearables
+that are connected together. In fact, it can be any other object that can be assigned
+an IP address and provided with the ability to transfer data over a network. Even
+something such a salt shaker\cite{SMALTThe76:online} can now be part of the global network.
 
-\todo{MOTIVATION goes here}
+The \gls{iot} technology can be used solve problems and make our lives easier,
+unfortunately however, the its technological development tends to focus on
+innovative design rather than on privacy and security. \gls{iot} devices frequently
+connect to networks using inadequate security and are hard to update when vulnerabilities
+are found.
+
+This lack of security in the \gls{iot} ecosystem has been exploited by the
+the Mirai botnet\cite{sec17ant94:online} when it overhelmed several high-profile
+targets with massive \gls{ddos} attacks. This is the most devastating attack involving \gls{iot}
+devices done to date, the Reaper botnet\cite{ReaperCa10:online} however, could be
+even more devastating, if it's ever put to malicious use and others will inadvertently
+come in the future.
+
+\gls{tls} is the most used security protocol in the world and it allows two peers
+to communicate securely. \gls{tls} runs on top of a reliable, connection-oriented
+protocol, such as TCP. \gls{dtls} is the version of \gls{tls} that runs on top
+of an unreliable transport protocol, such as UDP. Most \gls{iot} devices have
+very limited processing power, storage and energy. Moreover, the performance of
+TCP is known to be inefficient in wireless networks, due to its congestion control
+algorithm and this situation is worsened with the low-power radios and lossy
+links found in sensor networks. Therefore, \gls{dtls}, which runs on top
+of UDP is mostly used in such devices. The work that I will be doing, however,
+can be applied to either one of them, so even though I will be talking mostly
+about \gls{tls}, almost everything also applies to \gls{dtls} as well, since it's just
+an adaption of \gls{tls} over unreliable transport protocols, with no changes done
+the core protocol.
+
+The problem in using (D)\gls{tls} in \gls{iot} is that it's not lightweight, since
+it was not designed for such environments. An \gls{iot} device may only have
+$256$ KB of RAM and needs to conserve the battery, while sending and receiving
+lots of small information constantly. For example, imagine a temperature sensor
+that sends the temperature measures every $30$ seconds to a server. In this case
+it just needs to send a few bytes of data and with minimal overhead, to conserve
+RAM and battery life. If that sensor is going to use \gls{tls} 1.2, it will need
+two extra roundtrips before it can send any data, which can be extra hundreds of
+milliseconds. Besides that, it will need to perform heavy mathematical operations
+involved in cryptogrpahy, wasting even more battery and taking even more time.
+
 %
 \section{Theoretical Background}
 \subsection{Symmetric vs Asymmetric Cryptography (Background Section)}
@@ -966,7 +1003,7 @@ The way the keying material is derived is also different, since the
 \gls{prf} construction described above has been replaced. The
 new design allows easier analysis by cryptographers due to the improved
 key separation properties. In \gls{tls} 1.3, key derivation uses the
-\gls{hdkf} function defined in \codeword{RFC 5869}\cite{RFC5869} and its two components,
+\gls{hkdf} function defined in \codeword{RFC 5869}\cite{RFC5869} and its two components,
 the \codeword{HKDF-Extract} and \codeword{HKDF-Expand}.
 
 \section{TLS 1.2 Key Exchange Methods}

@@ -195,9 +195,9 @@ contributions to the \gls{tls} 1.3 specification and have been officially
 recognized as a contributor, my name will be on the final document specifying
 the \gls{tls} 1.3 protocol.
 
-%
-\section{Theoretical Background}
-\subsection{Symmetric vs Asymmetric Cryptography (Background Section)}
+\section{Background}
+
+\subsection{Symmetric vs Asymmetric Cryptography}
 
 \gls{ac} more expensive than \gls{sc} in terms of performance. This is mainly due
 to two facts: larger key sizes are required for \gls{ac} system to achieved the
@@ -253,6 +253,621 @@ input parameter that is additional data that's \textbf{only authenticated, but n
 Some \gls{aead} ciphers have shorter authentication tags (\textit{i.e.} shorter \gls{mac}s),
 which makes then more suitable for low-bandwidth networks, since the messages to be sent
 are shorter in size.
+
+
+\subsection{The TLS Protocol}
+
+\gls{tls} is a \textbf{client-server} protocol
+that runs on top a \textbf{connection-oriented and reliable transport protocol},
+such as \textbf{TCP}. Its main goal is to provide \textbf{privacy} and \textbf{integrity}
+between the two communicating peers. Privacy implies that a third party will not
+be able to read the data, while integrity means that a third party will not be
+able to alter the data.
+
+In the TCP/IP Protocol Stack, \gls{tls} is placed between the \textbf{Transport}
+and \textbf{Application} layers. It's designed to make the application developer's
+life easier: all the developer has to do is create a "secure" connection, instead
+of a "normal" one.
+
+From the top-level view, in a typical connection, there are three basic steps
+that \gls{tls} is responsible for:
+\begin{enumerate}
+  \item \textbf{Negotiate security parameters} - the communicating peers agree on
+  a set of security parameters to be used in a \gls{tls} connection, such as the
+  algorithm used for bulk data encrytion, as well as the secret keys.
+  \item \textbf{Authenticate one to another} - usually only the server authenticates
+  to the client.
+  \item \textbf{Communicate securely} - use the negotiated security parameters
+  to encrypt and authenticate the data, communicating securely one with another.
+\end{enumerate}
+
+
+\subsubsection{SSL vs TLS: What's The Difference?}
+You will find the names \gls{ssl} and \gls{tls} used interchangeably in the literature,
+so I think it's important to distinguish both. \gls{tls} is an evolution of the \gls{ssl} protocol. The protocol changed
+its name from \gls{ssl} to \gls{tls} when it was
+standardized by the \gls{ietf}.\gls{ssl}
+was a proprietary protocol owned by Netscape Communications, and The \gls{ietf}
+decided that it was a good idea to standarize it, which resulted in \codeword{RFC 2246} \cite{RFC2246},
+specifying \gls{tls} 1.0, which was nothing more than a new version \gls{ssl} 3.0,
+very few changes were made.
+%
+
+\subsection{Security Services}
+%
+\gls{tls} provides the following 3 security services:
+\begin{itemize}
+\item \textbf{authentication} - both, \textbf{peer entity} and \textbf{data origin} (or \textbf{integrity})
+authentication.
+\subitem \textbf{peer entity authentication} - we can be sure that we’re talking to certain entity, for example, \codeword{www.google.com}.
+This is achieved thought the use of \textbf{asymmetrical} or \gls{pkc} (for example, \codeword{RSA} and \codeword{DSA})
+or \textbf{symmetric key cryptography}, using a \gls{psk}.
+\item \textbf{confidentiality} - the data transmitted between the communicating
+entities (the client and the server) is encrypted. Symmetric cryptography is
+used of data encryption (for exmaple, \codeword{AES}).
+\item \textbf{integrity} (also called \textbf{data origin authentication}) - we can be sure that the data was not modified or forged,
+\textit{i.e.}, be sure that the data that we’re receiving is coming from the expected entity (for example, we can be sure
+that the \codeword{index.html} file sent to us when we connected to \codeword{www.google.com} in fact
+came from \codeword{www.google.com} and that it was not modified (i.e tampered with) en
+route by an attacker (\textbf{data integrity}). This is achieved through the use
+of a keyed \gls{mac} or an \gls{aead} cipher.
+\end{itemize}
+
+Despite using \gls{pkc}, \gls{tls} does \textbf{not} provide \textbf{non-repudiation services}:
+neither \textbf{non-repudiation with proof of origin}, which addresses the user denying
+having sent a message, not \textbf{non-repudiation with proof of delivery}, which
+addresses the user denying the receipt of a message. This is due to the fact, that
+instead of using \textbf{digital signatures}, either a keyed \gls{mac} or an \gls{aead}
+cipher is used, both of which require a \textbf{shared secret} to be used.
+
+You are not required to use all of the 3 security services in every situation.
+You can think of \gls{tls} as a framework that allows you to select which security
+services you want to use for a communication session. As an example, you might
+ignore certificate validation, which means you're ignoring the \textbf{authentication}
+guarantee. There are some differences regarding this claim between \gls{tls} 1.2
+and \gls{tls} 1.3, for example, while in the first you have a \codeword{null}
+cipher (no authentication, no confidentiality, no integrity), in the latter
+this is not true, since it deprecated all non-\gls{aead} ciphers in favor of
+\gls{aead} ones.
+
+\subsubsection{Cipher Spec vs Cipher Suite}
+
+The meaning of these terms differs in \gls{tls} 1.2 and \gls{tls} 1.3. For \gls{tls} 1.2,
+\textbf{cipher spec} defines the message encryption algorithm and the message
+authentication algorithm, while the \textbf{cipher suite} is the \textbf{cipher spec},
+alongside the definition of the \textbf{key exchange} algorithm and the \gls{prf} (used in key generation). In \gls{tls} 1.3, the
+ \textbf{cipher spec} has been removed altogether, since the  \textbf{ChangeCipherSpec}
+ protocol has been removed. The concept of \textbf{cipher suite} has been updated
+ to define the pair of \gls{aead} algorithm and hash function to be used with
+ \gls{hkdf}: in \gls{tls} 1.3 the  \textbf{key exchange} algorithm is negotiated via
+ extensions. You'll find more details on this below.
+
+\subsection{TLS (Sub)Protocols}
+
+In reality \gls{tls} is composed of several protocols(illustrated in \ref{fig:tls-subprotocols}), a brief description of each
+one of which follows:
+\begin{itemize}
+  \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}. It's
+  the layer that runs directly on top of \textbf{TCP/IP} and it serves as an
+   \textbf{encapsulation for the remaining sub-protocols} (\codeword{4} in case of \gls{tls} 1.2
+   and \codeword{3} in case of \gls{tls} 1.3). To the  \textbf{Record Protocol},
+   the remaining sub-protocols are what \codeword{TCP/IP} is to \codeword{HTTP}.
+   A \gls{tls} Record is comprised of 4 fields, with the first 3 comprising the
+   \gls{tls} Record header: a 1-byte record \codeword{type},
+   specifying the type of record that's encapsulated (ex: value \codeword{0x16}
+   for the handshake protocol), a 2-byte \codeword{TLS version} field, a
+   2-byte \codeword{length} field (which means that a maximum \gls{tls} Record size
+   is of \codeword{16384} bytes), specifying the length of the data in the record, excluding
+   the header itself and a \codeword{fragment} field whose size in bytes is specified
+   by the \codeword{length} field, which contains data that's
+   transparent to the Record layer and should be dealt by a higher-level protocol,
+   specified by the \codeword{type} field. This is illustrated in figure \ref{figure:tls-record-header}.
+  \item \textbf{\gls{tls} Handshake Protocol} - the core protocol of \gls{tls}.
+  Allows the communicating peers to \textbf{authenticate} one to another and negotiate
+  a \textbf{cipher suite} (\textbf{cipher suite} and key exchange algorithm in case of \gls{tls} 1.3) which will be used to provide the security services. For \gls{tls} 1.2,
+  \textbf{compression} method is also negotiated here.
+  \item \textbf{\gls{tls} Alert Protocol} - allows the communicating peers to
+  signal potential problems.
+  \item \textbf{\gls{tls} Application Data Protocol} - used to transmit data securely.
+  \item \textbf{\gls{tls} Change Cipher Spec Protocol} (removed in \gls{tls} 1.3) -
+  used to activate the initial \textbf{cipher spec} or change it during the connection.
+\end{itemize}
+
+% src: https://tex.stackexchange.com/questions/5769/two-figures-side-by-side
+\begin{figure}
+    \centering
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{img/record-header.jpg} % first figure itself
+        \caption{\label{fig:tls-record-header} TLS Record header}
+    \end{minipage}\hfill
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{img/tls-sub-protocols.png} % second figure itself
+        \caption{\label{fig:tls-subprotocols} TLS (Sub)protocols and Layers}
+    \end{minipage}
+\end{figure}
+
+\paragraph{TLS Connections and Sessions}
+
+\todo{define what it means to be cryptographically protected?}
+
+It's important to distinguish between a \textbf{TLS session} and a \textbf{TLS connection}.
+\begin{itemize}
+  \item \textbf{TLS sesion} - assosciation between two communicationg peers that's
+  created by the \textbf{TLS Handshake Protocol}, wich defines a set of negotiated paramters
+  (cyrptographic and others, depending on the \gls{tls} version, such as
+  the compression algorithm) that are used by the \textbf{TLS connections associated
+  with that session}. A single \textbf{TLS session} can be shared among multiple
+  \textbf{TLS connections} and its main purpuse is to avoid the expensive negotiation
+  of new parameters for each \textbf{TLS connection}. For example, let's say
+  you download an \gls{html} page over \gls{https} and that page referrences
+  some images from that same server, also using \gls{https}, instead of your
+  web browser negotiating a new \gls{tls} session again, it can re-use the the
+  one you established to download the \gls{html} page in the first place,
+  saving time and computational resources. Session resumption can be done using various
+  approaches, such as \textbf{session identifiers}, described throughout \codeword{Section 7.4}
+  of \codeword{RFC 5246} \cite{RFC5246}, \textbf{session tickets}, defined in
+  \codeword{RFC 5077} \cite{RFC5077}. \todo{Re-write example better.}
+  \item \textbf{TLS connection} - used to actually transmit the cryptographically
+  protected data. For the data to be cryptographically protected, some parameters,
+  such as the \codeword{secret keys} used to encrypt and authenticate the transmitted
+  data need to be established; this is done when a \textbf{TLS session} is created,
+  during the \textbf{TLS Handshake Protocol}.
+\end{itemize}
+
+\subsubsection{\gls{tls} Record Processing}
+A \gls{tls} record must go through some processing before it can tbe sent over the netwrok.
+This processing involves the following steps (\codeword{4} for \gls{tls} 1.2 and \codeword{3} for \gls{tls} 1.3):
+
+\begin{enumerate}
+  \item \textbf{Fragmentation} - the \gls{tls} \codeword{Record Layer} takes arbitrary-length data and \textbf{fragments}
+  it into manageable pieces: each one of the resulting fragments is called a \codeword{TLS Plaintext}.
+  Client message boundaries are not preserved, which means that multiple messages
+  of the same type may be placed into the same fragment or a single message may
+  be fragmented across several records.
+  \item  \textbf{Compression} (removed in \gls{tls} 1.3) - the \codeword{TLS Record Layer} compresses the
+  \codeword{TLSPlaintext} structure according to the negotiated compression method,
+  outputting \codeword{TLSCompressed}. Compression is optional. If the negotiated compression
+  method is \codeword{null}, \codeword{TLSCompressed} is the same as \codeword{TLSPlaintext}.
+  \item \textbf{Cryptographic Protection} - in case of \gls{tls} 1.2, either an
+  \gls{aead} cipher or a separate encryption and \gls{mac} functions transform a
+  \codeword{TLSCompressed} fragment into a \codeword{TLSCipherText} fragment. In case
+  of \gls{tls} 1.3, the \codeword{TLSPlaintext} fragment is transformed into a \codeword{TLSCipherText}
+  by applying an \gls{aead} cipher.
+  \item Append the \textbf{TLS Record Header} - encapsulate \codeword{TLSCipherText}
+  in a \codeword{TLS Record}.
+\end{enumerate}
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+\centering
+\includegraphics[width=0.7\textwidth]{img/tls-record-processing.jpg}
+\caption{\label{fig:tls-record-processing}TLS Record Processing}
+\end{wrapfigure}
+
+The process described above, as well as the structure names are depicted in figure \ref{fig:tls-record-processing}.
+Step \codeword{2} is not present in \gls{tls} 1.3. The structure names are exactly as the appear in the \gls{tls} specifications.
+
+\subsection{TLS Keying Material}
+
+Secret keys are at the base of most cryptographic operations.
+In order for both communicating peers to be able to encrypt and decrypt data
+using symmetric cyrpto aglorithms, they need to \textbf{share} the same key
+somehow. In \gls{tls}, both, the client and a server derive the \textbf{same set of keys}
+independetely, through the exchanged messages in the \gls{tls} Handshake Protocol.
+
+When communicating with one another, the client uses one key to
+encrypt the data to be sent to the server and another different key to decrypt the data
+that it receives from the server. This means that in order to deal with data
+encryption and decryption, both of the communicating entities have two keys:
+one to encrypt the outgoing data and one to decrypt the incoming data. Those keys
+have different names in \gls{tls} 1.2 and \gls{tls} 1.3, but they serve the same
+basic purpose. In this general description, I'll refer to them as \codeword{client_write key}
+(used by the client to encrypt the data to be sent), \codeword{client_read_key}(used by the client to
+decrypt the incoming data from the server), \codeword{server_write_key}(used by the server to encrypt
+the data to be sent) and \codeword{server_read_key}(used by the server to decrypt the incoming
+data from the client). Note, that the following relationships must hold:
+\codeword{client_write_key == server_write_key} and \codeword{client_read_key == server_write_key}.
+
+Besides the secret keys mentioned previously, in \gls{tls} 1.2 you might also have other ones,
+depending on the cipher suite in use, namely the \codeword{client/server_wirite_IV} that
+is only generated for implicit nonce techniques used with \gls{aead} ciphers and the
+\codeword{client/server_write_MAC_key}, which is the input secret to the \gls{mac}
+function; this key is not present when \gls{aead} ciphers are in use.
+
+\subsection{TLS 1.2 Keying Material Generation}
+
+The generation of secret keys, used for various cryptographic operations involves the
+following steps (in order):
+
+\begin{itemize}
+  \item Generate the \textbf{premaster secret}.
+  \item From the \textbf{premaster secret} generate the \textbf{master secret}.
+  \item From the \textbf{master secret} generate the various secret keys, which
+  will be used in the cryptographic operations.
+\end{itemize}
+
+In \gls{tls} 1.2, the \gls{tls} \gls{prf} is used to generate the keying material
+needed for a connection, which is defined as \codeword{PRF(secret, label, seed) = P_hash(secret, label + seed)}
+The \codeword{P_hash(secret, seed)} function is an auxiliary data expansion function
+which uses a single cryptographic hash function to expand a \codeword{secret} and a \codeword{seed}
+into an arbitrary quantity of output, meaning that you can use to to generate
+anywhere from $1$ to an infinite number of bits of output. The \codeword{PRF(secret, label, seed)}
+is used to generate as many bits of output as you need. When generating the
+master secret, the \codeword{secret} input is the \codeword{premaster secret}.
+When generating the key block, from which you will actually obtain final keys
+the \codeword{secret} input is the \codeword{master secret}.
+
+The cryptographic hash function used in \codeword{P_hash(secret, label, seed)} is
+a hash function implicitly defined by the cipher suite in use. All of the cipher
+suites defined in the \gls{tls} 1.2 base spec use \codeword{SHA-256} and any new
+cipher suites must explicitly specify a the same hash function or a stronger one.
+
+\subsection{TLS 1.3 Keying Material}
+
+\gls{tls} 1.3's keying material generation is a little more complex, since different
+keys are used to encrypt data throughout the Handshake Protocol. This can be
+explained by the fact that in \gls{tls} 1.3 the encryption begins earlier, with
+Handshake messages besides the \codeword{Finished} being encrypted,
+as well as features such as \textbf{early client data}, also known as \textbf{0-RTT data},
+where data comes encrypted in the first flight. As a result of those properties,
+you have multiple encryption keys generated and used to encrypt different data
+throughout the handshake.
+
+The way the keying material is derived is also different, since the
+\gls{prf} construction described above has been replaced. The
+new design allows easier analysis by cryptographers due to the improved
+key separation properties. In \gls{tls} 1.3, key derivation uses the
+\gls{hkdf} function defined in \codeword{RFC 5869}\cite{RFC5869} and its two components,
+the \codeword{HKDF-Extract} and \codeword{HKDF-Expand}.
+
+\subsection{TLS 1.2 Key Exchange Methods}
+
+The way the \textbf{permaster secret} is generated depends on the key exchange
+method used. In fact, this is the only phase of the keying material generation
+phase that is variable for a fixed cipher suite (because a cipher suite defines
+the \gls{prf} function to be used), the rest remains exactly the same. The derivation
+of the \textbf{master secret} from the \textbf{premaster secret}, as well as the
+derivation of the bulk encryption keys, \gls{mac} keys and \gls{iv}s from the \textbf{master secret}
+that follows \textbf{is not impacted by the key exchange method} in use.
+
+You have quite a few choices when it comes to key exchange methods. Some of them
+are defined in the base spec (\codeword{RFC5246} \cite{RFC5246}), while others
+in separate \codeword{RFCs} (such as the \gls{ecc} based key exchange, specified
+in \codeword{RFC4492} \cite{RFC4492}).
+
+The base spec specifies 4 key exchange methods, one using \gls{rsa} and 3 using
+\gls{dh}:
+
+\begin{itemize}
+  \item static \gls{rsa} (\codeword{RSA}) [removed in \gls{tls} 1.3] - the client generates the \gls{pms}, encrypts it with the
+  server's \gls{pubk} (which it obtained from the server's \codeword{X.509}certificate),
+  sending it to the server, which decrypts it using the corresponding \gls{privk}.
+  This key exchange method offers authenticity, but does not offer \gls{pfs}.
+  \item anonymous \gls{dh} (\codeword{DH_annon}) [removed in \gls{tls} 1.3] - a \gls{dh} key exchange is
+  performed and an \textbf{ephemeral} key is generated, but the exchanged \gls{dh}
+  parameters are \textbf{not authenticated}, making the resulting key exchange
+  vulnerable to \gls{mitm} attacks. \gls{tls} 1.2 spec states that cipher suites
+  using \codeword{DH_annon} \textbf{must not} be used, unless the application
+  layer explicitly requests so. This key exchange offers \gls{pfs}, but no
+  authenticity.
+  \item fixed/static \gls{dh} (\codeword{DH}) [removed in \gls{tls} 1.3] - the server's/client's public \gls{dh} parameter
+  is embedded in its certificate. This key exchange method offers authenticity,
+  but does not offer \gls{pfs}.
+  \item epehemeral \gls{dh} (\codeword{DHE}) - each run of the protocol, uses
+  different pubic \gls{dh} parameters, which are generated dynamically. This results
+  in a different, epehemeral key being generated every time. The public parameters
+  are then digitally signed in some way, usually using the sender's private
+  \gls{rsa} (\codeword(DHE_RSA)) or \gls{dsa} (\codeword{DHE_DSS}) key. This key
+  exchange offers both authenticity and \gls{pfs}.
+\end{itemize}
+
+When either of the \gls{dh} variants is used, the value resulting from the exchange is used
+as the \gls{pms} (without the leading \codeword{0}'s). Usually, only the server's
+authenticity is desired, but client's can also be achieved if it provides the
+server its certificate. Whenever the server is authenticated, the server is secure
+against \gls{mitm} attacks. Table \ref{kemps} summarizes the security properties
+offered by each key exchange method.
+
+\begin{table}[]
+\centering
+\caption{Key exchange methods and security properties}
+\label{kemsp}
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Key Exch Meth} & \multicolumn{1}{l|}{Authentication} & PFS                    \\ \hline
+RSA                          & X                                   &                        \\ \hline
+DH\_anon                     & \multicolumn{1}{l|}{}               & \multicolumn{1}{c|}{X} \\ \hline
+DH                           & X                                   &                        \\ \hline
+DHE                          & X                                   & \multicolumn{1}{c|}{X} \\ \hline
+\end{tabular}
+\end{table}
+
+Note that in \gls{tls} 1.3, all of static \gls{rsa} and \gls{dh} cipher suites
+have been removed: all of the \gls{pubk} exchange methods now provide \gls{pfs}.
+Even though, anonymous \gls{dh} has also been removed from \gls{tls} 1.3, you can
+still have unauthenticated connections by either using \textbf{raw public keys} \cite{RFC7250}
+or by not verifying the certificate chain and any of it's contents.
+
+\todo{NOTE: I did't cover specifics of how the client generates the premaster secret, etc}
+
+The \gls{ecc}-based key exchange (\gls{ecdh} and \gls{ecdhe}) and authentication (\gls{ecdsa})
+algorithms are defined in \codeword{RFC4292} \cite{RFC4292}, which is also referenced
+in \codeword{RFC5246} \cite{RFC4256}. The document introduces five new
+\gls{ecc}-based key exchange algorithms, all of which use \gls{ecc} to compute
+the \textbf{premaster secret}, differing only in whether the negotiated
+keys are epehemeral (\gls{ecdh}) or long-term (\gls{ecdhe}), as well as the mechanism (if any) used to
+authenticate them. Three new \gls{ecdsa} \textbf{client authentication} mechanisms are also defined,
+differing in the algorithms that the certificate must be signed with, as well
+as the key exchange algorithms that they can be used with.
+Those features are negotiated through the \gls{tls} Extension Mechanism.
+
+\subsection{TLS 1.2 Handshake Protocol}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{img/tls-12-full-handshake.png}
+\caption{\label{fig:tls-12-handshake} TLS 1.2 message flow for a full handshake}
+\end{figure}
+
+
+In this phase the client and the server agree on which version of the \gls{tls}
+protocol to use, authenticate one to another and negotiate items like
+the cipher suites and the compression method to use. Figure \ref{fig:tls-12-handshake} shows the message flow for the
+full \gls{tls} 1.2 handshake. Note that \codeword{*} indicates situation-dependent
+messages that are not always sent, while \codeword{ChangeCiperSpec} is a separate
+protocol, rather than a message type.
+
+As I explained before every \gls{tls} Handshake message is encapsulated within
+a \gls{tls} Record. The actual Handshake message is contained within the
+\codeword{fragment} of the \gls{tls} Record. The Record type for a Handshake
+message is \codeword{0x16}. The Handshake message has the following structure:
+a 1-byte \codeword{msg_type} field (specifies the Handshake message type),
+a 2-byte \codeword{length} field (specifies the length of the \codeword{body})
+and a \codeword{body} field, which contains a structure depending on the
+\codeword{msh_type} (similar to \codeword{fragment} field in a \gls{tls} Record).
+
+Now, I will describe a typical handshake message flow. I will only be mentioning
+the most important field of each message.
+
+\todo{I don't have space to put all of the structures and things sent in every
+handshake message type (ex: ClientHello.session\_id)}
+
+The connections begins with the client sending a \codeword{ClientHello}, containing
+.\codeword{random}, \codeword{cipher_suites} and \codeword{compresison_methods},
+among other fields.
+\codeword{cipher_suites} contains a \textbf{list} of cipher suites and \codeword{compression_methods}
+contains a list of compression methods (\codeword{compression_methods}) that the
+client supports, ordered by preference, with the most preferred one appearing first.
+The \gls{tls} Record contains a \codeword{2-byte} \codeword{version} field which
+indicates the highest version supported by the client.
+
+The server responds to the \codeword{ClientHello} with a \codeword{ServeHello}
+message, which is similar in its contents, except that instead of containing
+a list of supported features, it contains a single item containing the one that it chose,
+\textit{i.e.}, the server responds with the chosen \codeword{cipher_suite} and
+\codeword{compression_method} (note the \textbf{singular} form) that it chose from the
+corresponding list sent by the client. Just like in the client's case, a \codeword{random}
+is also present. The \codeword{version} field in the \gls{tls} Record indicates
+the \gls{tls} version chosen by the server and it's the one that's gonna be
+used for that connection.
+
+\gls{tls} requires cryptographically secure pseudorandom values to be generated
+by both of the parties independetely. Those random number (or nonces) are essential for freshness
+(protection against replay attacks; we do need both randoms, otherwise the messages could
+be replayed) and session uniqueness, since both of
+the random values are inputs to the \textbf{master secret} generation, meaning
+that a new keying material is generated with every session. If the output of the pseudorandom numbers
+can be predicted by the attacker, he can predict the keying material, as described
+in "A Systematic Analysis of the Juniper Dual EC Incident"\cite{DualECJu15:online}.
+The \codeword{32-byte} random value is composed by concatenating the \codeword{4-byte}
+GMT UNIX time with \codeword{28} cryptographically random bytes. Note that in \gls{tls} 1.3
+the random number structure has the same length, but is generated in a different manner:
+the client's \codeword{32 bytes} are all random, while the server's last \codeword{8 bytes}
+are fixed when negotiating \gls{tls} 1.2 or 1.3.
+
+Next, the server sends a \codeword{Certificate} message, which contains a list
+of \gls{pubk} certificates (a certificate chain): the server's certificate,
+every intermediate certificate and the root certificate. The certificate's contents
+will depend on the negotiated cipher suite and extensions.
+The same message type occurs later in the handshake if the server asks the client for certificate with the
+\codeword{CertificateRequest} message. Note, that in a typical scenario, the
+server will seldom request client authentication.
+
+The \codeword{ServerKeyExchange} message follows, containing additional information
+needed by the client to compute the \codeword{premaster secret}. This message
+is only sent in some key exchange methods, namely \codeword{DHE_DSS}, \codeword{DHE_RSA}
+and \codeword{DH_anon}. For non-anonymous key exchanges, this is the message that authenticates the server to the client,
+since the server sends a digital signature over the client and server randoms
+and the server's key exchange parameters. Note that this is not the only place where the
+server can authenticate itself to the client. For example, if \codeword{RSA} key
+exchange is used, the server authentication is done indirectly when the client
+sends the premaster secret encrypted with the public RSA key provided in the
+server certificate: only the server knows the corresponding private key, so if
+both of the sides generate the same keying material, then the server must be who
+he claims to. In \gls{tls} 1.3 this message is non existent and a similar
+functionality is taken by the \codeword{key_exchange} extension.
+
+The \codeword{ServerHelloDone} is sent to indicate the end of \codeword{ServerHello}
+and associated messages. Upon the receipt of this message, the client should check
+that the server provided a valid certificate. This message is not present in \gls{tls} 1.3.
+
+With the \codeword{ClientKeyExchange} message the \codeword{premaster} secret is
+set, either by direct transmission of the secret generated by the client
+and encrypted with the server's public RSA key (thus, authenticating the server to the client)
+or by the transmission of \gls{dh} parameters that will allow each side to generate
+the same \codeword{premaster} secret independently.
+
+The \codeword{CertificateVerify} message is sent by the client to verify its
+certificate, if it has signing capability (\textit{i.e.} all certificates except for the ones
+containing fixed \gls{dh} parameters).
+
+The \codeword{ChangeCipherSpec} is its own protocol, rather than a type of handshake
+message. It's sent by both parties to notify the reciever that subsequent records
+will be protected under the newly negotiated \codeword{CipherSpec} and keys.
+
+The \codeword{Finished} message is an essential part of the protocol. It's the first
+message protected with the newly negotiated algorithms, keys and secrets. Only after
+both parties have sent and verified the contents of this message is when they can
+be sure that the Handshake has not been tampered with by a \gls{mitm} and begin to
+receive and send application data. Essentially, this message contains keyed hash
+with the master secret over the hash of all the data from all of the
+handshake messages not including any \codeword{HelloRequest} messages and up to, but
+not including, this message. The other party must perform the same computation on its
+side and make sure that the result is identical to the contents of the other party's
+\codeword{Finished} message. If at some point a \gls{mitm} has tampered with the
+handshake, the result will be a mismatch in computed and received contents of the
+\codeword{Finished} message.
+
+At any time after a session has been negotiated, the server may send a \codeword{HelloRequest}
+message, to which the client should respond with a \codeword{ClientHello}, thus
+beginning the negotiation process anew.
+
+At an point in the handshake, the Alert protocol may be used by any of the peers
+to signal any problems or even abort the process by using an appropriate message type.
+
+Besides the full handshake, the \gls{tls} 1.2 specification also specifies an
+abbreviated handshake mechanism, which can be used to either resume a previous session
+or duplicate one, instead of negotiating new security parameters (for example, this is useful
+in the context of multiple \codeword{HTTPS} requests for various resources, when loading
+a typical website). The advantage of this mechanism is that the handshake is reduced
+to \codeword{1 RTT}, instead of the usual \codeword{2 RTT} as it's the case in
+the full handshake. In order to do the abbreviated handshake,
+the client and the server must have established a session previously, by performing
+the full handshake. To do this, the clients sends a session ID of the session it wants to
+resume in its \codeword{ClientHello} and its up to the server to decide if he
+wants to resume that session, by responding with a \codeword{ServerHello} containing
+that same session ID value, or if it wants to establish a new session by
+sending a session ID with a different value. The keying material, such as the bulk
+data symmetric encryption keys and the \gls{mac} keys are formed by hashing the new client
+and server random values with the master secret, which means
+that provided that the master secret has not been compromised and that the secure
+hash operations are secure, the new connection will be secure and independent
+from previous connections. The \gls{tls} 1.2 spec, suggests and upper limit
+of $24$ hours for session ID lifetimes, since an attacker who obtains the master secret
+will be able to impersonate the compromised party until the corresponding session
+ID is retired. Note that this mechanism requires state to be maintained in both peers.
+
+\subsection{TLS Extensions}
+
+\gls{tls} extensions were originally defined in \codeword{RFC 4366}\cite{RFC4366}
+and later merged into the \gls{tls} 1.2 base spec. Each extension consists of an
+extension type, which identifies the particular extension type and extension data,
+which contains information specific to a particular extension.
+
+The extension mechanism may be used by \gls{tls} clients and servers; it is backwards
+compatible, which means that the communication is possible between \gls{tls} a
+client that supports a particular extension and a server that does not support it,
+and vice versa. A client may request the use of extensions by sending an extended \codeword{ClientHello}
+message, which is just a "normal" \codeword{ClientHello} with an additional
+block of data that contains a list of extensions. The backwards compatibility is achieved based on the \gls{tls}
+requirement that the servers are not "extensions-aware" ignore the data
+added to the \codeword{ClientHello}s that they don't understand (section \codeword{7.4.1.2} of \codeword{RFC 2246}\cite{rfc2246}),
+meaning that even older servers that don't support extensions, namely the ones with
+version of \gls{tls} prior to 1.2 will not "break".
+
+The presence of extensions can be determined by checking if there are bytes
+following the \codeword{compression_methods} field in the \codeword{ClientHello}.
+If the server understands an extension, it sends back an extended \codeword{ServerHello},
+instead of a regular one. An extended \codeword{ServerHello} is a "normal"
+\codeword{ServerHello} with an additional block of data following the
+\codeword{compression_method} field that contains a list of extensions.
+
+An extended \codeword{ServerHello} message can only be sent in a response to an
+extended \codeword{ClientHello} message. This prevents the possibility that an extended
+\codeword{ServerHello} message could "break" older \gls{tls} clients that do not
+support extensions. An extension type must not appear in the
+extended \codeword{ServerHello}, unless the same extension type appeared in the
+corresponding extended \codeword{CleintHello}, and if this happens, the clients must abort the handshake.
+
+\subsection{TLS 1.3}
+
+Due to limited space, I won't be able to describe \gls{tls} 1.3 in detail. I decided
+to concentrate on \gls{tls} 1.2 instead, because \gls{tls} 1.3 is still in draft
+mode and 1.2 is the latest and the recommended version in use.
+
+Despite the protocol name not suggesting it \gls{tls} 1.3 is
+very different from \gls{tls} 1.2, in fact, it should've probably been called
+\gls{tls} 2.0 instead. I've studied \gls{tls} 1.3 in great detail, and as I already mentioned,
+I have been formally recognized as a \gls{tls} 1.3 contributor 1.3.
+I have also participated in the mailing lists, as part of my work on the architecture of the solution.
+
+Throughout this document, in various parts I mentioned how \gls{tls} 1.3 differs from 1.2.
+A lot of the changes brought in \gls{tls} 1.3 make it more suitable in the context
+of \gls{iot}. Some of those changes I've already mentioned previously in this
+document, here I will add a few more. I will not go into great detail, but
+will give a general overview.
+
+The first important difference is that in \gls{tls} 1.3 extensions are required,
+since some of the functionality has been moved into extensions, in order to preserve
+backwards-compatibility with the previous versions of the \codeword{ClientHello}s.
+In fact, the way a server distinguishes if a client is requesting a \gls{tls} 1.3
+is by checking the presence of the \codeword{supported_versions} extension in the
+extended \codeword{ClientHello}.
+
+In \gls{tls} 1.3 more data is encrypted and the encrytion starts earlier. For example,
+on the server-side you have a notion of "encrypted extensions". The \codeword{EncryptedExtensions}
+message, as the name suggests, contains a list of extensions that are encrypted
+under a symmetric key and it contains any extensions that are not needed
+to establish the cryptographic context.
+
+In \gls{tls} 1.3, non \gls{aead} ciphersuites are not supported anymore.
+Static RSA and \gls{dh} ciphersuites have been removed, meaning that all
+public key exchange mechanisms now provide \gls{pfs}. Even though
+anonymous \gls{dh} key exchange has been removed, you can still have
+unauthenticated connections by either using raw public keys or not verifying the
+certificate and any of its contents.
+
+One of the main problems with using \gls{tls} in \gls{iot} is that while \gls{iot}
+traffic need to be quick and lightweight, \gls{tls} 1.2 adds two additional
+round trips (\codeword{2 RTT}) to the start of every session. \gls{tls} 1.3 handshake has less latency,
+when compared to \gls{tls} 1.2 and this is extremely important in the context of \gls{iot}.
+The full \gls{tls} 1.3 handshake is only \codeword{1 RTT}. \gls{tls} 1.3 even allows
+clients to send data on the first flight (known as "early data"), when the clients
+and servers share a \gls{psk} (either obtained externally or via a previous handshake).
+This means that in \gls{tls} 1.3 you can have \codeword{0-RTT} data, by essentially
+encrypting it with the previously shared \gls{psk}. Session resumption
+via identifiers and tickets has been obsoleted in \gls{tls} 1.3, and both methods
+have been replaced by a \gls{psk} mode. The \gls{psk} is established on a previous
+connection after the handshake is completed and can be presented by the client
+on the next visit.
+
+%
+\subsection{DLTS}
+
+The design of \gls{dtls} is intentionally very similar to \gls{tls}, in fact, its specification is written
+in terms of differences from \gls{tls}. The changes are mostly done on the lower level,
+and even extensions that have been defined before \gls{dtls} has even existed can be
+used with \gls{dtls}, The latest version of \gls{dtls} is 1.2 and it's defined
+in \codeword{RFC 6347}\cite{RFC6347}. There a draft of \gls{dtls} 1.3
+\cite{I-D.draft-ietf-tls-dtls13} is currently in active development.
+
+Since \gls{dtls} operates on top of an unreliable transport protocol, such as
+UDP, it must explicitly deal with the absence of reliable and ordered assumptions
+that are made by \gls{tls}. The main differences from \gls{dtls} 1.2 to \gls{tls} 1.2 are:
+
+\begin{itemize}
+  \item two new values are added to the record layer: an explicit \codeword{2 byte} sequence
+  number and a \codeword{6 byte} epoch fields. The \gls{dtls} \gls{mac} is the same as of \gls{tls},
+  however, rather than using the implicit sequence number, the \codeword{8 byte} value
+  formed by concatenation of the epoch number and the sequence number is used.
+
+  \item stream ciphers must not be used with \gls{dtls}.
+
+  \item a stateless cookie exchange mechanism has been added to the handshake protocol
+  in order to prevent \gls{dos} attacks. To accomplish this, a new handahke
+  message, the \codeword{HelloVerifyRequest} has been added. After
+  the \codeword{ClientHello}, the server responds with a \codeword{HelloVerifyRequest}
+  containing a cookie, which is returned back to the server in another
+  \codeword{ClientHello} that follows it, after which the handshake proceeds as in \gls{tls}.
+  Although optional for the server, this mechanism highly recommended, and the
+  client must be prepared to respond to it.
+
+  \item the handshake message format has been extended to deal wit message reordering,
+  fragmentation and loss by addition of three new fields: a message sequence field,
+  a fragment offset field and a fragment length field.
+\end{itemize}
 
 \section{Related Work}
 
@@ -718,637 +1333,6 @@ as an example of protocol that comes with a suitable software update mechanism,
 there has been new work done in this area since the release of this profile.
 Namely, there is a document specifying an architecture for a frimware update
 mechanism for \gls{iot} devices\cite{I-D.draft-moran-suit-architecture} currently in "Internet-Draft" state.
-
-\section{Background}
-%
-\section{The TLS Protocol}
-TLS stands for Transport Layer Security, it's a \textbf{client-server} protocol
-that runs on top a \textbf{connection-oriented and reliable transport protocol},
-such as \textbf{TCP}. Its main goal is to provide \textbf{privacy} and \textbf{integrity}
-between the two communicating peers. Privacy implies that a third party will not
-be able to read the data, while integrity means that a third party will not be
-able to alter the data.
-
-In the TCP/IP Protocol Stack, \gls{tls} is placed between the \textbf{Transport}
-and \textbf{Application} layers. It's designed to make the application developer's
-life easier: all the developer has to do is create a "secure" connection, instead
-of a "normal" one.
-
-\todo{Re-write what's below. It's good to include something like this,
-but I need to work on the wording.}
-From the top-level view, in a typical connection, there are three basic steps
-that \gls{tls} is responsible for:
-\begin{enumerate}
-  \item \textbf{Negotiate security parameters} - the communicating peers agree on
-  a set of security parameters to be used in a \gls{tls} connection, such as the
-  algorithm used for bulk data encrytion, as well as the secret keys.
-  \item \textbf{Authenticate one to another} - usually only the server authenticates
-  to the client.
-  \item \textbf{Communicate securely} - use the negotiated security parameters
-  to encrypt and authenticate the data, communicating securely one with another.
-\end{enumerate}
-
-
-%%% NOTE: place this in intro? Is this even needed?
-%%% NOTE: review, rephrase
-%%% NOTE: find better placement
-\subsubsection{SSL vs TLS: What's The Difference?}
-You will find the names \gls{ssl} and \gls{tls} used interchangeably in the literature,
-so I think it's important to distinguish both. \gls{tls} is an evolution of the \gls{ssl} protocol. The protocol changed
-its name from \gls{ssl} to \gls{tls} when it was
-standardized by the \gls{ietf}.\gls{ssl}
-was a proprietary protocol owned by Netscape Communications, and The \gls{ietf}
-decided that it was a good idea to standarize it, which resulted in \codeword{RFC 2246} \cite{RFC2246},
-specifying \gls{tls} 1.0, which was nothing more than a new version \gls{ssl} 3.0,
-very few changes were made.
-%
-% TODO: add some data supporting the TLS 1.2 usage claim
-In this document, I'll be concentrating on \gls{tls} 1.2 and \gls{tls} 1.3 protocols.
-The first one is the most recently standardized version of \gls{tls} and the latter
-is currently and in-draft version with many improvements and optimizations relevant
-for the topic of this dissertation. Despite the protocol name not suggesting it \gls{tls} 1.3 is
-very different from \gls{tls} 1.2, in fact, it should've probably been called
-\gls{tls} 2.0 instead. For this reason, I will first describe what is common to
-both protocols and then go into the relevant details about each one.
-%
-
-\subsection{Security Services}
-%
-\gls{tls} provides the following 3 security services:
-\begin{itemize}
-\item \textbf{authentication} - both, \textbf{peer entity} and \textbf{data origin} (or \textbf{integrity})
-authentication.
-\subitem \textbf{peer entity authentication} - we can be sure that we’re talking to certain entity, for example, \codeword{www.google.com}.
-This is achieved thought the use of \textbf{asymmetrical} or \gls{pkc} (for example, \codeword{RSA} and \codeword{DSA})
-or \textbf{symmetric key cryptography}, using a \gls{psk}.
-\item \textbf{confidentiality} - the data transmitted between the communicating
-entities (the client and the server) is encrypted. Symmetric cryptography is
-used of data encryption (for exmaple, \codeword{AES}).
-\item \textbf{integrity} (also called \textbf{data origin authentication}) - we can be sure that the data was not modified or forged,
-\textit{i.e.}, be sure that the data that we’re receiving is coming from the expected entity (for example, we can be sure
-that the \codeword{index.html} file sent to us when we connected to \codeword{www.google.com} in fact
-came from \codeword{www.google.com} and that it was not modified (i.e tampered with) en
-route by an attacker (\textbf{data integrity}). This is achieved through the use
-of a keyed \gls{mac} or an \gls{aead} cipher.
-\end{itemize}
-
-Despite using \gls{pkc}, \gls{tls} does \textbf{not} provide \textbf{non-repudiation services}:
-neither \textbf{non-repudiation with proof of origin}, which addresses the user denying
-having sent a message, not \textbf{non-repudiation with proof of delivery}, which
-addresses the user denying the receipt of a message. This is due to the fact, that
-instead of using \textbf{digital signatures}, either a keyed \gls{mac} or an \gls{aead}
-cipher is used, both of which require a \textbf{shared secret} to be used.
-
-You are not required to use all of the 3 security services in every situation.
-You can think of \gls{tls} as a framework that allows you to select which security
-services you want to use for a communication session. As an example, you might
-ignore certificate validation, which means you're ignoring the \textbf{authentication}
-guarantee. There are some differences regarding this claim between \gls{tls} 1.2
-and \gls{tls} 1.3, for example, while in the first you have a \codeword{null}
-cipher (no authentication, no confidentiality, no integrity), in the latter
-this is not true, since it deprecated all non-\gls{aead} ciphers in favor of
-\gls{aead} ones.
-
-\subsubsection{Cipher Spec vs Cipher Suite}
-
-The meaning of these terms differs in \gls{tls} 1.2 and \gls{tls} 1.3. For \gls{tls} 1.2,
-\textbf{cipher spec} defines the message encryption algorithm and the message
-authentication algorithm, while the \textbf{cipher suite} is the \textbf{cipher spec},
-alongside the definition of the \textbf{key exchange} algorithm and the \gls{prf} (used in key generation). In \gls{tls} 1.3, the
- \textbf{cipher spec} has been removed altogether, since the  \textbf{ChangeCipherSpec}
- protocol has been removed. The concept of \textbf{cipher suite} has been updated
- to define the pair of \gls{aead} algorithm and hash function to be used with
- \gls{hkdf}: in \gls{tls} 1.3 the  \textbf{key exchange} algorithm is negotiated via
- extensions. You'll find more details on this below.
-
-\subsection{TLS (Sub)Protocols}
-
-In reality \gls{tls} is composed of several protocols(illustrated in \ref{fig:tls-subprotocols}), a brief description of each
-one of which follows:
-\begin{itemize}
-  \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}. It's
-  the layer that runs directly on top of \textbf{TCP/IP} and it serves as an
-   \textbf{encapsulation for the remaining sub-protocols} (\codeword{4} in case of \gls{tls} 1.2
-   and \codeword{3} in case of \gls{tls} 1.3). To the  \textbf{Record Protocol},
-   the remaining sub-protocols are what \codeword{TCP/IP} is to \codeword{HTTP}.
-   A \gls{tls} Record is comprised of 4 fields, with the first 3 comprising the
-   \gls{tls} Record header: a 1-byte record \codeword{type},
-   specifying the type of record that's encapsulated (ex: value \codeword{0x16}
-   for the handshake protocol), a 2-byte \codeword{TLS version} field, a
-   2-byte \codeword{length} field (which means that a maximum \gls{tls} Record size
-   is of \codeword{16384} bytes), specifying the length of the data in the record, excluding
-   the header itself and a \codeword{fragment} field whose size in bytes is specified
-   by the \codeword{length} field, which contains data that's
-   transparent to the Record layer and should be dealt by a higher-level protocol,
-   specified by the \codeword{type} field. This is illustrated in figure \ref{figure:tls-record-header}.
-  \item \textbf{\gls{tls} Handshake Protocol} - the core protocol of \gls{tls}.
-  Allows the communicating peers to \textbf{authenticate} one to another and negotiate
-  a \textbf{cipher suite} (\textbf{cipher suite} and key exchange algorithm in case of \gls{tls} 1.3) which will be used to provide the security services. For \gls{tls} 1.2,
-  \textbf{compression} method is also negotiated here.
-  \item \textbf{\gls{tls} Alert Protocol} - allows the communicating peers to
-  signal potential problems.
-  \item \textbf{\gls{tls} Application Data Protocol} - used to transmit data securely.
-  \item \textbf{\gls{tls} Change Cipher Spec Protocol} (removed in \gls{tls} 1.3) -
-  used to activate the initial \textbf{cipher spec} or change it during the connection.
-\end{itemize}
-
-% src: https://tex.stackexchange.com/questions/5769/two-figures-side-by-side
-\begin{figure}
-    \centering
-    \begin{minipage}{0.5\textwidth}
-        \centering
-        \includegraphics[width=1.0\textwidth]{img/record-header.jpg} % first figure itself
-        \caption{\label{fig:tls-record-header} TLS Record header}
-    \end{minipage}\hfill
-    \begin{minipage}{0.5\textwidth}
-        \centering
-        \includegraphics[width=1.0\textwidth]{img/tls-sub-protocols.png} % second figure itself
-        \caption{\label{fig:tls-subprotocols} TLS (Sub)protocols and Layers}
-    \end{minipage}
-\end{figure}
-
-\paragraph{TLS Connections and Sessions}
-
-\todo{define what it means to be cryptographically protected?}
-
-It's important to distinguish between a \textbf{TLS session} and a \textbf{TLS connection}.
-\begin{itemize}
-  \item \textbf{TLS sesion} - assosciation between two communicationg peers that's
-  created by the \textbf{TLS Handshake Protocol}, wich defines a set of negotiated paramters
-  (cyrptographic and others, depending on the \gls{tls} version, such as
-  the compression algorithm) that are used by the \textbf{TLS connections associated
-  with that session}. A single \textbf{TLS session} can be shared among multiple
-  \textbf{TLS connections} and its main purpuse is to avoid the expensive negotiation
-  of new parameters for each \textbf{TLS connection}. For example, let's say
-  you download an \gls{html} page over \gls{https} and that page referrences
-  some images from that same server, also using \gls{https}, instead of your
-  web browser negotiating a new \gls{tls} session again, it can re-use the the
-  one you established to download the \gls{html} page in the first place,
-  saving time and computational resources. Session resumption can be done using various
-  approaches, such as \textbf{session identifiers}, described throughout \codeword{Section 7.4}
-  of \codeword{RFC 5246} \cite{RFC5246}, \textbf{session tickets}, defined in
-  \codeword{RFC 5077} \cite{RFC5077}. \todo{Re-write example better.}
-  \item \textbf{TLS connection} - used to actually transmit the cryptographically
-  protected data. For the data to be cryptographically protected, some parameters,
-  such as the \codeword{secret keys} used to encrypt and authenticate the transmitted
-  data need to be established; this is done when a \textbf{TLS session} is created,
-  during the \textbf{TLS Handshake Protocol}.
-\end{itemize}
-
-\subsubsection{\gls{tls} Record Processing}
-A \gls{tls} record must go through some processing before it can tbe sent over the netwrok.
-This processing involves the following steps (\codeword{4} for \gls{tls} 1.2 and \codeword{3} for \gls{tls} 1.3):
-
-\begin{enumerate}
-  \item \textbf{Fragmentation} - the \gls{tls} \codeword{Record Layer} takes arbitrary-length data and \textbf{fragments}
-  it into manageable pieces: each one of the resulting fragments is called a \codeword{TLS Plaintext}.
-  Client message boundaries are not preserved, which means that multiple messages
-  of the same type may be placed into the same fragment or a single message may
-  be fragmented across several records.
-  \item  \textbf{Compression} (removed in \gls{tls} 1.3) - the \codeword{TLS Record Layer} compresses the
-  \codeword{TLSPlaintext} structure according to the negotiated compression method,
-  outputting \codeword{TLSCompressed}. Compression is optional. If the negotiated compression
-  method is \codeword{null}, \codeword{TLSCompressed} is the same as \codeword{TLSPlaintext}.
-  \item \textbf{Cryptographic Protection} - in case of \gls{tls} 1.2, either an
-  \gls{aead} cipher or a separate encryption and \gls{mac} functions transform a
-  \codeword{TLSCompressed} fragment into a \codeword{TLSCipherText} fragment. In case
-  of \gls{tls} 1.3, the \codeword{TLSPlaintext} fragment is transformed into a \codeword{TLSCipherText}
-  by applying an \gls{aead} cipher.
-  \item Append the \textbf{TLS Record Header} - encapsulate \codeword{TLSCipherText}
-  in a \codeword{TLS Record}.
-\end{enumerate}
-
-\begin{wrapfigure}{r}{0.4\textwidth}
-\centering
-\includegraphics[width=0.7\textwidth]{img/tls-record-processing.jpg}
-\caption{\label{fig:tls-record-processing}TLS Record Processing}
-\end{wrapfigure}
-
-The process described above, as well as the structure names are depicted in figure \ref{fig:tls-record-processing}.
-Step \codeword{2} is not present in \gls{tls} 1.3. The structure names are exactly as the appear in the \gls{tls} specifications.
-
-\subsection{TLS Keying Material}
-
-Secret keys are at the base of most cryptographic operations.
-In order for both communicating peers to be able to encrypt and decrypt data
-using symmetric cyrpto aglorithms, they need to \textbf{share} the same key
-somehow. In \gls{tls}, both, the client and a server derive the \textbf{same set of keys}
-independetely, through the exchanged messages in the \gls{tls} Handshake Protocol.
-
-When communicating with one another, the client uses one key to
-encrypt the data to be sent to the server and another different key to decrypt the data
-that it receives from the server. This means that in order to deal with data
-encryption and decryption, both of the communicating entities have two keys:
-one to encrypt the outgoing data and one to decrypt the incoming data. Those keys
-have different names in \gls{tls} 1.2 and \gls{tls} 1.3, but they serve the same
-basic purpose. In this general description, I'll refer to them as \codeword{client_write key}
-(used by the client to encrypt the data to be sent), \codeword{client_read_key}(used by the client to
-decrypt the incoming data from the server), \codeword{server_write_key}(used by the server to encrypt
-the data to be sent) and \codeword{server_read_key}(used by the server to decrypt the incoming
-data from the client). Note, that the following relationships must hold:
-\codeword{client_write_key == server_write_key} and \codeword{client_read_key == server_write_key}.
-
-Besides the secret keys mentioned previously, in \gls{tls} 1.2 you might also have other ones,
-depending on the cipher suite in use, namely the \codeword{client/server_wirite_IV} that
-is only generated for implicit nonce techniques used with \gls{aead} ciphers and the
-\codeword{client/server_write_MAC_key}, which is the input secret to the \gls{mac}
-function; this key is not present when \gls{aead} ciphers are in use.
-
-\subsection{TLS 1.2 Keying Material Generation}
-
-The generation of secret keys, used for various cryptographic operations involves the
-following steps (in order):
-
-\begin{itemize}
-  \item Generate the \textbf{premaster secret}.
-  \item From the \textbf{premaster secret} generate the \textbf{master secret}.
-  \item From the \textbf{master secret} generate the various secret keys, which
-  will be used in the cryptographic operations.
-\end{itemize}
-
-In \gls{tls} 1.2, the \gls{tls} \gls{prf} is used to generate the keying material
-needed for a connection, which is defined as \codeword{PRF(secret, label, seed) = P_hash(secret, label + seed)}
-The \codeword{P_hash(secret, seed)} function is an auxiliary data expansion function
-which uses a single cryptographic hash function to expand a \codeword{secret} and a \codeword{seed}
-into an arbitrary quantity of output, meaning that you can use to to generate
-anywhere from $1$ to an infinite number of bits of output. The \codeword{PRF(secret, label, seed)}
-is used to generate as many bits of output as you need. When generating the
-master secret, the \codeword{secret} input is the \codeword{premaster secret}.
-When generating the key block, from which you will actually obtain final keys
-the \codeword{secret} input is the \codeword{master secret}.
-
-The cryptographic hash function used in \codeword{P_hash(secret, label, seed)} is
-a hash function implicitly defined by the cipher suite in use. All of the cipher
-suites defined in the \gls{tls} 1.2 base spec use \codeword{SHA-256} and any new
-cipher suites must explicitly specify a the same hash function or a stronger one.
-
-\subsection{TLS 1.3 Keying Material}
-
-\gls{tls} 1.3's keying material generation is a little more complex, since different
-keys are used to encrypt data throughout the Handshake Protocol. This can be
-explained by the fact that in \gls{tls} 1.3 the encryption begins earlier, with
-Handshake messages besides the \codeword{Finished} being encrypted,
-as well as features such as \textbf{early client data}, also known as \textbf{0-RTT data},
-where data comes encrypted in the first flight. As a result of those properties,
-you have multiple encryption keys generated and used to encrypt different data
-throughout the handshake.
-
-The way the keying material is derived is also different, since the
-\gls{prf} construction described above has been replaced. The
-new design allows easier analysis by cryptographers due to the improved
-key separation properties. In \gls{tls} 1.3, key derivation uses the
-\gls{hkdf} function defined in \codeword{RFC 5869}\cite{RFC5869} and its two components,
-the \codeword{HKDF-Extract} and \codeword{HKDF-Expand}.
-
-\section{TLS 1.2 Key Exchange Methods}
-
-The way the \textbf{permaster secret} is generated depends on the key exchange
-method used. In fact, this is the only phase of the keying material generation
-phase that is variable for a fixed cipher suite (because a cipher suite defines
-the \gls{prf} function to be used), the rest remains exactly the same. The derivation
-of the \textbf{master secret} from the \textbf{premaster secret}, as well as the
-derivation of the bulk encryption keys, \gls{mac} keys and \gls{iv}s from the \textbf{master secret}
-that follows \textbf{is not impacted by the key exchange method} in use.
-
-You have quite a few choices when it comes to key exchange methods. Some of them
-are defined in the base spec (\codeword{RFC5246} \cite{RFC5246}), while others
-in separate \codeword{RFCs} (such as the \gls{ecc} based key exchange, specified
-in \codeword{RFC4492} \cite{RFC4492}).
-
-The base spec specifies 4 key exchange methods, one using \gls{rsa} and 3 using
-\gls{dh}:
-
-\begin{itemize}
-  \item static \gls{rsa} (\codeword{RSA}) [removed in \gls{tls} 1.3] - the client generates the \gls{pms}, encrypts it with the
-  server's \gls{pubk} (which it obtained from the server's \codeword{X.509}certificate),
-  sending it to the server, which decrypts it using the corresponding \gls{privk}.
-  This key exchange method offers authenticity, but does not offer \gls{pfs}.
-  \item anonymous \gls{dh} (\codeword{DH_annon}) [removed in \gls{tls} 1.3] - a \gls{dh} key exchange is
-  performed and an \textbf{ephemeral} key is generated, but the exchanged \gls{dh}
-  parameters are \textbf{not authenticated}, making the resulting key exchange
-  vulnerable to \gls{mitm} attacks. \gls{tls} 1.2 spec states that cipher suites
-  using \codeword{DH_annon} \textbf{must not} be used, unless the application
-  layer explicitly requests so. This key exchange offers \gls{pfs}, but no
-  authenticity.
-  \item fixed/static \gls{dh} (\codeword{DH}) [removed in \gls{tls} 1.3] - the server's/client's public \gls{dh} parameter
-  is embedded in its certificate. This key exchange method offers authenticity,
-  but does not offer \gls{pfs}.
-  \item epehemeral \gls{dh} (\codeword{DHE}) - each run of the protocol, uses
-  different pubic \gls{dh} parameters, which are generated dynamically. This results
-  in a different, epehemeral key being generated every time. The public parameters
-  are then digitally signed in some way, usually using the sender's private
-  \gls{rsa} (\codeword(DHE_RSA)) or \gls{dsa} (\codeword{DHE_DSS}) key. This key
-  exchange offers both authenticity and \gls{pfs}.
-\end{itemize}
-
-When either of the \gls{dh} variants is used, the value resulting from the exchange is used
-as the \gls{pms} (without the leading \codeword{0}'s). Usually, only the server's
-authenticity is desired, but client's can also be achieved if it provides the
-server its certificate. Whenever the server is authenticated, the server is secure
-against \gls{mitm} attacks. Table \ref{kemps} summarizes the security properties
-offered by each key exchange method.
-
-\begin{table}[]
-\centering
-\caption{Key exchange methods and security properties}
-\label{kemsp}
-\begin{tabular}{|l|c|l|}
-\hline
-\textbf{Key Exch Meth} & \multicolumn{1}{l|}{Authentication} & PFS                    \\ \hline
-RSA                          & X                                   &                        \\ \hline
-DH\_anon                     & \multicolumn{1}{l|}{}               & \multicolumn{1}{c|}{X} \\ \hline
-DH                           & X                                   &                        \\ \hline
-DHE                          & X                                   & \multicolumn{1}{c|}{X} \\ \hline
-\end{tabular}
-\end{table}
-
-Note that in \gls{tls} 1.3, all of static \gls{rsa} and \gls{dh} cipher suites
-have been removed: all of the \gls{pubk} exchange methods now provide \gls{pfs}.
-Even though, anonymous \gls{dh} has also been removed from \gls{tls} 1.3, you can
-still have unauthenticated connections by either using \textbf{raw public keys} \cite{RFC7250}
-or by not verifying the certificate chain and any of it's contents.
-
-\todo{NOTE: I did't cover specifics of how the client generates the premaster secret, etc}
-
-The \gls{ecc}-based key exchange (\gls{ecdh} and \gls{ecdhe}) and authentication (\gls{ecdsa})
-algorithms are defined in \codeword{RFC4292} \cite{RFC4292}, which is also referenced
-in \codeword{RFC5246} \cite{RFC4256}. The document introduces five new
-\gls{ecc}-based key exchange algorithms, all of which use \gls{ecc} to compute
-the \textbf{premaster secret}, differing only in whether the negotiated
-keys are epehemeral (\gls{ecdh}) or long-term (\gls{ecdhe}), as well as the mechanism (if any) used to
-authenticate them. Three new \gls{ecdsa} \textbf{client authentication} mechanisms are also defined,
-differing in the algorithms that the certificate must be signed with, as well
-as the key exchange algorithms that they can be used with.
-Those features are negotiated through the \gls{tls} Extension Mechanism.
-
-\subsection{TLS 1.2 Handshake Protocol}
-
-
-\begin{figure}
-\centering
-\includegraphics[width=0.9\textwidth]{img/tls-12-full-handshake.png}
-\caption{\label{fig:tls-12-handshake} TLS 1.2 message flow for a full handshake}
-\end{figure}
-
-
-In this phase the client and the server agree on which version of the \gls{tls}
-protocol to use, authenticate one to another and negotiate items like
-the cipher suites and the compression method to use. Figure \ref{fig:tls-12-handshake} shows the message flow for the
-full \gls{tls} 1.2 handshake. Note that \codeword{*} indicates situation-dependent
-messages that are not always sent, while \codeword{ChangeCiperSpec} is a separate
-protocol, rather than a message type.
-
-As I explained before every \gls{tls} Handshake message is encapsulated within
-a \gls{tls} Record. The actual Handshake message is contained within the
-\codeword{fragment} of the \gls{tls} Record. The Record type for a Handshake
-message is \codeword{0x16}. The Handshake message has the following structure:
-a 1-byte \codeword{msg_type} field (specifies the Handshake message type),
-a 2-byte \codeword{length} field (specifies the length of the \codeword{body})
-and a \codeword{body} field, which contains a structure depending on the
-\codeword{msh_type} (similar to \codeword{fragment} field in a \gls{tls} Record).
-
-Now, I will describe a typical handshake message flow. I will only be mentioning
-the most important field of each message.
-
-\todo{I don't have space to put all of the structures and things sent in every
-handshake message type (ex: ClientHello.session\_id)}
-
-The connections begins with the client sending a \codeword{ClientHello}, containing
-.\codeword{random}, \codeword{cipher_suites} and \codeword{compresison_methods},
-among other fields.
-\codeword{cipher_suites} contains a \textbf{list} of cipher suites and \codeword{compression_methods}
-contains a list of compression methods (\codeword{compression_methods}) that the
-client supports, ordered by preference, with the most preferred one appearing first.
-The \gls{tls} Record contains a \codeword{2-byte} \codeword{version} field which
-indicates the highest version supported by the client.
-
-The server responds to the \codeword{ClientHello} with a \codeword{ServeHello}
-message, which is similar in its contents, except that instead of containing
-a list of supported features, it contains a single item containing the one that it chose,
-\textit{i.e.}, the server responds with the chosen \codeword{cipher_suite} and
-\codeword{compression_method} (note the \textbf{singular} form) that it chose from the
-corresponding list sent by the client. Just like in the client's case, a \codeword{random}
-is also present. The \codeword{version} field in the \gls{tls} Record indicates
-the \gls{tls} version chosen by the server and it's the one that's gonna be
-used for that connection.
-
-\gls{tls} requires cryptographically secure pseudorandom values to be generated
-by both of the parties independetely. Those random number (or nonces) are essential for freshness
-(protection against replay attacks; we do need both randoms, otherwise the messages could
-be replayed) and session uniqueness, since both of
-the random values are inputs to the \textbf{master secret} generation, meaning
-that a new keying material is generated with every session. If the output of the pseudorandom numbers
-can be predicted by the attacker, he can predict the keying material, as described
-in "A Systematic Analysis of the Juniper Dual EC Incident"\cite{DualECJu15:online}.
-The \codeword{32-byte} random value is composed by concatenating the \codeword{4-byte}
-GMT UNIX time with \codeword{28} cryptographically random bytes. Note that in \gls{tls} 1.3
-the random number structure has the same length, but is generated in a different manner:
-the client's \codeword{32 bytes} are all random, while the server's last \codeword{8 bytes}
-are fixed when negotiating \gls{tls} 1.2 or 1.3.
-
-Next, the server sends a \codeword{Certificate} message, which contains a list
-of \gls{pubk} certificates (a certificate chain): the server's certificate,
-every intermediate certificate and the root certificate. The certificate's contents
-will depend on the negotiated cipher suite and extensions.
-The same message type occurs later in the handshake if the server asks the client for certificate with the
-\codeword{CertificateRequest} message. Note, that in a typical scenario, the
-server will seldom request client authentication.
-
-The \codeword{ServerKeyExchange} message follows, containing additional information
-needed by the client to compute the \codeword{premaster secret}. This message
-is only sent in some key exchange methods, namely \codeword{DHE_DSS}, \codeword{DHE_RSA}
-and \codeword{DH_anon}. For non-anonymous key exchanges, this is the message that authenticates the server to the client,
-since the server sends a digital signature over the client and server randoms
-and the server's key exchange parameters. Note that this is not the only place where the
-server can authenticate itself to the client. For example, if \codeword{RSA} key
-exchange is used, the server authentication is done indirectly when the client
-sends the premaster secret encrypted with the public RSA key provided in the
-server certificate: only the server knows the corresponding private key, so if
-both of the sides generate the same keying material, then the server must be who
-he claims to. In \gls{tls} 1.3 this message is non existent and a similar
-functionality is taken by the \codeword{key_exchange} extension.
-
-The \codeword{ServerHelloDone} is sent to indicate the end of \codeword{ServerHello}
-and associated messages. Upon the receipt of this message, the client should check
-that the server provided a valid certificate. This message is not present in \gls{tls} 1.3.
-
-With the \codeword{ClientKeyExchange} message the \codeword{premaster} secret is
-set, either by direct transmission of the secret generated by the client
-and encrypted with the server's public RSA key (thus, authenticating the server to the client)
-or by the transmission of \gls{dh} parameters that will allow each side to generate
-the same \codeword{premaster} secret independently.
-
-The \codeword{CertificateVerify} message is sent by the client to verify its
-certificate, if it has signing capability (\textit{i.e.} all certificates except for the ones
-containing fixed \gls{dh} parameters).
-
-The \codeword{ChangeCipherSpec} is its own protocol, rather than a type of handshake
-message. It's sent by both parties to notify the reciever that subsequent records
-will be protected under the newly negotiated \codeword{CipherSpec} and keys.
-
-The \codeword{Finished} message is an essential part of the protocol. It's the first
-message protected with the newly negotiated algorithms, keys and secrets. Only after
-both parties have sent and verified the contents of this message is when they can
-be sure that the Handshake has not been tampered with by a \gls{mitm} and begin to
-receive and send application data. Essentially, this message contains keyed hash
-with the master secret over the hash of all the data from all of the
-handshake messages not including any \codeword{HelloRequest} messages and up to, but
-not including, this message. The other party must perform the same computation on its
-side and make sure that the result is identical to the contents of the other party's
-\codeword{Finished} message. If at some point a \gls{mitm} has tampered with the
-handshake, the result will be a mismatch in computed and received contents of the
-\codeword{Finished} message.
-
-At any time after a session has been negotiated, the server may send a \codeword{HelloRequest}
-message, to which the client should respond with a \codeword{ClientHello}, thus
-beginning the negotiation process anew.
-
-At an point in the handshake, the Alert protocol may be used by any of the peers
-to signal any problems or even abort the process by using an appropriate message type.
-
-
-Besides the full handshake, the \gls{tls} 1.2 specification also specifies an
-abbreviated handshake mechanism, which can be used to either resume a previous session
-or duplicate one, instead of negotiating new security parameters (for example, this is useful
-in the context of multiple \codeword{HTTPS} requests for various resources, when loading
-a typical website). The advantage of this mechanism is that the handshake is reduced
-to \codeword{1 RTT}, instead of the usual \codeword{2 RTT} as it's the case in
-the full handshake. In order to do the abbreviated handshake,
-the client and the server must have established a session previously, by performing
-the full handshake. To do this, the clients sends a session ID of the session it wants to
-resume in its \codeword{ClientHello} and its up to the server to decide if he
-wants to resume that session, by responding with a \codeword{ServerHello} containing
-that same session ID value, or if it wants to establish a new session by
-sending a session ID with a different value. The keying material, such as the bulk
-data symmetric encryption keys and the \gls{mac} keys are formed by hashing the new client
-and server random values with the master secret, which means
-that provided that the master secret has not been compromised and that the secure
-hash operations are secure, the new connection will be secure and independent
-from previous connections. The \gls{tls} 1.2 spec, suggests and upper limit
-of $24$ hours for session ID lifetimes, since an attacker who obtains the master secret
-will be able to impersonate the compromised party until the corresponding session
-ID is retired. Note that this mechanism requires state to be maintained in both peers.
-
-%
-\subsection{DLTS}
-
-The design of \gls{dtls} is intentionally very similar to \gls{tls}, in fact, its specification is written
-in terms of differences from \gls{tls}. The changes are mostly done on the lower level,
-and even extensions that have been defined before \gls{dtls} has even existed can be
-used with \gls{dtls}, The latest version of \gls{dtls} is 1.2 and it's defined
-in \codeword{RFC 6347}\cite{RFC6347}. There a draft of \gls{dtls} 1.3
-\cite{I-D.draft-ietf-tls-dtls13} is currently in active development.
-
-Since \gls{dtls} operates on top of an unreliable transport protocol, such as
-UDP, it must explicitly deal with the absence of reliable and ordered assumptions
-that are made by \gls{tls}. The main differences from \gls{dtls} 1.2 to \gls{tls} 1.2 are:
-
-\begin{itemize}
-  \item two new values are added to the record layer: an explicit \codeword{2 byte} sequence
-  number and a \codeword{6 byte} epoch fields. The \gls{dtls} \gls{mac} is the same as of \gls{tls},
-  however, rather than using the implicit sequence number, the \codeword{8 byte} value
-  formed by concatenation of the epoch number and the sequence number is used.
-
-  \item stream ciphers must not be used with \gls{dtls}.
-
-  \item a stateless cookie exchange mechanism has been added to the handshake protocol
-  in order to prevent \gls{dos} attacks. To accomplish this, a new handahke
-  message, the \codeword{HelloVerifyRequest} has been added. After
-  the \codeword{ClientHello}, the server responds with a \codeword{HelloVerifyRequest}
-  containing a cookie, which is returned back to the server in another
-  \codeword{ClientHello} that follows it, after which the handshake proceeds as in \gls{tls}.
-  Although optional for the server, this mechanism highly recommended, and the
-  client must be prepared to respond to it.
-
-  \item the handshake message format has been extended to deal wit message reordering,
-  fragmentation and loss by addition of three new fields: a message sequence field,
-  a fragment offset field and a fragment length field.
-\end{itemize}
-
-\subsection{TLS Extensions}
-
-\gls{tls} extensions were originally defined in \codeword{RFC 4366}\cite{RFC4366}
-and later merged into the \gls{tls} 1.2 base spec. Each extension consists of an
-extension type, which identifies the particular extension type and extension data,
-which contains information specific to a particular extension.
-
-The extension mechanism may be used by \gls{tls} clients and servers; it is backwards
-compatible, which means that the communication is possible between \gls{tls} a
-client that supports a particular extension and a server that does not support it,
-and vice versa. A client may request the use of extensions by sending an extended \codeword{ClientHello}
-message, which is just a "normal" \codeword{ClientHello} with an additional
-block of data that contains a list of extensions. The backwards compatibility is achieved based on the \gls{tls}
-requirement that the servers are not "extensions-aware" ignore the data
-added to the \codeword{ClientHello}s that they don't understand (section \codeword{7.4.1.2} of \codeword{RFC 2246}\cite{rfc2246}),
-meaning that even older servers that don't support extensions, namely the ones with
-version of \gls{tls} prior to 1.2 will not "break".
-
-The presence of extensions can be determined by checking if there are bytes
-following the \codeword{compression_methods} field in the \codeword{ClientHello}.
-If the server understands an extension, it sends back an extended \codeword{ServerHello},
-instead of a regular one. An extended \codeword{ServerHello} is a "normal"
-\codeword{ServerHello} with an additional block of data following the
-\codeword{compression_method} field that contains a list of extensions.
-
-An extended \codeword{ServerHello} message can only be sent in a response to an
-extended \codeword{ClientHello} message. This prevents the possibility that an extended
-\codeword{ServerHello} message could "break" older \gls{tls} clients that do not
-support extensions. An extension type must not appear in the
-extended \codeword{ServerHello}, unless the same extension type appeared in the
-corresponding extended \codeword{CleintHello}, and if this happens, the clients must abort the handshake.
-
-\subsection{TLS 1.3}
-
-Due to limited space, I won't be able to describe \gls{tls} 1.3 in detail. I decided
-to concentrate on \gls{tls} 1.2 instead, because \gls{tls} 1.3 is still in draft
-mode and 1.2 is the latest and the recommended version in use.
-
-Despite the protocol name not suggesting it \gls{tls} 1.3 is
-very different from \gls{tls} 1.2, in fact, it should've probably been called
-\gls{tls} 2.0 instead. I've studied \gls{tls} 1.3 in great detail, and as I already mentioned,
-I have been formally recognized as a \gls{tls} 1.3 contributor 1.3.
-I have also participated in the mailing lists, as part of my work on the architecture of the solution.
-
-Throughout this document, in various parts I mentioned how \gls{tls} 1.3 differs from 1.2.
-A lot of the changes brought in \gls{tls} 1.3 make it more suitable in the context
-of \gls{iot}. Some of those changes I've already mentioned previously in this
-document, here I will add a few more. I will not go into great detail, but
-will give a general overview.
-
-The first important difference is that in \gls{tls} 1.3 extensions are required,
-since some of the functionality has been moved into extensions, in order to preserve
-backwards-compatibility with the previous versions of the \codeword{ClientHello}s.
-In fact, the way a server distinguishes if a client is requesting a \gls{tls} 1.3
-is by checking the presence of the \codeword{supported_versions} extension in the
-extended \codeword{ClientHello}.
-
-In \gls{tls} 1.3 more data is encrypted and the encrytion starts earlier. For example,
-on the server-side you have a notion of "encrypted extensions". The \codeword{EncryptedExtensions}
-message, as the name suggests, contains a list of extensions that are encrypted
-under a symmetric key and it contains any extensions that are not needed
-to establish the cryptographic context.
-
-In \gls{tls} 1.3, non \gls{aead} ciphersuites are not supported anymore.
-Static RSA and \gls{dh} ciphersuites have been removed, meaning that all
-public key exchange mechanisms now provide \gls{pfs}. Even though
-anonymous \gls{dh} key exchange has been removed, you can still have
-unauthenticated connections by either using raw public keys or not verifying the
-certificate and any of its contents.
-
-One of the main problems with using \gls{tls} in \gls{iot} is that while \gls{iot}
-traffic need to be quick and lightweight, \gls{tls} 1.2 adds two additional
-round trips (\codeword{2 RTT}) to the start of every session. \gls{tls} 1.3 handshake has less latency,
-when compared to \gls{tls} 1.2 and this is extremely important in the context of \gls{iot}.
-The full \gls{tls} 1.3 handshake is only \codeword{1 RTT}. \gls{tls} 1.3 even allows
-clients to send data on the first flight (known as "early data"), when the clients
-and servers share a \gls{psk} (either obtained externally or via a previous handshake).
-This means that in \gls{tls} 1.3 you can have \codeword{0-RTT} data, by essentially
-encrypting it with the previously shared \gls{psk}. Session resumption
-via identifiers and tickets has been obsoleted in \gls{tls} 1.3, and both methods
-have been replaced by a \gls{psk} mode. The \gls{psk} is established on a previous
-connection after the handshake is completed and can be presented by the client
-on the next visit.
-
 
 \section{Proposed Solution}
 

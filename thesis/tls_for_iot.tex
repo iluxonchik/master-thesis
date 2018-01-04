@@ -220,8 +220,25 @@ of persistent memory. I measured the resulitng size of the complied mbedTLS 2.6.
 (located in the \codeword{rsa.c} file), from which I concluded that using that module adds an
 extra of \codeword{32KB}.
 
-\subsection{Public Certificates}
+\subsection{Public Certificates and Certificate Chains}
 
+A public key certificate, also known as a digital certificate is an electronic
+document used to prove the ownership of a \gls{pubk}. This allows the other parties
+to rely upon assertions made by the \gls{privk} that corresponds to the \gls{pubk}
+that is certified. In the context of \gls{tls}, certificates serve as a guarantee
+that you're communicating with the claimed entity and not someone impersonating it.
+
+A \gls{ca} is an entity that issues digital certificates. There are two types of
+\gls{ca}s: the \textbf{root \gls{ca}s} and the \textbf{intermediate \gls{ca}s}.
+An intermediate \gls{ca} is provided with a certificate with signing capabilities
+signed by one of the root \gls{ca}s. A \textbf{certificate chain} is a list of
+certificates from the root certificate to the end-user certificate, including
+any intermediate certificates along the way. In order for a certificate
+to be trusted by a device, it must be issued by a \gls{ca} that is included in that
+device's trusted store.
+
+In (D)\gls{tls}, the certificates are in the \codeword{X.509} format, which is
+described in \codeword{RFC 5280}\cite{rfc5280}.
 
 \subsection{AEAD Ciphers}
 

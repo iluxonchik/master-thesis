@@ -73,6 +73,7 @@
 \newacronym{dos}{DoS}{Denial-of-Service}
 \newacronym{ddos}{DDoS}{Distributed Denial-Of-Service}
 \newacronym{pki}{PKI}{Public Key Infrastructure}
+\newacronym{ae}{AE}{Authenticated Encryption}
 
 
 %%% WARN: added as specified here:
@@ -220,13 +221,21 @@ of persistent memory. I measured the resulitng size of the complied mbedTLS 2.6.
 extra of \codeword{32KB}.
 
 \subsection{Public Certificates}
-\todo{todo}
 
 
 \subsection{AEAD Ciphers}
-\todo{Already have this written, need to shorten}
 
+\gls{ae} and \gls{aead} are forms of encryption which simultaneously provide
+confidentiality, integrity and authenticity guarantees on the data. An \gls{ae}
+cipher takes as input a \codeword{key}, a \codeword{nonce} and a \codeword{plaintext}
+and outputs the pair \codeword{(ciphertext, MAC)}, if it is encrypting and does the inverse
+process, while also performing the \gls{mac} check if it is decrypting.
 
+\gls{aead} is nothing more than a variant of \gls{ae}, which comes with an extra
+input parameter that is additional data that's \textbf{only authenticated, but not encrypted}.
+Some \gls{aead} ciphers have shorter authentication tags (\textit{i.e.} shorter \gls{mac}s),
+which makes then more suitable for low-bandwidth networks, since the messages to be sent
+are shorter in size.
 
 \subsection{Terminology}
 

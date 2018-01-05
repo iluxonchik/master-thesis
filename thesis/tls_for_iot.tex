@@ -1,4 +1,4 @@
-I amdoes notthey areI have% This is the file where my Master Thesis will be written. It uses the adapted
+% This is the file where my Master Thesis will be written. It uses the adapted
 % LNCS Template.
 %
 % I'll be using a few codes in the comments, which can be easily looked up:
@@ -138,16 +138,15 @@ I amdoes notthey areI have% This is the file where my Master Thesis will be writ
 
 \begin{abstract}
 This paper explores the idea of developing a lightweight \gls{tls} protocol
-for the \gls{iot}. I begin by explaining why there is a need for security in
+for the \gls{iot}. It begins by explaining why there is a need for security in
 the \gls{iot} ecosystem and why \gls{tls}, as it is, cannot be used in most cases,
-due to the constrained nature of many \gls{iot} devices. I then describe the state
-of the art in the area, most of which is done for \gls{dtls}, but can
+due to the constrained nature of many \gls{iot} devices. Next, the state
+of the art in the area is described, most of which is done for \gls{dtls}, but can
 also be applied to \gls{tls}, since \gls{dtls} is just an adaptation of
-\gls{tls} for unreliable transport protocols, such as UDP. I proceed with a
+\gls{tls} for unreliable transport protocols, such as UDP. The document proceeds with a
 summary of \gls{tls} 1.2, outline its main differences from \gls{tls} 1.3
-and give an overview of the how \gls{dtls} differs from \gls{tls}. Finally, I present
-an architecture of the solution that I will be developing, which relies
-heavily on the use of the \gls{tls} extension mechanism.
+and give an overview of the how \gls{dtls} differs from \gls{tls}. Finally, the architecture of the solution that will be developed, which relies
+heavily on the use of the \gls{tls} extension mechanism, is presented.
 
 \keywords{TLS, DTLS, SSL, IoT, cryptography, protocol, lightweight cryptography}
 \end{abstract}
@@ -186,9 +185,9 @@ very limited processing power, storage and energy. Moreover, the performance of
 TCP is known to be inefficient in wireless networks, due to its congestion control
 algorithm and this situation is worsened with the low-power radios and lossy
 links found in sensor networks. Therefore, \gls{dtls}, which runs on top
-of UDP is mostly used in such devices. The work that I will be doing, however,
-can be applied to either one of them, so even though I will be talking mostly
-about \gls{tls}, almost everything also applies to \gls{dtls} as well, since it is just
+of UDP is mostly used in such devices. The work that will be done in the context of this dissertation, can however,
+be applied to either one of them, so even though mostly
+\gls{tls} will be mentioned, almost everything also applies to \gls{dtls} as well, since it is just
 an adaption of \gls{tls} over unreliable transport protocols, with no changes done
 the core protocol.
 
@@ -204,7 +203,7 @@ milliseconds. Besides that, it will need to perform heavy mathematical operation
 involved in cryptogrpahy, wasting even more battery and taking even more time.
 There is a clear need for a more lightweight (D)\gls{tls} for the \gls{iot}.
 
-With my work, I want to develop a lightweight version of (D)\gls{tls} that is
+The goal of this work is to develop a lightweight version of (D)\gls{tls} that is
 fully backwards compatible and does not require any third-party entities, in order
 to minimize the friction of adoption. The solution will be centered among
 the (D)\gls{tls} versions $1.2$ and $1.3$. The idea is to make it customizable,
@@ -223,9 +222,9 @@ versions $1.2$ and $1.3$, with the most concentration being in the version $1.2$
 it is the latest and the most used version of the protocol (version $1.3$ is still in
 draft mode). Section 3 describes all of the related work done in the area and
 the current state of the art. Finally, Section 4 provides an architecture of the
-solution that I will be developing in the second part of the dissertation, as
-well as how I will be evaluating my results, how I am planning to develop my work
-and a conclusion.
+solution that will be developed in the second part of the dissertation,
+an explanation of how the results will be evaluated, a general work plan
+and a conclusion of the work done in this part.
 
 \section{Background}
 
@@ -247,7 +246,7 @@ Another argument for avoiding as much as possible of the \gls{ac} functionality
 is that it requires extra storage space to be used and this might be a problem for some \gls{iot} devices,
 like \codeword{class 1} devices according to the terminology of constrained-code
 networks \cite{RFC7228} which have about \codeword{10KB} of RAM and \codeword{100KB}
-of persistent memory. I measured the resulitng size of the complied mbedTLS 2.6.0 library
+of persistent memory. I measured the resulting size of the complied \textit{mbedTLS 2.6.0} library
 \cite{SSLLibra13:online} when compiled with and without the \codeword{RSA} module
 (located in the \codeword{rsa.c} file), from which I concluded that using that module adds an
 extra of \codeword{32KB}.
@@ -333,8 +332,9 @@ that \gls{tls} is responsible for:
 
 
 \subsubsection{SSL vs TLS: What's The Difference?}
+
 You will find the names \gls{ssl} and \gls{tls} used interchangeably in the literature,
-so I think it is important to distinguish both. \gls{tls} is an evolution of the \gls{ssl} protocol. The protocol changed
+so it is important to distinguish both. \gls{tls} is an evolution of the \gls{ssl} protocol. The protocol changed
 its name from \gls{ssl} to \gls{tls} when it was
 standardized by the \gls{ietf}.\gls{ssl}
 was a proprietary protocol owned by Netscape Communications, and The \gls{ietf}
@@ -661,7 +661,7 @@ full \gls{tls} 1.2 handshake. Note that \codeword{*} indicates situation-depende
 messages that are not always sent, while \codeword{ChangeCiperSpec} is a separate
 protocol, rather than a message type.
 
-As I explained before every \gls{tls} Handshake message is encapsulated within
+As already mentioned before, every \gls{tls} Handshake message is encapsulated within
 a \gls{tls} Record. The actual Handshake message is contained within the
 \codeword{fragment} of the \gls{tls} Record. The Record type for a Handshake
 message is \codeword{0x16}. The Handshake message has the following structure:
@@ -670,8 +670,7 @@ a 2-byte \codeword{length} field (specifies the length of the \codeword{body})
 and a \codeword{body} field, which contains a structure depending on the
 \codeword{msh_type} (similar to \codeword{fragment} field in a \gls{tls} Record).
 
-Now, I will describe a typical handshake message flow. I will only be mentioning
-the most important field of each message.
+Now, a typical handshake message flow will be described, with only the most important fields of each message mentioned.
 
 The connections begins with the client sending a \codeword{ClientHello}, containing
 .\codeword{random}, \codeword{cipher_suites} and \codeword{compresison_methods},
@@ -822,21 +821,18 @@ corresponding extended \codeword{CleintHello}, and if this happens, the clients 
 
 \subsubsection{TLS 1.3}
 
-Due to limited space, I will not be able to describe \gls{tls} 1.3 in detail. I decided
-to concentrate on \gls{tls} 1.2 instead, because \gls{tls} 1.3 is still in draft
-mode and 1.2 is the latest and the recommended version in use.
+Due to limited space, \gls{tls} 1.3 will not be described in detail. The focus was on \gls{tls} 1.2 instead, because \gls{tls} 1.3 is still in draft
+mode and 1.2 is the latest and the recommended to use version.
 
 Despite the protocol name not suggesting it \gls{tls} 1.3 is
 very different from \gls{tls} 1.2, in fact, it should have probably been called
-\gls{tls} 2.0 instead. I have studied \gls{tls} 1.3 in great detail, and as I already mentioned,
+\gls{tls} 2.0 instead. I have studied \gls{tls} 1.3 in great detail, and as it was  already mentioned,
 I have been formally recognized as a \gls{tls} 1.3 contributor 1.3.
 I have also participated in the mailing lists, as part of my work on the architecture of the solution.
 
-Throughout this document, in various parts I mentioned how \gls{tls} 1.3 differs from 1.2.
-A lot of the changes brought in \gls{tls} 1.3 make it more suitable in the context
-of \gls{iot}. Some of those changes I have already mentioned previously in this
-document, here I will add a few more. I will not go into great detail, but
-will give a general overview.
+Numerous differences of \gls{tls} 1.3 from 1.2 have been mentioned throughout the document.
+Various changes in \gls{tls} 1.3 make it more suitable in the context
+of \gls{iot}. Some of them have already mentioned previously, and in this section a couple more will be outlined.
 
 The first important difference is that in \gls{tls} 1.3 extensions are required,
 since some of the functionality has been moved into extensions, in order to preserve
@@ -914,14 +910,14 @@ Lightweight cryptography is an important topic in the context of \gls{iot}, sinc
 cryptography a fundamental part of security and it is fundamental for it to be
 lightweight in order to run on devices with limited memory and processing
 capabilities. A lot of work in \gls{iot} incorporates it in one way or another,
-so I will begin with the work done in this area.
+so this section will begin with the description of the work done in this area.
 
 Alex \textit{et al}\cite{Stateoft96:online} explore the topic of lightweight symmetric cryptography,
 providing a summary of the lightweight symmetric
 primitives from the academic community, the government agencies and even proprietary
 algorithms which have been either reverse-engineered or leaked. All of those algorithms
-are listed in the paper, alongside relevant metrics. I will not be including the list
-here, due to lack of space. The authors also proposed
+are listed in the paper, alongside relevant metrics. The list will not be
+included here due to lack of space. The authors also proposed
 to split the field into two areas: ultra-lightweight and \gls{iot} cryptography.
 
 The authors systematized the knowledge in the area of lightweight cryptography
@@ -1016,21 +1012,19 @@ resources for them are much higher than for symmetric key ones. As the
 \textit{Lightweight Cryptography for the Internet of Things}\cite{b5b8db9716:online} paper
 by \textit{Sony Corporation} concluded, there are no promising primitives
 that have enough lightweight and security properties, comparing to the
-conventional ones, such as RSA and \gls{ecc}. In my own further research of this
-topic, I came to the same conclusion.
+conventional ones, such as RSA and \gls{ecc}. Further research on this topic lead to the same conclusion.
 
 Lightweight cryptography is an important part of my work and there are papers detailing
-various algorithms. While an important topic for my solution, I do consider that
-it was covered in sufficient detail, by purposefully choosing recent works that
+various algorithms. While an important topic for the final solution, it was covered in sufficient detail, by purposefully describing recent works that
 provide an overview of the different areas, rather than focusing on specific
 implementations, since the length of this section is limited. The remaining text
 in this section will be used to describe work done on the (D)\gls{tls} protocol in the
 context of \gls{iot}.
 
-For the reasons specifed above, the main key exchange mechanism used in IoT
+For the reasons above, the main key exchange mechanism used in IoT
 are \gls{psk}s. S3K\cite{S3KScala62:online} proposes a key management architecture for resource-constrained devices,
 which allows devices that have no previous, direct security relation to use
-TLS or DTLS using one of two approaches: shared symmetric keys or raw public keys.
+(D)\gls{tls} using one of two approaches: shared symmetric keys or raw public keys.
 The resource-constrained device is a server that offers one or more resources,
 such as temperature readings. The idea in both approaches is to introduce a third-party
 \codeword{trust anchor (TA)} that both, the client and the server use to establish
@@ -1045,8 +1039,8 @@ the client will then send the \codeword{psk_identity} that it received in the
 the (D)TLS handshake and the server will derive the \codeword{Kc}, using the
 \codeword{P_hash()} function defined in \cite{RFC5246}.
 
-The second approach consists in the   requesting an APK (the authors never defined
-what this acronym stands for, but I assume they mean "Authorization Public Key")
+The second approach consists in the requesting an APK (the authors never defined
+what this acronym stands for, but my assumption is that they mean "Authorization Public Key")
 from the TA. In his request,
 the client includes his \gls{rpk}, which is used for authorization. The TA
 creates an authorizaton certificate, protects it with a MAC and sends it
@@ -1110,7 +1104,8 @@ as in \codeword{RFC7400} and define the format of the \codeword{In-line Next Hea
 and \codeword{In-Line IP Fields} fields are used in the IPv6 header compression
 and are not in the scope of the paper.
 
-I will exemplify the case where both, the record and the Handshake headers are compressed.
+The case where both, the Record and the Handshake headers are compressed
+will be exemplified.
 In this case \codeword{LOWPAN_NHC Encoding} will contain the \codeword{LOWPAN_NHC_RHS}
 structure (depicted in figure \ref{fig:6lowpan-ghc-rhs}), which is the compressed form of the Record and Handshake headers. The
 parts that are not compressed will be contained in the \codeword{Payload} part.
@@ -1208,7 +1203,7 @@ registers.
 Scalar multiplication is often the most expensive operation in \gls{ec} based
 cryptography, therefore optimizing it is of high interest. The authors used a
 technique called \textit{IBPV} described in \cite{LowcostS87:online}, which is based on precumputation
-of a set of Discrete Log pairs. I will refrain from going into the mathematical details,
+of a set of Discrete Log pairs. The mathematical details have been purposefully omitted,
 since they are not relevant for this description. The \textit{IBPV} technique was used
 to improve the performance of the \gls{ecdsa} signature and was also extended to the
 \gls{ecdh} protocol. In order to reduce the time it takes to do the \gls{ecdsa}
@@ -1228,9 +1223,7 @@ profile for \gls{iot} devices that offers communication security services
 for \gls{iot} applications and is reasonably implementable on many constrained devices.
 In this context, "profile" means available configuration options (ex: which
 cipher suites to use) and protocol extensions that are best suited for \gls{iot} devices.
-The document is rather lengthy, only its fundamental parts will be summarized. I will
-also provide a brief description of some RFCs that I consider to be relevant for
-my work.
+The document is rather lengthy, only its fundamental parts will be summarized. Some \gls{rfc}s that are relevant to this will also be described.
 
 The RFC explores both cases constrained clients and constrained servers, specifying
 a profile for each one and describing the main challenges faced in each scenario.
@@ -1389,8 +1382,7 @@ TCP and \gls{tls} standard being currently developed. The \gls{coap}\cite{RFC725
 for constrained devices and the mentioned standard does not explore any \gls{tls}
 optimizations, and since any \gls{iot} device using it in the future would benefit
 them, this is an important area to explore. None of the related work centered around
-(D)\gls{tls} 1.3, mainly this is because the protocol is still in draft stages, I would not expect
-however, major changes to its design at this point.
+(D)\gls{tls} 1.3, mainly this is because the protocol is still in draft stages, major design changes however, should not be expected at this point.
 
 Most of the work done in this area proposes a solution that is tied to a
 specific protocol, such as \gls{coap}, or requires an introduction of a third-party
@@ -1407,20 +1399,18 @@ compatible with the original protocol, that can be used with either \gls{tls}
 or \gls{dtls} and would work with both versions: (D)\gls{tls} 1.2 and the upcoming
 (D)\gls{tls} 1.3.
 
-In order to achieve the goals above, in my solution I will heavily rely on the extension
-mechanism. By using extensions, I can make any deviations from the original protocol
-that I want, even if they completely change the protocol. This was confirmed by
-one of the \gls{tls} designers, after I sent this question to the official
-\gls{ietf} mailing list\cite{ReTLSTLS31:online}, since none of the \gls{tls}
-specifications or \codeword{RFC 4366} made it clear.
+In order to achieve the goals described in this document above, the extension
+mechanism of \gls{tls} will be heavily relied upon. By using extensions, any deviations from the original protocol an be done, even if they completely change the it. This was confirmed by
+one of the \gls{tls} designers, after I asked this question on the official
+\gls{ietf} mailing list\cite{ReTLSTLS31:online}, since neither of the four versions of the \gls{tls} protocol
+specifications, nor \codeword{RFC 4366} made it clear.
 
-I want to incorporate some of the ideas from \gls{tls} 1.3, such as the
-\codeword{0-RTT data}, which can be done if peers already share a \gls{psk}.
+Ideas from \gls{tls} $1.3$, such as \codeword{0-RTT data}, which can be done if peers already share a \gls{psk} would be interesting to implement in the second part of the work.
 For example, this can be very useful in the context of the temperature sensor
 described in the introduction, where the sensors sends data to a server every
 30 seconds. With \codeword{0-RTT data}, it can communicate securely with minimal costs.
-The use of symmetric crytpography only, has various other advantages in the context
-of \gls{iot} that I described above, so I will look into solutions that revolve around
+The use of symmetric crytpography exclusively, has various additional advantages in the context
+of \gls{iot}, which were already mentioned, so there is value in exploring solutions that revolve around
 \gls{psk}s and that avoid public key cryptography altogether.
 
 Not all \gls{iot} devices are limited to the point of not being able to use
@@ -1431,8 +1421,8 @@ advantage of certificates and \gls{pki}, at least up to some point. My solution
 would be adaptable to any of those scenarios, depending on the context and the security
 requirements, therefore being similar to a framework. For example, some scenarios
 might not require integrity, but not privacy. For those, it makes no sense to
-pay the energy and time overhead of encryption. I will take special care in the
-selection of cipher suites and key exchange methods, possibly even developing my own.
+pay the energy and time overhead of encryption. Special care in the
+selection of cipher suites and key exchange methods needs to be taken, possibly even developing new ones.
 
 (D)\gls{tls} 1.2 is significantly different from (D)\gls{tls} 1.3
 and there has been no work like \codeword{RFC 7924}\cite{RFC7924} done for (D)TLS 1.3
@@ -1442,18 +1432,15 @@ be incorporated into my proposed solution and even backported to \gls{tls} 1.2.
 
 \subsection{Evaluation}
 
-In order to evaluate how good my solution is I will profile both, the original protocol
-implementation and the modified one, which will be my solution. The profiling metrics
-that I will be concentrating in are power consumption, RAM usage, storage usage,
-CPU cycles used and time taken. I will then compare the results. The profiling
+In order to evaluate how good the result of the work is, both, the original protocol
+implementation and the one provided as part of the solution, will be profiled and compared. The relevant profiling metrics are power consumption, RAM usage, storage usage,
+CPU cycles used and time taken. The profiling
 will be done over various simulated scenarios, which emulate real-life usage,
 such as connecting to the server multiple times over a short time period and transfer
 small quantity of data, connecting to the server and transferring a large
 amount of data all at once, and so on.
 
-Most probably, I will only be able to evaluate my solution on \gls{tls} 1.2,
-due to lack of time and the fact that version $1.3$ still lacks stable implementations.
-
+Due to limited time and the fact that \gls{tls} $1.3$ still lacks stable implementations, most likely only the solution under \gls{tls} 1.2 will be evaluated.
 
 \subsection{Planning}
 

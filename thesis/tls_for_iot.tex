@@ -871,7 +871,7 @@ that are made by \gls{tls}. The main differences from \gls{dtls} $1.2$ to \gls{t
   \item stream ciphers must not be used with \gls{dtls}.
 
   \item a stateless cookie exchange mechanism has been added to the handshake protocol
-  in order to prevent \gls{dos} attacks. To accomplish this, a new handahke
+  in order to prevent \gls{dos} attacks. To accomplish this, a new handshake
   message, the \codeword{HelloVerifyRequest} has been added. After
   the \codeword{ClientHello}, the server responds with a \codeword{HelloVerifyRequest}
   containing a cookie, which is returned back to the server in another
@@ -939,22 +939,22 @@ of memory to store both: their internal states, for example, \codeword{1600 bits
 and the block they are operating on, for example, \codeword{512 bits} in the case of SHA-2.
 The required internal state is acceptable for a desktop computer, but not for a
 constrained device. Taking this into consideration, the most common approach
-taken by the designers is to use a sponge construction with a very small bitate.
+taken by the designers is to use a sponge construction with a very small bitrate.
 A sponge function is an algorithm with an internal state that takes as an input
 a bit stream of any length and outputs a bit stream of any desired length. Sponge
 functions are used to implement many cryptographic primitives, such as cryptographic
 hashes. The bitrate decides how fast the plain text is processed and how fast the
 final digest is produced. A small bitrate means that the output will take longer
 to be produced, which means that a smaller capacity (the security level)
-can be used, which minimizes the memory footpirnt at the cost of slower data
+can be used, which minimizes the memory footprint at the cost of slower data
 processing. A capacity of \codeword{128 bits} and a bitrate of \codeword{8 bits}
-are common values for lighweight hash functions.
+are common values for lightweight hash functions.
 
 Another trend in the lightweight algorithms noticed by the authors is the
 preference for ARX-based and bitsliced-S-Box based designs, as well as simple
 key schedules.
 
-Finally, a separation of the "lightweight algorithms" defintion into two
+Finally, a separation of the "lightweight algorithms" definition into two
 distinct fields has been proposed:
 
 \begin{itemize}
@@ -1023,14 +1023,14 @@ The second approach consists in the requesting an APK (the authors never defined
 what this acronym stands for, but my assumption is that they mean "Authorization Public Key")
 from the TA. In his request,
 the client includes his \gls{rpk}, which is used for authorization. The TA
-creates an authorizaton certificate, protects it with a MAC and sends it
+creates an authorization certificate, protects it with a MAC and sends it
 to the client alongside the server's \gls{pubk}.
 The client then sends this APK (instead of the \gls{rpk})
 when connecting to the server, which verifies the APK (to authorize the client)
 and proceeds with the handshake in the \gls{rpk} mode, as defined in \cite{RFC4279}.
 To achieve this, a new certificate structure is defined, alongside a new \codeword{certificate_type}.
-The new certificate strucure is just the RFC7250 \cite{RFC7250} structure, with an
-additonal MAC.
+The new certificate structure is just the RFC7250 \cite{RFC7250} structure, with an
+additional MAC.
 
 The has function used for key derivation is SHA256. The authors evaluated the
 performance of their solution with and without SHA2 hardware acceleration and
@@ -1053,7 +1053,7 @@ for 6LoWPANs that can be used to compress the UDP payload. The authors propose
 a way to compress DTLS headers and messages using this mechanism.
 
 The paper \cite{6LoWPANC53:online} defines how the \gls{dtls} Record header, the \gls{dtls} Handshake header,
-the ClientHello and the ServerHello messages can be compressed, but notes that
+the \codeword{ClientHello} and the \codeword{ServerHello} messages can be compressed, but notes that
 the same compression techniques can be used to compress the remaining Handshake
 messages. They explore two cases for the header compression: compressing both,
 the Record header and the Handshake header and compressing the Record header only,
@@ -1080,7 +1080,7 @@ the UDP payload carries a header-like payload (the DTLS record header).
 Figure \ref{fig:6lowpan-header} shows the way IPv6 next header compression is done.
 The authors use the same value for the \codeword{LOWPAN_NHC Encoding} field (defined in \cite{RFC6282})
 as in \codeword{RFC7400} and define the format of the \codeword{In-line Next Header Fields}
-(defined in \cite{RFC6282}), which is the compressed DTLS content. The \codeword{LOWPAN_IPHC Encoding}
+(defined in \cite{RFC6282}), which is the compressed \gls{dtls} content. The \codeword{LOWPAN_IPHC Encoding}
 and \codeword{In-Line IP Fields} fields are used in the IPv6 header compression
 and are not in the scope of the paper.
 
@@ -1106,17 +1106,17 @@ since they can be inferred from the lower layers.
 
 The evaluation showed that the compression can save a significant number of bits:
 the Record header, that is included in all messages can be compressed by \codeword{64 bits}
-(\textit{i.e.} by \codeword{62\%}).
+(\textit{i.e.} by $62\%$).
 
 There is also a proposal for TCP header compression for 6LoWPAN\cite{I-D.aayadi-6lowpan-tcphc},
 which if adopted, in many cases can compress the mandatory \codeword{20 bytes} TCP header
 into \codeword{6 bytes}. This means that the same ideas can be applied to TCP and
-TLS as well.
+\gls{tls} as well.
 
 Later, in 2013, Raza \textit{et al.} proposed a security scheme called Lithe\cite{LitheLig40:online},
-which is a lightweight security solution for \gls{coap} that uses the same DTLS header
+which is a lightweight security solution for \gls{coap} that uses the same \gls{dtls} header
 compression technique as in \cite{6LoWPANC53:online} with the goal of implementing
-it as a security support for \gls{coap}.\gls{coap}\cite{RFC7959} is a specialized
+it as a security support for \gls{coap}. \gls{coap}\cite{RFC7959} is a specialized
 RESTful Internet Application Protocol for constrained devices. it is designed to easily
 translate to HTTP, in order to simplify its integration with the web,
 while also meeting requirements such as multicast support and low overhead.
@@ -1130,11 +1130,11 @@ with active work being done in this area.
 
 
 The authors evaluated their system in a simulated environment in Contiki OS and
-they obtained significant gains in terms of packet size (similiar numbers to the
-ones obsever in \cite{6LoWPANC53:online}), energy consumption (in average \codeword{15\%} less
+they obtained significant gains in terms of packet size (similar numbers to the
+ones observer in \cite{6LoWPANC53:online}), energy consumption (in average \codeword{15\%} less
 energy is used to transmitting and receive compressed packets), processing time
 (the compression and decompression time of DTLS headers is almost negligible)
-and network-wide response times(up to \codeword{50\%} smaller RTT). The
+and network-wide response times(up to $50\%$ smaller RTT). The
 gains in the mentioned measures are the largest when the compression avoids
 fragmentation (in the paper, for payload size of \codeword{48 bytes}).
 
@@ -1154,10 +1154,10 @@ decided to delegate the tasks of \textbf{reliability} and \textbf{fragmentation}
 can be removed altogether from the \gls{dtls} implementation, thus reducing ROM
 occupancy. This part of their work was based on an informational RFC draft\cite{I-D.keoh-dtls-profile-iot}, in which the
 authors profiled \gls{dtls} for \gls{coap}-based \gls{iot} applications and proposed
-the use of a RESTful \gls{dtls} Handshake which relies on \gls{coap} block-wise
+the use of a \textit{RESTful} \gls{dtls} Handshake which relies on \gls{coap} block-wise
 transfer to address the fragmentation issue.
 
-To achieve this they  proposed the use of a RESTful \gls{dtls} connection as a \gls{coap} resource,
+To achieve this they  proposed the use of a \textit{RESTful} \gls{dtls} connection as a \gls{coap} resource,
 which is created when a new secure session is requested.
 The authors exploit the the \gls{coap}s capability to provide connection-oriented
 communication offered by its message layer. In particular, each \codeword{Confirmable}
@@ -1182,7 +1182,7 @@ registers.
 
 Scalar multiplication is often the most expensive operation in \gls{ec} based
 cryptography, therefore optimizing it is of high interest. The authors used a
-technique called \textit{IBPV} described in \cite{LowcostS87:online}, which is based on precumputation
+technique called \textit{IBPV} described in \cite{LowcostS87:online}, which is based on pre-computation.
 of a set of Discrete Log pairs. The mathematical details have been purposefully omitted,
 since they are not relevant for this description. The \textit{IBPV} technique was used
 to improve the performance of the \gls{ecdsa} signature and was also extended to the
@@ -1198,7 +1198,7 @@ respect to a standard, non-optimized implementation. Leaving reliability and
 fragmentation tasks to \gls{coap}, reduces the \gls{dtls} implementation code size
 by approximately $23\%$.
 
-\codeword{RFC 7925}\cite{RFC7925} describes a \gls{tls} and \gls{dtls} 1.2
+\codeword{RFC 7925}\cite{RFC7925} describes a \gls{tls} and \gls{dtls} $1.2$
 profile for \gls{iot} devices that offers communication security services
 for \gls{iot} applications and is reasonably implementable on many constrained devices.
 In this context, "profile" means available configuration options (ex: which
@@ -1217,14 +1217,14 @@ For the credential types the profile considers 3 cases:
 \begin{itemize}
   \item \gls{psk} - authentication based on \gls{psk}s is described in
   \codeword{RFC 4249}\cite{RFC4279}. When using \gls{psk}s, the client indicates which
-  key it uses by including a \gls{psk} identity in its ClientKeyExchange message.
+  key it uses by including a \gls{psk} identity in its \codeword{ClientKeyExchange} message.
   A server can have different \gls{psk} identities shared with different clients.
   An identity can have any size, up to a maximum of \codeword{128 bytes}.
   The profile recommends the use of shorter \gls{psk} identities and specifies
   \codeword{TLS_PSK_WITH_AES_128_CCM_8} as the only mandatory-to-implement
-  ciphersuite to be used with \gls{psk}s, just like \gls{coap} does. \gls{pfs} is
+  cipher suite to be used with \gls{psk}s, just like \gls{coap} does. \gls{pfs} is
   a property that preserves the confidentiality of past interactions even if the
-  long-term secret is compromised. If a \gls{pfs} ciphersuite is used, ephemeral
+  long-term secret is compromised. If a \gls{pfs} cipher suite is used, ephemeral
   \gls{dh} keys should not be reused over multiple protocol exchanges.
 
   \item \gls{rpk} - the use of \gls{rpk}s in (D)TLS is described in \codeword{RFC 7250}\cite{RFC7250}.
@@ -1240,8 +1240,8 @@ For the credential types the profile considers 3 cases:
   recommends the use of the \gls{tls} Cached Information extension\cite{RFC7924}, which
   enables the \gls{tls} peers to exchange just the fingerprint (a shorter sequence of bytes
   used to identify a \gls{pubk}) of the \gls{pubk}. The only mandatory-to-implement
-  ciphersuite to be used with \gls{rpk}s is \codeword{TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8},
-  just like with \gls{coap}. Note that the ciphersuite makes the use of \gls{aead}.
+  cipher suite to be used with \gls{rpk}s is \codeword{TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8},
+  just like with \gls{coap}. Note that the cipher suite makes the use of \gls{aead}.
 
   \item certificate - conventional certificates can also be used. The support
   for the Cached Information extension\cite{RFC7924} and the \codeword{TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8}
@@ -1258,7 +1258,7 @@ For the credential types the profile considers 3 cases:
   extension allows the clients to indicate which trust anchors they support, which is useful
   for constrained clients that due to memory limitation posses only a small number
   of \gls{ca} root keys, since it can avoid repeated handshake failures. If the clients interacts with
-  dynamically discovered set of (D)TLS servers, the use of this extension is recommended,
+  dynamically discovered set of (D)\gls{tls} servers, the use of this extension is recommended,
   if that set is fixed, it is not recommended.
 
 \end{itemize}
@@ -1267,11 +1267,11 @@ The signature algorithms extension\cite{RFC5246} allows the client to indicate
 to the server which signature/hash pairs it supports to be used in digital signatures.
 The client must send this extension to indicate the use of \codeword{SHA-256},
 otherwise the defaults defined in \cite{RFC5246} are used. This extension is not
-applicable when the \gls{psk}-based ciphersuites are used.
+applicable when the \gls{psk}-based cipher suites are used.
 
 The profile mandates that constrained clients must implement the session
 resumption to improve the performance of the handshake since this will lead to
-less exchanged messages, lower computational overhead, since only symmetric cyrptography
+less exchanged messages, lower computational overhead, since only symmetric cryptography
 is used, and it requires less bandwidth. In case the server is constrained, but
 the client is not, the client must implement the Session Resumption Without
 Server-Side State mechanism\cite{RFC5077}, which is achieved through the
@@ -1285,7 +1285,7 @@ recommends disabling (D)TLS level compression, due to attacks such as \codeword{
 \codeword{RFC7525} provides recommendations for improving the security of deployed services
 that use \gls{tls} and \gls{dtls} and was published as a response to the various
 attacks on (D)TLS that have emerged over the years. Second, for \gls{iot} applications,
-the (D)\gls{tls} compression is not needed, since application-layer protocols are hightly
+the (D)\gls{tls} compression is not needed, since application-layer protocols are highly
 optimized and compression at the (D)TLS layer increases the implementation's size and complexity.
 
 \codeword{RFC6520} defines a heartbeat mechanism to test whether the other peer
@@ -1322,8 +1322,8 @@ extension.
 
 The Session Hash Extended Master Secret Extension \cite{RFC7627} defines an extension
 that binds the master secret to the log of the full handshake, thus preventing
-\gls{mitm} attacks, such as the tripple handshake\cite{TripleHa89:online}. Even though the
-ciphersuites recommended by the profile are not vulnerable to this attack, the
+\gls{mitm} attacks, such as the triple handshake\cite{TripleHa89:online}. Even though the
+cipher suites recommended by the profile are not vulnerable to this attack, the
 implementation of this extension is advised. In order to prevent the renegotiation
 attack\cite{RFC5746}, the profile requires the \gls{tls} renegotiation feature
 to be disabled.
@@ -1335,7 +1335,7 @@ conservatively under the assumption that \gls{iot} devices have a long expected
 lifetime ($10+$ years) and that those key recommendations refer to the long-term
 keys used for device authentication. Keys that are provisioned dynamically
 and used for protection of transactional data, such as the ones used in
-(D)\gls{tls} ciphersuites, may be shorter, dependent on the sensitivity of
+(D)\gls{tls} cipher suites, may be shorter, dependent on the sensitivity of
 transmitted data.
 
 Even though \gls{tls} defines a single stream cipher: the RC4, its use is no longer
@@ -1389,14 +1389,14 @@ Ideas from \gls{tls} $1.3$, such as \codeword{0-RTT data}, which can be done if 
 For example, this can be very useful in the context of the temperature sensor
 described in the introduction, where the sensors sends data to a server every
 30 seconds. With \codeword{0-RTT data}, it can communicate securely with minimal costs.
-The use of symmetric crytpography exclusively, has various additional advantages in the context
+The use of symmetric cryptography exclusively, has various additional advantages in the context
 of \gls{iot}, which were already mentioned, so there is value in exploring solutions that revolve around
 \gls{psk}s and that avoid public key cryptography altogether.
 
 Not all \gls{iot} devices are limited to the point of not being able to use
-public key crytpography at all. For some of them, the use of something like raw
+public key cryptography at all. For some of them, the use of something like raw
 public keys, which is considered the first entry point into the area of \gls{pubk}
-crytpography, is acceptable, while others are powerful enough to take
+cryptography, is acceptable, while others are powerful enough to take
 advantage of certificates and \gls{pki}, at least up to some point. My solution
 would be adaptable to any of those scenarios, depending on the context and the security
 requirements, therefore being similar to a framework. For example, some scenarios
@@ -1430,7 +1430,7 @@ on the target device and required security guarantees. Most probably, I will not
 have time to implement and evaluate every possible scenario, so I will have to choose
 only a few of them.
 During month of March $2018$, I will implement the solution in code, by modifying
-the mbedTLS 2.6.0 library\cite{SSLLibra13:online} code, decide which metrics
+the \textit{mbedTLS 2.6.0} library\cite{SSLLibra13:online} code, decide which metrics
 I want to evaluate, set up the profiling code and design the testing scenarios.
 From early April $2018$ until March $2018$ I will be evaluating my solution and
 concentrate more on writing the dissertation's text.

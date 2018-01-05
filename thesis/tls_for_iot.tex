@@ -210,9 +210,9 @@ to minimize the friction of adoption. The solution will be developed for
 depending on the security requirements of the context of its use, in that sense, it is similar to a framework.
 
 In the process of my work on this dissertation, I have made several
-contributions to the \gls{tls} 1.3 specification and have been officially
+contributions to the \gls{tls} $1.3$ specification and have been officially
 recognized as a contributor, my name will be on the final document specifying
-the \gls{tls} 1.3 protocol.
+the \gls{tls} $1.3$ protocol.
 
 The document is organized as follows: Section 2 describes the background. It
 begins with introducing some of the concepts that will be used throughout
@@ -374,14 +374,14 @@ this is not true, since it deprecated all non-\gls{aead} ciphers in favor of
 
 \subsubsection{Cipher Spec vs Cipher Suite}
 
-The meaning of these terms differs in \gls{tls} 1.2 and \gls{tls} 1.3. For \gls{tls} 1.2,
+The meaning of these terms differs in \gls{tls} $1.2$ and \gls{tls} $1.3$. For \gls{tls} $1.2$,
 \textbf{cipher spec} defines the message encryption algorithm and the message
 authentication algorithm, while the \textbf{cipher suite} is the \textbf{cipher spec},
 alongside the definition of the \textbf{key exchange} algorithm and the \gls{prf} (used in key generation). In \gls{tls} 1.3, the
  \textbf{cipher spec} has been removed altogether, since the  \textbf{ChangeCipherSpec}
  protocol has been removed. The concept of \textbf{cipher suite} has been updated
  to define the pair of \gls{aead} algorithm and hash function to be used with
- \gls{hkdf}: in \gls{tls} 1.3 the  \textbf{key exchange} algorithm is negotiated via
+ \gls{hkdf}: in \gls{tls} $1.3$ the  \textbf{key exchange} algorithm is negotiated via
  extensions.
 
 \subsubsection{TLS (Sub)Protocols}
@@ -456,7 +456,7 @@ it is important to distinguish between a \textbf{TLS session} and a \textbf{TLS 
 
 \subsubsection{\gls{tls} Record Processing}
 A \gls{tls} record must go through some processing before it can tbe sent over the netwrok.
-This processing involves the following steps (\codeword{4} for \gls{tls} 1.2 and \codeword{3} for \gls{tls} 1.3):
+This processing involves the following steps (\codeword{4} for \gls{tls} $1.2$ and \codeword{3} for \gls{tls} 1.3):
 
 \begin{enumerate}
   \item \textbf{Fragmentation} - the \gls{tls} \codeword{Record Layer} takes arbitrary-length data and \textbf{fragments}
@@ -499,7 +499,7 @@ encrypt the data to be sent to the server and another different key to decrypt t
 that it receives from the server. This means that in order to deal with data
 encryption and decryption, both of the communicating entities have two keys:
 one to encrypt the outgoing data and one to decrypt the incoming data. Those keys
-have different names in \gls{tls} 1.2 and \gls{tls} 1.3, but they serve the same
+have different names in \gls{tls} $1.2$ and \gls{tls} 1.3, but they serve the same
 basic purpose. In this general description, they will be referred as \codeword{client_write key}
 (used by the client to encrypt the data to be sent), \codeword{client_read_key}(used by the client to
 decrypt the incoming data from the server), \codeword{server_write_key}(used by the server to encrypt
@@ -507,7 +507,7 @@ the data to be sent) and \codeword{server_read_key}(used by the server to decryp
 data from the client). Note, that the following relationships must hold:
 \codeword{client_write_key == server_write_key} and \codeword{client_read_key == server_write_key}.
 
-Besides the secret keys mentioned previously, in \gls{tls} 1.2 you might also have other ones,
+Besides the secret keys mentioned previously, in \gls{tls} $1.2$ you might also have other ones,
 depending on the cipher suite in use, namely the \codeword{client/server_wirite_IV} that
 is only generated for implicit nonce techniques used with \gls{aead} ciphers and the
 \codeword{client/server_write_MAC_key}, which is the input secret to the \gls{mac}
@@ -538,14 +538,14 @@ the \codeword{secret} input is the \codeword{master secret}.
 
 The cryptographic hash function used in \codeword{P_hash(secret, label, seed)} is
 a hash function implicitly defined by the cipher suite in use. All of the cipher
-suites defined in the \gls{tls} 1.2 base spec use \codeword{SHA-256} and any new
+suites defined in the \gls{tls} $1.2$ base spec use \codeword{SHA-256} and any new
 cipher suites must explicitly specify a the same hash function or a stronger one.
 
 \subsubsection{TLS 1.3 Keying Material}
 
 \gls{tls} 1.3's keying material generation is a little more complex, since different
 keys are used to encrypt data throughout the Handshake Protocol. This can be
-explained by the fact that in \gls{tls} 1.3 the encryption begins earlier, with
+explained by the fact that in \gls{tls} $1.3$ the encryption begins earlier, with
 Handshake messages besides the \codeword{Finished} being encrypted,
 as well as features such as \textbf{early client data}, also known as \textbf{0-RTT data},
 where data comes encrypted in the first flight. As a result of those properties,
@@ -585,7 +585,7 @@ The base spec specifies 4 key exchange methods, one using \gls{rsa} and 3 using
   \item anonymous \gls{dh} (\codeword{DH_annon}) [removed in \gls{tls} 1.3] - a \gls{dh} key exchange is
   performed and an \textbf{ephemeral} key is generated, but the exchanged \gls{dh}
   parameters are \textbf{not authenticated}, making the resulting key exchange
-  vulnerable to \gls{mitm} attacks. \gls{tls} 1.2 spec states that cipher suites
+  vulnerable to \gls{mitm} attacks. \gls{tls} $1.2$ spec states that cipher suites
   using \codeword{DH_annon} \textbf{must not} be used, unless the application
   layer explicitly requests so. This key exchange offers \gls{pfs}, but no
   authenticity.
@@ -644,14 +644,14 @@ Those features are negotiated through the \gls{tls} Extension Mechanism.
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{img/tls-12-full-handshake2.png}
-\caption{\label{fig:tls-12-handshake} TLS 1.2 message flow for a full handshake}
+\caption{\label{fig:tls-12-handshake} \gls{tls} $1.2$ message flow for a full handshake}
 \end{figure}
 
 
 In this phase the client and the server agree on which version of the \gls{tls}
 protocol to use, authenticate one to another and negotiate items like
 the cipher suites and the compression method to use. Figure \ref{fig:tls-12-handshake} shows the message flow for the
-full \gls{tls} 1.2 handshake. Note that \codeword{*} indicates situation-dependent
+full \gls{tls} $1.2$ handshake. Note that \codeword{*} indicates situation-dependent
 messages that are not always sent, while \codeword{ChangeCiperSpec} is a separate
 protocol, rather than a message type.
 
@@ -697,7 +697,7 @@ The \codeword{32-byte} random value is composed by concatenating the \codeword{4
 GMT UNIX time with \codeword{28} cryptographically random bytes. Note that in \gls{tls} 1.3
 the random number structure has the same length, but is generated in a different manner:
 the client's \codeword{32 bytes} are all random, while the server's last \codeword{8 bytes}
-are fixed when negotiating \gls{tls} 1.2 or 1.3.
+are fixed when negotiating \gls{tls} $1.2$ or 1.3.
 
 Next, the server sends a \codeword{Certificate} message, which contains a list
 of \gls{pubk} certificates (a certificate chain): the server's certificate,
@@ -718,7 +718,7 @@ exchange is used, the server authentication is done indirectly when the client
 sends the premaster secret encrypted with the public RSA key provided in the
 server certificate: only the server knows the corresponding private key, so if
 both of the sides generate the same keying material, then the server must be who
-he claims to. In \gls{tls} 1.3 this message is non existent and a similar
+he claims to. In \gls{tls} $1.3$ this message is non existent and a similar
 functionality is taken by the \codeword{key_exchange} extension.
 
 The \codeword{ServerHelloDone} is sent to indicate the end of \codeword{ServerHello}
@@ -759,7 +759,7 @@ beginning the negotiation process anew.
 At an point in the handshake, the Alert protocol may be used by any of the peers
 to signal any problems or even abort the process by using an appropriate message type.
 
-Besides the full handshake, the \gls{tls} 1.2 specification also specifies an
+Besides the full handshake, the \gls{tls} $1.2$ specification also specifies an
 abbreviated handshake mechanism, which can be used to either resume a previous session
 or duplicate one, instead of negotiating new security parameters (for example, this is useful
 in the context of multiple \codeword{HTTPS} requests for various resources, when loading
@@ -776,7 +776,7 @@ data symmetric encryption keys and the \gls{mac} keys are formed by hashing the 
 and server random values with the master secret, which means
 that provided that the master secret has not been compromised and that the secure
 hash operations are secure, the new connection will be secure and independent
-from previous connections. The \gls{tls} 1.2 spec, suggests and upper limit
+from previous connections. The \gls{tls} $1.2$ spec, suggests and upper limit
 of $24$ hours for session ID lifetimes, since an attacker who obtains the master secret
 will be able to impersonate the compromised party until the corresponding session
 ID is retired. Note that this mechanism requires state to be maintained in both peers.
@@ -784,7 +784,7 @@ ID is retired. Note that this mechanism requires state to be maintained in both 
 \subsubsection{TLS Extensions}
 
 \gls{tls} extensions were originally defined in \codeword{RFC 4366}\cite{RFC4366}
-and later merged into the \gls{tls} 1.2 base spec. Each extension consists of an
+and later merged into the \gls{tls} $1.2$ base spec. Each extension consists of an
 extension type, which identifies the particular extension type and extension data,
 which contains information specific to a particular extension.
 
@@ -797,7 +797,7 @@ block of data that contains a list of extensions. The backwards compatibility is
 requirement that the servers are not "extensions-aware" ignore the data
 added to the \codeword{ClientHello}s that they do not understand (section \codeword{7.4.1.2} of \codeword{RFC 2246}\cite{RFC2246}),
 meaning that even older servers that do not support extensions, namely the ones with
-version of \gls{tls} prior to 1.2 will not "break".
+version of \gls{tls} prior to $1.2$ will not "break".
 
 The presence of extensions can be determined by checking if there are bytes
 following the \codeword{compression_methods} field in the \codeword{ClientHello}.
@@ -815,27 +815,27 @@ corresponding extended \codeword{CleintHello}, and if this happens, the clients 
 
 \subsubsection{TLS 1.3}
 
-Due to limited space, \gls{tls} 1.3 will not be described in detail. The focus was on \gls{tls} 1.2 instead, because \gls{tls} 1.3 is still in draft
-mode and 1.2 is the latest and the recommended to use version.
+Due to limited space, \gls{tls} $1.3$ will not be described in detail. The focus was on \gls{tls} $1.2$ instead, because \gls{tls} $1.3$ is still in draft
+mode and $1.2$ is the latest and the recommended to use version.
 
-Despite the protocol name not suggesting it \gls{tls} 1.3 is
+Despite the protocol name not suggesting it \gls{tls} $1.3$ is
 very different from \gls{tls} 1.2, in fact, it should have probably been called
-\gls{tls} 2.0 instead. I have studied \gls{tls} 1.3 in great detail, and as it was  already mentioned,
-I have been formally recognized as a \gls{tls} 1.3 contributor 1.3.
+\gls{tls} 2.0 instead. I have studied \gls{tls} $1.3$ in great detail, and as it was  already mentioned,
+I have been formally recognized as a \gls{tls} $1.3$ contributor 1.3.
 I have also participated in the mailing lists, as part of my work on the architecture of the solution.
 
-Numerous differences of \gls{tls} 1.3 from 1.2 have been mentioned throughout the document.
-Various changes in \gls{tls} 1.3 make it more suitable in the context
+Numerous differences of \gls{tls} $1.3$ from $1.2$ have been mentioned throughout the document.
+Various changes in \gls{tls} $1.3$ make it more suitable in the context
 of \gls{iot}. Some of them have already mentioned previously, and in this section a couple more will be outlined.
 
-The first important difference is that in \gls{tls} 1.3 extensions are required,
+The first important difference is that in \gls{tls} $1.3$ extensions are required,
 since some of the functionality has been moved into extensions, in order to preserve
 backwards-compatibility with the previous versions of the \codeword{ClientHello}s.
 In fact, the way a server distinguishes if a client is requesting a \gls{tls} 1.3
 is by checking the presence of the \codeword{supported_versions} extension in the
 extended \codeword{ClientHello}.
 
-In \gls{tls} 1.3 more data is encrypted and the encrytion starts earlier. For example,
+In \gls{tls} $1.3$ more data is encrypted and the encrytion starts earlier. For example,
 on the server-side you have a notion of "encrypted extensions". The \codeword{EncryptedExtensions}
 message, as the name suggests, contains a list of extensions that are encrypted
 under a symmetric key and it contains any extensions that are not needed
@@ -849,13 +849,13 @@ unauthenticated connections by either using raw public keys or not verifying the
 certificate and any of its contents.
 
 One of the main problems with using \gls{tls} in \gls{iot} is that while \gls{iot}
-traffic need to be quick and lightweight, \gls{tls} 1.2 adds two additional
-round trips (\codeword{2 RTT}) to the start of every session. \gls{tls} 1.3 handshake has less latency,
-when compared to \gls{tls} 1.2 and this is extremely important in the context of \gls{iot}.
-The full \gls{tls} 1.3 handshake is only \codeword{1 RTT}. \gls{tls} 1.3 even allows
+traffic need to be quick and lightweight, \gls{tls} $1.2$ adds two additional
+round trips (\codeword{2 RTT}) to the start of every session. \gls{tls} $1.3$ handshake has less latency,
+when compared to \gls{tls} $1.2$ and this is extremely important in the context of \gls{iot}.
+The full \gls{tls} $1.3$ handshake is only \codeword{1 RTT}. \gls{tls} $1.3$ even allows
 clients to send data on the first flight (known as "early data"), when the clients
 and servers share a \gls{psk} (either obtained externally or via a previous handshake).
-This means that in \gls{tls} 1.3 you can have \codeword{0-RTT} data, by essentially
+This means that in \gls{tls} $1.3$ you can have \codeword{0-RTT} data, by essentially
 encrypting it with the previously shared \gls{psk}. Session resumption
 via identifiers and tickets has been obsoleted in \gls{tls} 1.3, and both methods
 have been replaced by a \gls{psk} mode. The \gls{psk} is established on a previous
@@ -868,13 +868,13 @@ on the next visit.
 The design of \gls{dtls} is intentionally very similar to \gls{tls}, in fact, its specification is written
 in terms of differences from \gls{tls}. The changes are mostly done on the lower level,
 and even extensions that have been defined before \gls{dtls} has even existed can be
-used with \gls{dtls}, The latest version of \gls{dtls} is 1.2 and it is defined
+used with \gls{dtls}, The latest version of \gls{dtls} is $1.2$ and it is defined
 in \codeword{RFC 6347}\cite{RFC6347}. There is a draft of \gls{dtls} 1.3
 \cite{I-D.ietf-tls-dtls13} that is currently under active development.
 
 Since \gls{dtls} operates on top of an unreliable transport protocol, such as
 UDP, it must explicitly deal with the absence of reliable and ordered assumptions
-that are made by \gls{tls}. The main differences from \gls{dtls} 1.2 to \gls{tls} 1.2 are:
+that are made by \gls{tls}. The main differences from \gls{dtls} $1.2$ to \gls{tls} $1.2$ are:
 
 \begin{itemize}
   \item two new values are added to the record layer: an explicit \codeword{2 byte} sequence
@@ -1390,7 +1390,7 @@ hobby projects or projects for small businesses, leaving the communications inse
 in the worse case scenario. The goal of this work is to design a solution that can be used out
 of the box and is not tailored towards any specific protocol, that is fully backwards
 compatible with the original protocol, that can be used with either \gls{tls}
-or \gls{dtls} and would work with both versions: (D)\gls{tls} 1.2 and the upcoming
+or \gls{dtls} and would work with both versions: (D)\gls{tls} $1.2$ and the upcoming
 (D)\gls{tls} 1.3.
 
 In order to achieve the goals described in this document above, the extension
@@ -1418,9 +1418,9 @@ might not require integrity, but not privacy. For those, it makes no sense to
 pay the energy and time overhead of encryption. Special care in the
 selection of cipher suites and key exchange methods needs to be taken, possibly even developing new ones.
 
-(D)\gls{tls} 1.2 is significantly different from (D)\gls{tls} 1.3
+(D)\gls{tls} $1.2$ is significantly different from (D)\gls{tls} 1.3
 and there has been no work like \codeword{RFC 7924}\cite{RFC7924} done for (D)TLS 1.3
-and it would be interesting to explore this. \gls{tls} 1.3 has many fundamental changes
+and it would be interesting to explore this. \gls{tls} $1.3$ has many fundamental changes
 to the way the handshake is done, bringing many new features, whose ideas can
 be incorporated into my proposed solution and even backported to \gls{tls} 1.2.
 
@@ -1434,7 +1434,7 @@ such as connecting to the server multiple times over a short time period and tra
 small quantity of data, connecting to the server and transferring a large
 amount of data all at once, and so on.
 
-Due to limited time and the fact that \gls{tls} $1.3$ still lacks stable implementations, most likely only the solution under \gls{tls} 1.2 will be evaluated.
+Due to limited time and the fact that \gls{tls} $1.3$ still lacks stable implementations, most likely only the solution under \gls{tls} $1.2$ will be evaluated.
 
 \subsection{Planning}
 

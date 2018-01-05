@@ -430,24 +430,24 @@ In reality \gls{tls} is composed of several protocols (illustrated in \ref{fig:t
 
 \paragraph{TLS Connections and Sessions}
 
-it is important to distinguish between a \textbf{TLS session} and a \textbf{TLS connection}.
+It is important to distinguish between a \textbf{TLS session} from a \textbf{TLS connection}.
 \begin{itemize}
-  \item \textbf{TLS sesion} - assosciation between two communicationg peers that is
-  created by the \textbf{TLS Handshake Protocol}, wich defines a set of negotiated paramters
-  (cyrptographic and others, depending on the \gls{tls} version, such as
+  \item \textbf{TLS session} - association between two communication peers that is
+  created by the \textbf{TLS Handshake Protocol}, which defines a set of negotiated parameters
+  (cyptographic and others, depending on the \gls{tls} version, such as
   the compression algorithm) that are used by the \textbf{TLS connections associated
   with that session}. A single \textbf{TLS session} can be shared among multiple
-  \textbf{TLS connections} and its main purpuse is to avoid the expensive negotiation
+  \textbf{TLS connections} and its main purpose is to avoid the expensive negotiation
   of new parameters for each \textbf{TLS connection}. For example, let us say
-  that an \gls{html} page is being downloaded over \gls{https} and that page references some images from that same server, using \gls{https} links. Instead of the web browser negotiating a new \gls{tls} session again, it can re-use the the
-  one it has established to download the \gls{html} page in the first place,
+  that an \gls{html} page is being downloaded over \gls{https} and that page references some images from that same server, using \gls{https} links. Instead of the web browser negotiating a new \gls{tls} session for every single image again, it can re-use the the
+  one it has established to download the \gls{html} page,
   saving time and computational resources. Session resumption can be done using various
   approaches, such as \textbf{session identifiers}, described throughout \codeword{Section 7.4}
-  of \codeword{RFC 5246} \cite{RFC5246}, \textbf{session tickets}, defined in
-  \codeword{RFC 5077} \cite{RFC5077}.
+  of \codeword{RFC 5246}\cite{RFC5246} and \textbf{session tickets}, defined in
+  \codeword{RFC 5077}\cite{RFC5077}.
   \item \textbf{TLS connection} - used to actually transmit the cryptographically
   protected data. For the data to be cryptographically protected, some parameters,
-  such as the \codeword{secret keys} used to encrypt and authenticate the transmitted
+  such as the secret keys used to encrypt and authenticate the transmitted
   data need to be established; this is done when a \textbf{TLS session} is created,
   during the \textbf{TLS Handshake Protocol}.
 \end{itemize}

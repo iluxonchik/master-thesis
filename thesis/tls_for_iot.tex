@@ -317,11 +317,11 @@ of a "normal" one.
 From the top-level view, in a typical connection, there are three basic steps
 that \gls{tls} is responsible for:
 \begin{enumerate}
-  \item \textbf{Negotiate security parameters} - the communicating peers agree on
+  \item \textbf{negotiate security parameters} - the communicating peers agree on
   a set of security parameters to be used in a \gls{tls} connection, such as the
   algorithm used for bulk data encryption and the secret keys.
-  \item \textbf{Authenticate one to another} - usually only the server authenticates iself to the client.
-  \item \textbf{Communicate securely} - use the negotiated security parameters
+  \item \textbf{authenticate one to another} - usually only the server authenticates iself to the client.
+  \item \textbf{communicate securely} - use the negotiated security parameters
   to encrypt and authenticate the data, communicating securely with each other.
 \end{enumerate}
 
@@ -339,35 +339,35 @@ specifying \gls{tls} $1.0$, which was nothing more than a new version \gls{ssl} 
 
 \subsubsection{Security Services}
 %
-\gls{tls} provides the following 3 security services:
+\gls{tls} provides the following security services:
 \begin{itemize}
 \item \textbf{authentication} - both, \textbf{peer entity} and \textbf{data origin} (or \textbf{integrity})
 authentication.
-\subitem \textbf{peer entity authentication} - we can be sure that we’re talking to certain entity, for example, \codeword{www.google.com}.
-This is achieved thought the use of \textbf{asymmetrical} or \gls{pkc} (for example, \codeword{RSA} and \codeword{DSA})
+\subitem \textbf{peer entity authentication} - a peer has a guarantee that it is talking to certain entity, for example, \codeword{www.google.com}.
+This is achieved thought the use of \gls{ac}, also known as \gls{pkc}, (\textit{e.g.} \codeword{RSA} and \codeword{DSA})
 or \textbf{symmetric key cryptography}, using a \gls{psk}.
 \item \textbf{confidentiality} - the data transmitted between the communicating
 entities (the client and the server) is encrypted. Symmetric cryptography is
-used of data encryption (for exmaple, \codeword{AES}).
-\item \textbf{integrity} (also called \textbf{data origin authentication}) - we can be sure that the data was not modified or forged,
-\textit{i.e.}, be sure that the data that we’re receiving is coming from the expected entity (for example, we can be sure
-that the \codeword{index.html} file sent to us when we connected to \codeword{www.google.com} in fact
-came from \codeword{www.google.com} and that it was not modified (i.e tampered with) en
-route by an attacker (\textbf{data integrity}). This is achieved through the use
+used for data encryption (\textit{e.g.}, \codeword{AES}).
+\item \textbf{integrity} (also called \textbf{data origin authentication}) - a peer can be sure that the data was not modified or forged,
+\textit{i.e.}, there is a guarantee that the received data is coming from the expected entity. For example, a peer can be sure
+that the \codeword{index.html} file that sent to when it connected to \codeword{www.google.com} in fact
+came from \codeword{www.google.com} and that it was not tampered modified en
+route by an attacker (\textbf{data integrity}). This is achieved either through the use
 of a keyed \gls{mac} or an \gls{aead} cipher.
 \end{itemize}
 
 Despite using \gls{pkc}, \gls{tls} does \textbf{not} provide \textbf{non-repudiation services}:
-neither \textbf{non-repudiation with proof of origin}, which addresses the user denying
-having sent a message, not \textbf{non-repudiation with proof of delivery}, which
-addresses the user denying the receipt of a message. This is due to the fact, that
+neither \textbf{non-repudiation with proof of origin}, which addresses the peer denying
+the sending of a message, not \textbf{non-repudiation with proof of delivery}, which
+addresses the peer denying the receipt of a message. This is due to the fact that
 instead of using \textbf{digital signatures}, either a keyed \gls{mac} or an \gls{aead}
-cipher is used, both of which require a \textbf{shared secret} to be used.
+cipher is used, both of which require a secret to be \textbf{shared} between the peers.
 
-All 3 security services are not required to be used in every situation.
+All of the tree security services are not required to be used in every situation.
 In this sense, \gls{tls} is like a framework that allows to select which security services should be used for a communication session. As an example,
-certificate validation might be skipped, which means that the \textbf{authentication} guarantee is not provided. There are some differences regarding this claim between \gls{tls} 1.2
-and \gls{tls} 1.3, for example, while in the first you have a \codeword{null}
+certificate validation might be skipped, which means that the \textbf{authentication} guarantee is not provided. There are some differences regarding this claim between \gls{tls} $1.2$
+and \gls{tls} $1.3$, for example, while in the first you have a \codeword{null}
 cipher (no authentication, no confidentiality, no integrity), in the latter
 this is not true, since it deprecated all non-\gls{aead} ciphers in favor of
 \gls{aead} ones.

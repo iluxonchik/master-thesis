@@ -251,10 +251,10 @@ of persistent memory. I measured and compared the resulting size of the complied
 
 \subsection{Public Certificates and Certificate Chains}
 
-A public key certificate, also known as a digital certificate is an electronic
+A public key certificate, also known as a digital certificate, is an electronic
 document used to prove the ownership of a \gls{pubk}. This allows the other parties
 to rely upon assertions made by the \gls{privk} that corresponds to the \gls{pubk}
-that is certified. In the context of \gls{tls}, certificates serve as a guarantee
+that is certified. In the context of (D)\gls{tls}, certificates serve as a guarantee
 that the communication is done with the claimed entity and not someone impersonating it.
 
 A \gls{ca} is an entity that issues digital certificates. There are two types of
@@ -263,8 +263,7 @@ An intermediate \gls{ca} is provided with a certificate with signing capabilitie
 signed by one of the root \gls{ca}s. A \textbf{certificate chain} is a list of
 certificates from the root certificate to the end-user certificate, including
 any intermediate certificates along the way. In order for a certificate
-to be trusted by a device, it must be issued by a \gls{ca} that is included in that
-device's trusted store.
+to be trusted by a device, it must be issued by a \gls{ca} that is included in that device's trusted store.
 
 In (D)\gls{tls}, the certificates are in the \codeword{X.509} format, which is
 described in \codeword{RFC 5280}\cite{rfc5280}.

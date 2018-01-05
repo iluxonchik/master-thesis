@@ -32,6 +32,10 @@
 
 \usepackage{amssymb}
 
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-}
+
+
 \makeglossaries
 
 \newacronym{tls}{TLS}{Transport Layer Security}%
@@ -1003,7 +1007,7 @@ table \ref{ul-iot}.
 
 While there is a high demand lightweight \gls{pubk} primitives, the required
 resources for them are much higher than for symmetric key ones. As the
-\textit{Lightweight Cryptography for the Internet of Things}\cite{b5b8db9784:online} paper
+\textit{Lightweight Cryptography for the Internet of Things}\cite{b5b8db9716:online} paper
 by \textit{Sony Corporation} concluded, there are no promising primitives
 that have enough lightweight and security properties, comparing to the
 conventional ones, such as RSA and \gls{ecc}. In my own further research of this
@@ -1177,7 +1181,7 @@ To achieve this they  proposed the use of a RESTful \gls{dtls} connection as a \
 which is created when a new secure session is requested.
 The authors exploit the the \gls{coap}s capability to provide connection-oriented
 communication offered by its message layer. In particular, each \codeword{Confirmable}
-\gls{coap} message requires an \codeword{Acknowledgement} message\cite{RFC7252T66:online},
+\gls{coap} message requires an \codeword{Acknowledgement} message (page 8 of \cite{RFC7252}),
 which acknowledges that a specific \codeword{Confirmable} message has arrived, thus
 providing reliable retransmission.
 
@@ -1376,7 +1380,7 @@ mechanism for \gls{iot} devices\cite{I-D.moran-suit-architecture} currently in "
 Most of the work that has been done has been centered around \gls{dtls},
 even though most of the solutions can be applied to both.
 Herein we want to explore \gls{tls} optimization more. There is clearly a need for that, specially with \gls{coap} over
-TCP and \gls{tls} standard being currently developed. The \gls{coap} protocol is the HTTP
+TCP and \gls{tls} standard being currently developed. The \gls{coap}\cite{RFC7252} protocol is the HTTP
 for constrained devices and the mentioned standard does not explore any \gls{tls}
 optimizations, and since any \gls{iot} device using it in the future would benefit
 them, this is an important area to explore. None of the related work centered around

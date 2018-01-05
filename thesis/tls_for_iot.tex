@@ -386,11 +386,10 @@ alongside the definition of the \textbf{key exchange} algorithm and the \gls{prf
 
 \subsubsection{TLS (Sub)Protocols}
 
-In reality \gls{tls} is composed of several protocols(illustrated in \ref{fig:tls-subprotocols}), a brief description of each
-one of which follows:
+In reality \gls{tls} is composed of several protocols (illustrated in \ref{fig:tls-subprotocols}), which are briefly described below:
 \begin{itemize}
-  \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}. it is
-  the layer that runs directly on top of \textbf{TCP/IP} and it serves as an
+  \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}. It is
+  the layer that located directly on top of \textbf{TCP/IP} and it serves as an
    \textbf{encapsulation for the remaining sub-protocols} (\codeword{4} in case of \gls{tls} 1.2
    and \codeword{3} in case of \gls{tls} 1.3). To the  \textbf{Record Protocol},
    the remaining sub-protocols are what \codeword{TCP/IP} is to \codeword{HTTP}.
@@ -398,12 +397,11 @@ one of which follows:
    \gls{tls} Record header: a 1-byte record \codeword{type},
    specifying the type of record that is encapsulated (ex: value \codeword{0x16}
    for the handshake protocol), a 2-byte \codeword{TLS version} field, a
-   2-byte \codeword{length} field (which means that a maximum \gls{tls} Record size
-   is of \codeword{16384} bytes), specifying the length of the data in the record, excluding
-   the header itself and a \codeword{fragment} field whose size in bytes is specified
+   2-byte \codeword{length} field specifying the length of the data in the record, excluding
+   the header itself (this means that \gls{tls} has a maximum record size
+   of \codeword{16384} bytes), and a \codeword{fragment} field whose size in bytes is specified
    by the \codeword{length} field, which contains data that is
-   transparent to the Record layer and should be dealt by a higher-level protocol,
-   specified by the \codeword{type} field. This is illustrated in figure \ref{fig:tls-record-header}.
+   transparent to the Record layer and should be dealt by a higher-level protocol. That higher-level protocol is specified by the \codeword{type} field. This is illustrated in figure \ref{fig:tls-record-header}.
   \item \textbf{\gls{tls} Handshake Protocol} - the core protocol of \gls{tls}.
   Allows the communicating peers to \textbf{authenticate} one to another and negotiate
   a \textbf{cipher suite} (\textbf{cipher suite} and key exchange algorithm in case of \gls{tls} 1.3) which will be used to provide the security services. For \gls{tls} 1.2,

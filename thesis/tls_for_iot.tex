@@ -229,26 +229,25 @@ and a conclusion of the work done in this part.
 
 \subsection{Symmetric vs Asymmetric Cryptography}
 
-\gls{ac} more expensive than \gls{sc} in terms of performance. This is mainly due
-to two facts: larger key sizes are required for \gls{ac} system to achieved the
+\gls{ac} is more expensive than \gls{sc} in terms of performance. This is mainly due
+to two facts: larger key sizes are required for an \gls{ac} system to achieve the
 same level of security as in a \gls{sc} system  and \codeword{CPU}s are slower at performing the underlying
 mathematical operations involved in \gls{ac}, namely exponentiation requires
-\codeword{O(log e)} multiplications for an exponent \codeword{e}. For example,
+$O(log e)$ multiplications for an exponent $e$. For example,
 the 2016 \codeword{NIST} report \cite{Recommen44:online}
-suggests that an \gls{ac} would need to use a secret key with size of \codeword{15360 bits}
+suggests that an \gls{ac} algorithm would need to use a secret key with size of \codeword{15360 bits}
 to have equivalent security to a \codeword{256-bit} secret key for a \gls{sc} algorithm.
-This situation is ameliorated by \gls{ecc}, which requires keys of \codeword{512 bits},
-it is still slower than \gls{sc}, though. The 2017 \codeword{BSI} report \cite{Kryptogr1:online} (from the
+This situation is ameliorated by \gls{ecc}, which requires keys of \codeword{512 bits}, but
+it is still slower than using \gls{sc}. The 2017 \codeword{BSI} report \cite{Kryptogr1:online} (from the
 German federal office for information security) suggests similar numbers.
 
-Another argument for avoiding as much as possible of the \gls{ac} functionality
-is that it requires extra storage space to be used and this might be a problem for some \gls{iot} devices,
+Another argument for avoiding as much as possible the use of \gls{ac}
+algorithms is that they require additional storage space and this might be a problem for some \gls{iot} devices,
 like \codeword{class 1} devices according to the terminology of constrained-code
-networks \cite{RFC7228} which have about \codeword{10KB} of RAM and \codeword{100KB}
-of persistent memory. I measured the resulting size of the complied \textit{mbedTLS 2.6.0} library
-\cite{SSLLibra13:online} when compiled with and without the \codeword{RSA} module
-(located in the \codeword{rsa.c} file), from which I concluded that using that module adds an
-extra of \codeword{32KB}.
+networks\cite{RFC7228} which have approximately \codeword{10KB} of RAM and \codeword{100KB}
+of persistent memory. I measured and compared the resulting size of the complied \textit{mbedTLS 2.6.0} library
+\cite{SSLLibra13:online} when it was with and without the \codeword{RSA} module
+(located in the \codeword{rsa.c} file). The conclusion is that that using the \codeword{rsa.c} module adds an extra of \codeword{32KB}.
 
 \subsection{Public Certificates and Certificate Chains}
 

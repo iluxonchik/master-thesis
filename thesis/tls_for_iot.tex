@@ -1,4 +1,4 @@
-% This is the file where my Master Thesis will be written. It uses the adapted
+I amdoes notthey areI have% This is the file where my Master Thesis will be written. It uses the adapted
 % LNCS Template.
 %
 % I'll be using a few codes in the comments, which can be easily looked up:
@@ -170,13 +170,13 @@ This lack of security in the \gls{iot} ecosystem has been exploited by the
 the Mirai botnet\cite{sec17ant94:online} when it overhelmed several high-profile
 targets with massive \gls{ddos} attacks. This is the most devastating attack involving \gls{iot}
 devices done to date, the Reaper botnet\cite{ReaperCa10:online} however, could be
-even more devastating, if it's ever put to malicious use and others will inadvertently
+even more devastating, if it is ever put to malicious use and others will inadvertently
 come in the future. The \textit{SecurityNow}\cite{GRCSecur72:online} is a weekly podcast
-centered around computer security and the topics that surround it. I've been a listener
-since $2012$ and a I've noticed a clear trend: as the time goes on, the lack of
+centered around computer security and the topics that surround it. I have been a listener
+since $2012$ and noticed a clear trend: as the time goes on, the lack of
 security of \gls{iot} devices, as well as various problems caused by it, from
 the compromise of privacy, to the \gls{ddos} attacks is a topic that comes up
-more and more often. In fact, now it's mentioned almost every week.
+more and more often. In fact, now it is mentioned almost every week.
 
 \gls{tls} is the most used security protocol in the world and it allows two peers
 to communicate securely. \gls{tls} runs on top of a reliable, connection-oriented
@@ -188,11 +188,11 @@ algorithm and this situation is worsened with the low-power radios and lossy
 links found in sensor networks. Therefore, \gls{dtls}, which runs on top
 of UDP is mostly used in such devices. The work that I will be doing, however,
 can be applied to either one of them, so even though I will be talking mostly
-about \gls{tls}, almost everything also applies to \gls{dtls} as well, since it's just
+about \gls{tls}, almost everything also applies to \gls{dtls} as well, since it is just
 an adaption of \gls{tls} over unreliable transport protocols, with no changes done
 the core protocol.
 
-The problem in using (D)\gls{tls} in \gls{iot} is that it's not lightweight, since
+The problem in using (D)\gls{tls} in \gls{iot} is that it is not lightweight, since
 it was not designed for such environments. An \gls{iot} device may only have
 $256$ KB of RAM and needs to conserve the battery, while sending and receiving
 lots of small information constantly. For example, imagine a temperature sensor
@@ -208,10 +208,10 @@ With my work, I want to develop a lightweight version of (D)\gls{tls} that is
 fully backwards compatible and does not require any third-party entities, in order
 to minimize the friction of adoption. The solution will be centered among
 the (D)\gls{tls} versions $1.2$ and $1.3$. The idea is to make it customizable,
-depending on the security requirements of the context it's being used in, in that sense,
+depending on the security requirements of the context it is being used in, in that sense,
 it would be similar to a framework.
 
-In the process of my work on this master thesis, I've made several
+In the process of my work on this master thesis, I have made several
 contributions to the \gls{tls} 1.3 specification and have been officially
 recognized as a contributor, my name will be on the final document specifying
 the \gls{tls} 1.3 protocol.
@@ -224,7 +224,7 @@ it is the latest and the most used version of the protocol (version $1.3$ is sti
 draft mode). Section 3 describes all of the related work done in the area and
 the current state of the art. Finally, Section 4 provides an architecture of the
 solution that I will be developing in the second part of the dissertation, as
-well as how I will be evaluating my results, how I'm planning to develop my work
+well as how I will be evaluating my results, how I am planning to develop my work
 and a conclusion.
 
 \section{Background}
@@ -258,7 +258,7 @@ A public key certificate, also known as a digital certificate is an electronic
 document used to prove the ownership of a \gls{pubk}. This allows the other parties
 to rely upon assertions made by the \gls{privk} that corresponds to the \gls{pubk}
 that is certified. In the context of \gls{tls}, certificates serve as a guarantee
-that you're communicating with the claimed entity and not someone impersonating it.
+that the communication is done with the claimed entity and not someone impersonating it.
 
 A \gls{ca} is an entity that issues digital certificates. There are two types of
 \gls{ca}s: the \textbf{root \gls{ca}s} and the \textbf{intermediate \gls{ca}s}.
@@ -289,9 +289,9 @@ are shorter in size.
 \subsection{Elliptic Curve Cryptography}
 
 \gls{pubk} crytpography is based on the use of one-way math functions,
-which are function where it's easy to compute the answer given an input,
+which are function where it is easy to compute the answer given an input,
 but hard to compute the input given the answer. For example, RSA uses factoring
-as the one one way function: it's easy to multiply large numbers, but it's hard
+as the one one way function: it is easy to multiply large numbers, but it is hard
 to factor them.
 
 \gls{ecc} is based on elliptic curves, which are set of points $(x,y)$ that are
@@ -315,7 +315,7 @@ be able to read the data, while integrity means that a third party will not be
 able to alter the data.
 
 In the TCP/IP Protocol Stack, \gls{tls} is placed between the \textbf{Transport}
-and \textbf{Application} layers. It's designed to make the application developer's
+and \textbf{Application} layers. it is designed to make the application developer's
 life easier: all the developer has to do is create a "secure" connection, instead
 of a "normal" one.
 
@@ -334,7 +334,7 @@ that \gls{tls} is responsible for:
 
 \subsubsection{SSL vs TLS: What's The Difference?}
 You will find the names \gls{ssl} and \gls{tls} used interchangeably in the literature,
-so I think it's important to distinguish both. \gls{tls} is an evolution of the \gls{ssl} protocol. The protocol changed
+so I think it is important to distinguish both. \gls{tls} is an evolution of the \gls{ssl} protocol. The protocol changed
 its name from \gls{ssl} to \gls{tls} when it was
 standardized by the \gls{ietf}.\gls{ssl}
 was a proprietary protocol owned by Netscape Communications, and The \gls{ietf}
@@ -370,11 +370,9 @@ addresses the user denying the receipt of a message. This is due to the fact, th
 instead of using \textbf{digital signatures}, either a keyed \gls{mac} or an \gls{aead}
 cipher is used, both of which require a \textbf{shared secret} to be used.
 
-You are not required to use all of the 3 security services in every situation.
-You can think of \gls{tls} as a framework that allows you to select which security
-services you want to use for a communication session. As an example, you might
-ignore certificate validation, which means you're ignoring the \textbf{authentication}
-guarantee. There are some differences regarding this claim between \gls{tls} 1.2
+All 3 security services are not required to be used in every situation.
+In this sense, \gls{tls} is like a framework that allows to select which security services should be used for a communication session. As an example,
+certificate validation might be skipped, which means that the \textbf{authentication} guarantee is not provided. There are some differences regarding this claim between \gls{tls} 1.2
 and \gls{tls} 1.3, for example, while in the first you have a \codeword{null}
 cipher (no authentication, no confidentiality, no integrity), in the latter
 this is not true, since it deprecated all non-\gls{aead} ciphers in favor of
@@ -390,14 +388,14 @@ alongside the definition of the \textbf{key exchange} algorithm and the \gls{prf
  protocol has been removed. The concept of \textbf{cipher suite} has been updated
  to define the pair of \gls{aead} algorithm and hash function to be used with
  \gls{hkdf}: in \gls{tls} 1.3 the  \textbf{key exchange} algorithm is negotiated via
- extensions. You'll find more details on this below.
+ extensions.
 
 \subsubsection{TLS (Sub)Protocols}
 
 In reality \gls{tls} is composed of several protocols(illustrated in \ref{fig:tls-subprotocols}), a brief description of each
 one of which follows:
 \begin{itemize}
-  \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}. It's
+  \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}. it is
   the layer that runs directly on top of \textbf{TCP/IP} and it serves as an
    \textbf{encapsulation for the remaining sub-protocols} (\codeword{4} in case of \gls{tls} 1.2
    and \codeword{3} in case of \gls{tls} 1.3). To the  \textbf{Record Protocol},
@@ -440,7 +438,7 @@ one of which follows:
 
 \paragraph{TLS Connections and Sessions}
 
-It's important to distinguish between a \textbf{TLS session} and a \textbf{TLS connection}.
+it is important to distinguish between a \textbf{TLS session} and a \textbf{TLS connection}.
 \begin{itemize}
   \item \textbf{TLS sesion} - assosciation between two communicationg peers that is
   created by the \textbf{TLS Handshake Protocol}, wich defines a set of negotiated paramters
@@ -448,11 +446,9 @@ It's important to distinguish between a \textbf{TLS session} and a \textbf{TLS c
   the compression algorithm) that are used by the \textbf{TLS connections associated
   with that session}. A single \textbf{TLS session} can be shared among multiple
   \textbf{TLS connections} and its main purpuse is to avoid the expensive negotiation
-  of new parameters for each \textbf{TLS connection}. For example, let's say
-  you download an \gls{html} page over \gls{https} and that page referrences
-  some images from that same server, also using \gls{https}, instead of your
-  web browser negotiating a new \gls{tls} session again, it can re-use the the
-  one you established to download the \gls{html} page in the first place,
+  of new parameters for each \textbf{TLS connection}. For example, let us say
+  that an \gls{html} page is being downloaded over \gls{https} and that page references some images from that same server, using \gls{https} links. Instead of the web browser negotiating a new \gls{tls} session again, it can re-use the the
+  one it has established to download the \gls{html} page in the first place,
   saving time and computational resources. Session resumption can be done using various
   approaches, such as \textbf{session identifiers}, described throughout \codeword{Section 7.4}
   of \codeword{RFC 5246} \cite{RFC5246}, \textbf{session tickets}, defined in
@@ -510,7 +506,7 @@ that it receives from the server. This means that in order to deal with data
 encryption and decryption, both of the communicating entities have two keys:
 one to encrypt the outgoing data and one to decrypt the incoming data. Those keys
 have different names in \gls{tls} 1.2 and \gls{tls} 1.3, but they serve the same
-basic purpose. In this general description, I'll refer to them as \codeword{client_write key}
+basic purpose. In this general description, they will be referred as \codeword{client_write key}
 (used by the client to encrypt the data to be sent), \codeword{client_read_key}(used by the client to
 decrypt the incoming data from the server), \codeword{server_write_key}(used by the server to encrypt
 the data to be sent) and \codeword{server_read_key}(used by the server to decrypt the incoming
@@ -635,7 +631,7 @@ Note that in \gls{tls} 1.3, all of static \gls{rsa} and \gls{dh} cipher suites
 have been removed: all of the \gls{pubk} exchange methods now provide \gls{pfs}.
 Even though, anonymous \gls{dh} has also been removed from \gls{tls} 1.3, you can
 still have unauthenticated connections by either using \textbf{raw public keys} \cite{RFC7250}
-or by not verifying the certificate chain and any of it's contents.
+or by not verifying the certificate chain and any of it is contents.
 
 The \gls{ecc}-based key exchange (\gls{ecdh} and \gls{ecdhe}) and authentication (\gls{ecdsa})
 algorithms are defined in \codeword{RFC4292} \cite{RFC4292}, which is also referenced
@@ -693,7 +689,7 @@ a list of supported features, it contains a single item containing the one that 
 \codeword{compression_method} (note the \textbf{singular} form) that it chose from the
 corresponding list sent by the client. Just like in the client's case, a \codeword{random}
 is also present. The \codeword{version} field in the \gls{tls} Record indicates
-the \gls{tls} version chosen by the server and it's the one that is gonna be
+the \gls{tls} version chosen by the server and it is the one that is gonna be
 used for that connection.
 
 \gls{tls} requires cryptographically secure pseudorandom values to be generated
@@ -747,10 +743,10 @@ certificate, if it has signing capability (\textit{i.e.} all certificates except
 containing fixed \gls{dh} parameters).
 
 The \codeword{ChangeCipherSpec} is its own protocol, rather than a type of handshake
-message. It's sent by both parties to notify the reciever that subsequent records
+message. it is sent by both parties to notify the reciever that subsequent records
 will be protected under the newly negotiated \codeword{CipherSpec} and keys.
 
-The \codeword{Finished} message is an essential part of the protocol. It's the first
+The \codeword{Finished} message is an essential part of the protocol. it is the first
 message protected with the newly negotiated algorithms, keys and secrets. Only after
 both parties have sent and verified the contents of this message is when they can
 be sure that the Handshake has not been tampered with by a \gls{mitm} and begin to
@@ -775,7 +771,7 @@ abbreviated handshake mechanism, which can be used to either resume a previous s
 or duplicate one, instead of negotiating new security parameters (for example, this is useful
 in the context of multiple \codeword{HTTPS} requests for various resources, when loading
 a typical website). The advantage of this mechanism is that the handshake is reduced
-to \codeword{1 RTT}, instead of the usual \codeword{2 RTT} as it's the case in
+to \codeword{1 RTT}, instead of the usual \codeword{2 RTT} as it is the case in
 the full handshake. In order to do the abbreviated handshake,
 the client and the server must have established a session previously, by performing
 the full handshake. To do this, the clients sends a session ID of the session it wants to
@@ -806,8 +802,8 @@ and vice versa. A client may request the use of extensions by sending an extende
 message, which is just a "normal" \codeword{ClientHello} with an additional
 block of data that contains a list of extensions. The backwards compatibility is achieved based on the \gls{tls}
 requirement that the servers are not "extensions-aware" ignore the data
-added to the \codeword{ClientHello}s that they don't understand (section \codeword{7.4.1.2} of \codeword{RFC 2246}\cite{RFC2246}),
-meaning that even older servers that don't support extensions, namely the ones with
+added to the \codeword{ClientHello}s that they do not understand (section \codeword{7.4.1.2} of \codeword{RFC 2246}\cite{RFC2246}),
+meaning that even older servers that do not support extensions, namely the ones with
 version of \gls{tls} prior to 1.2 will not "break".
 
 The presence of extensions can be determined by checking if there are bytes
@@ -826,19 +822,19 @@ corresponding extended \codeword{CleintHello}, and if this happens, the clients 
 
 \subsubsection{TLS 1.3}
 
-Due to limited space, I won't be able to describe \gls{tls} 1.3 in detail. I decided
+Due to limited space, I will not be able to describe \gls{tls} 1.3 in detail. I decided
 to concentrate on \gls{tls} 1.2 instead, because \gls{tls} 1.3 is still in draft
 mode and 1.2 is the latest and the recommended version in use.
 
 Despite the protocol name not suggesting it \gls{tls} 1.3 is
-very different from \gls{tls} 1.2, in fact, it should've probably been called
-\gls{tls} 2.0 instead. I've studied \gls{tls} 1.3 in great detail, and as I already mentioned,
+very different from \gls{tls} 1.2, in fact, it should have probably been called
+\gls{tls} 2.0 instead. I have studied \gls{tls} 1.3 in great detail, and as I already mentioned,
 I have been formally recognized as a \gls{tls} 1.3 contributor 1.3.
 I have also participated in the mailing lists, as part of my work on the architecture of the solution.
 
 Throughout this document, in various parts I mentioned how \gls{tls} 1.3 differs from 1.2.
 A lot of the changes brought in \gls{tls} 1.3 make it more suitable in the context
-of \gls{iot}. Some of those changes I've already mentioned previously in this
+of \gls{iot}. Some of those changes I have already mentioned previously in this
 document, here I will add a few more. I will not go into great detail, but
 will give a general overview.
 
@@ -882,7 +878,7 @@ on the next visit.
 The design of \gls{dtls} is intentionally very similar to \gls{tls}, in fact, its specification is written
 in terms of differences from \gls{tls}. The changes are mostly done on the lower level,
 and even extensions that have been defined before \gls{dtls} has even existed can be
-used with \gls{dtls}, The latest version of \gls{dtls} is 1.2 and it's defined
+used with \gls{dtls}, The latest version of \gls{dtls} is 1.2 and it is defined
 in \codeword{RFC 6347}\cite{RFC6347}. There is a draft of \gls{dtls} 1.3
 \cite{I-D.ietf-tls-dtls13} that is currently under active development.
 
@@ -915,23 +911,23 @@ that are made by \gls{tls}. The main differences from \gls{dtls} 1.2 to \gls{tls
 \section{Related Work}
 
 Lightweight cryptography is an important topic in the context of \gls{iot}, since
-cryptography a fundamental part of security and it's fundamental for it to be
+cryptography a fundamental part of security and it is fundamental for it to be
 lightweight in order to run on devices with limited memory and processing
 capabilities. A lot of work in \gls{iot} incorporates it in one way or another,
-so I'll begin with the work done in this area.
+so I will begin with the work done in this area.
 
 Alex \textit{et al}\cite{Stateoft96:online} explore the topic of lightweight symmetric cryptography,
 providing a summary of the lightweight symmetric
 primitives from the academic community, the government agencies and even proprietary
 algorithms which have been either reverse-engineered or leaked. All of those algorithms
-are listed in the paper, alongside relevant metrics. I won't be including the list
+are listed in the paper, alongside relevant metrics. I will not be including the list
 here, due to lack of space. The authors also proposed
 to split the field into two areas: ultra-lightweight and \gls{iot} cryptography.
 
 The authors systematized the knowledge in the area of lightweight cryptography
 in order to define "lightweightness" more precisely. They observed that the design
 of lightweight cryptography algorithms vary greatly, the only unifying thread
-between them being the low computing power of the devices they're designed to run on.
+between them being the low computing power of the devices they are designed to run on.
 
 The most frequently optimized metrics are the memory consumption, the implementation size
 and the speed or the throughput of the primitive. The specifics depend on whether
@@ -953,18 +949,18 @@ block ciphers use only \codeword{64-bit} blocks, which leads to a smaller memory
 footprint in both, software and hardware, while also making the algorithm better suited
 for processing smaller messages.
 
-Even though though algorithms can be optimized in implementation: whether it's
-a software or a hardware now, dedicated lightweight algorithms are still needed.
+Even though though algorithms can be optimized in implementation: whether it is
+a software or a hardware, dedicated lightweight algorithms are still needed.
 This comes down mainly to two factors: there are limitations to the the extent of
 the optimizations that you can make and the hardware-accelerated encryption is
 frequently vulnerable to various \gls{sca}s (such as the attack done on the
 Phillips light bulbs \cite{cryptoeprint:2016:1047}, where the authors were able to
 recover a secret key used to authenticate updates, via an \gls{sca}).
 
-It's more difficult to implement a lightweight hash function than a lightweight
+It is more difficult to implement a lightweight hash function than a lightweight
 block cipher, since standard hash functions need large amounts
 of memory to store both: their internal states, for example, \codeword{1600 bits} in case of SHA-3
-and the block they're operating on, for example, \codeword{512 bits} in the case of SHA-2.
+and the block they are operating on, for example, \codeword{512 bits} in the case of SHA-2.
 The required internal state is acceptable for a desktop computer, but not for a
 constrained device. Taking this into consideration, the most common approach
 taken by the designers is to use a sponge construction with a very small bitate.
@@ -1025,10 +1021,10 @@ topic, I came to the same conclusion.
 
 Lightweight cryptography is an important part of my work and there are papers detailing
 various algorithms. While an important topic for my solution, I do consider that
-I've done sufficient coverage on it, by specifically choosing recent works that
+it was covered in sufficient detail, by purposefully choosing recent works that
 provide an overview of the different areas, rather than focusing on specific
 implementations, since the length of this section is limited. The remaining text
-in this seciton will be used to describe work done on the (D)TLS protocol in the
+in this section will be used to describe work done on the (D)\gls{tls} protocol in the
 context of \gls{iot}.
 
 For the reasons specifed above, the main key exchange mechanism used in IoT
@@ -1105,8 +1101,7 @@ Record layer contains application data, instead of a handshake message.
 \end{figure}
 
 
-All of the cases follow the same basic idea, for this reason I'll only exemplify
-one of them. Each \gls{dtls} fragment is carried over in the UDP payload. In this case,
+All of the cases follow the same basic idea, for this reason only one of them will be exemplified. Each \gls{dtls} fragment is carried over in the UDP payload. In this case,
 the UDP payload carries a header-like payload (the DTLS record header).
 Figure \ref{fig:6lowpan-header} shows the way IPv6 next header compression is done.
 The authors use the same value for the \codeword{LOWPAN_NHC Encoding} field (defined in \cite{RFC6282})
@@ -1119,16 +1114,16 @@ I will exemplify the case where both, the record and the Handshake headers are c
 In this case \codeword{LOWPAN_NHC Encoding} will contain the \codeword{LOWPAN_NHC_RHS}
 structure (depicted in figure \ref{fig:6lowpan-ghc-rhs}), which is the compressed form of the Record and Handshake headers. The
 parts that are not compressed will be contained in the \codeword{Payload} part.
-The first four bits represent the ID field and in this case they're fixed to \codeword{1000},
+The first four bits represent the ID field and in this case they are fixed to \codeword{1000},
 so that the decompressor knows what is being compressed (\textit{i.e} how to interpret
 the structure that follows the ID bits). If the \codeword{F} field of the \codeword{LOWPAN_NHC_RHS} structure contains the
 bit \codeword{0}, it means that the handshake message is not fragmented, so
 the \codeword{fragment_offset} and \codeword{fragment_length} fields are
 elided from the Handshake header (common case when a handshake message is not bigger than
-the maximum header size), meaning that they're not going to be sent at
-all (\textit{i.e.} they're not going to be present in the \codeword{Payload} part).
+the maximum header size), meaning that they are not going to be sent at
+all (\textit{i.e.} they are not going to be present in the \codeword{Payload} part).
 If the \codeword{F} bit has the value \codeword{1}, the \codeword{fragment_offset}
-and \codeword{fragment_length} fields are carried inline (\textit{i.e.} they're
+and \codeword{fragment_length} fields are carried inline (\textit{i.e.} they are
 present in the \codeword{Payload} part). The remaining two fields define similar
 behavior for other header fields (some of them assume that some default value is present, when a field is elided).
 The \codeword{length} field in the Record and Handshake headers are always elided,
@@ -1147,7 +1142,7 @@ Later, in 2013, Raza \textit{et al.} proposed a security scheme called Lithe\cit
 which is a lightweight security solution for \gls{coap} that uses the same DTLS header
 compression technique as in \cite{6LoWPANC53:online} with the goal of implementing
 it as a security support for \gls{coap}.\gls{coap}\cite{RFC7959} is a specialized
-RESTful Internet Application Protocol for constrained devices. It's designed to easily
+RESTful Internet Application Protocol for constrained devices. it is designed to easily
 translate to HTTP, in order to simplify its integration with the web,
 while also meeting requirements such as multicast support and low overhead.
 \gls{coap} is like "HTTP for constrained devices".
@@ -1170,7 +1165,7 @@ fragmentation (in the paper, for payload size of \codeword{48 bytes}).
 
 Angelo \textit{et al} \cite{Security5:online} proposed to integrate the \gls{dtls} protocol
 inside the \gls{coap}, while also exploiting \gls{ecc} optimizations and minimizing
-ROM occupancy. They've implemented their solution on an off-the-shelf mote platform
+ROM occupancy. They have implemented their solution on an off-the-shelf mote platform
 and evaluated its performance. \gls{dtls} was designed to protect web application communication, as a result,
 it has a big overhead in \gls{iot} scenarios. Besides that, it runs over UDP,
 so additional mechanisms are needed to provide the reliability and ordering
@@ -1214,7 +1209,7 @@ Scalar multiplication is often the most expensive operation in \gls{ec} based
 cryptography, therefore optimizing it is of high interest. The authors used a
 technique called \textit{IBPV} described in \cite{LowcostS87:online}, which is based on precumputation
 of a set of Discrete Log pairs. I will refrain from going into the mathematical details,
-since they're not relevant for this description. The \textit{IBPV} technique was used
+since they are not relevant for this description. The \textit{IBPV} technique was used
 to improve the performance of the \gls{ecdsa} signature and was also extended to the
 \gls{ecdh} protocol. In order to reduce the time it takes to do the \gls{ecdsa}
 signature verification, the \textit{Shamir trick} was used, which allows
@@ -1233,7 +1228,7 @@ profile for \gls{iot} devices that offers communication security services
 for \gls{iot} applications and is reasonably implementable on many constrained devices.
 In this context, "profile" means available configuration options (ex: which
 cipher suites to use) and protocol extensions that are best suited for \gls{iot} devices.
-The document is rather lengthy, so I'll summarize the most important parts. I will
+The document is rather lengthy, only its fundamental parts will be summarized. I will
 also provide a brief description of some RFCs that I consider to be relevant for
 my work.
 
@@ -1346,8 +1341,8 @@ client does not interact with a server in a hosting environment.
 
 The maximum fragment length extension\cite{RFC6066} lowers the maximum fragment
 length support of the record layer from $2^14$ to $2^9$. This extension allows
-the client to indicate the server how much of the incoming data it's able to buffer,
-allowing the client implementations to lower their RAM requirements, since it doesn't
+the client to indicate the server how much of the incoming data it is able to buffer,
+allowing the client implementations to lower their RAM requirements, since it does not
 not need to accept packets of large size, such as the 16K packets required by
 plain (D)\gls{tls}. For that reason, client implementations must support this
 extension.
@@ -1481,7 +1476,7 @@ botnet attacks show that serious damage can be caused. An old saying attributed 
 \gls{nsa} states that "Attacks always get better; they never get worse".
 Combined with the fact that the number of \gls{iot} devices is growing at a high
 pace, while there are no major improvements to their security, makes it clear
-that it's fundamental for this area to be addressed.
+that it is fundamental for this area to be addressed.
 
 While there are well established security solutions, not all of them can be used
 with the \gls{iot} devices, due their constrained nature. One such solution is

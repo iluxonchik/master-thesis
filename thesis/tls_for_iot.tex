@@ -156,7 +156,12 @@ the Mirai botnet\cite{sec17ant94:online} when it overhelmed several high-profile
 targets with massive \gls{ddos} attacks. This is the most devastating attack involving \gls{iot}
 devices done to date, the Reaper botnet\cite{ReaperCa10:online} however, could be
 even more devastating, if it's ever put to malicious use and others will inadvertently
-come in the future.
+come in the future. The \textit{SecurityNow}\cite{GRCSecur72:online} is a weekly podcast
+centered around computer security and the topics that surround it. I've been a listener
+since $2012$ and a I've noticed a clear trend: as the time goes on, the lack of
+security of \gls{iot} devices, as well as various problems caused by it, from
+the compromise of privacy, to the \gls{ddos} attacks is a topic that comes up
+more and more often. In fact, now it's mentioned almost every week.
 
 \gls{tls} is the most used security protocol in the world and it allows two peers
 to communicate securely. \gls{tls} runs on top of a reliable, connection-oriented
@@ -203,7 +208,9 @@ versions $1.2$ and $1.3$, with the most concentration being in the version $1.2$
 it is the latest and the most used version of the protocol (version $1.3$ is still in
 draft mode). Section 3 describes all of the related work done in the area and
 the current state of the art. Finally, Section 4 provides an architecture of the
-solution that I will be developing in the second part of the dissertation.
+solution that I will be developing in the second part of the dissertation, as
+well as how I will be evaluating my results, how I'm planning to develop my work
+and a conclusion.
 
 \section{Background}
 
@@ -259,7 +266,7 @@ and outputs the pair \codeword{(ciphertext, MAC)}, if it is encrypting and does 
 process, while also performing the \gls{mac} check if it is decrypting.
 
 \gls{aead} is nothing more than a variant of \gls{ae}, which comes with an extra
-input parameter that is additional data that's \textbf{only authenticated, but not encrypted}.
+input parameter that is additional data that is \textbf{only authenticated, but not encrypted}.
 Some \gls{aead} ciphers have shorter authentication tags (\textit{i.e.} shorter \gls{mac}s),
 which makes then more suitable for low-bandwidth networks, since the messages to be sent
 are shorter in size.
@@ -364,12 +371,12 @@ one of which follows:
    the remaining sub-protocols are what \codeword{TCP/IP} is to \codeword{HTTP}.
    A \gls{tls} Record is comprised of 4 fields, with the first 3 comprising the
    \gls{tls} Record header: a 1-byte record \codeword{type},
-   specifying the type of record that's encapsulated (ex: value \codeword{0x16}
+   specifying the type of record that is encapsulated (ex: value \codeword{0x16}
    for the handshake protocol), a 2-byte \codeword{TLS version} field, a
    2-byte \codeword{length} field (which means that a maximum \gls{tls} Record size
    is of \codeword{16384} bytes), specifying the length of the data in the record, excluding
    the header itself and a \codeword{fragment} field whose size in bytes is specified
-   by the \codeword{length} field, which contains data that's
+   by the \codeword{length} field, which contains data that is
    transparent to the Record layer and should be dealt by a higher-level protocol,
    specified by the \codeword{type} field. This is illustrated in figure \ref{fig:tls-record-header}.
   \item \textbf{\gls{tls} Handshake Protocol} - the core protocol of \gls{tls}.
@@ -402,7 +409,7 @@ one of which follows:
 
 It's important to distinguish between a \textbf{TLS session} and a \textbf{TLS connection}.
 \begin{itemize}
-  \item \textbf{TLS sesion} - assosciation between two communicationg peers that's
+  \item \textbf{TLS sesion} - assosciation between two communicationg peers that is
   created by the \textbf{TLS Handshake Protocol}, wich defines a set of negotiated paramters
   (cyrptographic and others, depending on the \gls{tls} version, such as
   the compression algorithm) that are used by the \textbf{TLS connections associated
@@ -653,7 +660,7 @@ a list of supported features, it contains a single item containing the one that 
 \codeword{compression_method} (note the \textbf{singular} form) that it chose from the
 corresponding list sent by the client. Just like in the client's case, a \codeword{random}
 is also present. The \codeword{version} field in the \gls{tls} Record indicates
-the \gls{tls} version chosen by the server and it's the one that's gonna be
+the \gls{tls} version chosen by the server and it's the one that is gonna be
 used for that connection.
 
 \gls{tls} requires cryptographically secure pseudorandom values to be generated
@@ -975,7 +982,13 @@ table \ref{ul-iot}.
 \end{tabular}
 \end{table}
 
-\todo{WRITE ABOUT LIGHTWEIGHT PUBLIC CRYPTO HERE}
+While there is a high demand lightweight \gls{pubk} primitives, the required
+resources for them are much higher than for symmetric key ones. As the
+\textit{Lightweight Cryptography for the Internet of Things}\cite{b5b8db9784:online} paper
+by \textit{Sony Corporation} concluded, there are no promising primitives
+that have enough lightweight and security properties, comparing to the
+conventional ones, such as RSA and \gls{ECC}. In my own further research of this
+topic, I came to the same conclusion.
 
 Lightweight cryptography is an important part of my work and there are papers detailing
 various algorithms. While an important topic for my solution, I do consider that
@@ -1129,7 +1142,7 @@ and evaluated its performance. \gls{dtls} was designed to protect web applicatio
 it has a big overhead in \gls{iot} scenarios. Besides that, it runs over UDP,
 so additional mechanisms are needed to provide the reliability and ordering
 guarantee. With this in mind, the authors wanted to design a version of \gls{dtls}
-that's both: minimizes the code size and the number of exchanged messages, resulting
+that is both: minimizes the code size and the number of exchanged messages, resulting
 in an optimized Handshake protocol.
 
 In order to minimize the code size occupied by the \gls{dtls} implementation, they
@@ -1343,15 +1356,15 @@ mechanism for \gls{iot} devices\cite{I-D.moran-suit-architecture} currently in "
 
 Most of the work that has been done has been centered around \gls{dtls},
 even though most of the solutions can be applied to both.
-I want explore \gls{tls} optimization more. There is clearly a need for that, specially with \gls{coap} over
+Herein we want to explore \gls{tls} optimization more. There is clearly a need for that, specially with \gls{coap} over
 TCP and \gls{tls} standard being currently developed. The \gls{coap} protocol is the HTTP
 for constrained devices and the mentioned standard does not explore any \gls{tls}
 optimizations, and since any \gls{iot} device using it in the future would benefit
 them, this is an important area to explore. None of the related work centered around
-(D)\gls{tls} 1.3, mainly this is because the protocol is still in draft stages, I wouldn't expect
+(D)\gls{tls} 1.3, mainly this is because the protocol is still in draft stages, I would not expect
 however, major changes to its design at this point.
 
-Most of the work done in this area proposes a solution that's tied to a
+Most of the work done in this area proposes a solution that is tied to a
 specific protocol, such as \gls{coap}, or requires an introduction of a third-party
 entity, such as the trust anchor in the case of S3K\cite{S3KScala62:online} or
 even both. This two main issues: first, if the developer wants to use (D)\gls{tls}
@@ -1360,8 +1373,8 @@ he might see himself in some trouble, and second the requirement of a third-part
 introduces additional cost and complexity, which will be a big resistance factor>
 in adopting that technology. This is specially true for developers who are doing
 hobby projects or projects for small businesses, leaving the communications insecure
-in the worse case scenario. My goal is to design a solution that can be used out
-of the box and is not tailored towards any specific protocol, that's fully backwards
+in the worse case scenario. The goal of this work is to design a solution that can be used out
+of the box and is not tailored towards any specific protocol, that is fully backwards
 compatible with the original protocol, that can be used with either \gls{tls}
 or \gls{dtls} and would work with both versions: (D)\gls{tls} 1.2 and the upcoming
 (D)\gls{tls} 1.3.

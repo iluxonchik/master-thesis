@@ -781,19 +781,17 @@ ID is retired. This mechanism requires state to be maintained in both peers.
 
 \gls{tls} extensions were originally defined in \codeword{RFC 4366}\cite{RFC4366}
 and later merged into the \gls{tls} $1.2$ base spec. Each extension consists of an
-extension type, which identifies the particular extension type and extension data,
+extension type, which identifies the particular extension type, and extension data,
 which contains information specific to a particular extension.
 
 The extension mechanism may be used by \gls{tls} clients and servers; it is backwards
-compatible, which means that the communication is possible between \gls{tls} a
-client that supports a particular extension and a server that does not support it,
+compatible, which means that the communication is possible between a \gls{tls} client that supports a particular extension and a server that does not support it,
 and vice versa. A client may request the use of extensions by sending an extended \codeword{ClientHello}
 message, which is just a "normal" \codeword{ClientHello} with an additional
 block of data that contains a list of extensions. The backwards compatibility is achieved based on the \gls{tls}
 requirement that the servers are not "extensions-aware" ignore the data
 added to the \codeword{ClientHello}s that they do not understand (section \codeword{7.4.1.2} of \codeword{RFC 2246}\cite{RFC2246}),
-meaning that even older servers that do not support extensions, namely the ones with
-version of \gls{tls} prior to $1.2$ will not "break".
+meaning that even older servers, running older \gls{tls} versions that do not support extensions, will not "break".
 
 The presence of extensions can be determined by checking if there are bytes
 following the \codeword{compression_methods} field in the \codeword{ClientHello}.
@@ -807,7 +805,7 @@ extended \codeword{ClientHello} message. This prevents the possibility that an e
 \codeword{ServerHello} message could "break" older \gls{tls} clients that do not
 support extensions. An extension type must not appear in the
 extended \codeword{ServerHello}, unless the same extension type appeared in the
-corresponding extended \codeword{CleintHello}, and if this happens, the clients must abort the handshake.
+corresponding extended \codeword{CleintHello}, and if this happens, the client must abort the handshake.
 
 \subsubsection{TLS 1.3}
 

@@ -541,7 +541,7 @@ cipher suites must explicitly specify a the same hash function or a stronger one
 \subsubsection{TLS 1.3 Keying Material}
 
 \gls{tls} 1.3's keying material generation is a little more complex, since different
-keys are used to encrypt data throughout the Handshake Protocol. This can be
+keys are used to encrypt data throughout the Handshake protocol. This can be
 explained by the fact that in \gls{tls} $1.3$ the encryption begins earlier, with
 Handshake messages besides the \codeword{Finished} being encrypted,
 as well as features such as \textbf{early client data}, also known as \textbf{0-RTT data},
@@ -549,7 +549,7 @@ where data comes encrypted in the first flight. As a result of those properties,
 you have multiple encryption keys generated and used to encrypt different data
 throughout the handshake.
 
-The way the keying material is derived is also different, since the
+The way the keying material is derived is also different. The
 \gls{prf} construction described above has been replaced. The
 new design allows easier analysis by cryptographers due to the improved
 key separation properties. In \gls{tls} 1.3, key derivation uses the

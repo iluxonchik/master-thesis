@@ -319,11 +319,10 @@ that \gls{tls} is responsible for:
 \begin{enumerate}
   \item \textbf{Negotiate security parameters} - the communicating peers agree on
   a set of security parameters to be used in a \gls{tls} connection, such as the
-  algorithm used for bulk data encrytion, as well as the secret keys.
-  \item \textbf{Authenticate one to another} - usually only the server authenticates
-  to the client.
+  algorithm used for bulk data encryption and the secret keys.
+  \item \textbf{Authenticate one to another} - usually only the server authenticates iself to the client.
   \item \textbf{Communicate securely} - use the negotiated security parameters
-  to encrypt and authenticate the data, communicating securely one with another.
+  to encrypt and authenticate the data, communicating securely with each other.
 \end{enumerate}
 
 
@@ -332,11 +331,10 @@ that \gls{tls} is responsible for:
 You will find the names \gls{ssl} and \gls{tls} used interchangeably in the literature,
 so it is important to distinguish both. \gls{tls} is an evolution of the \gls{ssl} protocol. The protocol changed
 its name from \gls{ssl} to \gls{tls} when it was
-standardized by the \gls{ietf}.\gls{ssl}
+standardized by the \gls{ietf}. \gls{ssl}
 was a proprietary protocol owned by Netscape Communications, and The \gls{ietf}
-decided that it was a good idea to standarize it, which resulted in \codeword{RFC 2246} \cite{RFC2246},
-specifying \gls{tls} 1.0, which was nothing more than a new version \gls{ssl} 3.0,
-very few changes were made.
+decided that it was a good idea to standardize it, which resulted in \codeword{RFC 2246}\cite{RFC2246},
+specifying \gls{tls} $1.0$, which was nothing more than a new version \gls{ssl} 3.0\cite{RFC6101}, very few changes were made.
 %
 
 \subsubsection{Security Services}

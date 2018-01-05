@@ -522,8 +522,8 @@ following steps (in order):
   will be used in the cryptographic operations.
 \end{itemize}
 
-In \gls{tls} 1.2, the \gls{tls} \gls{prf} is used to generate the keying material
-needed for a connection, which is defined as \codeword{PRF(secret, label, seed) = P_hash(secret, label + seed)}
+In \gls{tls} $1.2$, the \gls{tls} \gls{prf} is used to generate the keying material
+needed for a connection and it is defined as \codeword{PRF(secret, label, seed) = P_hash(secret, label + seed)}.
 The \codeword{P_hash(secret, seed)} function is an auxiliary data expansion function
 which uses a single cryptographic hash function to expand a \codeword{secret} and a \codeword{seed}
 into an arbitrary quantity of output, meaning that you can use to to generate

@@ -246,7 +246,7 @@ algorithms is that they require additional storage space and this might be a pro
 like \codeword{class 1} devices according to the terminology of constrained-code
 networks\cite{RFC7228} which have approximately \codeword{10KB} of RAM and \codeword{100KB}
 of persistent memory. I measured and compared the resulting size of the complied \textit{mbedTLS 2.6.0} library
-\cite{SSLLibra13:online} when it was with and without the \codeword{RSA} module
+\cite{SSLLibra13:online} when it was with and without the \gls{rsa} module
 (located in the \codeword{rsa.c} file). The conclusion is that that using the \codeword{rsa.c} module adds an extra of \codeword{32KB}.
 
 \subsection{Public Certificates and Certificate Chains}
@@ -366,7 +366,7 @@ cipher is used, both of which require a secret to be \textbf{shared} between the
 
 All of the tree security services are not required to be used in every situation.
 In this sense, \gls{tls} is like a framework that allows to select which security services should be used for a communication session. As an example,
-certificate validation might be skipped, which means that the \textbf{authentication} guarantee is not provided. There are some differences regarding this claim between \gls{tls} $1.2$
+certificate validation might be skipped, which means that the \textbf{authentication} guarantee is not provided. There are some differences regarding this claim between \gls{tls} $1.2$\cite{RFC5246}
 and \gls{tls} $1.3$, for example, while in the first you have a \codeword{null}
 cipher (no authentication, no confidentiality, no integrity), in the latter
 this is not true, since it deprecated all non-\gls{aead} ciphers in favor of
@@ -453,6 +453,7 @@ It is important to distinguish between a \textbf{TLS session} from a \textbf{TLS
 \end{itemize}
 
 \subsubsection{\gls{tls} Record Processing}
+
 A \gls{tls} record must go through some processing before it can be sent over the network.
 This processing involves the following steps (\codeword{4} for \gls{tls} $1.2$ and \codeword{3} for \gls{tls} $1.3$):
 
@@ -558,47 +559,47 @@ the \codeword{HKDF-Extract} and \codeword{HKDF-Expand}.
 
 \subsubsection{TLS 1.2 Key Exchange Methods}
 
-The way the \textbf{permaster secret} is generated depends on the key exchange
+The way the peremaster secret is generated depends on the key exchange
 method used. In fact, this is the only phase of the keying material generation
-phase that is variable for a fixed cipher suite (because a cipher suite defines
-the \gls{prf} function to be used), the rest remains exactly the same. The derivation
-of the \textbf{master secret} from the \textbf{premaster secret}, as well as the
-derivation of the bulk encryption keys, \gls{mac} keys and \gls{iv}s from the \textbf{master secret}
+phase that is variable for a fixed cipher suite, because a cipher suite defines
+the \gls{prf} function to be used. The derivation
+of the master secret from the premaster secret, as well as the
+derivation of the bulk encryption keys, \gls{mac} keys and \gls{iv}s from the master secret
 that follows \textbf{is not impacted by the key exchange method} in use.
 
 You have quite a few choices when it comes to key exchange methods. Some of them
-are defined in the base spec (\codeword{RFC5246} \cite{RFC5246}), while others
-in separate \codeword{RFCs} (such as the \gls{ecc} based key exchange, specified
+are defined in the base spec (\codeword{RFC5246}\cite{RFC5246}), while others
+in separate \gls{rfc}s (such as the \gls{ecc} based key exchange, specified
 in \codeword{RFC4492} \cite{RFC4492}).
 
-The base spec specifies 4 key exchange methods, one using \gls{rsa} and 3 using
-\gls{dh}:
+The base spec specifies four key exchange methods, one using \gls{rsa} and
+three using \gls{dh}:
 
 \begin{itemize}
-  \item static \gls{rsa} (\codeword{RSA}) [removed in \gls{tls} 1.3] - the client generates the \gls{pms}, encrypts it with the
-  server's \gls{pubk} (which it obtained from the server's \codeword{X.509}certificate),
-  sending it to the server, which decrypts it using the corresponding \gls{privk}.
+  \item static \gls{rsa} (\codeword{RSA}; removed in \gls{tls} 1.3) - the client generates the premaster secret, encrypts it with the
+  server's \gls{pubk} (which it obtained from the server's \codeword{X.509} certificate),
+  sends it to the server, which in turn decrypts it using the corresponding \gls{privk}. The server then uses it as its premaster secret.
   This key exchange method offers authenticity, but does not offer \gls{pfs}.
-  \item anonymous \gls{dh} (\codeword{DH_annon}) [removed in \gls{tls} 1.3] - a \gls{dh} key exchange is
+  \item anonymous \gls{dh} (\codeword{DH_annon}; removed in \gls{tls} 1.3) - a \gls{dh} key exchange is
   performed and an \textbf{ephemeral} key is generated, but the exchanged \gls{dh}
   parameters are \textbf{not authenticated}, making the resulting key exchange
   vulnerable to \gls{mitm} attacks. \gls{tls} $1.2$ spec states that cipher suites
   using \codeword{DH_annon} \textbf{must not} be used, unless the application
   layer explicitly requests so. This key exchange offers \gls{pfs}, but no
   authenticity.
-  \item fixed/static \gls{dh} (\codeword{DH}) [removed in \gls{tls} 1.3] - the server's/client's public \gls{dh} parameter
+  \item fixed/static \gls{dh} (\codeword{DH}; removed in \gls{tls} 1.3) - the server's/client's public \gls{dh} parameter
   is embedded in its certificate. This key exchange method offers authenticity,
   but does not offer \gls{pfs}.
-  \item epehemeral \gls{dh} (\codeword{DHE}) - each run of the protocol, uses
+  \item ephemeral \gls{dh} (\codeword{DHE}) - each run of the protocol, uses
   different pubic \gls{dh} parameters, which are generated dynamically. This results
-  in a different, epehemeral key being generated every time. The public parameters
+  in a different, ephemeral key being generated every time. The public parameters
   are then digitally signed in some way, usually using the sender's private
   \gls{rsa} (\codeword(DHE_RSA)) or \gls{dsa} (\codeword{DHE_DSS}) key. This key
   exchange offers both authenticity and \gls{pfs}.
 \end{itemize}
 
 When either of the \gls{dh} variants is used, the value resulting from the exchange is used
-as the \gls{pms} (without the leading \codeword{0}'s). Usually, only the server's
+as the premaster secret (without the leading \codeword{0}'s). Usually, only the server's
 authenticity is desired, but client's can also be achieved if it provides the
 server its certificate. Whenever the server is authenticated, the server is secure
 against \gls{mitm} attacks. Table \ref{kemsp} summarizes the security properties
@@ -618,22 +619,21 @@ DHE                          & X                                   & \multicolum
 \end{tabular}
 \end{table}
 
-Note that in \gls{tls} 1.3, all of static \gls{rsa} and \gls{dh} cipher suites
+In \gls{tls} 1.3, all of static \gls{rsa} and \gls{dh} cipher suites
 have been removed: all of the \gls{pubk} exchange methods now provide \gls{pfs}.
 Even though, anonymous \gls{dh} has also been removed from \gls{tls} 1.3, you can
 still have unauthenticated connections by either using \textbf{raw public keys} \cite{RFC7250}
 or by not verifying the certificate chain and any of it is contents.
 
 The \gls{ecc}-based key exchange (\gls{ecdh} and \gls{ecdhe}) and authentication (\gls{ecdsa})
-algorithms are defined in \codeword{RFC4292} \cite{RFC4292}, which is also referenced
-in \codeword{RFC5246} \cite{RFC4256}. The document introduces five new
+algorithms are defined in \codeword{RFC4292}\cite{RFC4292}. The document introduces five new
 \gls{ecc}-based key exchange algorithms, all of which use \gls{ecc} to compute
-the \textbf{premaster secret}, differing only in whether the negotiated
-keys are epehemeral (\gls{ecdh}) or long-term (\gls{ecdhe}), as well as the mechanism (if any) used to
+the premaster secret, differing only in whether the negotiated
+keys are ephemeral (\gls{ecdh}) or long-term (\gls{ecdhe}), as well as the mechanism (if any) used to
 authenticate them. Three new \gls{ecdsa} \textbf{client authentication} mechanisms are also defined,
 differing in the algorithms that the certificate must be signed with, as well
 as the key exchange algorithms that they can be used with.
-Those features are negotiated through the \gls{tls} Extension Mechanism.
+Those features are negotiated through \gls{tls} extensions.
 
 \subsubsection{TLS 1.2 Handshake Protocol}
 

@@ -30,6 +30,7 @@
 %%% tables
 \usepackage{booktabs}
 
+\usepackage{amssymb}
 
 \makeglossaries
 
@@ -94,6 +95,7 @@
 %
 \pagestyle{headings}  % switches on printing of running heads
 %
+$\mathbb{set}$
 \addtocmark{TLS For IoT} % additional mark in the TOC
 
 \tableofcontents
@@ -271,6 +273,24 @@ Some \gls{aead} ciphers have shorter authentication tags (\textit{i.e.} shorter 
 which makes then more suitable for low-bandwidth networks, since the messages to be sent
 are shorter in size.
 
+\subsection{Elliptic Curve Cryptography}
+
+\gls{pubk} crytpography is based on the use of one-way math functions,
+which are function where it's easy to compute the answer given an input,
+but hard to compute the input given the answer. For example, RSA uses factoring
+as the one one way function: it's easy to multiply large numbers, but it's hard
+to factor them.
+
+\gls{ecc} is based on elliptic curves, which are set of points $(x,y)$ that are
+solutions to the equation $y^2 = x^3 + ax + b$, where $4a^3 + 27b^2 \neq 0$.
+Depending on the value of $a$ and $b$, elliptic curves assume different shapes
+on the plane.
+
+The security of \gls{ecc} is based on the the elliptic curve discrete logarithm
+problem, which states that scalar multiplication is a one way function. To exemplify,
+given a curve $E(\mathbb{Z}/p\mathbb{Z})$ and points $Q$ and $P$ on that curve
+$Q,P \in E(\mathbb{Z}/p\mathbb{Z})$ where $Q$ is a multiple of $P$, the elliptic curve discrete logarithm problem
+states that finding the integer $k$, such that $Q=kP$ is a very hard problem.
 
 \subsection{The TLS Protocol}
 
@@ -987,7 +1007,7 @@ resources for them are much higher than for symmetric key ones. As the
 \textit{Lightweight Cryptography for the Internet of Things}\cite{b5b8db9784:online} paper
 by \textit{Sony Corporation} concluded, there are no promising primitives
 that have enough lightweight and security properties, comparing to the
-conventional ones, such as RSA and \gls{ECC}. In my own further research of this
+conventional ones, such as RSA and \gls{ecc}. In my own further research of this
 topic, I came to the same conclusion.
 
 Lightweight cryptography is an important part of my work and there are papers detailing

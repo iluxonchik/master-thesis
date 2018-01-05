@@ -74,6 +74,7 @@
 \newacronym{ddos}{DDoS}{Distributed Denial-Of-Service}
 \newacronym{pki}{PKI}{Public Key Infrastructure}
 \newacronym{ae}{AE}{Authenticated Encryption}
+\newacronym{nsa}{NSA}{US National Security Agency}
 
 
 %%% WARN: added as specified here:
@@ -1336,7 +1337,9 @@ there has been new work done in this area since the release of this profile.
 Namely, there is a document specifying an architecture for a frimware update
 mechanism for \gls{iot} devices\cite{I-D.moran-suit-architecture} currently in "Internet-Draft" state.
 
-\section{Proposed Solution}
+\section{Solution}
+
+\subsection{Solution Architecture}
 
 Most of the work that has been done has been centered around \gls{dtls},
 even though most of the solutions can be applied to both.
@@ -1395,6 +1398,51 @@ and there has been no work like \codeword{RFC 7924}\cite{RFC7924} done for (D)TL
 and it would be interesting to explore this. \gls{tls} 1.3 has many fundamental changes
 to the way the handshake is done, bringing many new features, whose ideas can
 be incorporated into my proposed solution and even backported to \gls{tls} 1.2.
+
+\subsection{Evaluation}
+
+In order to evaluate how good my solution is I will profile both, the original protocol
+implementation and the modified one, which will be my solution. The profiling metrics
+that I will be concentrating in are power consumption, RAM usage, storage usage,
+CPU cycles used and time taken. I will then compare the results. The profiling
+will be done over various simulated scenarios, which emulate real-life usage,
+such as connecting to the server multiple times over a short time period and transfer
+small quantity of data, connecting to the server and transferring a large
+amount of data all at once, and so on.
+
+Most probably, I will only be able to evaluate my solution on \gls{tls} 1.2,
+due to lack of time and the fact that version $1.3$ still lacks stable implementations.
+
+
+\subsection{Planning}
+
+During the moth of February $2018$, I will work on defining my solution precisely.
+Due to the nature of the solution, it will have many different versions, depending
+on the target device and required security guarantees. Most probably, I will not
+have time to implement and evaluate every possible scenario, so I will have to choose
+only a few of them.
+During month of March $2018$, I will implement the solution in code, by modifying
+the mbedTLS 2.6.0 library\cite{SSLLibra13:online} code, decide which metrics
+I want to evaluate, set up the profiling code and design the testing scenarios.
+From early April $2018$ until March $2018$ I will be evaluating my solution and
+concentrate more on writing the dissertation's text.
+
+\subsection{Conclusion}
+
+The lack of security in \gls{iot} is a serious issue that has a high monetary cost
+when botnets infect the devices. Recent
+botnet attacks show that serious damage can be caused. An old saying attributed to the
+\gls{nsa} states that "Attacks always get better; they never get worse".
+Combined with the fact that the number of \gls{iot} devices is growing at a high
+pace, while there are no major improvements to their security, makes it clear
+that it's fundamental for this area to be addressed.
+
+While there are well established security solutions, not all of them can be used
+with the \gls{iot} devices, due their constrained nature. One such solution is
+the (D)\gls{tls} protocol, that due to its heavyweight nature cannot be used
+as a security solution for the constrained \gls{iot} devices. With my future work,
+I want to contribute to this area, by designing a solution that is transparent
+to the programmer, with the provided security services adaptable to the specific context needs.
 
 % ---- Bibliography ----
 %

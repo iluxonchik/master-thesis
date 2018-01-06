@@ -639,9 +639,17 @@ Those features are negotiated through \gls{tls} extensions.
 
 
 \begin{figure}
-\centering
-\includegraphics[width=0.9\textwidth]{img/tls-12-full-handshake2.png}
-\caption{\label{fig:tls-12-handshake} \gls{tls} $1.2$ message flow for a full handshake}
+    \centering
+    \begin{minipage}{0.6\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{img/tls-12-full-handshake2.png} % first figure itself
+        \caption{\label{fig:tls-12-handshake} \gls{tls} $1.2$ message flow for a full handshake}
+    \end{minipage}\hfill
+    \begin{minipage}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{img/dtls-cookie.png} % second figure itself
+        \caption{\label{fig:dtls-cookie} DTLS handshake with HelloVerifyRequest containing the cookie}
+    \end{minipage}
 \end{figure}
 
 
@@ -849,13 +857,13 @@ connection after the handshake is completed and can be presented by the client
 on the next visit.
 
 %
-\subsection{DLTS}
+\subsection{DTLS}
 
 The design of \gls{dtls} is intentionally very similar to \gls{tls}, in fact, its specification is written
 in terms of differences from \gls{tls}. The changes are mostly done on the lower level,
 and even extensions that have been defined before \gls{dtls} has even existed can be
-used with \gls{dtls}, The latest version of \gls{dtls} is $1.2$ and it is defined
-in \codeword{RFC 6347}\cite{RFC6347}. There is a draft of \gls{dtls} 1.3
+used with \gls{dtls}. The latest version of \gls{dtls} is $1.2$ and it is defined
+in \codeword{RFC 6347}\cite{RFC6347}. There is a draft of \gls{dtls} $1.3$
 \cite{I-D.ietf-tls-dtls13} that is currently under active development.
 
 Since \gls{dtls} operates on top of an unreliable transport protocol, such as
@@ -863,8 +871,8 @@ UDP, it must explicitly deal with the absence of reliable and ordered assumption
 that are made by \gls{tls}. The main differences from \gls{dtls} $1.2$ to \gls{tls} $1.2$ are:
 
 \begin{itemize}
-  \item two new values are added to the record layer: an explicit \codeword{2 byte} sequence
-  number and a \codeword{6 byte} epoch fields. The \gls{dtls} \gls{mac} is the same as of \gls{tls},
+  \item two new fields are added to the record layer: an explicit \codeword{2 byte} sequence
+  number and a \codeword{6 byte} epoch. The \gls{dtls} \gls{mac} is the same as in \gls{tls},
   however, rather than using the implicit sequence number, the \codeword{8 byte} value
   formed by concatenation of the epoch number and the sequence number is used.
 
@@ -875,7 +883,8 @@ that are made by \gls{tls}. The main differences from \gls{dtls} $1.2$ to \gls{t
   message, the \codeword{HelloVerifyRequest} has been added. After
   the \codeword{ClientHello}, the server responds with a \codeword{HelloVerifyRequest}
   containing a cookie, which is returned back to the server in another
-  \codeword{ClientHello} that follows it, after which the handshake proceeds as in \gls{tls}.
+  \codeword{ClientHello} that follows it, after which the handshake proceeds as in \gls{tls}. This is depicted in Figure \ref{fig:dtls-cookie}. In \gls{dtls} $1.3$ follows the same idea, but does it differently, namely,
+  the \codeword{HelloVerifyRequest} message has been removed, and the cookie is conveyed to the client via an extension in a \codeword{HelloRetryRequest} message.
   Although optional for the server, this mechanism highly recommended, and the
   client must be prepared to respond to it.
 

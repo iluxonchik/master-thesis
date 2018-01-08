@@ -1410,24 +1410,21 @@ In order to evaluate how good the result of the work is, both, the original prot
 implementation and the one provided as part of the solution, will be profiled and compared. The relevant profiling metrics are power consumption, RAM usage, storage usage,
 CPU cycles used and time taken. The profiling
 will be done over various simulated scenarios, which emulate real-life usage,
-such as connecting to the server multiple times over a short time period and transfer
-small quantity of data, connecting to the server and transferring a large
-amount of data all at once, and so on.
+such as connecting to the server multiple times over a short time period and transferring
+small quantities of data, and connecting to the server and transferring a large
+amount of data, all at once.
 
-Due to limited time and the fact that \gls{tls} $1.3$ still lacks stable implementations, most likely only the solution under \gls{tls} $1.2$ will be evaluated.
+Due to limited time and the fact that \gls{tls} $1.3$ still lacks stable implementations, most likely, only the solution under \gls{tls} $1.2$ will be implemented and evaluated.
 
 \subsection{Planning}
 
-During the moth of February $2018$, I will work on defining my solution precisely.
+During the moth of February $2018$, the solution will be defined precisely.
 Due to the nature of the solution, it will have many different versions, depending
-on the target device and required security guarantees. Most probably, I will not
-have time to implement and evaluate every possible scenario, so I will have to choose
-only a few of them.
-During month of March $2018$, I will implement the solution in code, by modifying
-the \textit{mbedTLS 2.6.0} library\cite{SSLLibra13:online} code, decide which metrics
-I want to evaluate, set up the profiling code and design the testing scenarios.
-From early April $2018$ until March $2018$ I will be evaluating my solution and
-concentrate more on writing the dissertation's text.
+on the target device and required security services. Most likely, there will be no time
+to implement and evaluate every possible scenario, so only a few of them will be chosen.
+During the month of March $2018$, the solution will be implemented in code, by modifying
+the \textit{mbedTLS 2.6.0} library\cite{SSLLibra13:online}, the most important evaluation metrics will be chosen and the related profiling code set up. Testing scenarios will be designed.
+From early April $2018$ until March $2018$ the solution will be evaluated and a concentration on writing the dissertation's text will be done.
 
 \subsection{Conclusion}
 

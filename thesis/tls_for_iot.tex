@@ -1043,19 +1043,19 @@ of \codeword{17.79ms}.
 
 6LoWPAN\cite{RFC4944} is a protocol that allows devices with limited processing
 ability and power to transmit information wirelessly using the \codeword{IPv6}
-protocol. The protocol defines IP Header Compression(IPHC) for the IP header and
-Next Header Compression (NHC) for the IP extension headers and the UDP header in \cite{RFC6282}.
+protocol. The protocol defines IP Header Compression (IPHC) for the IP header, as well as,
+Next Header Compression (NHC) for the IP extension headers and the UDP header in \codeword{RFC 6282}\cite{RFC6282}.
 The compression relies on the shared context between the communicating peers.
 
-\cite{6LoWPANC53:online} uses this same idea, but with the goal of compressing DTLS headers.
+\cite{6LoWPANC53:online} uses this same idea, but with the goal of compressing \gls{dtls} headers.
 6LoWPAN does not provide ways to compress the UDP payload and layers above, there
 is however, a proposed standard\cite{RFC7400} for generic header compression
 for 6LoWPANs that can be used to compress the UDP payload. The authors propose
-a way to compress DTLS headers and messages using this mechanism.
+a way to compress \gls{dtls} headers and messages using this mechanism.
 
 The paper \cite{6LoWPANC53:online} defines how the \gls{dtls} Record header, the \gls{dtls} Handshake header,
 the \codeword{ClientHello} and the \codeword{ServerHello} messages can be compressed, but notes that
-the same compression techniques can be used to compress the remaining Handshake
+the same compression techniques can be used to compress the remaining handshake
 messages. They explore two cases for the header compression: compressing both,
 the Record header and the Handshake header and compressing the Record header only,
 which is useful after the handshake has completed and the fragment field of the
@@ -1076,22 +1076,22 @@ Record layer contains application data, instead of a handshake message.
 \end{figure}
 
 
-All of the cases follow the same basic idea, for this reason only one of them will be exemplified. Each \gls{dtls} fragment is carried over in the UDP payload. In this case,
-the UDP payload carries a header-like payload (the DTLS record header).
+Each \gls{dtls} fragment is carried over as a UDP payload. In this case,
+the UDP payload carries a header-like payload (the \gls{dtls} record header).
 Figure \ref{fig:6lowpan-header} shows the way IPv6 next header compression is done.
-The authors use the same value for the \codeword{LOWPAN_NHC Encoding} field (defined in \cite{RFC6282})
+The authors use the same value for the \codeword{LOWPAN_NHC Encoding} field (defined in \codeword{RFC 6282}\cite{RFC6282})
 as in \codeword{RFC7400} and define the format of the \codeword{In-line Next Header Fields}
-(defined in \cite{RFC6282}), which is the compressed \gls{dtls} content. The \codeword{LOWPAN_IPHC Encoding}
+(also defined in \cite{RFC6282}), which is the compressed \gls{dtls} content. The \codeword{LOWPAN_IPHC Encoding}
 and \codeword{In-Line IP Fields} fields are used in the IPv6 header compression
 and are not in the scope of the paper.
 
-The case where both, the Record and the Handshake headers are compressed
-will be exemplified.
+All of the cases follow the same basic idea, for this reason only one of them will be exemplified:
+the case where both, the Record and the Handshake headers are compressed.
 In this case \codeword{LOWPAN_NHC Encoding} will contain the \codeword{LOWPAN_NHC_RHS}
 structure (depicted in figure \ref{fig:6lowpan-ghc-rhs}), which is the compressed form of the Record and Handshake headers. The
 parts that are not compressed will be contained in the \codeword{Payload} part.
 The first four bits represent the ID field and in this case they are fixed to \codeword{1000},
-so that the decompressor knows what is being compressed (\textit{i.e} how to interpret
+that way, the decompressor knows what is being compressed (\textit{i.e} how to interpret
 the structure that follows the ID bits). If the \codeword{F} field of the \codeword{LOWPAN_NHC_RHS} structure contains the
 bit \codeword{0}, it means that the handshake message is not fragmented, so
 the \codeword{fragment_offset} and \codeword{fragment_length} fields are

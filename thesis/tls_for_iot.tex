@@ -1350,60 +1350,59 @@ mechanism for \gls{iot} devices\cite{I-D.moran-suit-architecture} currently in "
 
 \subsection{Solution Architecture}
 
-Most of the work that has been done has been centered around \gls{dtls},
-even though most of the solutions can be applied to both.
+Most of the work has been centered around \gls{dtls},
+even though the majority of solutions can be applied to \gls{tls} as well.
 Herein we want to explore \gls{tls} optimization more. There is clearly a need for that, specially with \gls{coap} over
-TCP and \gls{tls} standard being currently developed. The \gls{coap}\cite{RFC7252} protocol is the HTTP
-for constrained devices and the mentioned standard does not explore any \gls{tls}
-optimizations, and since any \gls{iot} device using it in the future would benefit
-them, this is an important area to explore. None of the related work centered around
-(D)\gls{tls} 1.3, mainly this is because the protocol is still in draft stages, major design changes however, should not be expected at this point.
+TCP and \gls{tls} standard being currently developed. The mentioned standard does not explore any \gls{tls}
+optimizations, and since any \gls{iot} device using it in the future would benefit from
+them, this is an important area to explore. None of the related work explored
+(D)\gls{tls} 1.3, mainly because the protocol is still in draft stages, however, major design changes are not expected at this point.
 
-Most of the work done in this area proposes a solution that is tied to a
+The majority of the work done in the area proposes a solution that is either tied to a
 specific protocol, such as \gls{coap}, or requires an introduction of a third-party
 entity, such as the trust anchor in the case of S3K\cite{S3KScala62:online} or
 even both. This two main issues: first, if the developer wants to use (D)\gls{tls}
-without using any specific protocol for which the solution was tuned for (such as \gls{coap}),
+without using a protocol for which an optimization has been done,
 he might see himself in some trouble, and second the requirement of a third-party
-introduces additional cost and complexity, which will be a big resistance factor>
-in adopting that technology. This is specially true for developers who are doing
+introduces additional cost and complexity, which will be a big resistance factor
+in adopting the technology. This is specially true for developers who are doing
 hobby projects or projects for small businesses, leaving the communications insecure
 in the worse case scenario. The goal of this work is to design a solution that can be used out
-of the box and is not tailored towards any specific protocol, that is fully backwards
+of the box and is not tailored towards any specific protocol, while fully backwards
 compatible with the original protocol, that can be used with either \gls{tls}
 or \gls{dtls} and would work with both versions: (D)\gls{tls} $1.2$ and the upcoming
 (D)\gls{tls} 1.3.
 
-In order to achieve the goals described in this document above, the extension
-mechanism of \gls{tls} will be heavily relied upon. By using extensions, any deviations from the original protocol an be done, even if they completely change the it. This was confirmed by
+In order to achieve those goals, the \gls{tls} extension
+mechanism will be heavily relied upon. By using extensions, any deviations from the original protocol can be done, even if they completely change the it. This was confirmed by
 one of the \gls{tls} designers, after I asked this question on the official
-\gls{ietf} mailing list\cite{ReTLSTLS31:online}, since neither of the four versions of the \gls{tls} protocol
-specifications, nor \codeword{RFC 4366} made it clear.
+\gls{ietf} mailing list\cite{ReTLSTLS31:online}, since neither of the existing \gls{rfc}s made it clear.
 
-Ideas from \gls{tls} $1.3$, such as \codeword{0-RTT data}, which can be done if peers already share a \gls{psk} would be interesting to implement in the second part of the work.
+Ideas from \gls{tls} $1.3$, such as \codeword{0-RTT data}, which can be done if peers already share a \gls{psk} would be interesting to
+explore for (D)\gls{tls} $1.2$.
 For example, this can be very useful in the context of the temperature sensor
-described in the introduction, where the sensors sends data to a server every
+described in the introduction, where the device sends data to a server every
 30 seconds. With \codeword{0-RTT data}, it can communicate securely with minimal costs.
-The use of symmetric cryptography exclusively, has various additional advantages in the context
-of \gls{iot}, which were already mentioned, so there is value in exploring solutions that revolve around
+The use of symmetric cryptography exclusively, has various advantages in the context
+of \gls{iot}. This means that there is value in exploring solutions that revolve around
 \gls{psk}s and that avoid public key cryptography altogether.
 
 Not all \gls{iot} devices are limited to the point of not being able to use
-public key cryptography at all. For some of them, the use of something like raw
-public keys, which is considered the first entry point into the area of \gls{pubk}
+public key cryptography altogether. For some of them, the use of \gls{rpk}s, which is considered the first entry point into the area of \gls{pubk}
 cryptography, is acceptable, while others are powerful enough to take
-advantage of certificates and \gls{pki}, at least up to some point. My solution
+advantage of certificates and \gls{pki}, at least up to a point.
+The solution proposed with this work
 would be adaptable to any of those scenarios, depending on the context and the security
 requirements, therefore being similar to a framework. For example, some scenarios
-might not require integrity, but not privacy. For those, it makes no sense to
+might require integrity, but not privacy. For those, it does not make sense to
 pay the energy and time overhead of encryption. Special care in the
 selection of cipher suites and key exchange methods needs to be taken, possibly even developing new ones.
 
 (D)\gls{tls} $1.2$ is significantly different from (D)\gls{tls} 1.3
-and there has been no work like \codeword{RFC 7924}\cite{RFC7924} done for (D)TLS 1.3
-and it would be interesting to explore this. \gls{tls} $1.3$ has many fundamental changes
+and there has been no work like \codeword{RFC 7924}\cite{RFC7924} done for (D)\gls{tls} $1.3$.
+It would be interesting to explore this. (D)\gls{tls} $1.3$ has many fundamental changes
 to the way the handshake is done, bringing many new features, whose ideas can
-be incorporated into my proposed solution and even backported to \gls{tls} 1.2.
+be incorporated into the proposed solution and even backported to \gls{tls} 1.2.
 
 \subsection{Evaluation}
 

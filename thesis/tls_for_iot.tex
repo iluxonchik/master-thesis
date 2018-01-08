@@ -578,8 +578,9 @@ three using \gls{dh}:
 \begin{itemize}
   \item static \gls{rsa} (\codeword{RSA}; removed in \gls{tls} 1.3) - the client generates the premaster secret, encrypts it with the
   server's \gls{pubk} (which it obtained from the server's \codeword{X.509} certificate),
-  sends it to the server, which in turn decrypts it using the corresponding \gls{privk}. The server then uses it as its premaster secret.
-  This key exchange method offers authenticity, but does not offer \gls{pfs}.
+  sends it to the server, which in turn decrypts it using the corresponding \gls{privk}. The server then uses it as its premaster secret.\gls{pfs} is
+  a property that preserves the confidentiality of past interactions even if the
+  long-term secret is compromised. This key exchange method offers authenticity, but does not offer \gls{pfs}.
   \item anonymous \gls{dh} (\codeword{DH_annon}; removed in \gls{tls} 1.3) - a \gls{dh} key exchange is
   performed and an \textbf{ephemeral} key is generated, but the exchanged \gls{dh}
   parameters are \textbf{not authenticated}, making the resulting key exchange
@@ -1197,54 +1198,50 @@ fragmentation tasks to \gls{coap}, reduces the \gls{dtls} implementation code si
 by approximately $23\%$.
 
 \codeword{RFC 7925}\cite{RFC7925} describes a \gls{tls} and \gls{dtls} $1.2$
-profile for \gls{iot} devices that offers communication security services
-for \gls{iot} applications and is reasonably implementable on many constrained devices.
+profile for \gls{iot} devices that offer communication security services
+for \gls{iot} applications.
 In this context, "profile" means available configuration options (ex: which
 cipher suites to use) and protocol extensions that are best suited for \gls{iot} devices.
-The document is rather lengthy, only its fundamental parts will be summarized. Some \gls{rfc}s that are relevant to this will also be described.
+The document is rather lengthy, only its fundamental parts will be summarized. Some \gls{rfc}s that are relevant will also be described.
 
-The RFC explores both cases constrained clients and constrained servers, specifying
+This \gls{rfc} explores both cases: constrained clients and constrained servers, specifying
 a profile for each one and describing the main challenges faced in each scenario.
 The profile specifications for constrained clients and servers are very similar.
 Code reuse in order to minimize the implementation size is recommended. For example, an \gls{iot} device
 using a network access solution based on \gls{tls}, such as EAP-TLS\cite{rfc5216}
-can reuse most parts of the code for (D)TLS at the application layer.
+can reuse most parts of the code for (D)\gls{dtls} at the application layer.
 
 For the credential types the profile considers 3 cases:
 
 \begin{itemize}
   \item \gls{psk} - authentication based on \gls{psk}s is described in
   \codeword{RFC 4249}\cite{RFC4279}. When using \gls{psk}s, the client indicates which
-  key it uses by including a \gls{psk} identity in its \codeword{ClientKeyExchange} message.
+  key it wants to use by including a \gls{psk} identity in its \codeword{ClientKeyExchange} message.
   A server can have different \gls{psk} identities shared with different clients.
   An identity can have any size, up to a maximum of \codeword{128 bytes}.
   The profile recommends the use of shorter \gls{psk} identities and specifies
   \codeword{TLS_PSK_WITH_AES_128_CCM_8} as the only mandatory-to-implement
-  cipher suite to be used with \gls{psk}s, just like \gls{coap} does. \gls{pfs} is
-  a property that preserves the confidentiality of past interactions even if the
-  long-term secret is compromised. If a \gls{pfs} cipher suite is used, ephemeral
+  cipher suite to be used with \gls{psk}s, just like \gls{coap} does. If a \gls{pfs} cipher suite is used, ephemeral
   \gls{dh} keys should not be reused over multiple protocol exchanges.
 
-  \item \gls{rpk} - the use of \gls{rpk}s in (D)TLS is described in \codeword{RFC 7250}\cite{RFC7250}.
-  With \gls{rpk}s, only a subset of the information is found in typical certificates
+  \item \gls{rpk} - the use of \gls{rpk}s in (D)\gls{tls} is described in \codeword{RFC 7250}\cite{RFC7250}.
+  With \gls{rpk}s, only a subset of the information that is found in typical certificates
   is used: namely the \codeword{SubjectPublicKeyInfo} structure, which contains
   the necessary parameters to describe the public key (the algorithm identifier
   and the public key itself). Other PKIX certificate\cite{RFCabc} parameters are
   omitted, making the resulted \gls{rpk} smaller in size, when compared to the
   original certificate and the code to process the keys simpler. In order for the
-  peers to negotiate the \gls{rpk} use, two new extensions have been defined:
-  one for the client to list the certificate types that it supports (sorted by order of preference) and one for
-  the indicate which one it chose. To further reduce the size of the implementation, the \codeword{RFC 7250}
+  peers to negotiate a \gls{rpk}, two new extensions have been defined:
+  one for the client indicate which certificate types it can provide to the server, and one to indicate which certificate types it can process from the server. To further reduce the size of the implementation, the profile
   recommends the use of the \gls{tls} Cached Information extension\cite{RFC7924}, which
-  enables the \gls{tls} peers to exchange just the fingerprint (a shorter sequence of bytes
-  used to identify a \gls{pubk}) of the \gls{pubk}. The only mandatory-to-implement
-  cipher suite to be used with \gls{rpk}s is \codeword{TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8},
-  just like with \gls{coap}. Note that the cipher suite makes the use of \gls{aead}.
+  enables \gls{tls} peers to exchange just the fingerprint (a shorter sequence of bytes
+  used to identify a \gls{pubk}) of the \gls{pubk}. Identical to \gls{coap}, the only mandatory-to-implement
+  cipher suite to be used with \gls{rpk}s is \codeword{TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8}.
 
   \item certificate - conventional certificates can also be used. The support
   for the Cached Information extension\cite{RFC7924} and the \codeword{TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8}
-  ciphersuite is required. The profile restricts the use of named curves to
-  the ones defined in \cite{RFC4492}. For certificate revocation, neither the
+  cipher suite is required. The profile restricts the use of named curves to
+  the ones defined in \codeword{RFC 4492}\cite{RFC4492}. For certificate revocation, neither the
   \gls{ocsp}\cite{RFC6960}, nor the \gls{crl}\cite{RFCabc} mechanisms are used, instead this task is delegated to
   the software update functionality. The Cached Information extension does not
   provide any help with caching client certificates. For this reason, in cases
@@ -1257,20 +1254,20 @@ For the credential types the profile considers 3 cases:
   for constrained clients that due to memory limitation posses only a small number
   of \gls{ca} root keys, since it can avoid repeated handshake failures. If the clients interacts with
   dynamically discovered set of (D)\gls{tls} servers, the use of this extension is recommended,
-  if that set is fixed, it is not recommended.
+  if that set is fixed, it is not.
 
 \end{itemize}
 
 The signature algorithms extension\cite{RFC5246} allows the client to indicate
-to the server which signature/hash pairs it supports to be used in digital signatures.
+to the server which signature/hash pairs it supports to be used with digital signatures.
 The client must send this extension to indicate the use of \codeword{SHA-256},
 otherwise the defaults defined in \cite{RFC5246} are used. This extension is not
-applicable when the \gls{psk}-based cipher suites are used.
+applicable when \gls{psk}-based cipher suites are used.
 
-The profile mandates that constrained clients must implement the session
+The profile mandates that constrained clients must implement session
 resumption to improve the performance of the handshake since this will lead to
-less exchanged messages, lower computational overhead, since only symmetric cryptography
-is used, and it requires less bandwidth. In case the server is constrained, but
+less exchanged messages, lower computational overhead (since only symmetric cryptography
+is used) and it requires less bandwidth. If server is constrained, but
 the client is not, the client must implement the Session Resumption Without
 Server-Side State mechanism\cite{RFC5077}, which is achieved through the
 use of tickets. The server encapsulates the state into a ticket and forwards it to
@@ -1279,33 +1276,33 @@ If both, the client and the server are constrained, both of them should implemen
 \codeword{RFC 5077}\cite{RFC5077}.
 
 The use of compression is not recommended for two reasons. First, \codeword{RFC7525}\cite{RFC7525}
-recommends disabling (D)TLS level compression, due to attacks such as \codeword{CRIME}\cite{Microsof72:online}.
+recommends disabling (D)\gls{tls} level compression, due to attacks such as \codeword{CRIME}\cite{Microsof72:online}.
 \codeword{RFC7525} provides recommendations for improving the security of deployed services
 that use \gls{tls} and \gls{dtls} and was published as a response to the various
-attacks on (D)TLS that have emerged over the years. Second, for \gls{iot} applications,
+attacks on (D)\gls{tls} that have emerged over the years. Second, for \gls{iot} applications,
 the (D)\gls{tls} compression is not needed, since application-layer protocols are highly
-optimized and compression at the (D)TLS layer increases the implementation's size and complexity.
+optimized and compression at the (D)\gls{tls} layer increases the implementation's size and complexity.
 
-\codeword{RFC6520} defines a heartbeat mechanism to test whether the other peer
+\codeword{RFC6520}\cite{RFC6520} defines a heartbeat mechanism to test whether the peer
 is still alive. The implementation of this extension is recommended for server
-initiated messages. Note that since the messages to the client will most likely
-get blocked by the middleboxes, the initial connection set up is initiated by the
+initiated messages. Note that since the messages sent to the client will most likely
+get blocked by middleboxes, the initial connection setup is initiated by the
 client and then kept alive by the server.
 
+Random numbers play an essential role in the overall security of the protocol.
 Many of the usual sources of entropy, such as the timing of keystrokes and the
-mouse movements will not be available on many \gls{iot} devices, which means that
+mouse movements, will not be available on many \gls{iot} devices, which means that
 either alternative ones need to be found or dedicated hardware must be added.
-\gls{iot} devices using (D)\gls{tls} must find ways to offer to generate quality
-random numbers, the guidelines and requirements for which can be found in \codeword{RFC4086}\cite{rfc4086},
-since they play an essential role in the overall security of the protocol.
+\gls{iot} devices using (D)\gls{tls} must find ways to offer to the generation of quality
+random numbers, the guidelines and requirements for which can be found in \codeword{RFC4086}\cite{rfc4086}.
 
-Implementations compliant with this profile must use \gls{aead} ciphers, this means
-that encryption and \gls{mac} computation are no longer independent steps, which means
+Implementations compliant with the profile must use \gls{aead} ciphers, therefore
+encryption and \gls{mac} computation are no longer independent steps, which means
 that neither encrypt-then-MAC\cite{RFC7366}, nor the truncated MAC\cite{RFC6066} extensions are applicable
 to this specification and must not be used.
 
 The \gls{sni} extension\cite{RFC6066} defines a mechanism for a client to
-tell a (D)TLS server the name of the server it wants to connect to. This is
+tell a (D)\gls{tls} server the name of the server that it is contacting. This is
 crucial in case when multiple websites are hosted under the same IP address.
 The implementation of this extension is required, unless the (D)\gls{tls}
 client does not interact with a server in a hosting environment.
@@ -1314,11 +1311,11 @@ The maximum fragment length extension\cite{RFC6066} lowers the maximum fragment
 length support of the record layer from $2^14$ to $2^9$. This extension allows
 the client to indicate the server how much of the incoming data it is able to buffer,
 allowing the client implementations to lower their RAM requirements, since it does not
-not need to accept packets of large size, such as the 16K packets required by
+not need to accept packets of large size, such as the \codeword{16K} packets required by
 plain (D)\gls{tls}. For that reason, client implementations must support this
 extension.
 
-The Session Hash Extended Master Secret Extension \cite{RFC7627} defines an extension
+The Session Hash Extended Master Secret Extension\cite{RFC7627} defines an extension
 that binds the master secret to the log of the full handshake, thus preventing
 \gls{mitm} attacks, such as the triple handshake\cite{TripleHa89:online}. Even though the
 cipher suites recommended by the profile are not vulnerable to this attack, the
@@ -1333,20 +1330,20 @@ conservatively under the assumption that \gls{iot} devices have a long expected
 lifetime ($10+$ years) and that those key recommendations refer to the long-term
 keys used for device authentication. Keys that are provisioned dynamically
 and used for protection of transactional data, such as the ones used in
-(D)\gls{tls} cipher suites, may be shorter, dependent on the sensitivity of
+(D)\gls{tls} cipher suites, may be shorter, depending on the sensitivity of
 transmitted data.
 
-Even though \gls{tls} defines a single stream cipher: the RC4, its use is no longer
-recommended due to cryptographic weaknesses described in \codeword{RFC 7465}\cite{RFC7465}.
+Even though \gls{tls} defines a single stream cipher: \textit{RC4}, its use is no longer
+recommended due to its cryptographic weaknesses described in \codeword{RFC 7465}\cite{RFC7465}.
 
-The \codeword{RFC 7925}\cite{RFC7925} points out the importance of designing a software
+\codeword{RFC 7925}\cite{RFC7925} points out that designing a software
 update mechanism into an \gls{iot} system is crucial to ensure that potential vulnerabilities
 can be fixed and that the functionality can be enhanced. The software update mechanism
 is important to change configuration information, such as trust anchors and
 other secret-key related information. Although the profile refers to \codeword{LM2M}\cite{OpenMobi29:online}
 as an example of protocol that comes with a suitable software update mechanism,
 there has been new work done in this area since the release of this profile.
-Namely, there is a document specifying an architecture for a frimware update
+There is a document specifying an architecture for a frimware update
 mechanism for \gls{iot} devices\cite{I-D.moran-suit-architecture} currently in "Internet-Draft" state.
 
 \section{Solution}

@@ -896,9 +896,9 @@ that are made by \gls{tls}. The main differences from \gls{dtls} $1.2$ to \gls{t
 \section{Related Work}
 
 Lightweight cryptography is an important topic in the context of \gls{iot}, since
-cryptography a fundamental part of security and it is fundamental for it to be
+cryptography is a fundamental part of security and it is fundamental for it to be
 lightweight in order to run on devices with limited memory and processing
-capabilities. A lot of work in \gls{iot} incorporates it in one way or another,
+capabilities. A lot of the work in \gls{iot} incorporates it in one way or another,
 so this section will begin with the description of the work done in this area.
 
 Alex \textit{et al}\cite{Stateoft96:online} explore the topic of lightweight symmetric cryptography,
@@ -909,10 +909,10 @@ are listed in the paper, alongside relevant metrics. The list will not be
 included here due to lack of space. The authors also proposed
 to split the field into two areas: ultra-lightweight and \gls{iot} cryptography.
 
-The authors systematized the knowledge in the area of lightweight cryptography
-in order to define "lightweightness" more precisely. They observed that the design
-of lightweight cryptography algorithms vary greatly, the only unifying thread
-between them being the low computing power of the devices they are designed to run on.
+The paper systematizes the knowledge in the area of lightweight cryptography
+in order to define "lightweightness" more precisely. The authors observed that the design
+of lightweight cryptography algorithms varies greatly, the only unifying thread
+between them being the low computing power of the devices that they are designed for.
 
 The most frequently optimized metrics are the memory consumption, the implementation size
 and the speed or the throughput of the primitive. The specifics depend on whether
@@ -920,19 +920,19 @@ the hardware or the software implementations of the primitives are considered.
 
 If the primitive is implemented in hardware, the memory consumption and the implementation
 size are lumped together into its gate area, which is measured in Gate Equivalents (GE),
-a metric quantifying how physically large a circuit implementing primitive is.
-The throughout is measured in bytes/sec and it corresponds to the amount of plaintext
+a metric quantifying how physically large a circuit implementing the primitive is.
+The throughout is measured in \textit{bytes/sec} and it corresponds to the amount of plaintext
 processed per time unit. If a primitive is implemented in software (typically for
 use in micro-controllers), the relevant metrics are the RAM consumption, the code
-size and the throughput of the primitive, measured in bytes per CPU cycle.
+size and the throughput of the primitive, measured in \textit{bytes/CPU cycle}.
 
-To accommodate the limitations of constrained devices, most lightweight algorithms
+To accommodate the limitations of the constrained devices, most lightweight algorithms
 are designed to use smaller internal states with smaller key sizes. After analysis,
 the authors concluded that even though at least \codeword{128 bit} block and
 key sizes were required from the AES candidates, most of the lightweight
-block ciphers use only \codeword{64-bit} blocks, which leads to a smaller memory
+block ciphers used only \codeword{64-bit} blocks, which leads to a smaller memory
 footprint in both, software and hardware, while also making the algorithm better suited
-for processing smaller messages.
+for processing of smaller messages.
 
 Even though though algorithms can be optimized in implementation: whether it is
 a software or a hardware, dedicated lightweight algorithms are still needed.
@@ -944,7 +944,7 @@ recover a secret key used to authenticate updates, via an \gls{sca}).
 
 It is more difficult to implement a lightweight hash function than a lightweight
 block cipher, since standard hash functions need large amounts
-of memory to store both: their internal states, for example, \codeword{1600 bits} in case of SHA-3
+of memory to store both: their internal states, for example, \codeword{1600 bits} in case of SHA-3,
 and the block they are operating on, for example, \codeword{512 bits} in the case of SHA-2.
 The required internal state is acceptable for a desktop computer, but not for a
 constrained device. Taking this into consideration, the most common approach
@@ -953,29 +953,26 @@ A sponge function is an algorithm with an internal state that takes as an input
 a bit stream of any length and outputs a bit stream of any desired length. Sponge
 functions are used to implement many cryptographic primitives, such as cryptographic
 hashes. The bitrate decides how fast the plain text is processed and how fast the
-final digest is produced. A small bitrate means that the output will take longer
+final digest is produced. A smaller bitrate means that the output will take longer
 to be produced, which means that a smaller capacity (the security level)
 can be used, which minimizes the memory footprint at the cost of slower data
 processing. A capacity of \codeword{128 bits} and a bitrate of \codeword{8 bits}
 are common values for lightweight hash functions.
 
 Another trend in the lightweight algorithms noticed by the authors is the
-preference for ARX-based and bitsliced-S-Box based designs, as well as simple
-key schedules.
+preference for \textit{ARX}-based and \textit{bitsliced-S-Box} based designs, as well as simple key schedules.
 
-Finally, a separation of the "lightweight algorithms" definition into two
-distinct fields has been proposed:
+Finally, a separation of the "lightweight algorithm" definition into two distinct fields has been proposed:
 
 \begin{itemize}
   \item \textbf{Ultra-Lightweight Crypto} - algorithms running on very cheap
-  devices which are \textbf{not connected to the internet}, which are easily replaceable
-  and have a limited life-time. Examples: RFID tags, smart cards and remote car keys.
+  devices \textbf{not connected to the internet}, which are easily replaceable
+  and have a limited life-time. Examples: \textit{RFID} tags, smart cards and remote car keys.
   \item \textbf{IoT Crypto} - algorithms running on a low-power device,
-  \textbf{connected to a global network}, such as the internet. Examples: security cameras,
-  smart light bulbs and smart watches.
+  \textbf{connected to a global network}, such as the internet. Examples: security cameras, smart light bulbs and smart watches.
 \end{itemize}
 
-Considering the two definitions above, this work focuses on \textbf{IoT Crypto}
+Considering the two definitions above, this the work of this dissertation focuses on \textbf{IoT Crypto}
 devices. A summary of differences between the both categories is summarized in
 table \ref{ul-iot}.
 

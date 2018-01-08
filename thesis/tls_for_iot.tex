@@ -1118,24 +1118,22 @@ Later, in 2013, Raza \textit{et al.} proposed a security scheme called Lithe\cit
 which is a lightweight security solution for \gls{coap} that uses the same \gls{dtls} header
 compression technique as in \cite{6LoWPANC53:online} with the goal of implementing
 it as a security support for \gls{coap}. \gls{coap}\cite{RFC7959} is a specialized
-RESTful Internet Application Protocol for constrained devices. it is designed to easily
+\textit{REST}ful Internet Application Protocol for constrained devices. it is designed to easily
 translate to HTTP, in order to simplify its integration with the web,
 while also meeting requirements such as multicast support and low overhead.
 \gls{coap} is like "HTTP for constrained devices".
-\gls{coap} can run on most devices that support UDP or a UDP-like protocol.
+It can run on most devices that support UDP or a UDP-like protocol.
 \gls{coap} mandates the use of \gls{dtls} as the underlying security protocol for
-authenticated and confidential communication. There is also a specification \gls{coap}
+authenticated and confidential communication. There is also a \gls{coap} specification
 running on top of TCP, which uses \gls{tls} as its underlying security protocol
-currently being proposed \cite{I-D.ietf-core-coap-tcp-tls},
-with active work being done in this area.
+currently being developed\cite{I-D.ietf-core-coap-tcp-tls}.
 
-
-The authors evaluated their system in a simulated environment in Contiki OS and
-they obtained significant gains in terms of packet size (similar numbers to the
-ones observer in \cite{6LoWPANC53:online}), energy consumption (in average \codeword{15\%} less
-energy is used to transmitting and receive compressed packets), processing time
-(the compression and decompression time of DTLS headers is almost negligible)
-and network-wide response times(up to $50\%$ smaller RTT). The
+The authors evaluated their system in a simulated environment in \textit{Contiki OS}\cite{ContikiT75:online}, which is an open-source operating system for the \gls{iot}.
+They obtained significant gains in terms of packet size (similar numbers to the
+ones observer in \cite{6LoWPANC53:online}), energy consumption (on average $15\%$ less
+energy is used to transmit and receive compressed packets), processing time
+(the compression and decompression time of \gls{dtls} headers is almost negligible)
+and network-wide response times (up to $50\%$ smaller RTT). The
 gains in the mentioned measures are the largest when the compression avoids
 fragmentation (in the paper, for payload size of \codeword{48 bytes}).
 

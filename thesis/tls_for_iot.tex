@@ -10,14 +10,15 @@
 % \documentclass[runningheads,a4paper]{llncs}
 \documentclass{llncs}
 
-% \usepackage{geometry}
-% \geometry{
-%  a4paper,         % or letterpaper
-%  textwidth=15cm,  % llncs has 12.2cm
-%  textheight=24cm, % llncs has 19.3cm
-%  heightrounded,   % integer number of lines
-%  hratio=1:1,      % horizontally centered
-%  vratio=2:3,      % not vertically centered
+%\usepackage{geometry}
+
+%\geometry{
+%a4paper,         % or letterpaper
+%textwidth=12.9cm,  % llncs has 12.2cm
+%textheight=19.9cm, % llncs has 19.3cm
+%heightrounded,   % integer number of lines
+%hratio=1:1,      % horizontally centered
+%vratio=2:3,      % not vertically centered
 %}
 %
 %%% WARN: custom extension
@@ -171,11 +172,10 @@ targets with massive \gls{ddos} attacks. This is the most devastating attack inv
 devices done to date, the \textit{Reaper} botnet\cite{ReaperCa10:online}, however, could be
 even more devastating if it is ever put to malicious use. Others will inadvertently
 come in the future. \textit{SecurityNow}\cite{GRCSecur72:online} is a weekly podcast
-centered around computer security and the topics that surround it. I have been a regular listener
-since $2012$ and noticed a clear trend: as the time goes on, the lack of
-security of \gls{iot} devices, as well as various problems caused by it, from
+centered around computer security and the topics that surround it. A clear trend can be noticed in its episodes: as the time goes on, the lack of
+security in \gls{iot} devices, as well as the various problems caused by it, from
 the compromise of privacy, to the massive \gls{ddos} attacks is a topic that comes up
-more and more often. In fact, now it is mentioned almost every week.
+more and more often. In fact, at the time of this writing, it is mentioned almost every week.
 
 \gls{tls} is the most used security protocol in the world and it allows two peers
 to communicate securely. It is designed to run on top of a reliable, connection-oriented
@@ -1425,10 +1425,9 @@ optimizations. To achieve this, it will include the LTLS extension in its
 \codeword{ClientHello}. If the server supports the extension, an
 optimized connection can be established; this case is depicted in Figure \ref{fig:ltls-opt}. If the server does not support the extension, it will not
 send it back in its \codeword{ServerHello}. In that case it's possible
-to gracefully fall back to regular (D)\gls{tls}, as depicted in \ref{fig:ltls-non-opt}.
+to gracefully fall back to regular (D)\gls{tls}, as depicted in Figure \ref{fig:ltls-non-opt}.
 
 In practice the extension will include additional data used to indicate various options, which has been omitted from the discussion for simplicity.
-
 
 \subsection{Evaluation}
 
@@ -1444,7 +1443,7 @@ Due to limited time and the fact that \gls{tls} $1.3$ still lacks stable impleme
 
 \subsection{Planning}
 
-During the moth of February $2018$, the solution will be defined precisely.
+During the month of February $2018$, the solution will be defined precisely.
 Due to the nature of the solution, it will have many different versions, depending
 on the target device and required security services. Most likely, there will be no time
 to implement and evaluate every possible scenario, so only a few of them will be chosen.

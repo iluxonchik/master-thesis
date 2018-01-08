@@ -1404,6 +1404,32 @@ It would be interesting to explore this. (D)\gls{tls} $1.3$ has many fundamental
 to the way the handshake is done, bringing many new features, whose ideas can
 be incorporated into the proposed solution and even backported to \gls{tls} 1.2.
 
+% src: https://tex.stackexchange.com/questions/5769/two-figures-side-by-side
+\begin{figure}
+    \centering
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{img/optimized-handshake.png} % first figure itself
+        \caption{\label{fig:ltls-opt} LTLS supported}
+    \end{minipage}\hfill
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{img/non-optimized-handshake.png} % second figure itself
+        \caption{\label{fig:ltls-non-opt} LTLS not supported}
+    \end{minipage}
+\end{figure}
+
+To exemplify the idea of the solution, let us assume that a
+Lightweight TLS (LTLS) extension is defined. The optimizations that will be described in the second part of this work will be incorporated into it. Let us consider the case of a client that wants to use those
+optimizations. To achieve this, it will include the LTLS extension in its
+\codeword{ClientHello}. If the server supports the extension, an
+optimized connection can be established; this case is depicted in Figure \ref{fig:ltls-opt}. If the server does not support the extension, it will not
+send it back in its \codeword{ServerHello}. In that case it's possible
+to gracefully fall back to regular (D)\gls{tls}, as depicted in \ref{fig:ltls-non-opt}.
+
+In practice the extension will include additional data used to indicate various options, which has been omitted from the discussion for simplicity.
+
+
 \subsection{Evaluation}
 
 In order to evaluate how good the result of the work is, both, the original protocol

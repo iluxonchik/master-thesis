@@ -312,7 +312,7 @@ able to alter the data.
 In the TCP/IP Protocol Stack, \gls{tls} is placed between the \textbf{Transport}
 and \textbf{Application} layers. It is designed to simplify the establishment
 and use of secure communications from the application developer's standpoint.
-The developer's task is reduced to creating a "secure" connection(\textit{i.e.} socket), instead of a "normal" one.
+The developer's task is reduced to creating a "secure" connection (\textit{i.e.} socket), instead of a "normal" one.
 
 A secure communication established using \gls{tls} has two phases. In the first
 phase, the communicating peers authenticate one to another and negotiate parameters, such as the the secret keys and the encryption algorithm. In the
@@ -323,6 +323,58 @@ Handshke Protocol and the second under the Record Protocol.
 The terms \gls{ssl} and \gls{tls} are often used interchangeably, but one is
 a predecessor of another - \gls{ssl} $3.0$\cite{RFC6101} served as the basis
 for \gls{tls} $1.0$\cite{RFC6101}.
+
+This section will begin with a brief overview of the variuos sub-protocols that
+compose \gls{tls}, proceeding to the description \gls{tls} Record Layer, after which
+the \gls{tls} Hanshake Protocol will be covered, \todo{COMPLETE ME}.
+
+\subsection{TLS (Sub)Protocols}
+
+In reality, \gls{tls} is composed of several protocols (illustrated in Figure \ref{fig:tls-subprotocols}), which are briefly described below:
+\begin{itemize}
+  \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}.
+  It takes messages to be transmitted, fragments the data into manageable
+  blocks, optionally compresses it, encrypts it and transmits the result.
+  When the data is received, the reverse process is done. The \gls{tls}
+  Record Protocol is located directly on top of \textbf{TCP/IP} and it serves as an
+   \textbf{encapsulation for the remaining sub-protocols} (\codeword{4} in case of \gls{tls} 1.2
+   and \codeword{3} in case of \gls{tls} 1.3). To the  \textbf{Record Protocol},
+   the remaining sub-protocols are what \codeword{TCP/IP} is to \codeword{HTTP}.
+   A \gls{tls} Record is comprised of 4 fields, with the first 3 comprising the
+   \gls{tls} Record header: a 1-byte record \codeword{type},
+   specifying the type of record that is encapsulated (ex: value \codeword{0x16}
+   for the handshake protocol), a 2-byte \codeword{TLS version} field, a
+   2-byte \codeword{length} field specifying the length of the data in the record, excluding
+   the header itself (this means that \gls{tls} has a maximum record size
+   of \codeword{16384} bytes), and a \codeword{fragment} field whose size in bytes is specified
+   by the \codeword{length} field, which contains data that is
+   transparent to the Record layer and should be dealt by a higher-level protocol. That higher-level protocol is specified by the \codeword{type} field. This is illustrated in figure \ref{fig:tls-record-header}.
+  \item \textbf{\gls{tls} Handshake Protocol} - the core protocol of \gls{tls}.
+  Allows the communicating peers to \textbf{authenticate} one to another and negotiate
+  a \textbf{cipher suite} (\textbf{cipher suite} and key exchange algorithm in case of \gls{tls} 1.3) which will be used to provide the security services. For \gls{tls} 1.2,
+  \textbf{compression} method is also negotiated here.
+  \item \textbf{\gls{tls} Alert Protocol} - allows the communicating peers to
+  signal potential problems.
+  \item \textbf{\gls{tls} Application Data Protocol} - used to transmit data securely.
+  \item \textbf{\gls{tls} Change Cipher Spec Protocol} (removed in \gls{tls} 1.3) -
+  used to activate the initial \textbf{cipher spec} or change it during the connection.
+\end{itemize}
+
+% src: https://tex.stackexchange.com/questions/5769/two-figures-side-by-side
+\begin{figure}
+    \centering
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{img/record-header-3.png} % first figure itself
+        \caption{\label{fig:tls-record-header} TLS Record header}
+    \end{minipage}\hfill
+    \begin{minipage}{0.47\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{img/tls-sub-protocols-3.png} % second figure itself
+        \caption{\label{fig:tls-subprotocols} TLS (Sub)protocols and Layers}
+    \end{minipage}
+\end{figure}
+
 
 \subsection{Security Services}
 %
@@ -371,52 +423,6 @@ alongside the definition of the \textbf{key exchange} algorithm and the \gls{prf
  \gls{hkdf}: in \gls{tls} $1.3$ the  \textbf{key exchange} algorithm is negotiated via
  extensions.
 
-\subsection{TLS (Sub)Protocols}
-
-In reality \gls{tls} is a layered  composed of several protocols (illustrated in Figure \ref{fig:tls-subprotocols}), which are briefly described below:
-\begin{itemize}
-  \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}.
-  It takes messages to be transmitted, fragments the data into manageable
-  blocks, optionally compresses it, encrypts it and transmits the result.
-  When the data is received, the reverse process is done. The \gls{tls}
-  Record Protocol is located directly on top of \textbf{TCP/IP} and it serves as an
-   \textbf{encapsulation for the remaining sub-protocols} (\codeword{4} in case of \gls{tls} 1.2
-   and \codeword{3} in case of \gls{tls} 1.3). To the  \textbf{Record Protocol},
-   the remaining sub-protocols are what \codeword{TCP/IP} is to \codeword{HTTP}.
-   A \gls{tls} Record is comprised of 4 fields, with the first 3 comprising the
-   \gls{tls} Record header: a 1-byte record \codeword{type},
-   specifying the type of record that is encapsulated (ex: value \codeword{0x16}
-   for the handshake protocol), a 2-byte \codeword{TLS version} field, a
-   2-byte \codeword{length} field specifying the length of the data in the record, excluding
-   the header itself (this means that \gls{tls} has a maximum record size
-   of \codeword{16384} bytes), and a \codeword{fragment} field whose size in bytes is specified
-   by the \codeword{length} field, which contains data that is
-   transparent to the Record layer and should be dealt by a higher-level protocol. That higher-level protocol is specified by the \codeword{type} field. This is illustrated in figure \ref{fig:tls-record-header}.
-  \item \textbf{\gls{tls} Handshake Protocol} - the core protocol of \gls{tls}.
-  Allows the communicating peers to \textbf{authenticate} one to another and negotiate
-  a \textbf{cipher suite} (\textbf{cipher suite} and key exchange algorithm in case of \gls{tls} 1.3) which will be used to provide the security services. For \gls{tls} 1.2,
-  \textbf{compression} method is also negotiated here.
-  \item \textbf{\gls{tls} Alert Protocol} - allows the communicating peers to
-  signal potential problems.
-  \item \textbf{\gls{tls} Application Data Protocol} - used to transmit data securely.
-  \item \textbf{\gls{tls} Change Cipher Spec Protocol} (removed in \gls{tls} 1.3) -
-  used to activate the initial \textbf{cipher spec} or change it during the connection.
-\end{itemize}
-
-% src: https://tex.stackexchange.com/questions/5769/two-figures-side-by-side
-\begin{figure}
-    \centering
-    \begin{minipage}{0.5\textwidth}
-        \centering
-        \includegraphics[width=1.0\textwidth]{img/record-header-3.png} % first figure itself
-        \caption{\label{fig:tls-record-header} TLS Record header}
-    \end{minipage}\hfill
-    \begin{minipage}{0.47\textwidth}
-        \centering
-        \includegraphics[width=1.0\textwidth]{img/tls-sub-protocols-3.png} % second figure itself
-        \caption{\label{fig:tls-subprotocols} TLS (Sub)protocols and Layers}
-    \end{minipage}
-\end{figure}
 
 \paragraph{TLS Connections and Sessions}
 

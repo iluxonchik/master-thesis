@@ -318,7 +318,10 @@ A secure communication established using \gls{tls} has two phases. In the first
 phase, the communicating peers authenticate one to another and negotiate parameters, such as the the secret keys and the encryption algorithm. In the
 second phase, they exchange cryptographically protected data under
 the previously negotiated parameters. The first phase is done under the
-Handshke Protocol and the second under the Record Protocol.
+Handshke Protocol and the second under the Record Protocol. In order to
+achieve its goals, during the Handshake Protocol the client and the server
+exchange various messages. The message flow is depicted in Figure\ref{fig:tls-12-handshake} and is described in more detail in Section
+\ref{hsp}.
 
 The terms \gls{ssl} and \gls{tls} are often used interchangeably, but one is
 a predecessor of another - \gls{ssl} $3.0$\cite{RFC6101} served as the basis
@@ -409,7 +412,7 @@ This processing is done by the \textbf {TLS Record Protocol} and involves the fo
 The process described above, as well as the structure names are depicted in figure \ref{fig:tls-record-processing}.
 The compression step is not present in \gls{tls} 1.3. The structure names are exactly as the appear in the \gls{tls} specifications.
 
-\subsection{TLS 1.2 Handshake Protocol}
+\subsection{TLS 1.2 Handshake Protocol} \label{hsp}
 
 \begin{figure}
     \centering
@@ -1465,7 +1468,7 @@ to the programmer and has the provided security services adaptable to the specif
 % ---- Bibliography ----
 %
 \nocite{*}
-\bibliographystyle{splncs03}
+\bibliographystyle{unsrt}
 \bibliography{tls_for_iot,papers}
 %
 \printglossary[style=long]

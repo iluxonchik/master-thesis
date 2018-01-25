@@ -320,7 +320,7 @@ second phase, they exchange cryptographically protected data under
 the previously negotiated parameters. The first phase is done under the
 Handshke Protocol and the second under the Record Protocol. In order to
 achieve its goals, during the Handshake Protocol the client and the server
-exchange various messages. The message flow is depicted in Figure\ref{fig:tls-12-handshake} and is described in more detail in Section
+exchange various messages. The message flow is depicted in Figure \ref{fig:tls-12-handshake} and is described in more detail in Section
 \ref{hsp}.
 
 \gls{tls} provides the following \textbf{security services}:
@@ -356,7 +356,6 @@ cipher (no authentication, no confidentiality, no integrity), in the latter
 this is not true, since it deprecated all non-\gls{aead} ciphers in favor of
 \gls{aead} ones.
 
-
 The terms \gls{ssl} and \gls{tls} are often used interchangeably, but one is
 a predecessor of another - \gls{ssl} $3.0$\cite{RFC6101} served as the basis
 for \gls{tls} $1.0$\cite{RFC6101}.
@@ -367,7 +366,22 @@ the \gls{tls} Hanshake Protocol will be covered, \todo{COMPLETE ME}.
 
 \subsection{\gls{tls} (Sub)Protocols}
 
-In reality, \gls{tls} is composed of several protocols (illustrated in Figure \ref{fig:tls-subprotocols}), which are briefly described below:
+In reality, \gls{tls} is composed of several protocols. Before proceeding with a description of each one, \textbf{cipher spec} and \textbf{cipher suite} will be
+defined, since they're used throughout the text that follows. The meaning of these terms differs in \gls{tls} $1.2$ and \gls{tls} $1.3$.
+
+For \gls{tls} $1.2$,
+\textbf{cipher spec} defines the message encryption algorithm and the message
+authentication algorithm, while the \textbf{cipher suite} is the \textbf{cipher spec},
+alongside the definition of the \textbf{key exchange} algorithm and the \gls{prf} (used in key generation).
+
+In \gls{tls} 1.3, the
+ \textbf{cipher spec} has been removed altogether, since the  \textbf{ChangeCipherSpec}
+ protocol has been removed. The concept of \textbf{cipher suite} has been updated
+ to define the pair of \gls{aead} algorithm and hash function to be used with
+ \gls{hkdf}: in \gls{tls} $1.3$ the  \textbf{key exchange} algorithm is negotiated via
+ extensions.
+
+The various protocols that compose \gls{tls} are illustrated in Figure \ref{fig:tls-subprotocols} and briefly described below:
 \begin{itemize}
   \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}.
   It takes messages to be transmitted, fragments the data into manageable
@@ -594,20 +608,6 @@ This processing is done by the \textbf {TLS Record Protocol} and involves the fo
 
 The process described above, as well as the structure names are depicted in Figure \ref{fig:tls-record-processing}.
 The compression step is not present in \gls{tls} 1.3. The structure names are exactly as the appear in the \gls{tls} specifications.
-
-
-\subsection{Cipher Spec vs Cipher Suite}
-
-The meaning of these terms differs in \gls{tls} $1.2$ and \gls{tls} $1.3$. For \gls{tls} $1.2$,
-\textbf{cipher spec} defines the message encryption algorithm and the message
-authentication algorithm, while the \textbf{cipher suite} is the \textbf{cipher spec},
-alongside the definition of the \textbf{key exchange} algorithm and the \gls{prf} (used in key generation). In \gls{tls} 1.3, the
- \textbf{cipher spec} has been removed altogether, since the  \textbf{ChangeCipherSpec}
- protocol has been removed. The concept of \textbf{cipher suite} has been updated
- to define the pair of \gls{aead} algorithm and hash function to be used with
- \gls{hkdf}: in \gls{tls} $1.3$ the  \textbf{key exchange} algorithm is negotiated via
- extensions.
-
 
 \paragraph{TLS Connections and Sessions}
 

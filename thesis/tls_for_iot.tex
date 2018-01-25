@@ -379,39 +379,6 @@ In reality, \gls{tls} is composed of several protocols (illustrated in Figure \r
 \end{figure}
 
 
-\subsection{\gls{tls} Record Processing}
-
-A \gls{tls} record must go through some processing before it can be sent over the network.
-This processing is done by the \textbf {TLS Record Protocol} and involves the following steps (\codeword{4} for \gls{tls} $1.2$ and \codeword{3} for \gls{tls} $1.3$):
-
-\begin{enumerate}
-  \item \textbf{Fragmentation} - the \textbf{TLS Record Layer} takes arbitrary-length data and \textbf{fragments}
-  it into manageable pieces: each one of the resulting fragments is called a \codeword{TLSPlaintext}.
-  Client message boundaries are not preserved, which means that multiple messages
-  of the same type may be placed into the same fragment or a single message may
-  be fragmented across several records.
-  \item  \textbf{Compression} (removed in \gls{tls} 1.3) - the \textbf{TLS Record Layer} compresses the
-  \codeword{TLSPlaintext} structure according to the negotiated compression method,
-  outputting \codeword{TLSCompressed}. Compression is optional. If the negotiated compression
-  method is \codeword{null}, \codeword{TLSCompressed} is the same as \codeword{TLSPlaintext}.
-  \item \textbf{Cryptographic Protection} - in case of \gls{tls} 1.2, either an
-  \gls{aead} cipher or a separate encryption and \gls{mac} functions transform a
-  \codeword{TLSCompressed} fragment into a \codeword{TLSCipherText} fragment. In case
-  of \gls{tls} 1.3, the \codeword{TLSPlaintext} fragment is transformed into a \codeword{TLSCipherText}
-  by applying an \gls{aead} cipher.
-  \item Append the \codeword{TLS Record Header} - encapsulate \codeword{TLSCipherText}
-  in a \codeword{TLS Record}.
-\end{enumerate}
-
-\begin{figure}
-  \caption{\label{fig:tls-record-processing}TLS Record Processing}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/tls-record-processing-3.png}
-\end{figure}
-
-The process described above, as well as the structure names are depicted in figure \ref{fig:tls-record-processing}.
-The compression step is not present in \gls{tls} 1.3. The structure names are exactly as the appear in the \gls{tls} specifications.
-
 \subsection{TLS 1.2 Handshake Protocol} \label{hsp}
 
 \begin{figure}
@@ -560,6 +527,39 @@ from previous connections. The \gls{tls} $1.2$ spec, suggests and upper limit
 of $24$ hours for session ID lifetimes, since an attacker who obtains the master secret
 will be able to impersonate the compromised party until the corresponding session
 ID is retired. This mechanism requires state to be maintained in both peers.
+
+\subsection{\gls{tls} Record Processing}
+
+A \gls{tls} record must go through some processing before it can be sent over the network.
+This processing is done by the \textbf {TLS Record Protocol} and involves the following steps (\codeword{4} for \gls{tls} $1.2$ and \codeword{3} for \gls{tls} $1.3$):
+
+\begin{enumerate}
+  \item \textbf{Fragmentation} - the \textbf{TLS Record Layer} takes arbitrary-length data and \textbf{fragments}
+  it into manageable pieces: each one of the resulting fragments is called a \codeword{TLSPlaintext}.
+  Client message boundaries are not preserved, which means that multiple messages
+  of the same type may be placed into the same fragment or a single message may
+  be fragmented across several records.
+  \item  \textbf{Compression} (removed in \gls{tls} 1.3) - the \textbf{TLS Record Layer} compresses the
+  \codeword{TLSPlaintext} structure according to the negotiated compression method,
+  outputting \codeword{TLSCompressed}. Compression is optional. If the negotiated compression
+  method is \codeword{null}, \codeword{TLSCompressed} is the same as \codeword{TLSPlaintext}.
+  \item \textbf{Cryptographic Protection} - in case of \gls{tls} 1.2, either an
+  \gls{aead} cipher or a separate encryption and \gls{mac} functions transform a
+  \codeword{TLSCompressed} fragment into a \codeword{TLSCipherText} fragment. In case
+  of \gls{tls} 1.3, the \codeword{TLSPlaintext} fragment is transformed into a \codeword{TLSCipherText}
+  by applying an \gls{aead} cipher.
+  \item Append the \codeword{TLS Record Header} - encapsulate \codeword{TLSCipherText}
+  in a \codeword{TLS Record}.
+\end{enumerate}
+
+\begin{figure}
+  \caption{\label{fig:tls-record-processing}TLS Record Processing}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/tls-record-processing-3.png}
+\end{figure}
+
+The process described above, as well as the structure names are depicted in figure \ref{fig:tls-record-processing}.
+The compression step is not present in \gls{tls} 1.3. The structure names are exactly as the appear in the \gls{tls} specifications.
 
 \subsection{Security Services}
 %

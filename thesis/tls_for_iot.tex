@@ -373,10 +373,13 @@ alongside the definition of the \textbf{key exchange} algorithm and the \gls{prf
 
 \subsection{TLS (Sub)Protocols}
 
-In reality \gls{tls} is composed of several protocols (illustrated in \ref{fig:tls-subprotocols}), which are briefly described below:
+In reality \gls{tls} is a layered  composed of several protocols (illustrated in Figure \ref{fig:tls-subprotocols}), which are briefly described below:
 \begin{itemize}
-  \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}. It is
-  the layer that located directly on top of \textbf{TCP/IP} and it serves as an
+  \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}.
+  It takes messages to be transmitted, fragments the data into manageable
+  blocks, optionally compresses it, encrypts it and transmits the result.
+  When the data is received, the reverse process is done. The \gls{tls}
+  Record Protocol is located directly on top of \textbf{TCP/IP} and it serves as an
    \textbf{encapsulation for the remaining sub-protocols} (\codeword{4} in case of \gls{tls} 1.2
    and \codeword{3} in case of \gls{tls} 1.3). To the  \textbf{Record Protocol},
    the remaining sub-protocols are what \codeword{TCP/IP} is to \codeword{HTTP}.
@@ -442,15 +445,15 @@ It is important to distinguish between a \textbf{TLS session} from a \textbf{TLS
 \subsection{\gls{tls} Record Processing}
 
 A \gls{tls} record must go through some processing before it can be sent over the network.
-This processing involves the following steps (\codeword{4} for \gls{tls} $1.2$ and \codeword{3} for \gls{tls} $1.3$):
+This processing is done by the \textbf {TLS Record Protocol} and involves the following steps (\codeword{4} for \gls{tls} $1.2$ and \codeword{3} for \gls{tls} $1.3$):
 
 \begin{enumerate}
-  \item \textbf{Fragmentation} - the \gls{tls} \codeword{Record Layer} takes arbitrary-length data and \textbf{fragments}
+  \item \textbf{Fragmentation} - the \textbf{TLS Record Layer} takes arbitrary-length data and \textbf{fragments}
   it into manageable pieces: each one of the resulting fragments is called a \codeword{TLSPlaintext}.
   Client message boundaries are not preserved, which means that multiple messages
   of the same type may be placed into the same fragment or a single message may
   be fragmented across several records.
-  \item  \textbf{Compression} (removed in \gls{tls} 1.3) - the \codeword{TLS Record Layer} compresses the
+  \item  \textbf{Compression} (removed in \gls{tls} 1.3) - the \textbf{TLS Record Layer} compresses the
   \codeword{TLSPlaintext} structure according to the negotiated compression method,
   outputting \codeword{TLSCompressed}. Compression is optional. If the negotiated compression
   method is \codeword{null}, \codeword{TLSCompressed} is the same as \codeword{TLSPlaintext}.
@@ -459,7 +462,7 @@ This processing involves the following steps (\codeword{4} for \gls{tls} $1.2$ a
   \codeword{TLSCompressed} fragment into a \codeword{TLSCipherText} fragment. In case
   of \gls{tls} 1.3, the \codeword{TLSPlaintext} fragment is transformed into a \codeword{TLSCipherText}
   by applying an \gls{aead} cipher.
-  \item Append the \textbf{TLS Record Header} - encapsulate \codeword{TLSCipherText}
+  \item Append the \codeword{TLS Record Header} - encapsulate \codeword{TLSCipherText}
   in a \codeword{TLS Record}.
 \end{enumerate}
 

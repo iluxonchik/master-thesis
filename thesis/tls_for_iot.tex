@@ -311,8 +311,14 @@ able to alter the data.
 
 In the TCP/IP Protocol Stack, \gls{tls} is placed between the \textbf{Transport}
 and \textbf{Application} layers. It is designed to simplify the establishment
-and use of secure communications from the application developer's standpoint. All the
-devoper has to do is create a "secure" connection, instead of a "normal" one.
+and use of secure communications from the application developer's standpoint.
+The developer's task is reduced to creating a "secure" connection(\textit{i.e.} socket), instead of a "normal" one.
+
+A secure communication established using \gls{tls} has two phases. In the first
+phase, the communicating peers authenticate one to another and negotiate parameters, such as the the secret keys and the encryption algorithm. In the
+second phase, they exchange cryptographically protected data under
+the previously negotiated parameters. The first phase is done under the
+Handshke Protocol and the second under the Record Protocol.
 
 From the top-level view, in a typical connection, there are three basic steps
 that \gls{tls} is responsible for:
@@ -325,17 +331,9 @@ that \gls{tls} is responsible for:
   to encrypt and authenticate the data, communicating securely with each other.
 \end{enumerate}
 
-
-\subsection{SSL vs TLS: What's The Difference?}
-
-You will find the names \gls{ssl} and \gls{tls} used interchangeably in the literature,
-so it is important to distinguish both. \gls{tls} is an evolution of the \gls{ssl} protocol. The protocol changed
-its name from \gls{ssl} to \gls{tls} when it was
-standardized by the \gls{ietf}. \gls{ssl}
-was a proprietary protocol owned by Netscape Communications, and The \gls{ietf}
-decided that it was a good idea to standardize it, which resulted in \codeword{RFC 2246}\cite{RFC2246},
-specifying \gls{tls} $1.0$, which was nothing more than a new version \gls{ssl} 3.0\cite{RFC6101}, very few changes were made.
-%
+The terms \gls{ssl} and \gls{tls} are often used interchangeably, but one is
+a predecessor of another - \gls{ssl} $3.0$\cite{RFC6101} served as the basis
+for \gls{tls} $1.0$\cite{RFC6101}.
 
 \subsection{Security Services}
 %

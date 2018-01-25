@@ -323,6 +323,40 @@ achieve its goals, during the Handshake Protocol the client and the server
 exchange various messages. The message flow is depicted in Figure\ref{fig:tls-12-handshake} and is described in more detail in Section
 \ref{hsp}.
 
+\gls{tls} provides the following \textbf{security services}:
+\begin{itemize}
+\item \textbf{authentication} - both, \textbf{peer entity} and \textbf{data origin} (or \textbf{integrity})
+authentication.
+\subitem \textbf{peer entity authentication} - a peer has a guarantee that it is talking to certain entity, for example, \codeword{www.google.com}.
+This is achieved thought the use of \gls{ac}, also known as \gls{pkc}, (\textit{e.g.} \codeword{RSA} and \codeword{DSA})
+or \textbf{symmetric key cryptography}, using a \gls{psk}.
+\item \textbf{confidentiality} - the data transmitted between the communicating
+entities (the client and the server) is encrypted. Symmetric cryptography is
+used for data encryption (\textit{e.g.}, \codeword{AES}).
+\item \textbf{integrity} (also called \textbf{data origin authentication}) - a peer can be sure that the data was not modified or forged,
+\textit{i.e.}, there is a guarantee that the received data is coming from the expected entity. For example, a peer can be sure
+that the \codeword{index.html} file that sent to when it connected to \codeword{www.google.com} in fact
+came from \codeword{www.google.com} and that it was not tampered modified en
+route by an attacker (\textbf{data integrity}). This is achieved either through the use
+of a keyed \gls{mac} or an \gls{aead} cipher.
+\end{itemize}
+
+Despite using \gls{pkc}, \gls{tls} does \textbf{not} provide \textbf{non-repudiation services}:
+neither \textbf{non-repudiation with proof of origin}, which addresses the peer denying
+the sending of a message, not \textbf{non-repudiation with proof of delivery}, which
+addresses the peer denying the receipt of a message. This is due to the fact that
+instead of using \textbf{digital signatures}, either a keyed \gls{mac} or an \gls{aead}
+cipher is used, both of which require a secret to be \textbf{shared} between the peers.
+
+All of the tree security services are not required to be used in every situation.
+In this sense, \gls{tls} is like a framework that allows to select which security services should be used for a communication session. As an example,
+certificate validation might be skipped, which means that the \textbf{authentication} guarantee is not provided. There are some differences regarding this claim between \gls{tls} $1.2$\cite{RFC5246}
+and \gls{tls} $1.3$, for example, while in the first you have a \codeword{null}
+cipher (no authentication, no confidentiality, no integrity), in the latter
+this is not true, since it deprecated all non-\gls{aead} ciphers in favor of
+\gls{aead} ones.
+
+
 The terms \gls{ssl} and \gls{tls} are often used interchangeably, but one is
 a predecessor of another - \gls{ssl} $3.0$\cite{RFC6101} served as the basis
 for \gls{tls} $1.0$\cite{RFC6101}.
@@ -558,43 +592,9 @@ This processing is done by the \textbf {TLS Record Protocol} and involves the fo
   \includegraphics[width=1.0\textwidth]{img/tls-record-processing-3.png}
 \end{figure}
 
-The process described above, as well as the structure names are depicted in figure \ref{fig:tls-record-processing}.
+The process described above, as well as the structure names are depicted in Figure \ref{fig:tls-record-processing}.
 The compression step is not present in \gls{tls} 1.3. The structure names are exactly as the appear in the \gls{tls} specifications.
 
-\subsection{Security Services}
-%
-\gls{tls} provides the following security services:
-\begin{itemize}
-\item \textbf{authentication} - both, \textbf{peer entity} and \textbf{data origin} (or \textbf{integrity})
-authentication.
-\subitem \textbf{peer entity authentication} - a peer has a guarantee that it is talking to certain entity, for example, \codeword{www.google.com}.
-This is achieved thought the use of \gls{ac}, also known as \gls{pkc}, (\textit{e.g.} \codeword{RSA} and \codeword{DSA})
-or \textbf{symmetric key cryptography}, using a \gls{psk}.
-\item \textbf{confidentiality} - the data transmitted between the communicating
-entities (the client and the server) is encrypted. Symmetric cryptography is
-used for data encryption (\textit{e.g.}, \codeword{AES}).
-\item \textbf{integrity} (also called \textbf{data origin authentication}) - a peer can be sure that the data was not modified or forged,
-\textit{i.e.}, there is a guarantee that the received data is coming from the expected entity. For example, a peer can be sure
-that the \codeword{index.html} file that sent to when it connected to \codeword{www.google.com} in fact
-came from \codeword{www.google.com} and that it was not tampered modified en
-route by an attacker (\textbf{data integrity}). This is achieved either through the use
-of a keyed \gls{mac} or an \gls{aead} cipher.
-\end{itemize}
-
-Despite using \gls{pkc}, \gls{tls} does \textbf{not} provide \textbf{non-repudiation services}:
-neither \textbf{non-repudiation with proof of origin}, which addresses the peer denying
-the sending of a message, not \textbf{non-repudiation with proof of delivery}, which
-addresses the peer denying the receipt of a message. This is due to the fact that
-instead of using \textbf{digital signatures}, either a keyed \gls{mac} or an \gls{aead}
-cipher is used, both of which require a secret to be \textbf{shared} between the peers.
-
-All of the tree security services are not required to be used in every situation.
-In this sense, \gls{tls} is like a framework that allows to select which security services should be used for a communication session. As an example,
-certificate validation might be skipped, which means that the \textbf{authentication} guarantee is not provided. There are some differences regarding this claim between \gls{tls} $1.2$\cite{RFC5246}
-and \gls{tls} $1.3$, for example, while in the first you have a \codeword{null}
-cipher (no authentication, no confidentiality, no integrity), in the latter
-this is not true, since it deprecated all non-\gls{aead} ciphers in favor of
-\gls{aead} ones.
 
 \subsection{Cipher Spec vs Cipher Suite}
 

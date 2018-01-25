@@ -320,17 +320,6 @@ second phase, they exchange cryptographically protected data under
 the previously negotiated parameters. The first phase is done under the
 Handshke Protocol and the second under the Record Protocol.
 
-From the top-level view, in a typical connection, there are three basic steps
-that \gls{tls} is responsible for:
-\begin{enumerate}
-  \item \textbf{negotiate security parameters} - the communicating peers agree on
-  a set of security parameters to be used in a \gls{tls} connection, such as the
-  algorithm used for bulk data encryption and the secret keys.
-  \item \textbf{authenticate one to another} - usually only the server authenticates iself to the client.
-  \item \textbf{communicate securely} - use the negotiated security parameters
-  to encrypt and authenticate the data, communicating securely with each other.
-\end{enumerate}
-
 The terms \gls{ssl} and \gls{tls} are often used interchangeably, but one is
 a predecessor of another - \gls{ssl} $3.0$\cite{RFC6101} served as the basis
 for \gls{tls} $1.0$\cite{RFC6101}.

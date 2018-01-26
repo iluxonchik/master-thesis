@@ -388,15 +388,12 @@ the \gls{tls} Hanshake Protocol will be covered, \todo{COMPLETE ME}.
    transparent to the Record layer and should be dealt by a higher-level protocol. That higher-level protocol is specified by the \codeword{type} field. This is illustrated in figure \ref{fig:tls-record-header}.
   \item \textbf{\gls{tls} Handshake Protocol} - the core protocol of \gls{tls}.
   Allows the communicating peers to \textbf{authenticate} one to another and negotiate the connection state. In \gls{tls} 1.2
-  a \textbf{cipher suite} and a \textbf{compression} method are negotated. In \gls{tls} $1.3$, a \textbf{cipher suite} and a \textbf{key exchange} algorithm are negotiated. The agreed upon \textbf{cipher suite} is used to provide the previously described security services.
-
-  In
+  a \textbf{cipher suite} and a \textbf{compression} method are negotated. In \gls{tls} $1.3$, a \textbf{cipher suite} and a \textbf{key exchange} algorithm are negotiated. The agreed upon \textbf{cipher suite} is used to provide the previously described security services. In
   \gls{tls} $1.2$, a \textbf{cipher suite} consists of a \textbf{cipher spec},
-  a \textbf{key exchange} algorithm and a \gls{prf}, which is used key generation. The
-  \textbf{cipher spec} defines a message encryption algorithm and a message
-  authentication algorithm.
-
-  In \gls{tls} 1.3, the term
+  a \textbf{key exchange} algorithm and a \gls{prf}, which is used key generation.
+  In \gls{tls} $1.2$,
+  \textbf{cipher spec} defines the message encryption algorithm and the message
+  authentication algorithm. In \gls{tls} 1.3, the term
    \textbf{cipher spec} is no longer present, since the \textbf{ChangeCipherSpec}
    protocol has been removed. The concept of \textbf{cipher suite} has been updated
    to define the pair consisting of an \gls{aead} algorithm and a hash function to be used with
@@ -685,24 +682,6 @@ a hash function implicitly defined by the cipher suite in use. All of the cipher
 suites defined in the \gls{tls} $1.2$ base spec use \codeword{SHA-256} and any new
 cipher suites must explicitly specify a the same hash function or a stronger one.
 
-\subsection{TLS 1.3 Keying Material}
-
-\gls{tls} 1.3's keying material generation is a little more complex, since different
-keys are used to encrypt data throughout the Handshake protocol. This can be
-explained by the fact that in \gls{tls} $1.3$ the encryption begins earlier, with
-Handshake messages besides the \codeword{Finished} being encrypted,
-as well as features such as \textbf{early client data}, also known as \textbf{0-RTT data},
-where data comes encrypted in the first flight. As a result of those properties,
-you have multiple encryption keys generated and used to encrypt different data
-throughout the handshake.
-
-The way the keying material is derived is also different. The
-\gls{prf} construction described above has been replaced. The
-new design allows easier analysis by cryptographers due to the improved
-key separation properties. In \gls{tls} 1.3, key derivation uses the
-\gls{hkdf} function defined in \codeword{RFC 5869}\cite{RFC5869} and its two components,
-the \codeword{HKDF-Extract} and \codeword{HKDF-Expand}.
-
 \subsection{TLS 1.2 Key Exchange Methods}
 
 The way the peremaster secret is generated depends on the key exchange
@@ -852,6 +831,23 @@ via identifiers and tickets has been obsoleted in \gls{tls} $1.3$, and both meth
 have been replaced by a \gls{psk} mode. This \gls{psk} is established in a previous
 connection after the handshake is completed and can be presented by the client
 on the next visit.
+
+Keying material generation is more complex in \gls{tls} $1.3$, than in
+\gls{tls} $1.2$, since different
+keys are used to encrypt data throughout the Handshake protocol. This can be
+explained by the fact that in \gls{tls} $1.3$ the encryption begins earlier.
+Other Handshake messages besides \codeword{Finished} are encrypted. The data
+can also come encrypted in the first flight, when \textbf{early client data}
+(also known as \textbf{0-RTT data}) is used. As a result,
+you have multiple encryption keys generated that are used to encrypt different data
+throughout the handshake.
+
+The way the keying material is derived is also different. The
+\gls{prf} construction described above has been replaced.
+In \gls{tls} 1.3, key derivation uses the
+\gls{hkdf} function defined in \codeword{RFC 5869}\cite{RFC5869} and its two components: \codeword{HKDF-Extract} and \codeword{HKDF-Expand}.
+This new design allows easier analysis by cryptographers due to improved
+key separation properties.
 
 %
 \subsection{DTLS}

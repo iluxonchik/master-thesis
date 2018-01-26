@@ -366,22 +366,8 @@ the \gls{tls} Hanshake Protocol will be covered, \todo{COMPLETE ME}.
 
 \subsection{\gls{tls} (Sub)Protocols}
 
-In reality, \gls{tls} is composed of several protocols. Before proceeding with a description of each one, \textbf{cipher spec} and \textbf{cipher suite} will be
-defined, since they're used throughout the text that follows. The meaning of these terms differs in \gls{tls} $1.2$ and \gls{tls} $1.3$.
-
-For \gls{tls} $1.2$,
-\textbf{cipher spec} defines the message encryption algorithm and the message
-authentication algorithm, while the \textbf{cipher suite} is the \textbf{cipher spec},
-alongside the definition of the \textbf{key exchange} algorithm and the \gls{prf} (used in key generation).
-
-In \gls{tls} 1.3, the
- \textbf{cipher spec} has been removed altogether, since the  \textbf{ChangeCipherSpec}
- protocol has been removed. The concept of \textbf{cipher suite} has been updated
- to define the pair of \gls{aead} algorithm and hash function to be used with
- \gls{hkdf}: in \gls{tls} $1.3$ the  \textbf{key exchange} algorithm is negotiated via
- extensions.
-
-The various protocols that compose \gls{tls} are illustrated in Figure \ref{fig:tls-subprotocols} and briefly described below:
+\gls{tls} is composed of several protocols, which} are illustrated in Figure
+\ref{fig:tls-subprotocols} and briefly described below:
 \begin{itemize}
   \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}.
   It takes messages to be transmitted, fragments the data into manageable
@@ -401,9 +387,21 @@ The various protocols that compose \gls{tls} are illustrated in Figure \ref{fig:
    by the \codeword{length} field, which contains data that is
    transparent to the Record layer and should be dealt by a higher-level protocol. That higher-level protocol is specified by the \codeword{type} field. This is illustrated in figure \ref{fig:tls-record-header}.
   \item \textbf{\gls{tls} Handshake Protocol} - the core protocol of \gls{tls}.
-  Allows the communicating peers to \textbf{authenticate} one to another and negotiate
-  a \textbf{cipher suite} (\textbf{cipher suite} and key exchange algorithm in case of \gls{tls} 1.3) which will be used to provide the security services. For \gls{tls} 1.2,
-  \textbf{compression} method is also negotiated here.
+  Allows the communicating peers to \textbf{authenticate} one to another and negotiate the connection state. In \gls{tls} 1.2
+  a \textbf{cipher suite} and a \textbf{compression} method are negotated. In \gls{tls} $1.3$, a \textbf{cipher suite} and a \textbf{key exchange} algorithm are negotiated. The agreed upon \textbf{cipher suite} is used to provide the previously described security services.
+
+  In
+  \gls{tls} $1.2$, a \textbf{cipher suite} consists of a \textbf{cipher spec},
+  a \textbf{key exchange} algorithm and a \gls{prf}, which is used key generation. The
+  \textbf{cipher spec} defines a message encryption algorithm and a message
+  authentication algorithm.
+
+  In \gls{tls} 1.3, the term
+   \textbf{cipher spec} is no longer present, since the \textbf{ChangeCipherSpec}
+   protocol has been removed. The concept of \textbf{cipher suite} has been updated
+   to define the pair consisting of an \gls{aead} algorithm and a hash function to be used with
+   \gls{hkdf}. In \gls{tls} $1.3$ the \textbf{key exchange} algorithm is negotiated via
+   extensions.
   \item \textbf{\gls{tls} Alert Protocol} - allows the communicating peers to
   signal potential problems.
   \item \textbf{\gls{tls} Application Data Protocol} - used to transmit data securely.

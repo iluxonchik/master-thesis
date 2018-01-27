@@ -320,7 +320,7 @@ second phase, they exchange cryptographically protected data under
 the previously negotiated parameters. The first phase is done under the
 Handshke Protocol and the second under the Record Protocol. In order to
 achieve its goals, during the Handshake Protocol the client and the server
-exchange various messages. The message flow is depicted in Figure \ref{fig:tls-12-handshake} and is described in more detail in Section
+exchange various messages. The message flow is depicted in Figure \ref{fig:tls-12-handshake} and described in more detail in Section
 \ref{hsp}.
 
 \gls{tls} provides the following \textbf{security services}:
@@ -335,23 +335,22 @@ entities (the client and the server) is encrypted. Symmetric cryptography is
 used for data encryption (\textit{e.g.}, \codeword{AES}).
 \item \textbf{integrity} (also called \textbf{data origin authentication}) - a peer can be sure that the data was not modified or forged,
 \textit{i.e.}, there is a guarantee that the received data is coming from the expected entity. For example, a peer can be sure
-that the \codeword{index.html} file that sent to when it connected to \codeword{www.google.com} in fact
-came from \codeword{www.google.com} and that it was not tampered modified en
-route by an attacker (\textbf{data integrity}). This is achieved either through the use
+that the \codeword{index.html} file that was sent to when it connected to \codeword{www.google.com} did, in fact,
+come from \codeword{www.google.com} and it was not tampered with by an attacker (\textbf{data integrity}). This is achieved either through the use
 of a keyed \gls{mac} or an \gls{aead} cipher.
 \end{itemize}
 
 Despite using \gls{pkc}, \gls{tls} does \textbf{not} provide \textbf{non-repudiation services}:
 neither \textbf{non-repudiation with proof of origin}, which addresses the peer denying
-the sending of a message, not \textbf{non-repudiation with proof of delivery}, which
+the sending of a message, nor \textbf{non-repudiation with proof of delivery}, which
 addresses the peer denying the receipt of a message. This is due to the fact that
 instead of using \textbf{digital signatures}, either a keyed \gls{mac} or an \gls{aead}
 cipher is used, both of which require a secret to be \textbf{shared} between the peers.
 
-All of the tree security services are not required to be used in every situation.
+It is not required to use all of the tree security services every situation.
 In this sense, \gls{tls} is like a framework that allows to select which security services should be used for a communication session. As an example,
 certificate validation might be skipped, which means that the \textbf{authentication} guarantee is not provided. There are some differences regarding this claim between \gls{tls} $1.2$\cite{RFC5246}
-and \gls{tls} $1.3$, for example, while in the first you have a \codeword{null}
+and \gls{tls} $1.3$. For example, while in the first you have a \codeword{null}
 cipher (no authentication, no confidentiality, no integrity), in the latter
 this is not true, since it deprecated all non-\gls{aead} ciphers in favor of
 \gls{aead} ones.
@@ -371,26 +370,26 @@ the \gls{tls} Hanshake Protocol will be covered, \todo{COMPLETE ME}.
 \begin{itemize}
   \item \textbf{\gls{tls} Record Protocol} - the lowest layer in \gls{tls}.
   It takes messages to be transmitted, fragments the data into manageable
-  blocks, optionally compresses it, encrypts it and transmits the result.
+  blocks, optionally compresses them, encrypts them and transmits the result.
   When the data is received, the reverse process is done. The \gls{tls}
   Record Protocol is located directly on top of \textbf{TCP/IP} and it serves as an
    \textbf{encapsulation for the remaining sub-protocols} (\codeword{4} in case of \gls{tls} 1.2
    and \codeword{3} in case of \gls{tls} 1.3). To the  \textbf{Record Protocol},
    the remaining sub-protocols are what \codeword{TCP/IP} is to \codeword{HTTP}.
    A \gls{tls} Record is comprised of 4 fields, with the first 3 comprising the
-   \gls{tls} Record header: a 1-byte record \codeword{type},
+   \gls{tls} Record header. The first field is a 1-byte record \codeword{type}
    specifying the type of record that is encapsulated (ex: value \codeword{0x16}
-   for the handshake protocol), a 2-byte \codeword{TLS version} field, a
+   for the handshake protocol). The second is a 2-byte \codeword{TLS version} field. The third is a
    2-byte \codeword{length} field specifying the length of the data in the record, excluding
    the header itself (this means that \gls{tls} has a maximum record size
-   of \codeword{16384} bytes), and a \codeword{fragment} field whose size in bytes is specified
-   by the \codeword{length} field, which contains data that is
-   transparent to the Record layer and should be dealt by a higher-level protocol. That higher-level protocol is specified by the \codeword{type} field. This is illustrated in figure \ref{fig:tls-record-header}.
+   of \codeword{16384} bytes). The fourth is a \codeword{fragment} field,
+   containing \codeword{length} bytes of data that is
+   transparent to the Record layer and should be dealt by a higher-level protocol. That higher-level protocol is specified by the \codeword{type} field. This is illustrated in Figure \ref{fig:tls-record-header}.
   \item \textbf{\gls{tls} Handshake Protocol} - the core protocol of \gls{tls}.
-  Allows the communicating peers to \textbf{authenticate} one to another and negotiate the connection state. In \gls{tls} 1.2
-  a \textbf{cipher suite} and a \textbf{compression} method are negotated. In \gls{tls} $1.3$, a \textbf{cipher suite} and a \textbf{key exchange} algorithm are negotiated. The agreed upon \textbf{cipher suite} is used to provide the previously described security services. In
+  It allows the communicating peers to \textbf{authenticate} one to another and to negotiate the connection state. In \gls{tls} 1.2
+  a \textbf{cipher suite} and a \textbf{compression} method are negotiated. In \gls{tls} $1.3$, a \textbf{cipher suite} and a \textbf{key exchange} algorithm are negotiated. The agreed upon \textbf{cipher suite} is used to provide the previously described security services. In
   \gls{tls} $1.2$, a \textbf{cipher suite} consists of a \textbf{cipher spec},
-  a \textbf{key exchange} algorithm and a \gls{prf}, which is used key generation.
+  a \textbf{key exchange} algorithm and a \gls{prf}, which is used for key generation.
   In \gls{tls} $1.2$,
   \textbf{cipher spec} defines the message encryption algorithm and the message
   authentication algorithm. In \gls{tls} 1.3, the term
@@ -424,17 +423,18 @@ the \gls{tls} Hanshake Protocol will be covered, \todo{COMPLETE ME}.
 
 \subsection{TLS 1.2 Handshake Protocol} \label{hsp}
 
-The Handshake Protocol is responsible for negotiating a \textbf{session}.
-There is a distinction between a \gls{tls} session and a \gls{tls} connection:
+The Handshake Protocol is responsible for negotiating a \textbf{session},
+which will then be used in a \textbf{connection}.
+There is a difference between a \gls{tls} session and a \gls{tls} connection:
 \begin{itemize}
   \item \textbf{TLS session} - association between two communication peers that is
   created by the \textbf{TLS Handshake Protocol}, which defines a set of negotiated parameters
-  (cyptographic and others, depending on the \gls{tls} version, such as
-  the compression algorithm) that are used by the \textbf{TLS connections associated
+  (cryptographic and others, such as
+  the compression algorithm, depending on the \gls{tls} version) that are used by the \textbf{TLS connections associated
   with that session}. A single \textbf{TLS session} can be shared among multiple
   \textbf{TLS connections} and its main purpose is to avoid the expensive negotiation
   of new parameters for each \textbf{TLS connection}. For example, let us say
-  that an \gls{html} page is being downloaded over \gls{https} and that page references some images from that same server, using \gls{https} links. Instead of the web browser negotiating a new \gls{tls} session for every single image again, it can re-use the the
+  that a \gls{html} page is being downloaded over the \gls{https} and that page references some images from that same server using \gls{https} links. Instead of the web browser negotiating a new \gls{tls} session for every single image again, it can re-use the the
   one it has established to download the \gls{html} page,
   saving time and computational resources. Session resumption can be done using various
   approaches, such as \textbf{session identifiers}, described throughout \codeword{Section 7.4}
@@ -461,17 +461,17 @@ There is a distinction between a \gls{tls} session and a \gls{tls} connection:
     \end{minipage}
 \end{figure}
 
-In this phase the client and the server agree on which version of the \gls{tls}
+In the handshake phase the client and the server agree on which version of the \gls{tls}
 protocol to use, authenticate one to another and negotiate session state items like
 the cipher suite and the compression method.  Figure \ref{fig:tls-12-handshake} shows the message flow for the
 full \gls{tls} $1.2$ handshake. \codeword{*} indicates situation-dependent
 messages that are not always sent. \codeword{ChangeCiperSpec} is a separate
 protocol, rather than a message type.
 
-As already mentioned, every \gls{tls} Handshake message is encapsulated within
-a \gls{tls} record. The actual Handshake message is contained within the
-\codeword{fragment} of the \gls{tls} record. The record type for a Handshake
-message is \codeword{0x16}. The Handshake message has the following structure:
+As already mentioned, every \gls{tls} handshake message is encapsulated within
+a \gls{tls} record. The actual handshake message is contained within the
+\codeword{fragment} of a \gls{tls} record. The record type for a handshake
+message is \codeword{0x16}. The handshake message has the following structure:
 a 1-byte \codeword{msg_type} field (specifies the Handshake message type),
 a 2-byte \codeword{length} field (specifies the length of the \codeword{body})
 and a \codeword{body} field, which contains a structure depending on the
@@ -479,30 +479,28 @@ and a \codeword{body} field, which contains a structure depending on the
 
 A typical handshake message flow will be described next, with only the most important fields of each message mentioned.
 
-The connection begins with the client sending a \codeword{ClientHello}, containing \codeword{random}, \codeword{cipher_suites} and \codeword{compresison_methods},
+The connection begins with the client sending a \codeword{ClientHello}, containing \codeword{random}, \codeword{cipher_suites} and \codeword{compressison_methods},
 among other fields.
-\codeword{cipher_suites} contains a \textbf{list} of cipher suites and \codeword{compression_methods}
+\\\codeword{cipher_suites} contains a \textbf{list} of cipher suites and \codeword{compression_methods}
 contains a \textbf{list} of compression methods that the
-client supports, ordered by preference, with the most preferred one appearing first.
+client supports, \textbf{ordered by preference}, with the most preferred one appearing first.
 The \gls{tls} record contains a \codeword{2-byte} \codeword{version} field which
 indicates the highest version supported by the client.
 
-The server responds to the \codeword{ClientHello} with a \codeword{ServeHello}
-message, which is similar in its contents, except that instead of containing
-a list of supported features, it contains a \textbf{single item} containing the one that it chose,
-\textit{i.e.}, the server responds with the chosen \codeword{cipher_suite} and
+The server responds to the \codeword{ClientHello} with a \codeword{ServeHello}.
+This message has similar contents, except that instead of containing
+a list of supported features, it contains a \textbf{single item} containing the one that it chose. The server responds with a single \codeword{cipher_suite} and
 \codeword{compression_method} that it chose from the
 corresponding list sent by the client. Just like in the client's case, a \codeword{random}
-is also present. The \codeword{version} field in the \gls{tls} record indicates
+is present. The \codeword{version} field in the \gls{tls} record indicates
 the \gls{tls} version chosen by the server and it is the one that is goint to be
 used for that connection.
 
 \gls{tls} requires cryptographically secure pseudorandom numbers to be generated
 by both of the parties independently. Those random numbers (or \textit{nonces}) are essential for freshness
-(protection against replay attacks; we do need both randoms, otherwise the
-protocol would be vulnerable to replay attacks) and session uniqueness, since both of
-the random values are inputs to the \gls{prf} when the master secret is generated, meaning
-that a new keying material will be generated with every new session. If the output of the pseudorandom number generator
+(protection against replay attacks) and session uniqueness. To provide those
+properties, both of the random values are required. Those two random values are inputs to the \gls{prf} when the master secret is generated, meaning
+that a new keying material will be obtained with every new session. If the output of the pseudorandom number generator
 can be predicted by the attacker, he can predict the keying material, as described
 in "A Systematic Analysis of the Juniper Dual EC Incident"\cite{DualECJu15:online}.
 The \codeword{32-byte} random value is composed by concatenating the \codeword{4-byte}
@@ -513,9 +511,9 @@ are fixed when negotiating \gls{tls} $1.2$ or $1.3$.
 
 Next, the server sends a \codeword{Certificate} message, which contains a list
 of \gls{pubk} certificates: the server's certificate,
-every intermediate certificate and the root certificate, \textit{i.e} a certificate chain. The certificate's contents
+every intermediate certificate and the root certificate, \textit{i.e}, a certificate chain. The certificate's contents
 will depend on the negotiated cipher suite and extensions.
-The same message type occurs later in the handshake if the server requests the client's certificate with the
+The same message type occurs later in the handshake, if the server requests the client's certificate with the
 \codeword{CertificateRequest} message. In a typical scenario, the
 server will seldom request client authentication.
 
@@ -528,9 +526,9 @@ and the server's key exchange parameters. Note that this is not the only place w
 server can authenticate itself to the client. For example, if \codeword{RSA} key
 exchange is used, the server authentication is done indirectly when the client
 sends the premaster secret encrypted with the public \gls{rsa} key provided in the
-server certificate: only the server knows the corresponding private key, so if
+server certificate. Since only the server knows the corresponding private key, if
 both of the sides generate the same keying material, then the server must be who
-it claims to be. In \gls{tls} $1.3$ this message is non existent and a similar
+it claims to be. In \gls{tls} $1.3$ this message is non-existent and a similar
 functionality is taken by the \codeword{key_exchange} extension.
 
 The \codeword{ServerHelloDone} is sent to indicate the end of \codeword{ServerHello}
@@ -538,18 +536,22 @@ and associated messages. Upon the receipt of this message, the client should che
 that the server provided a valid certificate. This message is not present in \gls{tls} 1.3.
 
 With the \codeword{ClientKeyExchange} message the premaster secret is
-set, either by direct transmission of the secret generated by the client
+set. This is done either by direct transmission of the secret generated by the client
 and encrypted with the server's public \gls{rsa} key (thus, authenticating the server to the client)
 or by the transmission of \gls{dh} parameters that will allow each side to generate
-the same premaster secret independently.
+the same premaster secret independently. In \gls{tls} $1.3$ this message is
+non-existent and a similar functionality is taken by the
+\codeword{key_exchange} extension.
 
 The \codeword{CertificateVerify} message is sent by the client to verify its
-certificate, if it has signing capability (\textit{i.e.} all certificates except for the ones
+certificate. This message is only sent if client authentication is used and
+if the client's certificate has signing capability (\textit{i.e.} all certificates except for the ones
 containing fixed \gls{dh} parameters).
 
 The \codeword{ChangeCipherSpec} is its own protocol, rather than a type of handshake
 message. It is sent by both parties to notify the receiver that subsequent records
-will be protected under the newly negotiated \codeword{CipherSpec} and keys.
+will be protected under the newly negotiated \codeword{cipher spec} and keys.
+This message is not present in \gls{tls} $1.3$.
 
 The \codeword{Finished} message is an essential part of the protocol. It is the first
 message protected with the newly negotiated algorithms, keys and secrets. Only after
@@ -561,7 +563,7 @@ handshake messages not including any \codeword{HelloRequest} messages and up to,
 not including, this message. The other party must perform the same computation on its
 side and make sure that the result is identical to the contents of the other party's
 \codeword{Finished} message. If at some point a \gls{mitm} has tampered with the
-handshake, the result will be a mismatch between the computed and the received contents of the
+handshake, there will be a mismatch between the computed and the received contents of the
 \codeword{Finished} message.
 
 At any time after a session has been negotiated, the server may send a \codeword{HelloRequest}
@@ -571,27 +573,30 @@ beginning the negotiation process anew.
 At any point in the handshake, the Alert protocol may be used by any of the peers
 to signal any problems or even abort the process through the use of an appropriate message type.
 
-Besides the full handshake, the \gls{tls} $1.2$ specification also defines an
-abbreviated handshake mechanism, which can be used to either resume a previous session
-or duplicate one, instead of negotiating new security parameters (for example, this is useful
-in the context of multiple \codeword{HTTPS} requests for various resources, when loading
-a typical website). The advantage of this mechanism is that the handshake is reduced
-to \codeword{1 RTT}, instead of the usual \codeword{2 RTT} as it is the case in
-the full handshake. In order to do the abbreviated handshake,
-the client and the server must have established a session previously, by performing
-the full handshake. To do this, the client sends a session ID of the session it wants to
-resume in its \codeword{ClientHello} and its up to the server to decide if he
-wants to resume that session, by responding with a \codeword{ServerHello} containing
-that same session ID value, or if it wants to establish a new session by
-sending a session ID with a different value. The keying material, such as the bulk
+Besides the full handshake, \gls{tls} $1.2$ also defines an
+abbreviated handshake mechanism, which can be used to either resume a previous session,
+or duplicate one, instead of negotiating security parameters again. This
+requires state to be maintained by both peers. The advantage of this mechanism is that the handshake is reduced
+to \codeword{1 RTT}, instead of the usual \codeword{2 RTT}, as it is the case in the full handshake.
+
+In order to perform an abbreviated handshake,
+the client and the server must have established a session previously, by the
+means of a full handshake. In its \codeword{ServerHello}, the server generates and sends a \codeword{session_id}, which will be associated with the newly negotiated session.
+
+To resume a session, in its \codeword{ClientHello} the client includes a \codeword{session_id} of the session it wants to
+resume. It is up to the server to decide if it
+will resume that session. In the positive case, the server responds with a \codeword{ServerHello} containing
+the same \codeword{session_id} value as the one sent by the client. In the negative
+case, the \codeword{ServerHello} will contain a different \codeword{session_id} value, thus
+triggering a new session negotiation process.
+
+The keying material, such as the bulk
 data symmetric encryption keys and the \gls{mac} keys are formed by hashing the new client
-and server random values with the master secret, which means
-that provided that the master secret has not been compromised and that the secure
-hash operations are secure, the new connection will be secure and independent
-from previous connections. The \gls{tls} $1.2$ spec, suggests and upper limit
-of $24$ hours for session ID lifetimes, since an attacker who obtains the master secret
-will be able to impersonate the compromised party until the corresponding session
-ID is retired. This mechanism requires state to be maintained in both peers.
+and server random values with the master secret. Therefore, provided that the master secret has not been compromised and that the secure
+hash operations are, in fact, secure, the new connection will be secure and independent
+from previous ones. The \gls{tls} $1.2$ spec, suggests and upper limit
+of $24$ hours for \codeword{session ID} lifetimes, since an attacker which obtains the master secret
+will be able to impersonate the compromised party until the corresponding \codeword{session ID} is retired.
 
 \subsection{\gls{tls} Record Processing}
 

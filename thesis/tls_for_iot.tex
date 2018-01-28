@@ -631,7 +631,7 @@ This processing is done by the \textbf {TLS Record Protocol} and involves the fo
 The process described above, as well as the structure names are depicted in Figure \ref{fig:tls-record-processing}.
 The compression step is not present in \gls{tls} 1.3. The structure names are exactly as the appear in the \gls{tls} specifications.
 
-\subsection{\gls{tls} Keying Material}
+\subsection{\gls{tls} Keying Material} \label{key-mat}
 
 In \gls{tls}, the confidentiality and integrity guarantees are achieved through the use
 of \gls{sc}. Consequently, the communicating peers need to \textbf{share}
@@ -643,63 +643,62 @@ they serve the same purpose. Additionally, you will find more keys in
 \gls{tls} $1.3$, for reasons that will be covered in Section \ref{tls-13}.
 In \gls{tls} 1.2, the peers agree on the following set of keys:
 
-\begin{enumerate}
-  \item \codeword{client_write key} - used by the client to encrypt the data to be sent
-  \item \codeword{client_read_key} - used by the client to decrypt the incoming data from the server
-  \item \codeword{server_write key} - used by the server to encrypt the data to be sent
-  \item \codeword{server_read_key} - used by the server to decrypt the incoming data from the server
-  \item \codeword{client_write_IV} - used by the client for implicit nonce techniques with \gls{aead} ciphers
+\begin{itemize}
+  \item \codeword{client write key} - used by the client to encrypt the data to be sent
+  \item \codeword{client read_key} - used by the client to decrypt the incoming data from the server
+  \item \codeword{server write key} - used by the server to encrypt the data to be sent
+  \item \codeword{server read key} - used by the server to decrypt the incoming data from the server
+  \item \codeword{client write IV} - used by the client for implicit nonce techniques with \gls{aead} ciphers
   \item \codeword{server_write_IV} - used by the server for implicit nonce techniques with \gls{aead} ciphers
-  \item \codeword{client_write_MAC_key} (\gls{tls} 1.2 only) - used by the client to authenticate the data to be sent
-  \item \codeword{client_write_MAC_key} (\gls{tls} 1.2 only) - used by the client to authenticate the data to be sent
-\end{enumerate}
+  \item \codeword{client write MAC key} (\gls{tls} 1.2 only) - used by the client to authenticate the data to be sent
+  \item \codeword{client write MAC key} (\gls{tls} 1.2 only) - used by the client to authenticate the data to be sent
+\end{itemize}
 
 When communicating with one another, the client uses one key to
 encrypt the data that it sends to the server and another key, different from the first one, to decrypt the data
 that it receives from the server, and vice-versa. This implies that the  following relationships must hold:
-\codeword{client_write_key == server_read_key} and \codeword{server_write_key == client_read_key}.
+\codeword{client write key == server read key} and \codeword{server write key == client read key}.
 
 \subsection{TLS 1.2 Keying Material Generation}
 
 The generation of secret keys, used for various cryptographic operations involves the
-following steps (in order):
+following steps, in order:
 
-\begin{itemize}
+\begin{enumerate}
   \item Generate the \textbf{premaster secret}.
   \item From the \textbf{premaster secret} generate the \textbf{master secret}.
   \item From the \textbf{master secret} generate the various secret keys, which
   will be used in the cryptographic operations.
-\end{itemize}
+\end{enumerate}
 
-In \gls{tls} $1.2$, the \gls{tls} \gls{prf} is used to generate the keying material
-needed for a connection and it is defined as \codeword{PRF(secret, label, seed) = P_hash(secret, label + seed)}.
+The \gls{tls} \gls{prf} is used to generate the keying material
+needed for a connection. It is defined as \codeword{PRF(secret, label, seed) = P_hash(secret, label + seed)}.
 The \codeword{P_hash(secret, seed)} function is an auxiliary data expansion function
 which uses a single cryptographic hash function to expand a \codeword{secret} and a \codeword{seed}
-into an arbitrary quantity of output, meaning that you can use to to generate
-anywhere from $1$ to an infinite number of bits of output. The \codeword{PRF(secret, label, seed)}
+into an arbitrary quantity of output. Therefore, you can use it to to generate
+anywhere from $1$ to an infinite number of bits of output. \codeword{PRF(secret, label, seed)}
 is used to generate as many bits of output as you need. When generating the
 master secret, the \codeword{secret} input is the \codeword{premaster secret}.
-When generating the key block, from which you will actually obtain final keys
+When generating the key block, from which the final keys will be obtained,
 the \codeword{secret} input is the \codeword{master secret}.
 
 The cryptographic hash function used in \codeword{P_hash(secret, label, seed)} is
-a hash function implicitly defined by the cipher suite in use. All of the cipher
+the hash function that is implicitly defined by the cipher suite in use. All of the cipher
 suites defined in the \gls{tls} $1.2$ base spec use \codeword{SHA-256} and any new
 cipher suites must explicitly specify a the same hash function or a stronger one.
 
 \subsection{TLS 1.2 Key Exchange Methods}
 
 The way the peremaster secret is generated depends on the key exchange
-method used. In fact, this is the only phase of the keying material generation
-phase that is variable for a fixed cipher suite, because a cipher suite defines
-the \gls{prf} function to be used. The derivation
-of the master secret from the premaster secret, as well as the
-derivation of the bulk encryption keys, \gls{mac} keys and \gls{iv}s from the master secret
-that follows \textbf{is not impacted by the key exchange method} in use.
+method used. This is the only phase of the keying material generation
+phase that is variable for a fixed cipher suite, since a cipher suite defines
+the \gls{prf} function that will be employed. Neither the derivation of the
+master and premaster secrets, nor the derivation of the shared keys described
+in Section \ref{key-mat} is impacted by the key exchange method.
 
-You have quite a few choices when it comes to key exchange methods. Some of them
+There are many key exchange methods to choose from. Some of them
 are defined in the base spec (\codeword{RFC5246}\cite{RFC5246}), while others
-in separate \gls{rfc}s (such as the \gls{ecc} based key exchange, specified
+in separate \gls{rfc}s. For example, the \gls{ecc} based key exchange, specified
 in \codeword{RFC4492} \cite{RFC4492}).
 
 The base spec specifies four key exchange methods, one using \gls{rsa} and
@@ -707,16 +706,16 @@ three using \gls{dh}:
 
 \begin{itemize}
   \item static \gls{rsa} (\codeword{RSA}; removed in \gls{tls} 1.3) - the client generates the premaster secret, encrypts it with the
-  server's \gls{pubk} (which it obtained from the server's \codeword{X.509} certificate),
-  sends it to the server, which in turn decrypts it using the corresponding \gls{privk}. The server then uses it as its premaster secret.\gls{pfs} is
+  server's \gls{pubk} (which it obtained from the server's \codeword{X.509} certificate) and
+  sends it to the server. The server then decrypts it using the corresponding \gls{privk} and uses it as its premaster secret. \gls{pfs} is
   a property that preserves the confidentiality of past interactions even if the
   long-term secret is compromised. This key exchange method offers authenticity, but does not offer \gls{pfs}.
   \item anonymous \gls{dh} (\codeword{DH_annon}; removed in \gls{tls} 1.3) - a \gls{dh} key exchange is
-  performed and an \textbf{ephemeral} key is generated, but the exchanged \gls{dh}
-  parameters are \textbf{not authenticated}, making the resulting key exchange
+  performed and an \textbf{ephemeral} key is generated. Since the exchanged \gls{dh}
+  parameters are \textbf{not authenticated}, the resulting key exchange
   vulnerable to \gls{mitm} attacks. \gls{tls} $1.2$ spec states that cipher suites
   using \codeword{DH_annon} \textbf{must not} be used, unless the application
-  layer explicitly requests so. This key exchange offers \gls{pfs}, but no
+  layer explicitly requests so. This key exchange offers \gls{pfs}, but does not offer
   authenticity.
   \item fixed/static \gls{dh} (\codeword{DH}; removed in \gls{tls} 1.3) - the server's/client's public \gls{dh} parameter
   is embedded in its certificate. This key exchange method offers authenticity,
@@ -725,14 +724,14 @@ three using \gls{dh}:
   different pubic \gls{dh} parameters, which are generated dynamically. This results
   in a different, ephemeral key being generated every time. The public parameters
   are then digitally signed in some way, usually using the sender's private
-  \gls{rsa} (\codeword(DHE_RSA)) or \gls{dsa} (\codeword{DHE_DSS}) key. This key
-  exchange offers both authenticity and \gls{pfs}.
+  \gls{rsa} (\codeword{DHE_RSA}) or \gls{dsa} (\codeword{DHE_DSS}) key. This key
+  exchange offers both, authenticity and \gls{pfs}.
 \end{itemize}
 
-When either of the \gls{dh} variants is used, the value resulting from the exchange is used
+When either of the \gls{dh} variants is used, the value obtained from the exchange is used
 as the premaster secret (without the leading \codeword{0}'s). Usually, only the server's
-authenticity is desired, but client's can also be achieved if it provides the
-server its certificate. Whenever the server is authenticated, the server is secure
+authenticity is desired, but client's can also be achieved if it supplies the
+server with its certificate. Whenever the server is authenticated, it is secure
 against \gls{mitm} attacks. Table \ref{kemsp} summarizes the security properties
 offered by each key exchange method.
 
@@ -750,8 +749,7 @@ DHE                          & X                                   & \multicolum
 \end{tabular}
 \end{table}
 
-In \gls{tls} $1.3$, non-\gls{aead} cipher suites have been removed and are not supported anymore.
-Static \gls{rsa} and \gls{dh} ciphersuites have been removed, meaning that all
+In \gls{tls} $1.3$, static \gls{rsa} and \gls{dh} ciphersuites have been removed, meaning that all
 public key exchange mechanisms now provide \gls{pfs}. Even though
 anonymous \gls{dh} key exchange has been removed, you can still have
 unauthenticated connections by either using raw public keys\cite{RFC7250} or not verifying the certificate chain and any of its contents.
@@ -778,16 +776,16 @@ compatible, which means that the communication is possible between a \gls{tls} c
 and vice versa. A client may request the use of extensions by sending an extended \codeword{ClientHello}
 message, which is just a "normal" \codeword{ClientHello} with an additional
 block of data that contains a list of extensions. The backwards compatibility is achieved based on the \gls{tls}
-requirement that the servers are not "extensions-aware" ignore the data
-added to the \codeword{ClientHello}s that they do not understand (section \codeword{7.4.1.2} of \codeword{RFC 2246}\cite{RFC2246}),
-meaning that even older servers, running older \gls{tls} versions that do not support extensions, will not "break".
+requirement that the servers that are not "extensions-aware" must ignore the data
+added to the \codeword{ClientHello}s that they do not understand (section \codeword{7.4.1.2} of \codeword{RFC 2246}\cite{RFC2246}). Consequently,
+even servers running older \gls{tls} versions that do not support extensions, will not "break".
 
 The presence of extensions can be determined by checking if there are bytes
 following the \codeword{compression_methods} field in the \codeword{ClientHello}.
 If the server understands an extension, it sends back an extended \codeword{ServerHello},
-instead of a regular one. An extended \codeword{ServerHello} is a "normal"
+instead of a regular one. An extended \codeword{ServerHello} is a regular
 \codeword{ServerHello} with an additional block of data following the
-\codeword{compression_method} field that contains a list of extensions.
+\codeword{compression_method}, containing a list of extensions.
 
 An extended \codeword{ServerHello} message can only be sent in a response to an
 extended \codeword{ClientHello} message. This prevents the possibility that an extended

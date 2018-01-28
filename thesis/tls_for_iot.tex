@@ -91,6 +91,7 @@
 \newacronym{pki}{PKI}{Public Key Infrastructure}
 \newacronym{ae}{AE}{Authenticated Encryption}
 \newacronym{nsa}{NSA}{US National Security Agency}
+\newacronym{apk}{APK}{Authorized Public Key}
 
 
 %%% WARN: added as specified here:
@@ -212,10 +213,9 @@ the document. Section 3 describes the \gls{tls} and \gls{dtls} protocol
 versions $1.2$ and $1.3$, with a focus on the version $1.2$ since
 it is the latest and the most used version of the protocol (version $1.3$ is still in
 draft mode). Section 4 describes all of the related work done in the area and
-the current state of the art. Finally, Section 5 provides an architecture of the
+the current state of the art. Section 5 provides an architecture of the
 solution that will be developed in the second part of the dissertation,
-an explanation of how the results will be evaluated, a general work plan
-and a conclusion of the work done in this part.
+an explanation of how the results will be evaluated and a general work plan. Finally, the conclusion of the work is done in Section 6.
 
 \section{Background}
 
@@ -910,7 +910,7 @@ lightweight in order to run on devices with limited memory and processing
 capabilities. A lot of the work in \gls{iot} incorporates it in one way or another,
 so this section will begin with the description of the work done in this area.
 
-Alex \textit{et al}\cite{Stateoft96:online} explore the topic of lightweight symmetric cryptography,
+Biryukov \textit{et al}\cite{Stateoft96:online} explore the topic of lightweight symmetric cryptography,
 providing a summary of the lightweight symmetric
 primitives from the academic community, the government agencies and even proprietary
 algorithms which have been either reverse-engineered or leaked. All of those algorithms
@@ -943,7 +943,7 @@ block ciphers used only \codeword{64-bit} blocks, which leads to a smaller memor
 footprint in both, software and hardware, while also making the algorithm better suited
 for processing of smaller messages.
 
-Even though though algorithms can be optimized in implementation: whether it is
+Even though algorithms can be optimized in implementation: whether it is
 a software or a hardware, dedicated lightweight algorithms are still needed.
 This comes down mainly to two factors: there are limitations to the the extent of
 the optimizations that can be done and the hardware-accelerated encryption is
@@ -1002,9 +1002,9 @@ table \ref{ul-iot}.
 \end{tabular}
 \end{table}
 
-While there is a high demand lightweight \gls{pubk} primitives, the required
+While there is a high demand for lightweight \gls{pubk} primitives, the required
 resources for them are much higher than for symmetric ones. As a
-paper by \textit{Sony Corporation}\cite{b5b8db9716:online}
+paper by Katagi \textit{et al}\cite{b5b8db9716:online}
 concluded, there are no promising primitives
 that have enough lightweight and security properties, compared to the
 conventional ones, such as RSA and \gls{ecc}. Further research on this topic, as part of the work on this dissertation, lead to the same conclusion.
@@ -1014,7 +1014,7 @@ various algorithms. In order to provide a good overview of it while staying succ
 area, rather than focusing on specific implementations, were chosen.
 The remainder of this section will focus on the work done on the (D)\gls{tls} protocol in the context of \gls{iot}.
 
-S3K\cite{S3KScala62:online} proposes a key management architecture for resource-constrained devices,
+The "Scalable Security With Symmetric Keys"\cite{S3KScala62:online} paper proposes a key management architecture for resource-constrained devices,
 which allows devices that have no previous, direct security relation to use
 (D)\gls{tls} using one of two approaches: shared symmetric keys or raw public keys.
 The resource-constrained device is a server that offers one or more resources,
@@ -1030,12 +1030,11 @@ the client will send to the server the \codeword{psk_identity} that it received 
 handshake. Upon its receipt, the server will derive the \codeword{Kc}, using the
 \codeword{P_hash()} function defined in \codeword{RFC 5246}\cite{RFC5246}.
 
-The second approach consists in requesting an APK (the authors never defined
-what this acronym stands for, but my assumption is that they mean "Authorization Public Key")
+The second approach consists in requesting an \gls{apk}
 from the \codeword{TA}. The client includes his \gls{rpk} in its request, which is used for authorization. The TA
 creates an authorization certificate, protects it with a \gls{mac} and sends it
 to the client alongside the server's \gls{pubk}.
-The client then sends this APK (instead of the \gls{rpk})
+The client then sends this \gls{apk} (instead of the \gls{rpk})
 when connecting to the server, which verifies it (to authorize the client)
 and proceeds with the handshake in the \gls{rpk} mode, as defined in \codeword{RFC 4279} \cite{RFC4279}.
 To achieve this, a new certificate structure is defined, alongside a new \codeword{certificate_type}.
@@ -1056,13 +1055,13 @@ protocol. The protocol defines IP Header Compression (IPHC) for the IP header, a
 Next Header Compression (NHC) for the IP extension headers and the UDP header in \codeword{RFC 6282}\cite{RFC6282}.
 The compression relies on the shared context between the communicating peers.
 
-\cite{6LoWPANC53:online} uses this same idea, but with the goal of compressing \gls{dtls} headers.
-6LoWPAN does not provide ways to compress the UDP payload and layers above, there
-is however, a proposed standard\cite{RFC7400} for generic header compression
-for 6LoWPANs that can be used to compress the UDP payload. The authors propose
+The work proposed in \cite{6LoWPANC53:online} uses this same idea, but with the goal of compressing \gls{dtls} headers.
+6LoWPAN does not provide ways to compress the UDP payload and layers above.
+A proposed standard\cite{RFC7400} for generic header compression
+for 6LoWPANs that can be used to compress the UDP payload, does exit, however. The authors propose
 a way to compress \gls{dtls} headers and messages using this mechanism.
 
-The paper \cite{6LoWPANC53:online} defines how the \gls{dtls} Record header, the \gls{dtls} Handshake header,
+Their work defines how the \gls{dtls} Record header, the \gls{dtls} Handshake header,
 the \codeword{ClientHello} and the \codeword{ServerHello} messages can be compressed, but notes that
 the same compression techniques can be used to compress the remaining handshake
 messages. They explore two cases for the header compression: compressing both,
@@ -1139,7 +1138,7 @@ currently being developed\cite{I-D.ietf-core-coap-tcp-tls}.
 
 The authors evaluated their system in a simulated environment in \textit{Contiki OS}\cite{ContikiT75:online}, which is an open-source operating system for the \gls{iot}.
 They obtained significant gains in terms of packet size (similar numbers to the
-ones observer in \cite{6LoWPANC53:online}), energy consumption (on average $15\%$ less
+ones observed in \cite{6LoWPANC53:online}), energy consumption (on average $15\%$ less
 energy is used to transmit and receive compressed packets), processing time
 (the compression and decompression time of \gls{dtls} headers is almost negligible)
 and network-wide response times (up to $50\%$ smaller RTT). The
@@ -1210,9 +1209,9 @@ profile for \gls{iot} devices that offer communication security services
 for \gls{iot} applications.
 In this context, "profile" means available configuration options (ex: which
 cipher suites to use) and protocol extensions that are best suited for \gls{iot} devices.
-The document is rather lengthy, only its fundamental parts will be summarized. Some \gls{rfc}s that are relevant will also be described.
+The document is rather lengthy, only its fundamental parts will be summarized. A number of relevant \gls{rfc}s will also be described.
 
-This \gls{rfc} explores both cases: constrained clients and constrained servers, specifying
+\codeword{RFC 7925} explores both cases: constrained clients and constrained servers, specifying
 a profile for each one and describing the main challenges faced in each scenario.
 The profile specifications for constrained clients and servers are very similar.
 Code reuse in order to minimize the implementation size is recommended. For example, an \gls{iot} device
@@ -1368,13 +1367,12 @@ them, this is an important area to explore. None of the related work explored
 
 The majority of the work done in the area proposes a solution that is either tied to a
 specific protocol, such as \gls{coap}, or requires an introduction of a third-party
-entity, such as the trust anchor in the case of S3K\cite{S3KScala62:online} or
-even both. This two main issues: first, if the developer wants to use (D)\gls{tls}
-without using a protocol for which an optimization has been done,
-he might see himself in some trouble, and second the requirement of a third-party
+entity, such as the trust anchor in the case of the S3K system\cite{S3KScala62:online} or
+even both. This two main issues. First, a protocol-specific solution can not
+be easily used in an environment where (D)\gls{tls} is not used with that protocol. Second, the requirement of a third-party
 introduces additional cost and complexity, which will be a big resistance factor
-in adopting the technology. This is specially true for developers who are doing
-hobby projects or projects for small businesses, leaving the communications insecure
+in adopting the technology. This is specially true for developers working on
+personal projects or projects for small businesses, leaving the communications insecure
 in the worse case scenario. The goal of this work is to design a solution that can be used out
 of the box and is not tailored towards any specific protocol, while fully backwards
 compatible with the original protocol, that can be used with either \gls{tls}
@@ -1382,7 +1380,7 @@ or \gls{dtls} and would work with both versions: (D)\gls{tls} $1.2$ and the upco
 (D)\gls{tls} 1.3.
 
 In order to achieve those goals, the \gls{tls} extension
-mechanism will be heavily relied upon. By using extensions, any deviations from the original protocol can be done, even if they completely change the it. This was confirmed by
+mechanism will be heavily relied upon. By using extensions, any deviations from the original protocol can be done, even if they completely change it. This was confirmed by
 one of the \gls{tls} designers, after we asked this question on the official
 \gls{ietf} mailing list\cite{ReTLSTLS31:online}, since neither of the existing \gls{rfc}s made it clear.
 
@@ -1393,7 +1391,7 @@ described in the introduction, where the device sends data to a server every
 30 seconds. With \codeword{0-RTT data}, it can communicate securely with minimal costs.
 The use of symmetric cryptography exclusively, has various advantages in the context
 of \gls{iot}. This means that there is value in exploring solutions that revolve around
-\gls{psk}s and that avoid public key cryptography altogether.
+\gls{psk}s and that avoid public key cryptography completely.
 
 Not all \gls{iot} devices are limited to the point of not being able to use
 public key cryptography altogether. For some of them, the use of \gls{rpk}s, which is considered the first entry point into the area of \gls{pubk}
@@ -1407,8 +1405,8 @@ pay the energy and time overhead of encryption. Special care in the
 selection of cipher suites and key exchange methods needs to be taken, possibly even developing new ones.
 
 (D)\gls{tls} $1.2$ is significantly different from (D)\gls{tls} 1.3
-and there has been no work like \codeword{RFC 7924}\cite{RFC7924} done for (D)\gls{tls} $1.3$.
-It would be interesting to explore this. (D)\gls{tls} $1.3$ has many fundamental changes
+and there has been no work like \codeword{RFC 7924}\cite{RFC7924}, which describes a lightweight (D)\gls{tls} profile, done for (D)\gls{tls} $1.3$.
+This is an important topic to explore. (D)\gls{tls} $1.3$ has many fundamental changes
 to the way the handshake is done, bringing many new features, whose ideas can
 be incorporated into the proposed solution and even backported to \gls{tls} 1.2.
 
@@ -1432,16 +1430,16 @@ Lightweight TLS (LTLS) extension is defined. The optimizations that will be desc
 optimizations. To achieve this, it will include the LTLS extension in its
 \codeword{ClientHello}. If the server supports the extension, an
 optimized connection can be established; this case is depicted in Figure \ref{fig:ltls-opt}. If the server does not support the extension, it will not
-send it back in its \codeword{ServerHello}. In that case it's possible
-to gracefully fall back to regular (D)\gls{tls}, as depicted in Figure \ref{fig:ltls-non-opt}.
+send it back in its \codeword{ServerHello}. In that case it is possible
+to fall back to regular (D)\gls{tls}, as depicted in Figure \ref{fig:ltls-non-opt}.
 
 In practice the extension will include additional data used to indicate various options, which has been omitted from the discussion for simplicity.
 
 \subsection{Evaluation}
 
-In order to evaluate how good the result of the work is, both, the original protocol
+In order to evaluate the quality of the work, both, the original protocol
 implementation and the one provided as part of the solution, will be profiled and compared. The relevant profiling metrics are power consumption, RAM usage, storage usage,
-CPU cycles used and time taken. The profiling
+CPU cycles elapsed and time taken. The profiling
 will be done over various simulated scenarios, which emulate real-life usage,
 such as connecting to the server multiple times over a short time period and transferring
 small quantities of data, and connecting to the server and transferring a large
@@ -1459,7 +1457,7 @@ During the month of March $2018$, the solution will be implemented in code, by m
 the \textit{mbedTLS 2.6.0} library\cite{SSLLibra13:online}, the most important evaluation metrics will be chosen and the related profiling code set up. Testing scenarios will be designed.
 From early March $2018$ until April $2018$ the solution will be evaluated and a concentration on writing the dissertation's text will be done.
 
-\subsection{Conclusion}
+\section{Conclusion}
 
 The lack of security in \gls{iot} is a serious issue that can lead to a high monetary costs,
 when botnets infect the devices. Recent

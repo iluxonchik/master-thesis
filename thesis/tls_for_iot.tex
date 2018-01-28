@@ -612,18 +612,18 @@ This processing is done by the \textbf {TLS Record Protocol} and involves the fo
   \item  \textbf{Compression} (removed in \gls{tls} 1.3) - the \textbf{TLS Record Layer} compresses the
   \codeword{TLSPlaintext} structure according to the negotiated compression method,
   outputting \codeword{TLSCompressed}. Compression is optional. If the negotiated compression
-  method is \codeword{null}, \codeword{TLSCompressed} is the same as \codeword{TLSPlaintext}.
-  \item \textbf{Cryptographic Protection} - in case of \gls{tls} 1.2, either an
+  method is \codeword{null}, \codeword{TLSCompressed} is identical to \codeword{TLSPlaintext}.
+  \item \textbf{Cryptographic Protection} - in \gls{tls} 1.2, either an
   \gls{aead} cipher or a separate encryption and \gls{mac} functions transform a
   \codeword{TLSCompressed} fragment into a \codeword{TLSCipherText} fragment. In case
-  of \gls{tls} 1.3, the \codeword{TLSPlaintext} fragment is transformed into a \codeword{TLSCipherText}
-  by applying an \gls{aead} cipher.
+  of \gls{tls} 1.3, the \codeword{TLSPlaintext} fragment is transformed into a \codeword{TLSCipherText} by applying an \gls{aead} cipher, since all
+  non-\gls{aead} ciphers have been removed.
   \item Append the \codeword{TLS Record Header} - encapsulate \codeword{TLSCipherText}
   in a \codeword{TLS Record}.
 \end{enumerate}
 
 \begin{figure}
-  \caption{\label{fig:tls-record-processing}TLS Record Processing}
+  \caption{\label{fig:tls-record-processing}TLS 1.2 Record Processing}
   \centering
   \includegraphics[width=1.0\textwidth]{img/tls-record-processing-3.png}
 \end{figure}

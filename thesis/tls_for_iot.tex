@@ -156,11 +156,11 @@ where security might have been completely foregone otherwise.
 
 The \gls{iot} is a network of devices, from simple sensors to smartphones and wearables
 that are connected together. In fact, it can be any other object that has an assigned
-IP address and is provided with the ability to transfer data over a network. Even
-something such as a salt shaker\cite{SMALTThe76:online} can now be part of the global network.
+IP address and is provided with the ability to transfer data over a network. Even a salt shaker\cite{SMALTThe76:online} can now be part of the global network.
 
-The \gls{iot} technology can be used solve problems and make our lives easier,
-unfortunately, however, its technological development tends to focus on
+The \gls{iot} technology provides many benefits, from personal comfort to
+transforming entire industries, mainly due to increased connectivity and
+new sources for data analysis. The technological development, however, tends to focus on
 innovative design rather than on privacy and security. \gls{iot} devices frequently
 connect to networks using inadequate security and are hard to update when
 vulnerabilities are found.
@@ -182,27 +182,26 @@ algorithm and this situation is worsened with the low-power radios and lossy
 links found in sensor networks. Therefore, \gls{dtls}, which runs on top
 of UDP, is used more frequently in such devices. The work that will be done in the context of this dissertation, can however,
 be applied to either one of them, so even though mostly
-\gls{tls} will be mentioned, almost everything also applies to \gls{dtls} as well, since it is just
-an adaption of \gls{tls} over unreliable transport protocols, with no changes done
+\gls{tls} will be mentioned, almost everything also applies to \gls{dtls}.  This is a consequence of \gls{dtls} being just an adaption of \gls{tls} over unreliable transport protocols, with no changes done
 the core protocol.
 
 The problem in using (D)\gls{tls} in \gls{iot} is that it is not lightweight, since
 it was not designed for such environments. An \gls{iot} device may only have
 $256$ KB of RAM and needs to conserve the battery, while sending and receiving
-a large amount of small information constantly. For example, imagine a temperature sensor
-that sends the temperature measures every $30$ seconds to a server. In this case
+a large amount of small information constantly. Let us consider the case of a temperature sensor
+that sends temperature measures every $30$ seconds to a server. In this case
 it just needs to send a few bytes of data and do it with minimal overhead, to conserve
 RAM and battery. If that sensor is going to use (D)\gls{tls} $1.2$, it will need
-two extra roundtrips before it can send any data, which can be an extra hundreds of
+two extra roundtrips before it can send any data. This can result in an overhead of several hundreds of
 milliseconds. Besides that, it will need to perform heavy mathematical operations
-involved in cryptography, using even more battery and taking even more time.
+involved in cryptography, using even more energy and taking even more time.
 There is a clear need for a more lightweight (D)\gls{tls} for the \gls{iot}.
 
 The goal of this work is to develop a lightweight version of (D)\gls{tls} that is
 fully backwards compatible and does not require any third-party entities, in order
-to minimize the friction of adoption. The solution will be developed for
+to simplify its deployment process. The solution will be developed for
 (D)\gls{tls} versions $1.2$ and $1.3$. The idea is to make it customizable,
-depending on the security requirements of the context of its use, in that sense, it is similar to a framework.
+depending on the security requirements of the context of it is used in.
 
 In the process of the work on this dissertation, we have made several
 contributions to the \gls{tls} $1.3$ specification and recognized as contributors\cite{Mergepul65:online}.
@@ -233,30 +232,27 @@ in \gls{tls}. For those reasons, this section ends with an overview of \gls{ecc}
 
 \subsection{Symmetric vs Asymmetric Cryptography} \label{sac}
 
-\gls{ac} is more expensive than \gls{sc} in terms of performance. This is mainly due
-to two facts: larger key sizes are required for an \gls{ac} system to achieve the
-same level of security as in a \gls{sc} system  and \codeword{CPU}s are slower at performing the underlying
+\gls{ac} is more expensive than \gls{sc} in terms of performance. This has two main reasons. First, larger key sizes are required for an \gls{ac} system to achieve the
+same level of security as in a \gls{sc} system. Second, \codeword{CPU}s are slower at performing the underlying
 mathematical operations involved in \gls{ac}, namely exponentiation requires
-$O(log e)$ multiplications for an exponent $e$. For example,
-the 2016 \codeword{NIST} report \cite{Recommen44:online}
+$O(log e)$ multiplications for an exponent $e$. The 2016 \codeword{NIST} report \cite{Recommen44:online}
 suggests that an \gls{ac} algorithm would need to use a secret key with size of \codeword{15360 bits}
 to have equivalent security to a \codeword{256-bit} secret key for a \gls{sc} algorithm.
 This situation is ameliorated by \gls{ecc}, which requires keys of \codeword{512 bits}, but
 it is still slower than using \gls{sc}. The 2017 \codeword{BSI} report \cite{Kryptogr1:online} (from the
 German federal office for information security) suggests similar numbers.
 
-Another argument for avoiding as much as possible the use of \gls{ac}
-algorithms is that they require additional storage space and this might be a problem for some \gls{iot} devices,
+Another argument for avoiding the use of \gls{ac}
+algorithms as much as possible, is that they require additional storage space. This can be a problem for many \gls{iot} devices,
 like \codeword{class 1} devices according to the terminology of constrained-code
 networks\cite{RFC7228} which have approximately \codeword{10KB} of RAM and \codeword{100KB}
-of persistent memory. I measured and compared the resulting size of the complied \textit{mbedTLS 2.6.0} library
-\cite{SSLLibra13:online} when it was with and without the \gls{rsa} module
-(located in the \codeword{rsa.c} file). The conclusion is that that using the \codeword{rsa.c} module adds an extra of \codeword{32KB}.
+of persistent memory. We measured and compared the resulting size of the \textit{mbedTLS 2.6.0} library\cite{SSLLibra13:online} binary when it was compiled with and without the \gls{rsa} module
+(located in the \codeword{rsa.c} file). The conclusion is that that using the \codeword{rsa.c} module adds an overhead of \codeword{32KB}.
 
 \subsection{Public Certificates and Certificate Chains} \label{pccc}
 
 A public key certificate, also known as a digital certificate, is an electronic
-document used to prove the ownership of a \gls{pubk}. This allows the other parties
+document used to prove the ownership of a \gls{pubk}. This allows other parties
 to rely upon assertions made by the \gls{privk} that corresponds to the \gls{pubk}
 that is certified. In the context of (D)\gls{tls}, certificates serve as a guarantee
 that the communication is done with the claimed entity and not someone impersonating it.
@@ -287,8 +283,8 @@ which makes then more suitable for low-bandwidth networks, since the messages to
 
 \subsection{\gls{ecc}} \label{eccsection}
 
-\gls{pubk} cryptography is based on the use of one-way math functions,
-which are function where it is easy to compute the answer given an input,
+\gls{pubk} cryptography is based on the use of one-way math functions. Such
+functions make it easy to compute the answer given an input,
 but hard to compute the input given the answer. For example, RSA uses factoring
 as the one one way function: it is easy to multiply large numbers, but it is hard
 to factor them.
@@ -299,7 +295,7 @@ Depending on the value of $a$ and $b$, elliptic curves assume different shapes
 on the plane.
 
 The security of \gls{ecc} is based on the elliptic curve discrete logarithm
-problem, which states that scalar multiplication is a one way function. To exemplify,
+problem. It states that scalar multiplication is a one way function. To exemplify,
 given a curve $E(\mathbb{Z}/p\mathbb{Z})$ and points $Q$ and $P$ on that curve
 $Q,P \in E(\mathbb{Z}/p\mathbb{Z})$, where $Q$ is a multiple of $P$, the elliptic curve discrete logarithm problem
 states that finding the integer $k$, such that $Q=kP$ is a very hard problem.
@@ -904,11 +900,7 @@ that are made by \gls{tls}. The main differences from \gls{dtls} $1.2$ to \gls{t
 
 \section{Related Work}
 
-Lightweight cryptography is an important topic in the context of \gls{iot}, since
-cryptography is a fundamental part of security and it is fundamental for it to be
-lightweight in order to run on devices with limited memory and processing
-capabilities. A lot of the work in \gls{iot} incorporates it in one way or another,
-so this section will begin with the description of the work done in this area.
+Lightweight cryptography an important topic in the context of \gls{iot} security, due to the resource-limited nature of the devices. This section will begin with the description of the work done in this area.
 
 Biryukov \textit{et al}\cite{Stateoft96:online} explore the topic of lightweight symmetric cryptography,
 providing a summary of the lightweight symmetric

@@ -798,57 +798,53 @@ corresponding extended \codeword{CleintHello}, and if this happens, the client m
 
 Due to limited space, \gls{tls} $1.3$\cite{I-D.ietf-tls-tls13} will not be described in detail. The focus was on \gls{tls} $1.2$ instead, because \gls{tls} $1.3$ is still in draft
 mode and $1.2$ is the latest and the recommended to use version.
-
-Despite the protocol name not suggesting it \gls{tls} $1.3$ is
-very different from \gls{tls} 1.2, in fact, it should have probably been called
-\gls{tls} $2.0$ instead. I have studied \gls{tls} $1.3$ in great detail, and as already mentioned,
-I have been formally recognized as a \gls{tls} $1.3$ contributor.
+Despite the protocol name not suggesting it, \gls{tls} $1.3$ is
+very different from \gls{tls} 1.2. It should have probably been called
+\gls{tls} $2.0$ instead.
 
 Numerous differences from \gls{tls} $1.3$ to $1.2$ have been mentioned throughout the document.
-Various changes in \gls{tls} $1.3$ make it more suitable for the context
-of \gls{iot}. Some of them were already mentioned previously, and in this section a couple more will be outlined.
+Various characteristics found in \gls{tls} $1.3$ make it more suitable for the context
+of \gls{iot} than \gls{tls} $1.2$. Some of them were already mentioned previously, and in this section a additional ones will be outlined.
 
-The first important difference is that the use of extensions is required in \gls{tls} $1.3$,
-since some of the functionality has been moved into extensions, in order to preserve
+The first important difference is that the use of extensions is required in \gls{tls} $1.3$.
+This can be explained by the fact that some of the functionality has been moved into extensions, in order to preserve
 backwards-compatibility with the \codeword{ClientHello}s of the previous versions.
-In fact, the way a server distinguishes if a client is requesting \gls{tls} $1.3$
+The way a server distinguishes if a client is requesting \gls{tls} $1.3$
 is by checking the presence of the \codeword{supported_versions} extension in the
 extended \codeword{ClientHello}.
 
-In \gls{tls} $1.3$ more data is encrypted and the encryption starts earlier. For example,
+In \gls{tls} $1.3$ more data is encrypted and the encryption begins earlier. For example,
 at the server-side you have a notion of "encrypted extensions". The \codeword{EncryptedExtensions}
 message, as the name suggests, contains a list of extensions that are encrypted
-under a symmetric key and it contains any extensions that are not needed
+under a symmetric key. It contains any extensions that are not needed
 for the establishment of the cryptographic context.
 
 One of the main problems with using \gls{tls} in \gls{iot} is that while \gls{iot}
-traffic need to be quick and lightweight, \gls{tls} $1.2$ adds two additional
+traffic needs to be quick and lightweight, \gls{tls} $1.2$ adds two additional
 round trips (\codeword{2 RTT}) to the start of every session. \gls{tls} $1.3$ handshake has less latency,
 and this is extremely important in the context of \gls{iot}.
 The full \gls{tls} $1.3$ handshake is only \codeword{1 RTT}. \gls{tls} $1.3$ even allows
-clients to send data on the first flight (known as "early data"), when the clients
+clients to send data on the first flight (known as \textbf{early client data}), when the clients
 and servers share a \gls{psk} (either obtained externally or via a previous handshake).
-This means that in \gls{tls} $1.3$ you can have \codeword{0-RTT} data, by essentially
-encrypting it with a key derived from the previously shared \gls{psk}. Session resumption
+This means that in \gls{tls} $1.3$ you can have \codeword{0-RTT} data, by
+encrypting it with a key derived from a \gls{psk}. Session resumption
 via identifiers and tickets has been obsoleted in \gls{tls} $1.3$, and both methods
 have been replaced by a \gls{psk} mode. This \gls{psk} is established in a previous
 connection after the handshake is completed and can be presented by the client
 on the next visit.
 
-Keying material generation is more complex in \gls{tls} $1.3$, than in
+Keying material generation is more complex in \gls{tls} $1.3$ than in
 \gls{tls} $1.2$, since different
 keys are used to encrypt data throughout the Handshake protocol. This can be
 explained by the fact that in \gls{tls} $1.3$ the encryption begins earlier.
-Other Handshake messages besides \codeword{Finished} are encrypted. The data
-can also come encrypted in the first flight, when \textbf{early client data}
-(also known as \textbf{0-RTT data}) is used. As a result,
+Other Handshake messages besides \codeword{Finished} are encrypted. As a result,
 you have multiple encryption keys generated that are used to encrypt different data
 throughout the handshake.
 
 The way the keying material is derived is also different. The
 \gls{prf} construction described above has been replaced.
 In \gls{tls} 1.3, key derivation uses the
-\gls{hkdf} function defined in \codeword{RFC 5869}\cite{RFC5869} and its two components: \codeword{HKDF-Extract} and \codeword{HKDF-Expand}.
+\gls{hkdf} function \cite{RFC5869} and its two components: \codeword{HKDF-Extract} and \codeword{HKDF-Expand}.
 This new design allows easier analysis by cryptographers due to improved
 key separation properties.
 

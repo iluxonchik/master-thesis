@@ -124,8 +124,7 @@
 %                                     \toctitle is used
 %
 \author{{Illya Gerasymchuk} \\
-\email{illya.gerasymchuk@tecnico.uliboa.pt},\\ WWW home page:
-\texttt{https://iluxonchik.github.io/}}
+\email{illya.gerasymchuk@tecnico.uliboa.pt}
 %
 \authorrunning{Illya Gerasymchuk} % abbreviated author list (for running head)
 %
@@ -215,12 +214,12 @@ recognized as a contributor, my name will be on the final document specifying
 the \gls{tls} $1.3$ protocol.
 
 The document is organized as follows: Section 2 describes the background. It
-begins with introducing some of the concepts that will be used throughout
-the document, after which it describes the \gls{tls} and \gls{dtls} protocol
+introduces some of the concepts that will be used throughout
+the document. Section 3 describes the \gls{tls} and \gls{dtls} protocol
 versions $1.2$ and $1.3$, with a focus on the version $1.2$ since
 it is the latest and the most used version of the protocol (version $1.3$ is still in
-draft mode). Section 3 describes all of the related work done in the area and
-the current state of the art. Finally, Section 4 provides an architecture of the
+draft mode). Section 4 describes all of the related work done in the area and
+the current state of the art. Finally, Section 5 provides an architecture of the
 solution that will be developed in the second part of the dissertation,
 an explanation of how the results will be evaluated, a general work plan
 and a conclusion of the work done in this part.
@@ -359,11 +358,22 @@ The terms \gls{ssl} and \gls{tls} are often used interchangeably, but one is
 a predecessor of another - \gls{ssl} $3.0$\cite{RFC6101} served as the basis
 for \gls{tls} $1.0$\cite{RFC6101}.
 
-This section will begin with a brief overview of the variuos sub-protocols that
-compose \gls{tls}, proceeding to the description \gls{tls} Record Layer, after which
-the \gls{tls} Hanshake Protocol will be covered, \todo{COMPLETE ME}.
+Section \ref{subprotocols} will begin with a brief overview of the various sub-protocols that compose \gls{tls}. The \gls{tls} Record Layer will
+be described in sufficient detail for the \gls{tls} Handshake Protocol
+description that follows in Section \ref{hsp}. The way each record is
+processed when sending and receiving data is covered in Section \ref{record}.
+The symmetric keys involved in cryptographic operations that provide
+confidentiality and security are described in Section \ref{keying}. Section
+\ref{keying-material} explains how those keys are generated in \gls{tls} 1.2.
+There are various methods that the client and the server can use to exchange
+keys, those will be covered in Section \ref{key-exchange}. The \gls{tls}
+Extension mechanism will be covered in Section \ref{extensions}. There
+are various differences from \gls{tls} $1.2$ to $1.3$ and those that were
+not covered in the previous sections will be in Section \ref{tls-13}.
+This section ends with an outline of the main differences from \gls{dtls} to \gls{tls} in Section \ref{dtls}.
 
-\subsection{\gls{tls} (Sub)Protocols}
+
+\subsection{\gls{tls} (Sub)Protocols} \label{subprotocols}
 
 \gls{tls} is composed of several protocols, which are illustrated in Figure
 \ref{fig:tls-subprotocols} and briefly described below:
@@ -598,7 +608,7 @@ from previous ones. The \gls{tls} $1.2$ spec, suggests and upper limit
 of $24$ hours for \codeword{session ID} lifetimes, since an attacker which obtains the master secret
 will be able to impersonate the compromised party until the corresponding \codeword{session ID} is retired.
 
-\subsection{\gls{tls} Record Processing}
+\subsection{\gls{tls} Record Processing} \label{record}
 
 A \gls{tls} record must go through some processing before it can be sent over the network.
 This processing is done by the \textbf {TLS Record Protocol} and involves the following steps (\codeword{4} for \gls{tls} $1.2$ and \codeword{3} for \gls{tls} $1.3$):
@@ -631,7 +641,7 @@ This processing is done by the \textbf {TLS Record Protocol} and involves the fo
 The process described above, as well as the structure names are depicted in Figure \ref{fig:tls-record-processing}.
 The compression step is not present in \gls{tls} 1.3. The structure names are exactly as the appear in the \gls{tls} specifications.
 
-\subsection{\gls{tls} Keying Material} \label{key-mat}
+\subsection{\gls{tls} Keying Material} \label{keying}
 
 In \gls{tls}, the confidentiality and integrity guarantees are achieved through the use
 of \gls{sc}. Consequently, the communicating peers need to \textbf{share}
@@ -659,7 +669,7 @@ encrypt the data that it sends to the server and another key, different from the
 that it receives from the server, and vice-versa. This implies that the  following relationships must hold:
 \codeword{client write key == server read key} and \codeword{server write key == client read key}.
 
-\subsection{TLS 1.2 Keying Material Generation}
+\subsection{TLS 1.2 Keying Material Generation} \label{keying-material}
 
 The generation of secret keys, used for various cryptographic operations involves the
 following steps, in order:
@@ -687,7 +697,7 @@ the hash function that is implicitly defined by the cipher suite in use. All of 
 suites defined in the \gls{tls} $1.2$ base spec use \codeword{SHA-256} and any new
 cipher suites must explicitly specify a the same hash function or a stronger one.
 
-\subsection{TLS 1.2 Key Exchange Methods}
+\subsection{TLS 1.2 Key Exchange Methods} \label{key-exchange}
 
 The way the peremaster secret is generated depends on the key exchange
 method used. This is the only phase of the keying material generation
@@ -764,7 +774,7 @@ differing in the algorithms that the certificate must be signed with, as well
 as the key exchange algorithms that they can be used with.
 Those features are negotiated through \gls{tls} extensions.
 
-\subsection{TLS Extensions}
+\subsection{TLS Extensions} \label{extensions}
 
 \gls{tls} extensions were originally defined in \codeword{RFC 4366}\cite{RFC4366}
 and later merged into the \gls{tls} $1.2$ base spec. Each extension consists of an
@@ -849,7 +859,7 @@ This new design allows easier analysis by cryptographers due to improved
 key separation properties.
 
 %
-\subsection{\gls{dtls}}
+\subsection{\gls{dtls}} \label{dtls}
 
 As already mentioned, \gls{dtls} is an adaption of \gls{tls} that runs on
 top of an unreliable transport protocol, such as UDP. The design of \gls{dtls} is deliberately very similar to \gls{tls}, in fact, its specification is written

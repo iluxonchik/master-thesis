@@ -354,7 +354,7 @@ cipher is used, both of which require a secret to be \textbf{shared} between the
 It is not required to use all of the tree security services every situation.
 In this sense, \gls{tls} is like a framework that allows to select which security services should be used for a communication session. As an example,
 certificate validation might be skipped, which means that the \textbf{authentication} guarantee is not provided. There are some differences regarding this claim between \gls{tls} $1.2$\cite{RFC5246}
-and \gls{tls} $1.3$. For example, while in the first you have a \codeword{null}
+and \gls{tls} $1.3$. For example, while in the first there is a \codeword{null}
 cipher (no authentication, no confidentiality, no integrity), in the latter
 this is not true, since it deprecated all non-\gls{aead} ciphers in favor of
 \gls{aead} ones.
@@ -654,7 +654,7 @@ a \textbf{set of keys}. In \gls{tls} they are derived independently by the
 client and the server, during the \gls{tls} Handshake Protocol.
 
 The keys appear with different names in \gls{tls} $1.2$ and $1.3$ specs, but
-they serve the same purpose. Additionally, you will find more keys in
+they serve the same purpose. Additionally, more more keys can be found in
 \gls{tls} $1.3$, for reasons that will be covered in Section \ref{tls-13}.
 In \gls{tls} 1.2, the peers agree on the following set of keys:
 
@@ -690,9 +690,9 @@ The \gls{tls} \gls{prf} is used to generate the keying material
 needed for a connection. It is defined as \codeword{PRF(secret, label, seed) = P_hash(secret, label + seed)}.
 The \codeword{P_hash(secret, seed)} function is an auxiliary data expansion function
 which uses a single cryptographic hash function to expand a \codeword{secret} and a \codeword{seed}
-into an arbitrary quantity of output. Therefore, you can use it to to generate
+into an arbitrary quantity of output. Therefore, it can be used to generate
 anywhere from $1$ to an infinite number of bits of output. \codeword{PRF(secret, label, seed)}
-is used to generate as many bits of output as you need. When generating the
+is used to generate as many bits of output as needed. When generating the
 master secret, the \codeword{secret} input is the \codeword{premaster secret}.
 When generating the key block, from which the final keys will be obtained,
 the \codeword{secret} input is the \codeword{master secret}.
@@ -766,8 +766,8 @@ DHE                          & X                                   & \multicolum
 
 In \gls{tls} $1.3$, static \gls{rsa} and \gls{dh} ciphersuites have been removed, meaning that all
 public key exchange mechanisms now provide \gls{pfs}. Even though
-anonymous \gls{dh} key exchange has been removed, you can still have
-unauthenticated connections by either using raw public keys\cite{RFC7250} or not verifying the certificate chain and any of its contents.
+anonymous \gls{dh} key exchange has been removed,
+unauthenticated connections are still possible, by either using raw public keys\cite{RFC7250} or not verifying the certificate chain and any of its contents.
 
 The \gls{ecc}-based key exchange (\gls{ecdh} and \gls{ecdhe}) and authentication (\gls{ecdsa})
 algorithms are defined in \codeword{RFC4292}\cite{RFC4292}. The document introduces five new
@@ -829,7 +829,7 @@ is by checking the presence of the \codeword{supported_versions} extension in th
 extended \codeword{ClientHello}.
 
 In \gls{tls} $1.3$ more data is encrypted and the encryption begins earlier. For example,
-at the server-side you have a notion of "encrypted extensions". The \codeword{EncryptedExtensions}
+at the server-side there is a notion of "encrypted extensions". The \codeword{EncryptedExtensions}
 message, as the name suggests, contains a list of extensions that are encrypted
 under a symmetric key. It contains any extensions that are not needed
 for the establishment of the cryptographic context.
@@ -841,7 +841,7 @@ and this is extremely important in the context of \gls{iot}.
 The full \gls{tls} $1.3$ handshake is only \codeword{1 RTT}. \gls{tls} $1.3$ even allows
 clients to send data on the first flight (known as \textbf{early client data}), when the clients
 and servers share a \gls{psk} (either obtained externally or via a previous handshake).
-This means that in \gls{tls} $1.3$ you can have \codeword{0-RTT} data, by
+This means that in \gls{tls} $1.3$ \codeword{0-RTT} data is possible, by
 encrypting it with a key derived from a \gls{psk}. Session resumption
 via identifiers and tickets has been obsoleted in \gls{tls} $1.3$, and both methods
 have been replaced by a \gls{psk} mode. This \gls{psk} is established in a previous
@@ -853,7 +853,7 @@ Keying material generation is more complex in \gls{tls} $1.3$ than in
 keys are used to encrypt data throughout the Handshake protocol. This can be
 explained by the fact that in \gls{tls} $1.3$ the encryption begins earlier.
 Other Handshake messages besides \codeword{Finished} are encrypted. As a result,
-you have multiple encryption keys generated that are used to encrypt different data
+multiple encryption keys are generated and used to encrypt different data
 throughout the handshake.
 
 The way the keying material is derived is also different. The
@@ -946,10 +946,10 @@ for processing of smaller messages.
 Even though though algorithms can be optimized in implementation: whether it is
 a software or a hardware, dedicated lightweight algorithms are still needed.
 This comes down mainly to two factors: there are limitations to the the extent of
-the optimizations that you can make and the hardware-accelerated encryption is
-frequently vulnerable to various \gls{sca}s (such as the attack done on the
+the optimizations that can be done and the hardware-accelerated encryption is
+frequently vulnerable to various \gls{sca}s. An example of such an attack is the one done on the
 Phillips light bulbs \cite{cryptoeprint:2016:1047}, where the authors were able to
-recover a secret key used to authenticate updates, via an \gls{sca}).
+recover a secret key used to authenticate updates.
 
 It is more difficult to implement a lightweight hash function than a lightweight
 block cipher, since standard hash functions need large amounts

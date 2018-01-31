@@ -780,11 +780,11 @@ which contains information specific to a particular extension.
 The extension mechanism can be used by \gls{tls} clients and servers; it is backwards
 compatible, which means that the communication is possible between a \gls{tls} client that supports a particular extension and a server that does not support it,
 and vice versa. A client may request the use of extensions by sending an extended \codeword{ClientHello}
-message, which is just a "normal" \codeword{ClientHello} with an additional
+message, which is just a normal \codeword{ClientHello} with an additional
 block of data that contains a list of extensions. The backwards compatibility is achieved based on the \gls{tls}
-requirement that the servers that are not "extensions-aware" must ignore the data
+requirement that the servers that are not extensions-aware must ignore the data
 added to the \codeword{ClientHello}s that they do not understand (section \codeword{7.4.1.2} of \codeword{RFC 2246}\cite{RFC2246}). Consequently,
-even servers running older \gls{tls} versions that do not support extensions, will not "break".
+even servers running older \gls{tls} versions that do not support extensions, will not break.
 
 The presence of extensions can be determined by checking if there are bytes
 following the \codeword{compression_methods} field in the \codeword{ClientHello}.
@@ -1056,16 +1056,17 @@ the Record header and the Handshake header and compressing the Record header onl
 which is useful after the handshake has completed and the fragment field of the
 Record layer contains application data, instead of a handshake message.
 
-
 \begin{figure}
   \centering
-  \includegraphics[width=0.9\textwidth]{img/6lowpan-header.png} % first figure itself
-  \caption{\label{fig:6lowpan-header} IPv6 Next Header Compression}
+  \includegraphics[width=0.9\textwidth]{img/6lowpan-header.png} % first figure
+  itself
+\caption{\label{fig:6lowpan-header} IPv6 Next Header Compression}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{img/6lowpan-ghc-rhs.png} % second figure itself
+  \includegraphics[width=0.6\textwidth]{img/6lowpan-ghc-rhs.png} % second figur
+  e itself
   \caption{\label{fig:6lowpan-ghc-rhs} LOWPAN\_NHC\_RHS structure}
 \end{figure}
 
@@ -1286,7 +1287,7 @@ Random numbers play an essential role in the overall security of the protocol.
 Many of the usual sources of entropy, such as the timing of keystrokes and the
 mouse movements, will not be available on many \gls{iot} devices, which means that
 either alternative ones need to be found or dedicated hardware must be added.
-\gls{iot} devices using (D)\gls{tls} must find ways to offer to the generation of quality
+\gls{iot} devices using (D)\gls{tls} must be able to find entropy sources adequate for the generation of quality
 random numbers, the guidelines and requirements for which can be found in \codeword{RFC4086}\cite{rfc4086}.
 
 Implementations compliant with the profile must use \gls{aead} ciphers, therefore
@@ -1341,11 +1342,11 @@ mechanism for \gls{iot} devices\cite{I-D.moran-suit-architecture} currently in I
 
 \section{Solution}
 
-\subsection{Solution Architecture}
+\subsection{Proposed Work}
 
 Most of the work has been centered around \gls{dtls},
 even though the majority of solutions can be applied to \gls{tls} as well.
-Herein we want to explore \gls{tls} optimization more. There is clearly a need for that, specially with \gls{coap} over
+Herein we want to further explore \gls{tls} optimization. There is clearly a need for that, specially with \gls{coap} over
 TCP and \gls{tls} standard being currently developed. The mentioned standard does not explore any \gls{tls}
 optimizations, and since any \gls{iot} device using it in the future would benefit from
 them, this is an important area to explore. None of the related work explored
@@ -1354,7 +1355,7 @@ them, this is an important area to explore. None of the related work explored
 The majority of the work done in the area proposes a solution that is either tied to a
 specific protocol, such as \gls{coap}, or requires an introduction of a third-party
 entity, such as the trust anchor in the case of the S3K system\cite{S3KScala62:online} or
-even both. This two main issues. First, a protocol-specific solution can not
+even both. This has two main issues. First, a protocol-specific solution cannot
 be easily used in an environment where (D)\gls{tls} is not used with that protocol. Second, the requirement of a third-party
 introduces additional cost and complexity, which will be a big resistance factor
 in adopting the technology. This is specially true for developers working on
@@ -1448,7 +1449,7 @@ From mid-April until June $2018$, the customized part will be implemented.
 This might involve custom cipher suites, key exchange methods and changes in
 the Handshake Protocol.
 
-From June until July $2018$, the work will be concentrated around \gls{psk}
+From June until July $2018$, the work will be focused around \gls{psk}
 solutions. This might involve adapting the existing \gls{psk} configurations
 or creating new ones.
 
@@ -1472,9 +1473,9 @@ that it is fundamental for this issue to be addressed.
 
 While there are well established security solutions, not all of them can be used
 with \gls{iot} devices, due their constrained nature. One such example is
-the (D)\gls{tls} protocol, that because of its heavyweight nature is not suitable for a large part of \gls{iot} devices. With future work,
+the (D)\gls{tls} protocol, that because of its heavyweight nature is not suitable for a large part of \gls{iot} devices. With the proposed work,
 we want to contribute to this area, by designing a solution that is suitable for the \gls{iot} devices, transparent
-to the programmer and has the provided security services adaptable to the specific context needs.
+to the programmer and provides security services adaptable to the specific context needs.
 
 % ---- Bibliography ----
 %

@@ -70,9 +70,7 @@
 \newacronym{rsa}{RSA}{Rivest-Shamir-Adleman}%
 \newacronym{dh}{DH}{Diffie-Hellman}%
 \newacronym{pms}{PMS}{premaster secret}%
-\newacronym{pubk}{PubK}{Public Key}%
-\newacronym{privk}{PrivK}{Private Key}%
-\newacronym{dsa}{DSA}{Private Key}%
+\newacronym{dsa}{DSA}{Digital Signature Algorithm}%
 \newacronym{pfs}{PFS}{Perfect Forward Secrecy}%
 \newacronym{mitm}{MITM}{Man In The Middle}%
 \newacronym{ac}{AC}{Asymmetrical Cryptography}%
@@ -139,11 +137,11 @@
 
 \begin{abstract}
 \gls{tls} is, by far, the most used communication security protocol, it is however, not suitable in the context of \gls{iot}. The resource-limited nature
-of a big part of \gls{iot} devices does not permit the use of computationally complex
+of a big part of \gls{iot} devices does not allow for the use of computationally complex
 and memory demanding operations present in a standard \gls{tls} implementation. Most of previous work focused entirely on \gls{dtls} and
-can not be easily integrated with existing deployments. This paper describes
-how the \gls{tls} extension mechanism can be used to define a framework
-that can adapt the protocol to specific needs. This is the approach that
+can not be easily integrated with existing deployments. This work focuses on
+how \gls{tls} and the extension mechanism can be used to define a framework
+to adapt the protocol to specific needs. This is the approach that
 will be followed in the second part of the work. Having an adaptable and
 easy to use solution is crucial for its adaptation in \gls{iot},
 where security might have been completely foregone otherwise.
@@ -154,8 +152,8 @@ where security might have been completely foregone otherwise.
 \section{Intoduction}
 %
 
-The \gls{iot} is a network of devices, from simple sensors to smartphones and wearables
-that are connected together. In fact, it can be any other object that has an assigned
+The Internet of Things (IoT) is a network of devices, from simple sensors to smartphones and wearables
+which are connected together. In fact, it can be any other object that has an assigned
 IP address and is provided with the ability to transfer data over a network. Even a salt shaker\cite{SMALTThe76:online} can now be part of the global network.
 
 The \gls{iot} technology provides many benefits, from personal comfort to
@@ -168,43 +166,44 @@ vulnerabilities are found.
 This lack of security in the \gls{iot} ecosystem has been exploited by the
 the \textit{Mirai} botnet\cite{sec17ant94:online} when it overwhelmed several high-profile
 targets with massive \gls{ddos} attacks. This is the most devastating attack involving \gls{iot}
-devices done to date, the \textit{Reaper} botnet\cite{ReaperCa10:online}, however, could be
-even more devastating if it is ever put to malicious use. Others will inadvertently
+devices done to date. However, the \textit{Reaper} botnet\cite{ReaperCa10:online} could be
+even worse if it is ever put to malicious use. Similar attacks will inadvertently
 come in the future.
 
-\gls{tls} is the most used security protocol in the world and it allows two peers
+\gls{tls} is one of the most used security protocols in the world, allowing two peers
 to communicate securely. It is designed to run on top of a reliable, connection-oriented
-protocol, such as TCP. \gls{dtls} is the version of \gls{tls} that runs on top
+protocol, such as TCP. Datagram TLS (DTLS) is the version of \gls{tls} that runs on top
 of an unreliable transport protocol, such as UDP. Most \gls{iot} devices have
 very limited processing power, storage and energy. Moreover, the performance of
 TCP is known to be inefficient in wireless networks, due to its congestion control
-algorithm and this situation is worsened with the low-power radios and lossy
-links found in sensor networks. Therefore, \gls{dtls}, which runs on top
+algorithm. This situation is worsened with the use of low-power radios and lossy
+links found in sensor networks. Therefore, the use of TCP with \gls{iot}
+is usually not the best option. For this reason, \gls{dtls}, which runs on top
 of UDP, is used more frequently in such devices. The work that will be done in the context of this dissertation, can however,
 be applied to either one of them, so even though mostly
-\gls{tls} will be mentioned, almost everything also applies to \gls{dtls}.  This is a consequence of \gls{dtls} being just an adaption of \gls{tls} over unreliable transport protocols, with no changes done
+\gls{tls} will be mentioned, almost everything can also be applied to \gls{dtls}. This is a consequence of \gls{dtls} being just an adaption of \gls{tls} over unreliable transport protocols, with no changes done to
 the core protocol.
 
 The problem in using (D)\gls{tls} in \gls{iot} is that it is not lightweight, since
-it was not designed for such environments. An \gls{iot} device may only have
+it has not been designed for such environments. An \gls{iot} device may only have
 $256$ KB of RAM and needs to conserve the battery, while sending and receiving
-a large amount of small information constantly. Let us consider the case of a temperature sensor
+a large amount of small information constantly. For example, consider the case of a temperature sensor
 that sends temperature measures every $30$ seconds to a server. In this case
 it just needs to send a few bytes of data and do it with minimal overhead, to conserve
 RAM and battery. If that sensor is going to use (D)\gls{tls} $1.2$, it will need
 two extra roundtrips before it can send any data. This can result in an overhead of several hundreds of
 milliseconds. Besides that, it will need to perform heavy mathematical operations
 involved in cryptography, using even more energy and taking even more time.
-There is a clear need for a more lightweight (D)\gls{tls} for the \gls{iot}.
+Given this, there is a clear need for a more lightweight (D)\gls{tls} for the \gls{iot}.
 
 The goal of this work is to develop a lightweight version of (D)\gls{tls} that is
 fully backwards compatible and does not require any third-party entities, in order
 to simplify its deployment process. The solution will be developed for
-(D)\gls{tls} versions $1.2$ and $1.3$. The idea is to make it customizable,
-depending on the security requirements of the context of it is used in.
+(D)\gls{tls} version $1.2$, while also bearing in mind the new $1.3$ version. The idea is to make it customizable,
+depending on the security requirements and the context of its usage.
 
-In the process of the work on this dissertation, we have made several
-contributions to the \gls{tls} $1.3$ specification and recognized as contributors\cite{Mergepul65:online}.
+In the process of the work on this dissertation, we have already made several
+contributions to the \gls{tls} $1.3$ specification, being recognized as contributors\cite{Mergepul65:online}.
 
 The document is organized as follows: Section 2 describes the background. It
 introduces some of the concepts that will be used throughout
@@ -214,25 +213,25 @@ it is the latest and the most used version of the protocol (version $1.3$ is sti
 draft mode). Section 4 describes all of the related work done in the area and
 the current state of the art. Section 5 provides an architecture of the
 solution that will be developed in the second part of the dissertation,
-an explanation of how the results will be evaluated and a general work plan. Finally, the conclusion of the work is done in Section 6.
+and describes how the results will be evaluated and presents a general work plan. Finally, the conclusion of the work is done in Section 6.
 
 \section{Background}
 
 \gls{tls} is a complex protocol that relies on various concepts to provide
-security. Some of them will be described here.
+security. The most relevant ones will be described here.
 
-\gls{tls} uses \gls{ac} for peer authentication and \gls{sc} for bulk data
-encryption, for this reason this topic will be covered in Section \ref{sac}. Section \ref{pccc} covers the most common way of peer authentication: \gls{pubk} certificates. \gls{aead} ciphers offer various advantages in the
+In a typical scenario, \gls{tls} uses \gls{ac} for peer authentication and \gls{sc} for bulk data
+encryption and integrity protection, for this reason this topic will be covered in Section \ref{sac}. Section \ref{pccc} covers the most common way of peer authentication: public key certificates. Authenticated Encryption With Additional Data (AEAD) ciphers offer various advantages in the
 context of \gls{iot}, particularly less computational and spacial overhead.
 Furthermore, they are the only type of ciphers that can be used in \gls{tls}
 $1.3$. For those reasons, they're covered in Section \ref{aeadciphers}.
-When compared to other \gls{pubk} cryptography approaches, \gls{ecc} offers shorter keys, lower central processing unit (CPU) consumption and lower memory usage for equivalent security strength. It is also heavily used
-in \gls{tls}. For those reasons, this section ends with an overview of \gls{ecc} in Section \ref{eccsection}.
+When compared to other public key cryptography approaches, \gls{ecc} offers shorter keys, lower processing requirements and lower memory usage for equivalent security strength, being heavily used
+in \gls{tls}. An overview of \gls{ecc} in presented in Section \ref{eccsection}.
 
 
 \subsection{Symmetric vs Asymmetric Cryptography} \label{sac}
 
-\gls{ac} is more expensive than \gls{sc} in terms of performance. This has two main reasons. First, larger key sizes are required for an \gls{ac} system to achieve the
+\gls{ac} is more expensive than \gls{sc} in terms of performance. There are two main reasons for this. First, larger key sizes are required for an \gls{ac} system to achieve the
 same level of security as in a \gls{sc} system. Second, \codeword{CPU}s are slower at performing the underlying
 mathematical operations involved in \gls{ac}, namely exponentiation requires
 $O(log e)$ multiplications for an exponent $e$. The 2016 \codeword{NIST} report \cite{Recommen44:online}
@@ -247,13 +246,13 @@ algorithms as much as possible, is that they require additional storage space. T
 like \codeword{class 1} devices according to the terminology of constrained-code
 networks\cite{RFC7228} which have approximately \codeword{10KB} of RAM and \codeword{100KB}
 of persistent memory. We measured and compared the resulting size of the \textit{mbedTLS 2.6.0} library\cite{SSLLibra13:online} binary when it was compiled with and without the \gls{rsa} module
-(located in the \codeword{rsa.c} file). The conclusion is that that using the \codeword{rsa.c} module adds an overhead of \codeword{32KB}.
+(located in the \codeword{rsa.c} file). The conclusion is that that using the \codeword{rsa.c} module adds an overhead of about \codeword{32KB}.
 
 \subsection{Public Certificates and Certificate Chains} \label{pccc}
 
 A public key certificate, also known as a digital certificate, is an electronic
-document used to prove the ownership of a \gls{pubk}. This allows other parties
-to rely upon assertions made by the \gls{privk} that corresponds to the \gls{pubk}
+document used to prove the ownership of a public key. This allows other parties
+to rely upon assertions made by the private key that corresponds to the public key
 that is certified. In the context of (D)\gls{tls}, certificates serve as a guarantee
 that the communication is done with the claimed entity and not someone impersonating it.
 
@@ -263,10 +262,10 @@ An intermediate \gls{ca} is provided with a certificate with signing capabilitie
 signed by one of the root \gls{ca}s. A \textbf{certificate chain} is a list of
 certificates from the root certificate to the end-user certificate, including
 any intermediate certificates along the way. In order for a certificate
-to be trusted by a device, it must be issued by a \gls{ca} that is included in that device's trusted store.
+to be trusted by a device, it must be directly or indirectly issued by a \gls{ca} trusted by the device.
 
-In (D)\gls{tls}, the certificates are in the \codeword{X.509} format, which is
-described in \codeword{RFC 5280}\cite{rfc5280}.
+In (D)\gls{tls}, the certificates are in the \codeword{X.509} format, defined
+in \codeword{RFC 5280}\cite{rfc5280}.
 
 \subsection{\gls{aead} Ciphers} \label{aeadciphers}
 
@@ -277,13 +276,13 @@ and outputs the pair \codeword{(ciphertext, MAC)}, if it is encrypting and does 
 process, while also performing the \gls{mac} check if it is decrypting.
 
 \gls{aead} is nothing more than a variant of \gls{ae}, which comes with an extra
-input parameter that is additional data that is \textbf{only authenticated, but not encrypted}.
+input parameter that is additional data, that is \textbf{only authenticated, but not encrypted}.
 Some \gls{aead} ciphers have shorter authentication tags (\textit{i.e.} shorter \gls{mac}s),
 which makes then more suitable for low-bandwidth networks, since the messages to be sent are smaller in size.
 
 \subsection{\gls{ecc}} \label{eccsection}
 
-\gls{pubk} cryptography is based on the use of one-way math functions. Such
+public key cryptography is based on the use of one-way math functions. Such
 functions make it easy to compute the answer given an input,
 but hard to compute the input given the answer. For example, RSA uses factoring
 as the one one way function: it is easy to multiply large numbers, but it is hard
@@ -315,7 +314,7 @@ and use of secure communications from the application developer's standpoint.
 The developer's task is reduced to creating a "secure" connection (\textit{i.e.} socket), instead of a "normal" one.
 
 A secure communication established using \gls{tls} has two phases. In the first
-phase, the communicating peers authenticate one to another and negotiate parameters, such as the the secret keys and the encryption algorithm. In the
+phase, the communicating peers authenticate one to another and negotiate the parameters, such as the secret keys and the encryption algorithm. In the
 second phase, they exchange cryptographically protected data under
 the previously negotiated parameters. The first phase is done under the
 Handshke Protocol and the second under the Record Protocol. In order to
@@ -338,6 +337,9 @@ used for data encryption (\textit{e.g.}, \codeword{AES}).
 that the \codeword{index.html} file that was sent to when it connected to \codeword{www.google.com} did, in fact,
 come from \codeword{www.google.com} and it was not tampered with by an attacker (\textbf{data integrity}). This is achieved either through the use
 of a keyed \gls{mac} or an \gls{aead} cipher.
+\item \textbf{replay protection} (also known as \textbf{freshness}) -
+a peer can be sure that a message has not been replayed. This is
+achieved through the use of sequence numbers. Each \gls{tls} record has a different sequence number, which is incremented. If a non-\gls{aead} cipher is used, the sequence number is a direct input of the \gls{mac} function. If an \gls{aead} cipher is used, a nonce derived from the sequence number is used as input to that cipher.
 \end{itemize}
 
 Despite using \gls{pkc}, \gls{tls} does \textbf{not} provide \textbf{non-repudiation services}:
@@ -411,26 +413,24 @@ This section ends with an outline of the main differences from \gls{dtls} to \gl
    extensions.
   \item \textbf{\gls{tls} Alert Protocol} - allows the communicating peers to
   signal potential problems.
-  \item \textbf{\gls{tls} Application Data Protocol} - used to transmit data securely.
+  \item \textbf{\gls{tls} Application Data Protocol} - used to transmit application data messages securely using the security parameters negotiated during the \textbf{Handshake Protocol}. The messages are treated as transparent data to the record layer.
   \item \textbf{\gls{tls} Change Cipher Spec Protocol} (removed in \gls{tls} 1.3) -
   used to activate the initial \textbf{cipher spec} or change it during the connection.
 \end{itemize}
 
 % src: https://tex.stackexchange.com/questions/5769/two-figures-side-by-side
+
 \begin{figure}
-    \centering
-    \begin{minipage}{0.5\textwidth}
-        \centering
-        \includegraphics[width=1.0\textwidth]{img/record-header-3.png} % first figure itself
-        \caption{\label{fig:tls-record-header} TLS Record header}
-    \end{minipage}\hfill
-    \begin{minipage}{0.47\textwidth}
-        \centering
-        \includegraphics[width=1.0\textwidth]{img/tls-sub-protocols-3.png} % second figure itself
-        \caption{\label{fig:tls-subprotocols} TLS (Sub)protocols and Layers}
-    \end{minipage}
+  \centering
+  \includegraphics[width=0.6\textwidth]{img/record-header-3.png} % first figure itself
+  \caption{\label{fig:tls-record-header} TLS Record header}
 \end{figure}
 
+\begin{figure}
+\centering
+\includegraphics[width=0.6\textwidth]{img/tls-sub-protocols-3.png} % second figure itself
+\caption{\label{fig:tls-subprotocols} TLS (Sub)protocols and Layers}
+\end{figure}
 
 \subsection{TLS 1.2 Handshake Protocol} \label{hsp}
 
@@ -459,18 +459,17 @@ There is a difference between a \gls{tls} session and a \gls{tls} connection:
 \end{itemize}
 
 \begin{figure}
-    \centering
-    \begin{minipage}{0.6\textwidth}
         \centering
-        \includegraphics[width=1.0\textwidth]{img/tls-12-full-handshake2.png} % first figure itself
+        \includegraphics[width=0.9\textwidth]{img/tls-12-full-handshake2.png} % first figure itself
         \caption{\label{fig:tls-12-handshake} \gls{tls} $1.2$ message flow for a full handshake}
-    \end{minipage}\hfill
-    \begin{minipage}{0.4\textwidth}
-        \centering
-        \includegraphics[width=1.0\textwidth]{img/dtls-cookie.png} % second figure itself
-        \caption{\label{fig:dtls-cookie} DTLS handshake with HelloVerifyRequest containing the cookie}
-    \end{minipage}
 \end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{img/dtls-cookie.png} % second figure itself
+  \caption{\label{fig:dtls-cookie} DTLS handshake with HelloVerifyRequest containing the cookie}
+\end{figure}
+
 
 In the handshake phase the client and the server agree on which version of the \gls{tls}
 protocol to use, authenticate one to another and negotiate session state items like
@@ -490,22 +489,20 @@ and a \codeword{body} field, which contains a structure depending on the
 
 A typical handshake message flow will be described next, with only the most important fields of each message mentioned.
 
-The connection begins with the client sending a \codeword{ClientHello}, containing \codeword{random}, \codeword{cipher_suites} and \codeword{compressison_methods},
+The \gls{tls} handshake starts with the client sending a \codeword{ClientHello}, containing \codeword{random}, \codeword{cipher_suites} and \codeword{compressison_methods},
 among other fields.
 \\\codeword{cipher_suites} contains a \textbf{list} of cipher suites and \codeword{compression_methods}
 contains a \textbf{list} of compression methods that the
 client supports, \textbf{ordered by preference}, with the most preferred one appearing first.
-The \gls{tls} record contains a \codeword{2-byte} \codeword{version} field which
+The \gls{tls} record contains a $2$-byte \codeword{version} field which
 indicates the highest version supported by the client.
 
 The server responds to the \codeword{ClientHello} with a \codeword{ServeHello}.
-This message has similar contents, except that instead of containing
-a list of supported features, it contains a \textbf{single item} containing the one that it chose. The server responds with a single \codeword{cipher_suite} and
-\codeword{compression_method} that it chose from the
-corresponding list sent by the client. Just like in the client's case, a \codeword{random}
+This message is similar, but contains the chosen \codeword{cipher_suite}
+and \codeword{compression_method} from the list sent by the client. Just like in the client's case, a \codeword{random}
 is present. The \codeword{version} field in the \gls{tls} record indicates
-the \gls{tls} version chosen by the server and it is the one that is goint to be
-used for that connection.
+the \gls{tls} version chosen by the server, which will be the one used for
+that connection.
 
 \gls{tls} requires cryptographically secure pseudorandom numbers to be generated
 by both of the parties independently. Those random numbers (or \textit{nonces}) are essential for freshness
@@ -515,25 +512,24 @@ that a new keying material will be obtained with every new session. If the outpu
 can be predicted by the attacker, he can predict the keying material, as described
 in "A Systematic Analysis of the Juniper Dual EC Incident"\cite{DualECJu15:online}.
 The \codeword{32-byte} random value is composed by concatenating the \codeword{4-byte}
-GMT UNIX time with \codeword{28} cryptographically random bytes. Note that in \gls{tls} $1.3$
+GMT UNIX time with \codeword{28} cryptographically random bytes. Note that, in \gls{tls} $1.3$,
 the random number structure has the same length, but is generated in a different manner:
 the client's \codeword{32 bytes} are all random, while the server's last \codeword{8 bytes}
 are fixed when negotiating \gls{tls} $1.2$ or $1.3$.
 
 Next, the server sends a \codeword{Certificate} message, which contains a list
-of \gls{pubk} certificates: the server's certificate,
+of public key certificates: the server's certificate,
 every intermediate certificate and the root certificate, \textit{i.e}, a certificate chain. The certificate's contents
 will depend on the negotiated cipher suite and extensions.
 The same message type occurs later in the handshake, if the server requests the client's certificate with the
 \codeword{CertificateRequest} message. In a typical scenario, the
-server will seldom request client authentication.
+server will not request client authentication.
 
 The \codeword{ServerKeyExchange} message follows, containing additional information
 needed by the client to compute the premaster secret. This message
 is only sent in some key exchange methods, namely \codeword{DHE_DSS}, \codeword{DHE_RSA}
 and \codeword{DH_anon}. For non-anonymous key exchanges, this is the message that authenticates the server to the client,
-since the server sends a digital signature over the client and server randoms
-and the server's key exchange parameters. Note that this is not the only place where the
+since the server sends a digital signature over the client and server randoms, as well as the server's key exchange parameters. Note that this is not the only place where the
 server can authenticate itself to the client. For example, if \codeword{RSA} key
 exchange is used, the server authentication is done indirectly when the client
 sends the premaster secret encrypted with the public \gls{rsa} key provided in the
@@ -544,7 +540,7 @@ functionality is taken by the \codeword{key_exchange} extension.
 
 The \codeword{ServerHelloDone} is sent to indicate the end of \codeword{ServerHello}
 and associated messages. Upon the receipt of this message, the client should check
-that the server provided a valid certificate. This message is not present in \gls{tls} 1.3.
+if the server provided a valid certificate. This message is not present in \gls{tls} 1.3.
 
 With the \codeword{ClientKeyExchange} message the premaster secret is
 set. This is done either by direct transmission of the secret generated by the client
@@ -568,7 +564,7 @@ The \codeword{Finished} message is an essential part of the protocol. It is the 
 message protected with the newly negotiated algorithms, keys and secrets. Only after
 both parties have sent and verified the contents of this message they can
 be sure that the Handshake has not been tampered with by a \gls{mitm} and begin to
-receive and send application data. Essentially, this message contains keyed hash
+receive and send application data. Essentially, this message contains a keyed hash
 with the master secret over the hash of all the data from all of the
 handshake messages not including any \codeword{HelloRequest} messages and up to, but
 not including, this message. The other party must perform the same computation on its
@@ -586,15 +582,15 @@ to signal any problems or even abort the process through the use of an appropria
 
 Besides the full handshake, \gls{tls} $1.2$ also defines an
 abbreviated handshake mechanism, which can be used to either resume a previous session,
-or duplicate one, instead of negotiating security parameters again. This
+or duplicate one, instead of negotiating new security parameters. This
 requires state to be maintained by both peers. The advantage of this mechanism is that the handshake is reduced
 to \codeword{1 RTT}, instead of the usual \codeword{2 RTT}, as it is the case in the full handshake.
 
 In order to perform an abbreviated handshake,
 the client and the server must have established a session previously, by the
-means of a full handshake. In its \codeword{ServerHello}, the server generates and sends a \codeword{session_id}, which will be associated with the newly negotiated session.
+means of a full handshake. In its \codeword{ServerHello} phase, the server generates and sends a \codeword{session_id}, which will be associated with the newly negotiated session.
 
-To resume a session, in its \codeword{ClientHello} the client includes a \codeword{session_id} of the session it wants to
+To resume a session, in its \codeword{ClientHello} phase the client includes the \codeword{session_id} of the session it wants to
 resume. It is up to the server to decide if it
 will resume that session. In the positive case, the server responds with a \codeword{ServerHello} containing
 the same \codeword{session_id} value as the one sent by the client. In the negative
@@ -607,12 +603,12 @@ and server random values with the master secret. Therefore, provided that the ma
 hash operations are, in fact, secure, the new connection will be secure and independent
 from previous ones. The \gls{tls} $1.2$ spec, suggests and upper limit
 of $24$ hours for \codeword{session ID} lifetimes, since an attacker which obtains the master secret
-will be able to impersonate the compromised party until the corresponding \codeword{session ID} is retired.
+may be able to impersonate the compromised party until the corresponding \codeword{session ID} is retired.
 
 \subsection{\gls{tls} Record Processing} \label{record}
 
 A \gls{tls} record must go through some processing before it can be sent over the network.
-This processing is done by the \textbf {TLS Record Protocol} and involves the following steps (\codeword{4} for \gls{tls} $1.2$ and \codeword{3} for \gls{tls} $1.3$):
+This processing is done by the \textbf {TLS Record Protocol} and involves the following steps (\codeword{1-4} for \gls{tls} $1.2$ and \codeword{1, 3-4} for \gls{tls} $1.3$):
 
 \begin{enumerate}
   \item \textbf{Fragmentation} - the \textbf{TLS Record Layer} takes arbitrary-length data and \textbf{fragments}
@@ -626,7 +622,7 @@ This processing is done by the \textbf {TLS Record Protocol} and involves the fo
   method is \codeword{null}, \codeword{TLSCompressed} is identical to \codeword{TLSPlaintext}.
   \item \textbf{Cryptographic Protection} - in \gls{tls} 1.2, either an
   \gls{aead} cipher or a separate encryption and \gls{mac} functions transform a
-  \codeword{TLSCompressed} fragment into a \codeword{TLSCipherText} fragment. In case
+  \codeword{TLSCompressed} fragment into a \codeword{TLSCipherText} fragment. In the case
   of \gls{tls} 1.3, the \codeword{TLSPlaintext} fragment is transformed into a \codeword{TLSCipherText} by applying an \gls{aead} cipher, since all
   non-\gls{aead} ciphers have been removed.
   \item Append the \codeword{TLS Record Header} - encapsulate \codeword{TLSCipherText}
@@ -634,9 +630,9 @@ This processing is done by the \textbf {TLS Record Protocol} and involves the fo
 \end{enumerate}
 
 \begin{figure}
-  \caption{\label{fig:tls-record-processing}TLS 1.2 Record Processing}
   \centering
   \includegraphics[width=1.0\textwidth]{img/tls-record-processing-3.png}
+  \caption{\label{fig:tls-record-processing}TLS 1.2 Record Processing}
 \end{figure}
 
 The process described above, as well as the structure names are depicted in Figure \ref{fig:tls-record-processing}.
@@ -682,8 +678,8 @@ following steps, in order:
   will be used in the cryptographic operations.
 \end{enumerate}
 
-The \gls{tls} \gls{prf} is used to generate the keying material
-needed for a connection. It is defined as \codeword{PRF(secret, label, seed) = P_hash(secret, label + seed)}.
+The derivation of the keying material needed for a connection is done using
+the \gls{tls} \gls{prf}. It is defined as \codeword{PRF(secret, label, seed) = P_hash(secret, label + seed)}.
 The \codeword{P_hash(secret, seed)} function is an auxiliary data expansion function
 which uses a single cryptographic hash function to expand a \codeword{secret} and a \codeword{seed}
 into an arbitrary quantity of output. Therefore, it can be used to generate
@@ -704,8 +700,7 @@ The way the peremaster secret is generated depends on the key exchange
 method used. This is the only phase of the keying material generation
 phase that is variable for a fixed cipher suite, since a cipher suite defines
 the \gls{prf} function that will be employed. Neither the derivation of the
-master and premaster secrets, nor the derivation of the shared keys described
-in Section \ref{key-mat} is impacted by the key exchange method.
+shared keys are impacted by the key exchange method.
 
 There are many key exchange methods to choose from. Some of them
 are defined in the base spec (\codeword{RFC5246}\cite{RFC5246}), while others
@@ -717,12 +712,14 @@ three using \gls{dh}:
 
 \begin{itemize}
   \item static \gls{rsa} (\codeword{RSA}; removed in \gls{tls} 1.3) - the client generates the premaster secret, encrypts it with the
-  server's \gls{pubk} (which it obtained from the server's \codeword{X.509} certificate) and
-  sends it to the server. The server then decrypts it using the corresponding \gls{privk} and uses it as its premaster secret. \gls{pfs} is
+  server's public key (which it obtained from the server's \codeword{X.509} certificate) and
+  sends it to the server. The server then decrypts it using the corresponding private key and uses it as its premaster secret. \gls{pfs} is
   a property that preserves the confidentiality of past interactions even if the
   long-term secret is compromised. This key exchange method offers authenticity, but does not offer \gls{pfs}.
-  \item anonymous \gls{dh} (\codeword{DH_annon}; removed in \gls{tls} 1.3) - a \gls{dh} key exchange is
-  performed and an \textbf{ephemeral} key is generated. Since the exchanged \gls{dh}
+  \item anonymous \gls{dh} (\codeword{DH_annon}; removed in \gls{tls} 1.3) -
+  each run of the protocol, uses
+  different pubic \gls{dh} parameters, which are generated dynamically. This results
+  in a different, \textbf{ephemeral} key being generated every time. Since the exchanged \gls{dh}
   parameters are \textbf{not authenticated}, the resulting key exchange
   vulnerable to \gls{mitm} attacks. \gls{tls} $1.2$ spec states that cipher suites
   using \codeword{DH_annon} \textbf{must not} be used, unless the application
@@ -731,16 +728,14 @@ three using \gls{dh}:
   \item fixed/static \gls{dh} (\codeword{DH}; removed in \gls{tls} 1.3) - the server's/client's public \gls{dh} parameter
   is embedded in its certificate. This key exchange method offers authenticity,
   but does not offer \gls{pfs}.
-  \item ephemeral \gls{dh} (\codeword{DHE}) - each run of the protocol, uses
-  different pubic \gls{dh} parameters, which are generated dynamically. This results
-  in a different, ephemeral key being generated every time. The public parameters
-  are then digitally signed in some way, usually using the sender's private
+  \item ephemeral \gls{dh} (\codeword{DHE}) - the \gls{dh} protocol is used, identically to \codeword{DH_annon}, but the public parameters
+  are digitally signed in some way, usually using the sender's private
   \gls{rsa} (\codeword{DHE_RSA}) or \gls{dsa} (\codeword{DHE_DSS}) key. This key
   exchange offers both, authenticity and \gls{pfs}.
 \end{itemize}
 
 When either of the \gls{dh} variants is used, the value obtained from the exchange is used
-as the premaster secret (without the leading \codeword{0}'s). Usually, only the server's
+as the premaster secret. Usually, only the server's
 authenticity is desired, but client's can also be achieved if it supplies the
 server with its certificate. Whenever the server is authenticated, it is secure
 against \gls{mitm} attacks. Table \ref{kemsp} summarizes the security properties
@@ -765,8 +760,8 @@ public key exchange mechanisms now provide \gls{pfs}. Even though
 anonymous \gls{dh} key exchange has been removed,
 unauthenticated connections are still possible, by either using raw public keys\cite{RFC7250} or not verifying the certificate chain and any of its contents.
 
-The \gls{ecc}-based key exchange (\gls{ecdh} and \gls{ecdhe}) and authentication (\gls{ecdsa})
-algorithms are defined in \codeword{RFC4292}\cite{RFC4292}. The document introduces five new
+The use of \gls{ecc}-based key exchange (\gls{ecdh} and \gls{ecdhe}) and authentication (\gls{ecdsa})
+algorithms with \gls{tls} is described in \codeword{RFC4492}\cite{RFC4492}. The document introduces five new
 \gls{ecc}-based key exchange algorithms, all of which use \gls{ecc} to compute
 the premaster secret, differing only in whether the negotiated
 keys are ephemeral (\gls{ecdh}) or long-term (\gls{ecdhe}), as well as the mechanism (if any) used to
@@ -782,7 +777,7 @@ and later merged into the \gls{tls} $1.2$ base spec. Each extension consists of 
 extension type, which identifies the particular extension type, and extension data,
 which contains information specific to a particular extension.
 
-The extension mechanism may be used by \gls{tls} clients and servers; it is backwards
+The extension mechanism can be used by \gls{tls} clients and servers; it is backwards
 compatible, which means that the communication is possible between a \gls{tls} client that supports a particular extension and a server that does not support it,
 and vice versa. A client may request the use of extensions by sending an extended \codeword{ClientHello}
 message, which is just a "normal" \codeword{ClientHello} with an additional
@@ -800,7 +795,7 @@ instead of a regular one. An extended \codeword{ServerHello} is a regular
 
 An extended \codeword{ServerHello} message can only be sent in a response to an
 extended \codeword{ClientHello} message. This prevents the possibility that an extended
-\codeword{ServerHello} message could "break" older \gls{tls} clients that do not
+\codeword{ServerHello} message could cause a malfunction of older \gls{tls} clients that do not
 support extensions. An extension type must not appear in the
 extended \codeword{ServerHello}, unless the same extension type appeared in the
 corresponding extended \codeword{CleintHello}, and if this happens, the client must abort the handshake.
@@ -832,7 +827,7 @@ for the establishment of the cryptographic context.
 
 One of the main problems with using \gls{tls} in \gls{iot} is that while \gls{iot}
 traffic needs to be quick and lightweight, \gls{tls} $1.2$ adds two additional
-round trips (\codeword{2 RTT}) to the start of every session. \gls{tls} $1.3$ handshake has less latency,
+round trips (\codeword{2 RTT}) to the start of every session. \gls{tls} $1.3$ handshake has a lower latency,
 and this is extremely important in the context of \gls{iot}.
 The full \gls{tls} $1.3$ handshake is only \codeword{1 RTT}. \gls{tls} $1.3$ even allows
 clients to send data on the first flight (known as \textbf{early client data}), when the clients
@@ -866,7 +861,7 @@ As already mentioned, \gls{dtls} is an adaption of \gls{tls} that runs on
 top of an unreliable transport protocol, such as UDP. The design of \gls{dtls} is deliberately very similar to \gls{tls}, in fact, its specification is written
 in terms of differences from \gls{tls}. This similarity allows to
 both, minimize new security invention, and maximize the amount of code and infrastructure reuse. The changes are mostly done at the lower level and
-don't affect the core of the protocol.
+don not affect the core of the protocol.
 Even extensions defined before \gls{dtls} existed can be
 used with it. The latest version of \gls{dtls} is $1.2$ and it is defined
 in \codeword{RFC 6347}\cite{RFC6347}. There is a draft of \gls{dtls} $1.3$
@@ -893,24 +888,24 @@ that are made by \gls{tls}. The main differences from \gls{dtls} $1.2$ to \gls{t
   client must be prepared to respond to it. \gls{dtls} $1.3$ follows the same idea, but does it differently, namely,
   the \codeword{HelloVerifyRequest} message has been removed, and the cookie is conveyed to the client via an extension in a \codeword{HelloRetryRequest} message.
 
-  \item the handshake message format has been extended to deal wit message reordering,
+  \item the handshake message format has been extended to deal with message reordering,
   fragmentation and loss by addition of three new fields: a message sequence field,
   a fragment offset field and a fragment length field.
 \end{itemize}
 
 \section{Related Work}
 
-Lightweight cryptography an important topic in the context of \gls{iot} security, due to the resource-limited nature of the devices. This section will begin with the description of the work done in this area.
+Lightweight cryptography is an important topic in the context of \gls{iot} security, due to the resource-limited nature of the devices. This section will begin with the description of the work done in this area.
 
 Biryukov \textit{et al}\cite{Stateoft96:online} explore the topic of lightweight symmetric cryptography,
 providing a summary of the lightweight symmetric
 primitives from the academic community, the government agencies and even proprietary
 algorithms which have been either reverse-engineered or leaked. All of those algorithms
 are listed in the paper, alongside relevant metrics. The list will not be
-included here due to lack of space. The authors also proposed
+included herein due to the lack of space. The authors also proposed
 to split the field into two areas: ultra-lightweight and \gls{iot} cryptography.
 
-The paper systematizes the knowledge in the area of lightweight cryptography
+The paper systematizes the knowledge in the area oe lightweight cryptography
 in order to define "lightweightness" more precisely. The authors observed that the design
 of lightweight cryptography algorithms varies greatly, the only unifying thread
 between them being the low computing power of the devices that they are designed for.
@@ -994,7 +989,7 @@ table \ref{ul-iot}.
 \end{tabular}
 \end{table}
 
-While there is a high demand for lightweight \gls{pubk} primitives, the required
+While there is a high demand for lightweight public key primitives, the required
 resources for them are much higher than for symmetric ones. As a
 paper by Katagi \textit{et al}\cite{b5b8db9716:online}
 concluded, there are no promising primitives
@@ -1025,7 +1020,7 @@ handshake. Upon its receipt, the server will derive the \codeword{Kc}, using the
 The second approach consists in requesting an \gls{apk}
 from the \codeword{TA}. The client includes his \gls{rpk} in its request, which is used for authorization. The TA
 creates an authorization certificate, protects it with a \gls{mac} and sends it
-to the client alongside the server's \gls{pubk}.
+to the client alongside the server's public key.
 The client then sends this \gls{apk} (instead of the \gls{rpk})
 when connecting to the server, which verifies it (to authorize the client)
 and proceeds with the handshake in the \gls{rpk} mode, as defined in \codeword{RFC 4279} \cite{RFC4279}.
@@ -1033,7 +1028,7 @@ To achieve this, a new certificate structure is defined, alongside a new \codewo
 The new certificate structure is just the \codeword{RFC7250} \cite{RFC7250} structure, with an
 additional \gls{mac}.
 
-The has function used for key derivation is SHA256. The authors evaluated the
+The hash function used for key derivation is SHA256. The authors evaluated the
 performance of their solution with and without SHA2 hardware acceleration and
 concluded that while it had significant impact on key derivation, it had little
 impact on the total handshake time (\codeword{711.11 ms} instead of \codeword{775.05 ms}), since most of the time was spent in sending
@@ -1061,18 +1056,17 @@ the Record header and the Handshake header and compressing the Record header onl
 which is useful after the handshake has completed and the fragment field of the
 Record layer contains application data, instead of a handshake message.
 
+
 \begin{figure}
-    \centering
-    \begin{minipage}{0.5\textwidth}
-        \centering
-        \includegraphics[width=1.0\textwidth]{img/6lowpan-header.png} % first figure itself
-        \caption{\label{fig:6lowpan-header} IPv6 Next Header Compression}
-    \end{minipage}\hfill
-    \begin{minipage}{0.5\textwidth}
-        \centering
-        \includegraphics[width=1.0\textwidth]{img/6lowpan-ghc-rhs.png} % second figure itself
-        \caption{\label{fig:6lowpan-ghc-rhs} LOWPAN\_NHC\_RHS structure}
-    \end{minipage}
+  \centering
+  \includegraphics[width=0.9\textwidth]{img/6lowpan-header.png} % first figure itself
+  \caption{\label{fig:6lowpan-header} IPv6 Next Header Compression}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{img/6lowpan-ghc-rhs.png} % second figure itself
+  \caption{\label{fig:6lowpan-ghc-rhs} LOWPAN\_NHC\_RHS structure}
 \end{figure}
 
 
@@ -1234,11 +1228,11 @@ For the credential types the profile considers 3 cases:
   one for the client indicate which certificate types it can provide to the server, and one to indicate which certificate types it can process from the server. To further reduce the size of the implementation, the profile
   recommends the use of the \gls{tls} Cached Information extension\cite{RFC7924}, which
   enables \gls{tls} peers to exchange just the fingerprint (a shorter sequence of bytes
-  used to identify a \gls{pubk}) of the \gls{pubk}. Identical to \gls{coap}, the only mandatory-to-implement
+  used to identify a public key) of the public key. Identical to \gls{coap}, the only mandatory-to-implement
   cipher suite to be used with \gls{rpk}s is \codeword{TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8}.
 
   \item certificate - conventional certificates can also be used. The support
-  for the Cached Information extension\cite{RFC7924} and the \codeword{TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8}
+  for the Cached Information extension\cite{RFC7924} and the\\ \codeword{TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8}
   cipher suite is required. The profile restricts the use of named curves to
   the ones defined in \codeword{RFC 4492}\cite{RFC4492}. For certificate revocation, neither the
   \gls{ocsp}\cite{RFC6960}, nor the \gls{crl}\cite{RFCabc} mechanisms are used, instead this task is delegated to
@@ -1342,8 +1336,8 @@ is important to change configuration information, such as trust anchors and
 other secret-key related information. Although the profile refers to \codeword{LM2M}\cite{OpenMobi29:online}
 as an example of protocol that comes with a suitable software update mechanism,
 there has been new work done in this area since the release of this profile.
-There is a document specifying an architecture for a frimware update
-mechanism for \gls{iot} devices\cite{I-D.moran-suit-architecture} currently in "Internet-Draft" state.
+There is a document specifying an architecture for a firmware update
+mechanism for \gls{iot} devices\cite{I-D.moran-suit-architecture} currently in Internet-Draft state.
 
 \section{Solution}
 
@@ -1386,7 +1380,7 @@ of \gls{iot}. This means that there is value in exploring solutions that revolve
 \gls{psk}s and that avoid public key cryptography completely.
 
 Not all \gls{iot} devices are limited to the point of not being able to use
-public key cryptography altogether. For some of them, the use of \gls{rpk}s, which is considered the first entry point into the area of \gls{pubk}
+public key cryptography altogether. For some of them, the use of \gls{rpk}s, which is considered the first entry point into the area of public key
 cryptography, is acceptable, while others are powerful enough to take
 advantage of certificates and \gls{pki}, at least up to a point.
 The solution proposed with this work

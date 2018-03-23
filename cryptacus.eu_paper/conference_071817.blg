@@ -1,0 +1,54 @@
+This is BibTeX, Version 0.99d (TeX Live 2017/Arch Linux)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: conference_071817.aux
+The style file: unsrt.bst
+Database file #1: tls_for_iot.bib
+Database file #2: papers.bib
+I was expecting a `,' or a `}'---line 5 of file papers.bib
+ :   
+ :   url={https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Publikationen/TechnischeRichtlinien/TR02102/BSI-TR-02102.pdf?__blob=publicationFile}
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--empty journal in sec17ant94:online
+You've used 9 entries,
+            1791 wiz_defined-function locations,
+            506 strings with 5330 characters,
+and the built_in function-call counts, 1467 in all, are:
+= -- 120
+> -- 76
+< -- 3
++ -- 30
+- -- 21
+* -- 77
+:= -- 245
+add.period$ -- 29
+call.type$ -- 9
+change.case$ -- 9
+chr.to.int$ -- 0
+cite$ -- 10
+duplicate$ -- 58
+empty$ -- 149
+format.name$ -- 21
+if$ -- 321
+int.to.chr$ -- 0
+int.to.str$ -- 9
+missing$ -- 2
+newline$ -- 50
+num.names$ -- 6
+pop$ -- 40
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 23
+stack$ -- 0
+substring$ -- 31
+swap$ -- 8
+text.length$ -- 3
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 1
+while$ -- 8
+width$ -- 10
+write$ -- 97
+(There was 1 error message)

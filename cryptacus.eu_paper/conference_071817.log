@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2018.3.23)  23 MAR 2018 15:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2018.3.23)  23 MAR 2018 20:41
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -483,24 +483,24 @@ ine 12.
 (./conference_071817.aux)
 \openout1 = `conference_071817.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 19.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 19.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 59.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 59.
  (/usr/share/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    ... okay on input line 59.
 
 -- Lines per column: 56 (exact).
 (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -572,72 +572,165 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    Calculating math sizes for size <11> on input line 39.
-LaTeX Font Info:    Try loading font information for U+msa on input line 39.
+LaTeX Font Info:    Try loading font information for U+msa on input line 122.
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 39.
+LaTeX Font Info:    Try loading font information for U+msb on input line 122.
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Missing character: There is no Ã in font ptmri7t!
-Missing character: There is no © in font ptmri7t!
-Missing character: There is no Ã in font ptmri7t!
-Missing character: There is no © in font ptmri7t!
-Missing character: There is no Ã in font ptmri7t!
-Missing character: There is no © in font ptmri7t!
-Missing character: There is no Ã in font ptmri7t!
-Missing character: There is no © in font ptmri7t!
-Missing character: There is no Ã in font ptmri7t!
-Missing character: There is no © in font ptmri7t!
-Missing character: There is no Ã in font ptmri7t!
-Missing character: There is no © in font ptmri7t!
-Missing character: There is no Ã in font ptmri7t!
-Missing character: There is no © in font ptmri7t!
-Missing character: There is no Ã in font ptmri7t!
-Missing character: There is no © in font ptmri7t!
-Missing character: There is no Ã in font ptmri7t!
-Missing character: There is no © in font ptmri7t!
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 42.
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 109.
+Underfull \hbox (badness 1852) in paragraph at lines 139--145
+[][]\OT1/ptm/m/n/10 TLS is a \OT1/ptm/b/n/10 client-server \OT1/ptm/m/n/10 pro-
+to-col that runs on top a
+ []
 
-
-(/usr/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
 
 \openout3 = `conference_071817.ist'.
 
 
 ]
+./conference_071817.tex:162: Undefined control sequence.
+l.162 ...ure \ref{fig:tls-12-handshake}. \codeword
+                                                  {*} indicates situation-de...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-LaTeX Warning: File `fig1.png' not found on input line 214.
+./conference_071817.tex:169: Undefined control sequence.
+l.169 ...to certain entity, for example, \codeword
+                                                  {www.google.com}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
+./conference_071817.tex:170: Undefined control sequence.
+l.170 ...wn as \gls{pkc}, (\textit{e.g.} \codeword
+                                                  {RSA} and \codeword{DSA})
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-./conference_071817.tex:214: Package pdftex.def Error: File `fig1.png' not foun
-d: using draft setting.
+./conference_071817.tex:170: Undefined control sequence.
+l.170 ...textit{e.g.} \codeword{RSA} and \codeword
+                                                  {DSA})
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.214 \centerline{\includegraphics{fig1.png}}
-                                             
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+./conference_071817.tex:174: Undefined control sequence.
+l.174 ...data encryption (\textit{e.g.}, \codeword
+                                                  {AES}).
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 225.
+./conference_071817.tex:177: Undefined control sequence.
+l.177 that the \codeword
+                        {index.html} file that was sent to when it connected...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-(/usr/share/texmf-dist/tex/latex/psnfss/omsptm.fd
-File: omsptm.fd 
+./conference_071817.tex:177: Undefined control sequence.
+l.177 ...as sent to when it connected to \codeword
+                                                  {www.google.com} did, in f...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.tex:178: Undefined control sequence.
+l.178 come from \codeword
+                         {www.google.com} and it was not tampered with by an...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.tex:197: Undefined control sequence.
+l.197 ..., while in the first there is a \codeword
+                                                  {null}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+<../thesis/img/tls-12-full-handshake3.png, id=12, 484.81125pt x 230.8625pt>
+File: ../thesis/img/tls-12-full-handshake3.png Graphic file (type png)
+<use ../thesis/img/tls-12-full-handshake3.png>
+Package pdftex.def Info: ../thesis/img/tls-12-full-handshake3.png  used on inpu
+t line 203. on input line 203.
+Package pdftex.def Info: Requested size: 258.0pt x 122.8638pt on input line 203
+.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 203--204
+ [][] 
+ []
+
+[2 <../thesis/img/tls-12-full-handshake3.png>] (./conference_071817.bbl
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ” in font ptmr7t!
+
+./conference_071817.bbl:19: Undefined control sequence.
+l.19   \url
+           {https://krebsonsecurity.com/2017/10/reaper-calm-before-the-iot-s...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.bbl:26: Undefined control sequence.
+l.26   \url
+           {https://github.com/tlswg/tls13-spec/commit/43461876882a60251ecf2...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.bbl:33: Undefined control sequence.
+l.33 \newblock \url
+                   {http://www.rfc-editor.org/rfc/rfc5246.txt}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.bbl:40: Undefined control sequence.
+l.40   \url
+           {http://www.ietf.org/internet-drafts/draft-ietf-tls-tls13-26.txt}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ” in font ptmr7t!
 )
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 225.
- [2]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -654,31 +747,27 @@ Package glossaries Warning: No \printglossary or \printglossaries found.
 (Remove \makeglossaries if you don't want any glossaries.) 
 This document will not have a glossary.
 
-[3
-
-] (./conference_071817.aux) ) 
+[3] (./conference_071817.aux) ) 
 Here is how much of TeX's memory you used:
- 7855 strings out of 492985
- 116876 string characters out of 6138638
- 237052 words of memory out of 5000000
- 11235 multiletter control sequences out of 15000+600000
- 53160 words of font info for 113 fonts, out of 8000000 for 9000
+ 8936 strings out of 492985
+ 132910 string characters out of 6138638
+ 248008 words of memory out of 5000000
+ 12330 multiletter control sequences out of 15000+600000
+ 40049 words of font info for 84 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 45i,10n,37p,1982b,296s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc
-}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10
-.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/shar
-e/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texmf-dist/fonts/ty
-pe1/urw/times/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.p
-fb></usr/share/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-di
-st/fonts/type1/urw/times/utmri8a.pfb>
-Output written on conference_071817.pdf (3 pages, 122873 bytes).
+ 45i,7n,37p,1982b,335s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.e
+nc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+y7.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texm
+f-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw
+/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on conference_071817.pdf (3 pages, 119590 bytes).
 PDF statistics:
- 59 PDF objects out of 1000 (max. 8388607)
- 42 compressed objects within 1 object stream
+ 54 PDF objects out of 1000 (max. 8388607)
+ 37 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -129,10 +129,30 @@ milliseconds. Besides that, it will need to perform heavy mathematical operation
 involved in cryptography, using even more energy and taking even more time.
 Given this, there is a clear need for a more lightweight (D)\gls{tls} for the \gls{iot}. This is the problem that we will be addressing in this work.
 
-In the process of the work on this dissertation, we have already made several
-contributions to the \gls{tls} $1.3$ specification, being recognized as contributors\cite{Mergepul65:online}.
+In the process of the work on this dissertation, we have made several
+contributions to the \gls{tls} $1.3$ specification \cite{PullRequ68:online}. Among
+several contributions, we corrected some
+inconsistencies/incompletenesses in the specification (e.g.
+the document mentioned some extensions as being mandatory, yet they
+were not present in the "Mandatory-to-Implement" section \cite{addmessa28:online}) and some parts of the specification that
+were wrong, like the "Backwards Compatibility" section \cite{fixBackw47:online}. As a result, we were formally recognized as contributors and our name will be in the final document specifying the
+\gls{tls} $1.3$ protocol. We are in no way affiliated with the
+\gls{ietf} or any of the entities responsible for the development of
+the \gls{tls} $1.3$ specification.
 
-The document is organized as follows: Section II describes the \gls{tls} protocol. Section III summarizes the related work. Section IV describes the goal of this work. In Section V, the work being currently done is described.  Finally, the conclusion is done in Section VI.
+In our work, we are using the \textit{mbedTLS} library\cite{SSLLibra89:online}, which provides
+a lightweight \gls{tls} implementation for the \gls{iot} devices.
+In the process of profiling the library and studying its code, we
+have identified two bugs. The first one is related to the use of
+\textit{SHA-1}-signed certificates\cite{updatete80:online} in example
+programs that come with \textit{mbedTLS}, which are not supported in the
+default configuration. We have provided a fix for that issue\cite{updatete80:online}. The second bug is both: a deviation from the
+\gls{tls} $1.2$ protocol specification and a security issue. The problem
+is that ciphesuites that should only allow \textit{RSA}-signed certificates,
+besides those, also allow \textit{ECDSA}-signed ones. We have reported the
+issue and provided proof of concept code \cite{TLSECDHR77:online}.
+
+The document is organized as follows: Section II describes the \gls{tls} protocol. Section III summarizes the related work. Section IV describes the goal of this work. In Section V, the work current work is outlined. Finally, the conclusion is done in Section VI.
 
 \section{The \gls{tls} Protocol}
 
@@ -191,8 +211,7 @@ addresses the peer denying the receipt of a message. This is due to the fact tha
 instead of using \textbf{digital signatures}, either a keyed \gls{mac} or an \gls{aead}
 cipher is used, both of which require a secret to be \textbf{shared} between the peers.
 
-It is not required to use all of the tree security services every situation.
-In this sense, \gls{tls} is like a framework that allows to select which security services should be used for a communication session. As an example,
+It is not required to use all of the security services every situation.In this sense, \gls{tls} is like a framework that allows to select which security services should be used for a communication session. As an example,
 certificate validation might be skipped, which means that the \textbf{authentication} guarantee is not provided. There are some differences regarding this claim between \gls{tls} $1.2$\cite{RFC5246}
 and \gls{tls} $1.3$\cite{I-D.ietf-tls-tls13}. For example, while in the first there is a \codeword{null}
 cipher (no authentication, no confidentiality, no integrity), in the latter
@@ -210,7 +229,7 @@ this is not true.
 Most of the work has been centered around \gls{dtls},
 even though the majority of solutions can be applied to \gls{tls} as well.
 Herein we want to further explore \gls{tls} optimization. There is clearly a need for that, specially with \gls{coap} over
-TCP and \gls{tls} standard being currently developed. The mentioned standard does not explore any \gls{tls}
+TCP and \gls{tls} standard being currently developed\cite{I-D.ietf-core-coap-tcp-tls}. The mentioned standard does not explore any \gls{tls}
 optimizations, and since any \gls{iot} device using it in the future would benefit from
 them, this is an important area to explore. \gls{coap}\cite{RFC7959} is often
 referred to as the "HTTP protocol for constrained devices".
@@ -230,11 +249,20 @@ in the worse case scenario.
 
 \section{Proposed Solution}
 
-The goal of this work is to develop a lightweight version of (D)\gls{tls} that is
-fully backwards compatible and does not require any third-party entities, in order
-to simplify its deployment process. The solution will be developed for
-(D)\gls{tls} version $1.2$, while also bearing in mind the new $1.3$ version. The idea is to make it customizable,
-depending on the security requirements and the context of its usage.
+There is currently
+no tool which can suggest a (D)\gls{tls} configuration, based
+on the provided environment's limitations (e.g. available
+memory, power, processing speed) and security requirements (e.g. PFS, data privacy). The solution will be fully \gls{tls} compatible,
+since it will not modify any part of the protocol.
+
+The goal of this work is to develop a framework that would
+suggest a (D)\gls{tls} configuration based on the needs and
+limitations of the environment. This configuration would
+include key exchange algorithms, encryption algorithms
+and \gls{tls} options (e.g. extensions), among others.
+
+The solution will be developed for
+(D)\gls{tls} version $1.2$, while also bearing in mind the new $1.3$ version.
 
 To achieve this goal, a thorough evaluation of every part of (D)\gls{tls} is
 needed. The main parts that will be evaluated are power consumption and the number CPU cycles used.
@@ -245,13 +273,6 @@ questions such as \textit{"How much does Perfect Forward Secrecy cost, in terms 
 This will help the application developers in making decisions related
 to the security/performance trade off.
 
-Furthermore, there is currently
-no tool which can suggest a (D)\gls{tls} configuration, based
-on the provided environment's limitations (e.g. available
-memory, power, processing speed) and security requirements (e.g. PFS, data privacy).
-We would like to develop it.
-
-
 \section{Current Work}
 
 In order to understand which features of (D)\gls{tls} should be
@@ -260,6 +281,41 @@ it's important to associate a cost (e.g. number of CPU cycles used) with each on
 For this reason, we are currently working on profiling the various parts of the \gls{tls} protocol.
 
 All of the evaluation work is being done on the \gls{tls} implementation of the \textit{mbedTLS} library\cite{SSLLibra13:online}.
+
+\textit{mbedTLS} has various \gls{tls} configurations. Some of those
+configurations are ciphersuites (key exchange algorithm + encryption function + hash function), others are protocol features (e.g.
+session resumption, which allows to establish a connection using
+less computing resources, by using constructs from a previously
+established session), while others are extensions to the \gls{tls} protocol.
+
+Currently, we are focused on profiling the
+\gls{tls} ciphersuites. More specifically, we are profiling the
+handshake portion of the protocol. After the handshake, the data
+is exchanged using the negotiated encryption and hash functions,
+as well as the associated secret keys. The latter is not
+\gls{tls} specific and comes down to evaluating the performance of
+various encryption and digest algorithms, which has already
+been done in various works, such as \cite{kansal2014performance}
+\cite{rihan2015performance} \cite{patil2016comprehensive} \cite{dahal2013performance}.
+
+Therefore, we are currently focused on evaluating
+the cost of various key exchange configurations. The chosen key
+exchange determines various security properties of the communication,
+namely the presence or absence of PFS and authentication guarantee.
+Each one of those security services has an associated cost.
+
+\textit{mbedTLS} comes with $161$ ciphersuites \cite{Supporte13:online}. Evaluating and analyzing the performance of each one manually would be very time consuming, if not impossible,
+given the limited time available. The fact every ciphersuite can have
+different configuration options (such as the certificates used and
+the information contained in them) aggravates this issue even more.
+
+For this reason, we have developed an automated profiling tool \cite{iluxonch55:online}.
+This tool runs a client/server connection for the provided list of
+ciphersuites, collects the number of CPU cycles used by the user-specified
+functions and presents the results in a graph. Using this tool, we were
+able to evaluate all of the $161$ ciphersuites and reach some initial
+conclusions.
+
 
 \section{Conclusion}
 

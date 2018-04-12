@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{SMALTThe76:online}
 {SMALT - The Smart Home Device That Elevates Your Dining Experience}.
@@ -20,11 +20,39 @@ Brian Krebs.
   10 2017.
 \newblock (Accessed on 01/04/2018).
 
-\bibitem{Mergepul65:online}
-Addition to tls 1.3 contributors list.
+\bibitem{PullRequ68:online}
+Pull requests by iluxonchik.
 \newblock
-  \url{https://github.com/tlswg/tls13-spec/commit/43461876882a60251ecf24fb097f0ce2d7be4745}.
-\newblock (Accessed on 01/11/2018).
+  \url{https://github.com/tlswg/tls13-spec/pulls?utf8=%E2%9C%93&q=author%3Ailuxonchik}.
+\newblock (Accessed on 04/12/2018).
+
+\bibitem{addmessa28:online}
+add messages that are required to have the supported\_versions extension by
+  iluxonchik.
+\newblock \url{https://github.com/tlswg/tls13-spec/pull/1106}.
+\newblock (Accessed on 04/12/2018).
+
+\bibitem{fixBackw47:online}
+fix backward compatibility section paragraph by iluxonchik.
+\newblock \url{https://github.com/tlswg/tls13-spec/pull/1122}.
+\newblock (Accessed on 04/12/2018).
+
+\bibitem{SSLLibra89:online}
+Ssl library mbed tls / polarssl.
+\newblock \url{https://tls.mbed.org/}.
+\newblock (Accessed on 04/12/2018).
+
+\bibitem{updatete80:online}
+update test rsa certificate to use sha-256 instead of sha-1 by iluxonchik ·
+  pull request \#1520 · armmbed/mbedtls.
+\newblock \url{https://github.com/ARMmbed/mbedtls/pull/1520}.
+\newblock (Accessed on 04/12/2018).
+
+\bibitem{TLSECDHR77:online}
+Tls-ecdh-rsa-* ciphersuites allow ecdsa signed certificates · issue \#1561 ·
+  armmbed/mbedtls.
+\newblock \url{https://github.com/ARMmbed/mbedtls/issues/1561}.
+\newblock (Accessed on 04/12/2018).
 
 \bibitem{RFC5246}
 T.~Dierks and E.~Rescorla.
@@ -38,6 +66,16 @@ Eric Rescorla.
 \newblock Internet-Draft draft-ietf-tls-tls13-26, IETF Secretariat, March 2018.
 \newblock
   \url{http://www.ietf.org/internet-drafts/draft-ietf-tls-tls13-26.txt}.
+
+\bibitem{I-D.ietf-core-coap-tcp-tls}
+Carsten Bormann, Simon Lemay, Hannes Tschofenig, Klaus Hartke, Bill Silverajan,
+  and Brian Raymor.
+\newblock {CoAP (Constrained Application Protocol) over TCP, TLS, and
+  WebSockets}.
+\newblock Internet-Draft draft-ietf-core-coap-tcp-tls-11, IETF Secretariat,
+  December 2017.
+\newblock
+  \url{http://www.ietf.org/internet-drafts/draft-ietf-core-coap-tcp-tls-11.txt}.
 
 \bibitem{RFC7959}
 C.~Bormann and Z.~Shelby.
@@ -55,5 +93,39 @@ Shahid Raza, Ludwig Seitz, Denis Sitenkov, and G{\"o}ran Selander.
 \bibitem{SSLLibra13:online}
 {mbed TLS (formely PolarSSL): SSL/TLS Library For Embedded Devices}.
 \newblock (Accessed on 12/19/2017).
+
+\bibitem{kansal2014performance}
+Shaify Kansal and Meenakshi Mittal.
+\newblock Performance evaluation of various symmetric encryption algorithms.
+\newblock In {\em Parallel, Distributed and Grid Computing (PDGC), 2014
+  International Conference on}, pages 105--109. IEEE, 2014.
+
+\bibitem{rihan2015performance}
+Shaza~D Rihan, Ahmed Khalid, and Saife Eldin~F Osman.
+\newblock A performance comparison of encryption algorithms aes and des.
+\newblock {\em International Journal of Engineering Research \& Technology
+  (IJERT)}, 4(12):151--154, 2015.
+
+\bibitem{patil2016comprehensive}
+Priyadarshini Patil, Prashant Narayankar, DG~Narayan, and SM~Meena.
+\newblock A comprehensive evaluation of cryptographic algorithms: Des, 3des,
+  aes, rsa and blowfish.
+\newblock {\em Procedia Computer Science}, 78:617--624, 2016.
+
+\bibitem{dahal2013performance}
+Ram~Krishna Dahal, Jagdish Bhatta, and Tanka~Nath Dhamala.
+\newblock Performance analysis of sha-2 and sha-3 finalists.
+\newblock {\em International Journal on Cryptography and Information Security
+  (IJCIS)}, 3(3):720--730, 2013.
+
+\bibitem{Supporte13:online}
+Supported ssl / tls ciphersuites - mbed tls (previously polarssl).
+\newblock \url{https://tls.mbed.org/supported-ssl-ciphersuites}.
+\newblock (Accessed on 04/12/2018).
+
+\bibitem{iluxonch55:online}
+{mbedTLS Ciphersuite Profiling Tool}.
+\newblock \url{https://github.com/iluxonchik/callgrind-cpu-cycles-counter}.
+\newblock (Accessed on 04/12/2018).
 
 \end{thebibliography}

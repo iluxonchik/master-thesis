@@ -10,45 +10,45 @@ I was expecting a `,' or a `}'---line 5 of file papers.bib
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
 Warning--empty journal in sec17ant94:online
-You've used 9 entries,
+You've used 21 entries,
             1791 wiz_defined-function locations,
-            506 strings with 5330 characters,
-and the built_in function-call counts, 1467 in all, are:
-= -- 120
-> -- 76
-< -- 3
-+ -- 30
-- -- 21
-* -- 77
-:= -- 245
-add.period$ -- 29
-call.type$ -- 9
-change.case$ -- 9
+            564 strings with 7549 characters,
+and the built_in function-call counts, 3579 in all, are:
+= -- 318
+> -- 147
+< -- 5
++ -- 60
+- -- 39
+* -- 177
+:= -- 535
+add.period$ -- 67
+call.type$ -- 21
+change.case$ -- 21
 chr.to.int$ -- 0
-cite$ -- 10
-duplicate$ -- 58
-empty$ -- 149
-format.name$ -- 21
-if$ -- 321
+cite$ -- 22
+duplicate$ -- 148
+empty$ -- 396
+format.name$ -- 39
+if$ -- 823
 int.to.chr$ -- 0
-int.to.str$ -- 9
-missing$ -- 2
-newline$ -- 50
-num.names$ -- 6
-pop$ -- 40
+int.to.str$ -- 21
+missing$ -- 6
+newline$ -- 111
+num.names$ -- 11
+pop$ -- 106
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 23
+skip$ -- 68
 stack$ -- 0
-substring$ -- 31
-swap$ -- 8
-text.length$ -- 3
+substring$ -- 138
+swap$ -- 30
+text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 1
-while$ -- 8
-width$ -- 10
-write$ -- 97
+while$ -- 22
+width$ -- 23
+write$ -- 218
 (There was 1 error message)

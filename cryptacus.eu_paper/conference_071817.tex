@@ -309,13 +309,95 @@ given the limited time available. The fact every ciphersuite can have
 different configuration options (such as the certificates used and
 the information contained in them) aggravates this issue even more.
 
-For this reason, we have developed an automated profiling tool \cite{iluxonch55:online}.
+For this reason, we developed an automated profiling tool \cite{iluxonch55:online}.
 This tool runs a client/server connection for the provided list of
 ciphersuites, collects the number of CPU cycles used by the user-specified
 functions and presents the results in a graph. Using this tool, we were
 able to evaluate all of the $161$ ciphersuites and reach some initial
 conclusions.
 
+The tool uses valgrind to profile the ciphersuites
+and obtain the number of CPU cycles used by each one. It is important
+to note that valgrind does not count the actual number of CPU
+cycles used, but rather an estimate of them. All of the executrices
+have been compiled, ran and profiled on an \textit{x86\_64 GNU/Linux} machine (Kernel \textit{4.15.13-1-ARCH}).
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{./cli-graph.png} % first figure itself
+        \caption{\label{fig:cligraph} Client ciphersuite profiling}
+\end{figure}
+
+\begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{./srv-graph.png} % first figure itself
+        \caption{\label{fig:srvgraph} \gls{tls} Server ciphersuite profiling}
+\end{figure}
+
+The result of profiling
+all of the $161$ \textit{mbedTLS} ciphersuites is presented in Figures
+\ref{fig:cligraph} (for the client) and \ref{fig:srvgraph} (for the server). The various key exchange groups are identified by the letters
+in red. The associated numbers refer to the approximate number of CPU
+cycles (in millions) used by the ciphersuite during the handshake.
+
+For example, Figure \ref{fig:srvgraph} shows that the server would use
+$133$ million CPU cycles to perform a \gls{tls} handshake using the
+\textit{ECDHE-ECDSA} ciphersuite (ephemeral ECDH with ECDSA signatures).
+
+The comparison of the \textit{ECDHE-RSA} and \textit{ECDH-RSA}
+key exchange, shows that the use of perfect forward secrecy leads to
+about $6.5$ times more CPU cycles used during the handshake.
+
+The results show different numbers for the client and the server.
+This may come down to various factors, depending on the ciphersuite. In ciphersuites
+that public certificates are used, during the handshake, the client needs
+to verify the certificate chain provided by the server, while the
+server does not. This means that the client will need to perform
+public key cryptography operations, which use a lot of CPU cycles.
+In the \textit{RSA} key exchange, the server encrypts a secret
+and sends it to the client. The client then decerypts that secret.
+Since the public exponent of the RSA keypair is usually chosen to be small (in the
+case of the tested ciphersuite it's $65537$), public key operations
+are much faster than private key operations. Since the client uses
+the public key to decrypt the secret, while the server encrypts it
+with the private key, the latter will use significantly more CPU
+cycles.
+
+Ciphersuites which do not use public key cryptography (i.e. no
+certificates) show very similar results in both, the client and the server. Those ciphersuites are all of the pre-shared-key (PSK) ones, with
+the exception of \textit{RSA-PSK}, which uses RSA and certificates
+for authentication.
+
+As expected, PSK ciphersuites show the best results. This is why they
+are so widely used in embedded devices.
+
+We performed similar measurements for the number of CPU cycles used
+during data encryption and decryption, as well as MAC generation and verification for each one of the ciphersuites. The scenario was a $13$ MB file transfer between the client
+and the server. In this case, just as expected, the majority of the
+processing was spent on encrypting and encrypting the data. The handshake
+became negligible.
+
+\section{Future Work}
+
+Throughout April 2018 the cost of each security service will be
+determined more accurately. Throughout March 2018, the remaining
+\gls{tls} features will be profiled and a cost associated with them.
+This will help us understand which additional costs or savings
+each one of them has. Throughout March and June 2018 other relevant metrics, such
+as power consumption, will be collected and the the profiling
+will be performed on typical \gls{iot} hardware. During this same
+period, instead of using \textit{valgrind} CPU cycle estimates,
+a transition to
+a tool like \textit{PAPI}\cite{PAPI0:online} will be done to
+obtain precise values. The automated profiling tool will be adapted accordingly. During the month of June 2018 any troubles
+that arise during the previous phases will be worked on.
+
+From June until the end of August 2018, the tool that suggests a \gls{tls}
+configuration based on the environment's requirements and limitations
+will be developed. It will include a Graphical User Interface.
+
+From mid-July until mid-September 2018 the focus will be on writing
+the dissertation's text.
 
 \section{Conclusion}
 
@@ -332,7 +414,6 @@ with \gls{iot} devices, due their constrained nature. One such example is
 the (D)\gls{tls} protocol, that because of its heavyweight nature is not suitable for a large part of \gls{iot} devices. With the proposed work,
 we want to contribute to this area, by designing a solution that is suitable for the \gls{iot} devices, transparent
 to the programmer and provides security services adaptable to the specific context needs.
-
 
 \section*{Acknowledgments}
 

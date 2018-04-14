@@ -10,45 +10,45 @@ I was expecting a `,' or a `}'---line 5 of file papers.bib
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
 Warning--empty journal in sec17ant94:online
-You've used 21 entries,
+You've used 22 entries,
             1791 wiz_defined-function locations,
-            564 strings with 7549 characters,
-and the built_in function-call counts, 3579 in all, are:
-= -- 318
-> -- 147
+            569 strings with 7684 characters,
+and the built_in function-call counts, 3688 in all, are:
+= -- 328
+> -- 148
 < -- 5
-+ -- 60
++ -- 61
 - -- 39
 * -- 177
-:= -- 535
-add.period$ -- 67
-call.type$ -- 21
-change.case$ -- 21
+:= -- 546
+add.period$ -- 70
+call.type$ -- 22
+change.case$ -- 22
 chr.to.int$ -- 0
-cite$ -- 22
-duplicate$ -- 148
-empty$ -- 396
+cite$ -- 23
+duplicate$ -- 153
+empty$ -- 414
 format.name$ -- 39
-if$ -- 823
+if$ -- 852
 int.to.chr$ -- 0
-int.to.str$ -- 21
+int.to.str$ -- 22
 missing$ -- 6
-newline$ -- 111
+newline$ -- 116
 num.names$ -- 11
-pop$ -- 106
+pop$ -- 114
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 68
+skip$ -- 71
 stack$ -- 0
 substring$ -- 138
-swap$ -- 30
+swap$ -- 31
 text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 1
 while$ -- 22
-width$ -- 23
-write$ -- 218
+width$ -- 24
+write$ -- 227
 (There was 1 error message)

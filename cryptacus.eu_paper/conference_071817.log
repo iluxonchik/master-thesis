@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2018.3.30)  12 APR 2018 14:47
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2018.3.30)  14 APR 2018 09:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -371,4 +371,578 @@ Package: fp-basic 1996/05/13
 (/usr/share/texmf-dist/tex/latex/fp/fp-addons.sty
 Package: fp-addons 1995/03/15
 )
-(/usr/share/texmf-dist/tex/l
+(/usr/share/texmf-dist/tex/latex/fp/fp-snap.sty
+Package: fp-snap 1995/04/05
+)
+(/usr/share/texmf-dist/tex/latex/fp/fp-exp.sty
+Package: fp-exp 1995/04/03
+)
+(/usr/share/texmf-dist/tex/latex/fp/fp-trigo.sty
+Package: fp-trigo 1995/04/14
+)
+(/usr/share/texmf-dist/tex/latex/fp/fp-pas.sty
+Package: fp-pas 1994/08/29
+)
+(/usr/share/texmf-dist/tex/latex/fp/fp-random.sty
+Package: fp-random 1995/02/23
+\FPseed=\count123
+)
+(/usr/share/texmf-dist/tex/latex/fp/fp-eqn.sty
+Package: fp-eqn 1995/04/03
+)
+(/usr/share/texmf-dist/tex/latex/fp/fp-upn.sty
+Package: fp-upn 1996/10/21
+)
+(/usr/share/texmf-dist/tex/latex/fp/fp-eval.sty
+Package: fp-eval 1995/04/03
+)))
+\@dtl@toks=\toks25
+\@dtl@tmpcount=\count124
+\dtl@tmplength=\skip49
+\dtl@sortresult=\count125
+\@dtl@numgrpsepcount=\count126
+\@dtl@datatype=\count127
+\dtl@codeA=\count128
+\dtl@codeB=\count129
+\@dtl@foreach@level=\count130
+)
+(/usr/share/texmf-dist/tex/latex/glossaries/base/glossaries-compatible-307.sty
+Package: glossaries-compatible-307 2017/11/14 v4.35 (NLCT)
+)
+\gls@level=\count131
+\@gls@tmpb=\toks26
+\gls@tmplen=\skip50
+\glskeylisttok=\toks27
+\glslabeltok=\toks28
+\glsshorttok=\toks29
+\glslongtok=\toks30
+(/usr/share/texmf-dist/tex/latex/glossaries/styles/glossary-hypernav.sty
+Package: glossary-hypernav 2017/11/14 v4.35 (NLCT)
+)
+(/usr/share/texmf-dist/tex/latex/glossaries/styles/glossary-list.sty
+Package: glossary-list 2017/11/14 v4.35 (NLCT)
+\glslistdottedwidth=\skip51
+)
+(/usr/share/texmf-dist/tex/latex/glossaries/styles/glossary-long.sty
+Package: glossary-long 2017/11/14 v4.35 (NLCT)
+
+(/usr/share/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
+\LTleft=\skip52
+\LTright=\skip53
+\LTpre=\skip54
+\LTpost=\skip55
+\LTchunksize=\count132
+\LTcapwidth=\dimen137
+\LT@head=\box30
+\LT@firsthead=\box31
+\LT@foot=\box32
+\LT@lastfoot=\box33
+\LT@cols=\count133
+\LT@rows=\count134
+\c@LT@tables=\count135
+\c@LT@chunks=\count136
+\LT@p@ftn=\toks31
+)
+\glsdescwidth=\skip56
+\glspagelistwidth=\skip57
+)
+(/usr/share/texmf-dist/tex/latex/glossaries/styles/glossary-super.sty
+Package: glossary-super 2017/11/14 v4.35 (NLCT)
+
+(/usr/share/texmf-dist/tex/latex/supertabular/supertabular.sty
+Package: supertabular 2004/02/20 v4.1e the supertabular environment
+\c@tracingst=\count137
+\ST@wd=\dimen138
+\ST@rightskip=\skip58
+\ST@leftskip=\skip59
+\ST@parfillskip=\skip60
+\ST@pageleft=\dimen139
+\ST@headht=\dimen140
+\ST@tailht=\dimen141
+\ST@pagesofar=\dimen142
+\ST@pboxht=\dimen143
+\ST@lineht=\dimen144
+\ST@stretchht=\dimen145
+\ST@prevht=\dimen146
+\ST@toadd=\dimen147
+\ST@dimen=\dimen148
+\ST@pbox=\box34
+))
+(/usr/share/texmf-dist/tex/latex/glossaries/styles/glossary-tree.sty
+Package: glossary-tree 2017/11/14 v4.35 (NLCT)
+\glstreeindent=\skip61
+))
+\glswrite=\write3
+\glo@main@file=\write4
+\openout4 = `conference_071817.glo'.
+
+Package glossaries Info: Writing glossary file conference_071817.glo on input l
+ine 12.
+
+(./conference_071817.aux)
+\openout1 = `conference_071817.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 59.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 59.
+ (/usr/share/texmf-dist/tex/latex/base/ts1cmr.fd
+File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 59.
+
+-- Lines per column: 56 (exact).
+(/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count138
+\scratchdimen=\dimen149
+\scratchbox=\box35
+\nofMPsegments=\count139
+\nofMParguments=\count140
+\everyMPshowfont=\toks32
+\MPscratchCnt=\count141
+\MPscratchDim=\dimen150
+\MPnumerator=\count142
+\makeMPintoPDFobject=\count143
+\everyMPtoPDFconversion=\toks33
+) (/usr/share/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+
+(/usr/share/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+)
+(/usr/share/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+
+(/usr/share/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+
+(/usr/share/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)))
+(/usr/share/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+(/usr/share/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+(/usr/share/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+
+(/usr/share/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+(/usr/share/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2018/01/21 v0.26 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/share/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+38.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 456.
+
+(/usr/share/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+LaTeX Font Info:    Try loading font information for U+msa on input line 122.
+
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 122.
+
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+
+\openout3 = `conference_071817.ist'.
+
+
+]
+Underfull \hbox (badness 1852) in paragraph at lines 159--165
+[][]\OT1/ptm/m/n/10 TLS is a \OT1/ptm/b/n/10 client-server \OT1/ptm/m/n/10 pro-
+to-col that runs on top a
+ []
+
+./conference_071817.tex:182: Undefined control sequence.
+l.182 ...ure \ref{fig:tls-12-handshake}. \codeword
+                                                  {*} indicates situation-de...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.tex:189: Undefined control sequence.
+l.189 ...to certain entity, for example, \codeword
+                                                  {www.google.com}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.tex:190: Undefined control sequence.
+l.190 ...wn as \gls{pkc}, (\textit{e.g.} \codeword
+                                                  {RSA} and \codeword{DSA})
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.tex:190: Undefined control sequence.
+l.190 ...textit{e.g.} \codeword{RSA} and \codeword
+                                                  {DSA})
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.tex:194: Undefined control sequence.
+l.194 ...data encryption (\textit{e.g.}, \codeword
+                                                  {AES}).
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.tex:197: Undefined control sequence.
+l.197 that the \codeword
+                        {index.html} file that was sent to when it connected...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.tex:197: Undefined control sequence.
+l.197 ...as sent to when it connected to \codeword
+                                                  {www.google.com} did, in f...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.tex:198: Undefined control sequence.
+l.198 come from \codeword
+                         {www.google.com} and it was not tampered with by an...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.tex:216: Undefined control sequence.
+l.216 ..., while in the first there is a \codeword
+                                                  {null}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+<../thesis/img/tls-12-full-handshake3.png, id=12, 484.81125pt x 230.8625pt>
+File: ../thesis/img/tls-12-full-handshake3.png Graphic file (type png)
+<use ../thesis/img/tls-12-full-handshake3.png>
+Package pdftex.def Info: ../thesis/img/tls-12-full-handshake3.png  used on inpu
+t line 222.
+(pdftex.def)             Requested size: 258.0pt x 122.8638pt.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 222--223
+ [][] 
+ []
+
+[2 <../thesis/img/tls-12-full-handshake3.png>]
+<./cli-graph.png, id=21, 1606.0pt x 829.0975pt>
+File: ./cli-graph.png Graphic file (type png)
+<use ./cli-graph.png>
+Package pdftex.def Info: ./cli-graph.png  used on input line 327.
+(pdftex.def)             Requested size: 258.0pt x 133.18965pt.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 327--328
+ [][] 
+ []
+
+<./srv-graph.png, id=22, 1606.0pt x 829.0975pt>
+File: ./srv-graph.png Graphic file (type png)
+<use ./srv-graph.png>
+Package pdftex.def Info: ./srv-graph.png  used on input line 333.
+(pdftex.def)             Requested size: 258.0pt x 133.18965pt.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 333--334
+ [][] 
+ []
+
+[3 <./cli-graph.png>]
+Underfull \vbox (badness 1009) has occurred while \output is active []
+
+
+(./conference_071817.bbl
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ” in font ptmr7t!
+
+./conference_071817.bbl:19: Undefined control sequence.
+l.19   \url
+           {https://krebsonsecurity.com/2017/10/reaper-calm-before-the-iot-s...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.bbl:26: Undefined control sequence.
+l.26   \url
+           {https://github.com/tlswg/tls13-spec/pulls?utf8=%E2%9C%93&q=autho...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 24--28
+[]\OT1/ptm/m/n/8 Pull re-quests by ilux-onchik.  https://github.com/tlswg/tls13
+-
+ []
+
+./conference_071817.bbl:32: Undefined control sequence.
+l.32 \newblock \url
+                   {https://github.com/tlswg/tls13-spec/pull/1106}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.bbl:37: Undefined control sequence.
+l.37 \newblock \url
+                   {https://github.com/tlswg/tls13-spec/pull/1122}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 36--39
+[]\OT1/ptm/m/n/8 fix back-ward com-pat-i-bil-ity sec-tion para-graph by ilux-on
+chik.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 36--39
+\OT1/ptm/m/n/8 https://github.com/tlswg/tls13-spec/pull/1122.  (Ac-cessed on
+ []
+
+[4 <./srv-graph.png>]
+./conference_071817.bbl:42: Undefined control sequence.
+l.42 \newblock \url
+                   {https://tls.mbed.org/}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no Â in font ptmr7t!
+Missing character: There is no · in font ptmr7t!
+Missing character: There is no Â in font ptmr7t!
+Missing character: There is no · in font ptmr7t!
+./conference_071817.bbl:48: Undefined control sequence.
+l.48 \newblock \url
+                   {https://github.com/ARMmbed/mbedtls/pull/1520}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 46--50
+[]\OT1/ptm/m/n/8 update test rsa cer-tifi-cate to use sha-256 in-stead of sha-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 46--50
+\OT1/ptm/m/n/8 1 by ilux-onchik  pull re-quest #1520  ar-mmbed/mbedtls.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 46--50
+\OT1/ptm/m/n/8 https://github.com/ARMmbed/mbedtls/pull/1520.  (Ac-cessed on
+ []
+
+Missing character: There is no Â in font ptmr7t!
+Missing character: There is no · in font ptmr7t!
+Missing character: There is no Â in font ptmr7t!
+Missing character: There is no · in font ptmr7t!
+./conference_071817.bbl:54: Undefined control sequence.
+l.54 \newblock \url
+                   {https://github.com/ARMmbed/mbedtls/issues/1561}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.bbl:61: Undefined control sequence.
+l.61 \newblock \url
+                   {http://www.rfc-editor.org/rfc/rfc5246.txt}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.bbl:68: Undefined control sequence.
+l.68   \url
+           {http://www.ietf.org/internet-drafts/draft-ietf-tls-tls13-26.txt}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+./conference_071817.bbl:78: Undefined control sequence.
+l.78   \url
+           {http://www.ietf.org/internet-drafts/draft-ietf-core-coap-tcp-tls...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no â in font ptmr7t!
+Missing character: There is no € in font ptmr7t!
+Missing character: There is no ” in font ptmr7t!
+./conference_071817.bbl:123: Undefined control sequence.
+l.123 \newblock \url
+                    {https://tls.mbed.org/supported-ssl-ciphersuites}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Underfull \hbox (badness 6859) in paragraph at lines 122--125
+[]\OT1/ptm/m/n/8 Supported ssl / tls ci-pher-suites - mbed tls (pre-vi-ously po
+-
+ []
+
+./conference_071817.bbl:128: Undefined control sequence.
+l.128 \newblock \url
+                    {https://github.com/iluxonchik/callgrind-cpu-cycles-coun...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 127--130
+[]\OT1/ptm/m/n/8 mbedTLS Ci-pher-suite Pro-fil-ing Tool.
+ []
+
+./conference_071817.bbl:133: Undefined control sequence.
+l.133 \newblock \url
+                    {http://icl.cs.utk.edu/papi/}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 132--135
+[]\OT1/ptm/m/n/8 PAPI - Per-for-mance Ap-pli-ca-tion Pro-gram-ming In-ter-face.
+
+ []
+
+./conference_071817.bbl:136: Missing } inserted.
+<inserted text> 
+                }
+l.136 \end{thebibliography}
+                           
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+)
+
+** Conference Paper **
+Before submitting the final camera ready copy, remember to:
+
+ 1. Manually equalize the lengths of two columns on the last page
+ of your paper;
+
+ 2. Ensure that any PostScript and/or PDF output post-processing
+ uses only Type 1 fonts and that every step in the generation
+ process uses the appropriate paper size.
+
+
+Package glossaries Warning: No \printglossary or \printglossaries found. 
+(Remove \makeglossaries if you don't want any glossaries.) 
+This document will not have a glossary.
+
+[5
+
+] (./conference_071817.aux) ) 
+Here is how much of TeX's memory you used:
+ 8984 strings out of 492982
+ 133821 string characters out of 6138579
+ 248868 words of memory out of 5000000
+ 12379 multiletter control sequences out of 15000+600000
+ 40049 words of font info for 84 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 45i,7n,37p,1982b,335s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc
+}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7
+.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-
+dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw/t
+imes/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on conference_071817.pdf (5 pages, 2227407 bytes).
+PDF statistics:
+ 62 PDF objects out of 1000 (max. 8388607)
+ 41 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+

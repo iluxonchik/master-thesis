@@ -128,4 +128,9 @@ Supported ssl / tls ciphersuites - mbed tls (previously polarssl).
 \newblock \url{https://github.com/iluxonchik/callgrind-cpu-cycles-counter}.
 \newblock (Accessed on 04/12/2018).
 
+\bibitem{PAPI0:online}
+{PAPI - Performance Application Programming Interface}.
+\newblock \url{http://icl.cs.utk.edu/papi/}.
+\newblock (Accessed on 04/14/2018).
+
 \end{thebibliography}

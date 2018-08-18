@@ -10,16 +10,16 @@
 % \documentclass[runningheads,a4paper]{llncs}
 \documentclass{llncs}
 
-%\usepackage{geometry}
+\usepackage{geometry}
 
-%\geometry{
-%a4paper,         % or letterpaper
-%textwidth=12.9cm,  % llncs has 12.2cm
-%textheight=19.9cm, % llncs has 19.3cm
-%heightrounded,   % integer number of lines
-%hratio=1:1,      % horizontally centered
-%vratio=2:3,      % not vertically centered
-%}
+\geometry{
+a4paper,         % or letterpaper
+textwidth=13.7cm,  % llncs has 12.2cm
+textheight=19.9cm, % llncs has 19.3cm
+heightrounded,   % integer number of lines
+hratio=1:1,      % horizontally centered
+vratio=2:3,      % not vertically centered
+}
 %
 %%% WARN: custom extension
 \usepackage{xcolor}
@@ -123,7 +123,7 @@
 %                                     \toctitle is used
 %
 \author{{Illya Gerasymchuk} \\
-\email{illya.gerasymchuk@tecnico.uliboa.pt}
+\email{illya@iluxonchik.me}}
 %
 \authorrunning{Illya Gerasymchuk} % abbreviated author list (for running head)
 %
@@ -1342,85 +1342,12 @@ mechanism for \gls{iot} devices\cite{I-D.moran-suit-architecture} currently in I
 
 \section{Solution}
 
-\subsection{Proposed Work}
-
-Most of the work has been centered around \gls{dtls},
-even though the majority of solutions can be applied to \gls{tls} as well.
-Herein we want to further explore \gls{tls} optimization. There is clearly a need for that, specially with \gls{coap} over
-TCP and \gls{tls} standard being currently developed. The mentioned standard does not explore any \gls{tls}
-optimizations, and since any \gls{iot} device using it in the future would benefit from
-them, this is an important area to explore. None of the related work explored
-(D)\gls{tls} 1.3, mainly because the protocol is still in draft stages, however, major design changes are not expected at this point.
-
-The majority of the work done in the area proposes a solution that is either tied to a
-specific protocol, such as \gls{coap}, or requires an introduction of a third-party
-entity, such as the trust anchor in the case of the S3K system\cite{S3KScala62:online} or
-even both. This has two main issues. First, a protocol-specific solution cannot
-be easily used in an environment where (D)\gls{tls} is not used with that protocol. Second, the requirement of a third-party
-introduces additional cost and complexity, which will be a big resistance factor
-in adopting the technology. This is specially true for developers working on
-personal projects or projects for small businesses, leaving the communications insecure
-in the worse case scenario. The goal of this work is to design a solution that can be used out
-of the box and is not tailored towards any specific protocol, while fully backwards
-compatible with the original protocol, that can be used with either \gls{tls}
-or \gls{dtls} and would work with both versions: (D)\gls{tls} $1.2$ and the upcoming
-(D)\gls{tls} 1.3.
-
-In order to achieve those goals, the \gls{tls} extension
-mechanism will be heavily relied upon. By using extensions, any deviations from the original protocol can be done, even if they completely change it. This was confirmed by
-one of the \gls{tls} designers, after we asked this question on the official
-\gls{ietf} mailing list\cite{ReTLSTLS31:online}, since neither of the existing \gls{rfc}s made it clear.
-
-Ideas from \gls{tls} $1.3$, such as \codeword{0-RTT data}, which can be done if peers already share a \gls{psk} would be interesting to
-explore for (D)\gls{tls} $1.2$.
-For example, this can be very useful in the context of the temperature sensor
-described in the introduction, where the device sends data to a server every
-30 seconds. With \codeword{0-RTT data}, it can communicate securely with minimal costs.
-The use of symmetric cryptography exclusively, has various advantages in the context
-of \gls{iot}. This means that there is value in exploring solutions that revolve around
-\gls{psk}s and that avoid public key cryptography completely.
-
+\subsection{Things That Might Be Useful To Include Somewhere}
 Not all \gls{iot} devices are limited to the point of not being able to use
-public key cryptography altogether. For some of them, the use of \gls{rpk}s, which is considered the first entry point into the area of public key
+public key cryptography altogether. For some of them, the use of \gls{rpk}s, 
+which is considered the first entry point into the area of public key
 cryptography, is acceptable, while others are powerful enough to take
 advantage of certificates and \gls{pki}, at least up to a point.
-The solution proposed with this work
-would be adaptable to any of those scenarios, depending on the context and the security
-requirements, therefore being similar to a framework. For example, some scenarios
-might require integrity, but not privacy. For those, it does not make sense to
-pay the energy and time overhead of encryption. Special care in the
-selection of cipher suites and key exchange methods needs to be taken, possibly even developing new ones.
-
-(D)\gls{tls} $1.2$ is significantly different from (D)\gls{tls} 1.3
-and there has been no work like \codeword{RFC 7924}\cite{RFC7924}, which describes a lightweight (D)\gls{tls} profile, done for (D)\gls{tls} $1.3$.
-This is an important topic to explore. (D)\gls{tls} $1.3$ has many fundamental changes
-to the way the handshake is done, bringing many new features, whose ideas can
-be incorporated into the proposed solution and even backported to \gls{tls} 1.2.
-
-% src: https://tex.stackexchange.com/questions/5769/two-figures-side-by-side
-\begin{figure}
-    \centering
-    \begin{minipage}{0.5\textwidth}
-        \centering
-        \includegraphics[width=1.0\textwidth]{img/optimized-handshake.png} % first figure itself
-        \caption{\label{fig:ltls-opt} LTLS supported}
-    \end{minipage}\hfill
-    \begin{minipage}{0.5\textwidth}
-        \centering
-        \includegraphics[width=1.0\textwidth]{img/non-optimized-handshake.png} % second figure itself
-        \caption{\label{fig:ltls-non-opt} LTLS not supported}
-    \end{minipage}
-\end{figure}
-
-To exemplify the idea of the solution, let us assume that a
-Lightweight TLS (LTLS) extension is defined. The optimizations that will be described in the second part of this work will be incorporated into it. Let us consider the case of a client that wants to use those
-optimizations. To achieve this, it will include the LTLS extension in its
-\codeword{ClientHello}. If the server supports the extension, an
-optimized connection can be established; this case is depicted in Figure \ref{fig:ltls-opt}. If the server does not support the extension, it will not
-send it back in its \codeword{ServerHello}. In that case it is possible
-to fall back to regular (D)\gls{tls}, as depicted in Figure \ref{fig:ltls-non-opt}.
-
-In practice the extension will include additional data used to indicate various options, which has been omitted from the discussion for simplicity.
 
 \subsection{Evaluation}
 
@@ -1460,6 +1387,80 @@ scenarios will be designed and implemented.
 From mid-July until mid-September $2018$, the focus will be on writing the
 dissertation's text. Some minor improvements and additions might also be done
 during this period of time.
+
+\section{Objectives}
+
+\gls{iot} devices have limited resources. Those resources are processing speed, memory and power.
+Communication security is a desirable property in the context of interconnected devices.
+There are many protocols that can be used to provide communication security. (D)\gls{tls} is one
+of the most used protocols for this purpose.
+
+Due to the constrained nature of the \gls{iot} devices, typical (D)\gls{tls} configurations cannot be
+used in many cases.
+
+(D)\gls{tls} is a complex protocol with numerous possible configurations. Each configuration
+implies a certain security level and resource usage. In fact, it's almost always a tradeoff
+between these two. When configured properly, (D)\gls{tls} can run on constrained devices.
+Such a configuration might imply foregoing some of the security serivices, or using a lower
+security level.
+
+A (D)\gls{tls} configuration consists of a key exchange algorithm, an encryption algorithm,
+a hash function and the associated key sizes. There are numerous choices for each, which leads to
+numerous possible configurations. As an example, the \textit{mbedTLS 2.7.0} library has a total
+of $161$ possible configurations, without taking into account the asmectric cryptography key sizes.
+Existing work does not explore the costs of the various configurations. It also fails to 
+establish a relationship between the security services, security level and their associated
+costs in the context of (D)\gls{tls}. Developers wishing to deploy the (D)\gls{tls} protocol
+in constrained environments do not have a tool that would help them to select a (D)\gls{tls}
+configuration appropriate to the environment's needs and limitations.
+
+The majority of existing work proposes a solution that is either tied to a
+specific protocol, such as \gls{coap}, or requires an introduction of a third-party
+entity, such as the trust anchor in the case of the S3K system\cite{S3KScala62:online} or
+even both. This has two main issues. First, a protocol-specific solution cannot
+be easily used in an environment where (D)\gls{tls} is not used with that protocol. 
+Second, the requirement of a third-party
+introduces additional cost and complexity, which will be a big resistance factor
+in adopting the technology. This is specially true for developers working on
+personal projects or projects for small businesses, leaving the communications insecure
+in the worse case scenario. The goal of this work is to design a solution that can be used out
+of the box and is not tailored towards any specific protocol, while fully backwards
+compatible with the original protocol, that can be used with both, \gls{tls}
+and \gls{dtls}.
+
+Another topic that existing work fails to explore with enough detail is \gls{tls} optimization. 
+Most of the work has been centered around \gls{dtls} and not all of it can be applied to \gls{tls},
+since it 
+Herein we want to further explore \gls{tls} optimization. There is clearly a need for that, 
+specially with \gls{coap} over TCP and \gls{tls} standard being currently developed. The 
+mentioned standard does not explore any \gls{tls} optimizations, and since any 
+\gls{iot} device using it in the future would benefit from them, this is an important 
+area to explore. 
+
+The objective of this work is to provide a means of assisting application developers
+who wish to include secure communications in their applications to make 
+security level/resource usage tradeoffs, according to the environment's needs
+and limitations. In order to achieve this goal, the costs of each individual security service
+will be evaluated. With this information, the programmer will be able to choose a configuration that
+meets his security requirements and device constraints. If the limitations of the device's hardware
+do not allow to meet the requirements, he can decide on an alternative configuration, possibly with
+a loss of some security services and a lower security level, or forgo using (D)\gls{tls} altogether.
+
+\section{Methodology}
+
+TODO
+
+\section{Results and Data Analysis}
+
+TODO
+
+\section{Discussion}
+
+TODO
+
+\section{Further Work}
+
+TODO
 
 \section{Conclusion}
 

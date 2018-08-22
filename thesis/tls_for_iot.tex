@@ -57,8 +57,8 @@ vratio=2:3,      % not vertically centered
 \newacronym{rpk}{RPK}{Raw Public Key}%
 \newacronym{aead}{AEAD}{Authenticated Encryption With Associated Data}%
 \newacronym{pkc}{PKC}{Public Key Cryptography}%
-\newacronym{hkdf}{HKDF}{HMAC-based Extract-and-Expand Key Derivation Function}%
-\newacronym{html}{HTML}{Hypertext Markup Language}%
+\newacronym{hkdf}{HKDF}{HMAC-based Extract-and-Expand Key Derivation Function}% 
+                             \newacronym{html}{HTML}{Hypertext Markup Language}%
 \newacronym{https}{HTTPS}{Hypertext Transfer Protocol Secure}%
 \newacronym{ecc}{ECC}{Elliptic Curve Cryptography}%
 \newacronym{iv}{IV}{Initialization Vector}%
@@ -77,6 +77,7 @@ vratio=2:3,      % not vertically centered
 \newacronym{sc}{SC}{Symmetrical Cryptography}%
 \newacronym{iot}{IoT}{Internet Of Things}%
 \newacronym{dtls}{DTLS}{Datagram TLS}%
+\newacronym{tlsd}{(D)TLS}{(D)TLS}%
 \newacronym{coap}{CoAP}{Constrained Application Protocol}%
 \newacronym{ec}{EC}{Elliptic Curve}%
 \newacronym{sca}{SCA}{Side-Channel Attack}%
@@ -90,6 +91,9 @@ vratio=2:3,      % not vertically centered
 \newacronym{ae}{AE}{Authenticated Encryption}
 \newacronym{nsa}{NSA}{US National Security Agency}
 \newacronym{apk}{APK}{Authorized Public Key}
+\newacronym{iana}{IANA}{Internet Assigned Numbers Authority}
+\newacronym{jit}{JIT}{just-in-time}
+\newacronym{ir}{IR}{Intermediate Representation}
 
 
 %%% WARN: added as specified here:
@@ -1448,7 +1452,127 @@ a loss of some security services and a lower security level, or forgo using (D)\
 
 \section{Methodology}
 
-TODO
+Things to cover:
+
+\begin{itemize}
+  \item local machine specs
+  \item why CPU cycles is a good measure (how CPU cycles relate to time taken; say that cryptography is
+    CPU-bound)
+  \item why collecting on a local machine makes sense (should be similar on others)
+  \item which tools I develped any why I did (too many configurations to evaluate manually)
+\end{itemize}
+
+In (D)\gls{tls} the key the authentication algorithm, the encryption algorithm, the
+data integrity algorithm, as well as the associated key sizes for each are all defined in a \textit{cihersuite}.
+A ciphersuite defines the security properties of a \acrshort{tlsd} connection. For this reason, the terms
+\textit{ciphersuite} and \textit{configuration} will be used interchangeably.
+
+A \gls{tlsd} connection consists of two main phases:
+\begin{enumerate}
+  \item The peers authenticate one to another, agree on the data encryption and integrity 
+  algorithms that they will use and establish the shared keys. This part is known as the handshake protocol.
+ \item The peers exchange the data securely, using the algorithms and keys negotiated in 
+the previous step. This part is known as the record protocol.
+\end{enumerate}
+
+The relative cost of each phase depends on the chosen algorithms, as well as the amount of data
+transferred. For this reason, it is important to evaluate the costs of both of them.
+
+\acrshort{tlsd} has numerous possible configurations. Each one of those configurations is defined
+in an \gls{rfc}. Each ciphersuite is assigned a unique identification number. \gls{iana} is responsible for
+maintaining the full list of them. At the moment of this writing, there are over $300$ ciphersuites
+defined for \gls{tlsd} \cite{IANA_ciphers_list:online}.
+
+\textit{mbedTLS} implements a subset of those ciphersuites. As of version $2.7.0$, \textit{mbedTLS}
+has a total of $161$ ciphersuites \cite{mbedTLS_ciphers_list:online}. Manual cost evaluation and
+data analysis would greatly limit the scope of obtained results, as it would be very time consuming 
+and error-prone. For this reason, we developed tools that would automate the profiling and collection 
+of results.
+
+In our work, we evaluated the \textit{mbedTLS's} implementation of the \gls{tls} protocol. The obtained
+metrics reflect the algorithm's implementations used within the library.
+
+\subsection{Evaluated Metrics}
+
+\subsection{Limitations}
+
+My cache:
+
+L1d cache:           32K
+L1i cache:           32K
+L2 cache:            256K
+L3 cache:            6144K
+
+* what is valgrind
+* how does valgrind work
+* what is callgrind
+* how does callgrind work
+* explain how this limits the accuracy of results
+* explain why I went with those instead of actual measures (speed, time limit, etc)
+-- put here or other section? --
+* with which options I profiled the resutls with
+* why I chose those options
+---------------------------------
+
+
+
+In order to estimate the number of executed instructions, we used \textit{valgrind}, more specifically
+    its \textit{callgrind} tool. \textit{valgrind} runs the application on a synthetic CPU. 
+While running the code in that synthetic environment, it is able to insert instructions to do 
+profiling and debugging. 
+
+In essence, \textit{valgrind} is a virtual machine, using \gls{jit}
+compilation techniques. One of the most notable techniques is the dynamic recompilation, which is a
+feature where some part of the program is recompiled during execution.
+
+The \textit{valgrind} tool consists of two parts, the \textit{valgrind core} and the \textit{tool
+plugin}. The \textit{valgrind core} transforms the machine code into a simpler form called
+\gls{ir}. The \gls{ir} code is then passed to the \textit{tool plugin}, which modifies the
+\gls{ir} code as needed. This modified \gls{ir} code is then passed back to the 
+\textit{valgrind core}, which transforms it back into machine code, which will run on the
+host CPU (the \gls{jit} step). This process is illustrated in Figure \ref{fig:how_valgrind_works}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{img/6lowpan-ghc-rhs.png}
+  e itself
+  \caption{\label{fig:how_valgrind_works} LOWPAN\_NHC\_RHS structure}
+\end{figure}
+
+In our case, the \textit{tool plugin} is \textit{callgrind}. Among other metrics, \textit{callgrind}
+collects the number of executed instructions and can optionally simulate cache and/or branch
+prediction. Those metrics can then be used to estimate the number of executed instructions.
+\textit{KCachegrind} is a GUI tool that can be used for such purpose.
+
+The number of executed instructions
+presented by \textit{KCachegrind} is an estimate, which might not correspond to the real value.
+Although undocumented, we found the formula for executed instructions estimation in the
+\textit{KCachegrind}'s source code \ref{cachegrind_source:online}.
+In order to estimate the number of executed CPU cycles, \textit{cachegrind} uses the
+following formula: $CEst = Ir + 10*Bm + 10*L1m + 20*Ge + 100*L2m + 100*LLm$, where
+
+\begin{itemize}
+  \item $CEst$ - estimated CPU cycles
+  \item $Ir$ - instruction fetches
+  \item $Bm$ -  mispredicted branches (direct and indirect)
+  \item $Ge$ - number of global bus events
+  \item $L1m$ - total L1 cache misses (instruction fetch, data read and data write)
+  \item $L2m$ - total L2 cache misses (instruction fetch, data read and data write)
+  \item $LLm$ - total shared cache misses (instruction fetch, data read and data write)
+\end{itemize}
+
+Since \textit{callgrind} only simulates L1 and LL caches, $L2m=0$, so the actual formula
+used by \textit{KCachegrind} to estimate the number of CPU cycles used is: $CEst = Ir + 10*Bm + 10*L1m + 20*Ge + 100*LLm$.
+ $Ge$ is a useful metrics when synchronization primitives are present, since it counts the number of
+atomic instructions executed. For example, on the \textit{x86} and \textit{x86_64} architectures, these are
+instructions using the \textit{lock} prefix.
+In our evaluation, we used single-threaded code only, fo 
+
+If the \textit{cachegrind} tool is run with disabled cache and branch prediction
+metrics, $Bm=0$ and.
+
+In order to estimate the number of CPU instructions executed, we used a formula based
+on the one used by \textit{KCachegrind}.
 
 \section{Results and Data Analysis}
 

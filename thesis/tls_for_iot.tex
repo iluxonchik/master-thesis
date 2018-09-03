@@ -57,6 +57,7 @@ vratio=2:3,      % not vertically centered
 \newacronym{rpk}{RPK}{Raw Public Key}%
 \newacronym{aead}{AEAD}{Authenticated Encryption With Associated Data}%
 \newacronym{pkc}{PKC}{Public Key Cryptography}%
+\newacronym{hmac}{HMAC}{Hash-Based Messaage Authentication Code}%
 \newacronym{hkdf}{HKDF}{HMAC-based Extract-and-Expand Key Derivation Function}% 
                              \newacronym{html}{HTML}{Hypertext Markup Language}%
 \newacronym{https}{HTTPS}{Hypertext Transfer Protocol Secure}%
@@ -1363,7 +1364,8 @@ such as connecting to the server multiple times over a short time period and tra
 small quantities of data, and connecting to the server and transferring a large
 amount of data, all at once.
 
-Due to limited time and the fact that \gls{tls} $1.3$ still lacks stable implementations, most likely, only the solution under \gls{tls} $1.2$ will be implemented and evaluated.
+Due to limited time and the fact that \gls{tls} $1.3$ still lacks stable implementations, 
+most likely, only the solution under \gls{tls} $1.2$ will be implemented and evaluated.
 
 \subsection{Planning}
 
@@ -1411,7 +1413,7 @@ security level.
 A (D)\gls{tls} configuration consists of a key exchange algorithm, an encryption algorithm,
 a hash function and the associated key sizes. There are numerous choices for each, which leads to
 numerous possible configurations. As an example, the \textit{mbedTLS 2.7.0} library has a total
-of $161$ possible configurations, without taking into account the asmectric cryptography key sizes.
+of $161$ possible configurations, without taking into account the asymmetric cryptography key sizes.
 Existing work does not explore the costs of the various configurations. It also fails to 
 establish a relationship between the security services, security level and their associated
 costs in the context of (D)\gls{tls}. Developers wishing to deploy the (D)\gls{tls} protocol
@@ -1514,7 +1516,7 @@ L3 cache:            6144K
 * why I chose those options
 ---------------------------------
 
-
+\subsection{Limitations}
 
 In order to estimate the number of executed instructions, we used \textit{Valgrind}, more specifically
     its \textit{Callgrind} tool. \textit{Valgrind} runs the application on a synthetic CPU. 
@@ -1575,7 +1577,79 @@ $CEst = Ir + 10*Bm + 10*L1m + 100*L2m$.
 
 \section{Results and Data Analysis}
 
-TODO
+* tell what ws evaluated
+* tell why we concentrated on the handshake protocol
+* section for handshake protocol evaluation
+  For each cipher, show evaluation
+* section for encryption evaluation
+* section that compares handshake with encryption
+  * put the join graph
+  * analyze when the handshake cost equals to encrypiton cost 
+  * mention that in the extreme case, the handshake can only be done once and
+    the conncection kept alive indefintely.
+  
+The \gls{tlsd} protocol consists of two sub-protocols: the Handshake protocol and the Record protocol.
+During the Handshake protocol, the peers authenticate one to another, agree on the data encryption and integrity 
+algorithms and establish the shared keys. During the Record protocol the peers exchange the data securely, 
+using the algorithms and keys negotiated during the Handshake protocol. Those algorithms support the security
+services provided by \gls{tlsd}. For example, peer entity authentication is usually offered by algorithms, such
+as \gls{rsa} or \gls{ecdsa}.
+
+The Record protocol is mostly the use of a symmetric encryption algorithm (\textit{e.g.} AES), used to offer
+confidentiality and an \gls{hmac} algorithm, used to offer data integrity and data origin authentication.
+The performance of symmetric encryption algorithms and hash functions has been studied in detail by existing work. \todo{ref}
+The combination of the various algorithms that compose the Handshake, has not been though. For this reason,
+the majority 
+[[Tell, that the combination of the algorithms of the hanshake has not though]]
+
+There is little variety in the computational costs in the Record Protocol. The core of the Record protocol is the use
+of a symmetric encryption algorithm (\textit{e.g} AES), used to provide confidentiality and an \gls{hmac} algorithm,
+used to provide data integrity and data origin authentication. The \gls{hmac} algorithm is not used if the symmetric
+encryption algorithm is an \gls{aead} cipher, which already offers data integrity.
+Each encryption algorithm has a few possible varieties (\textit{e.g.} the CBC, GCM and CCM modes in AES) and key sizes 
+(\textit{e.g.}, $128$ and $256$ bit for AES). The same is true for \gls{hmac} algorithms, which have a well defined \gls{mac}
+function, key size and output length. As an example, the \textit{HMAC-SHA256} algorithm uses the \textit{SHA256} as its \gls{mac} function,
+has the key size of $256$ bit and outputs a digest of the same size. The performance of symmetric encryption algorithms and hash functions 
+has been studied in detail by existing work. \todo{ref} The cost increases for larger input data are approximately linear. \todo{ref}.
+
+The previous paragraph does not apply to the Handshake protocol. In this part, there is more variety in the 
+computational cost outcomes. There are a few reasons for that:
+
+\begin{itemize}
+
+  \item Asymmetric cryptography algorithms are used to provide security services of authentication 
+  and \gls{pfs}. For each algorithm, there are significantly more possible key sizes, when compared to 
+  symmetric encryption algorithms. Theoretically there is an infinite number of them, we will however, discuss 
+  practical limitations later in this text \todo{write} \todo{what about stream ciphers? they can have an infinite key 
+  size. make this more clear}.
+
+  \item In \gls{tlsd}, various algorithms, in various combinations can be used to provide authentication and \gls{pfs}.
+  Two types of public key algorithms than can be used: \gls{ecc}-based and non-\gls{ecc}-based. It is also possible
+  to have authentication without asymmetric cryptography. \gls{psk}-based ciphersuites allow peers to 
+  authenticate one to another by the means of a shared secret. This shared secret is then input to the \gls{prf} 
+  in the premaster key generation, without the use of public key cryptography.
+
+  \item The use of asymmetric cryptography leads to asymmetric costs (\textit{i.e.} distinct costs) for the client and the server. The costs of asymmetric 
+  encryption algorithms vary greatly depending if the public or the private key is used. Also, while \gls{ecc}
+  algorithms tend to have a smaller computational footprint, this is not always the case.
+  Some operations (\textit{e.g} signature verification) is faster on the non-\gls{ecc} counterparts.
+  It is important to consider those factors, when for example, only one of the peers is constrained, since the costs for the client and the server will be different.
+  In the Record phase we do not have that problem, since the costs of \gls{hmac} and encryption/decryption in
+  symmetrical encryption algorithms is approximately the same \todo{ref}.
+
+\end{itemize}
+
+Another cryptographic operation that is done in the Handshake phase is keying material generation. This part, however,
+does not have a major influence on the computational costs and is the same for both peers, since it's essentially
+hashing operations. 
+
+It is clear that the Handshake protocol is significantly more complex, with higher possible cost variations.
+Furthermore, existing work did not evaluate the costs of individual security services of \gls{tls}. For this 
+reason, our work was concentrated around the Handshake protocol, even though we did evaluate the costs of the
+Record protocol too.
+
+
+
 
 \section{Discussion}
 

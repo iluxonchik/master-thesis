@@ -1494,7 +1494,11 @@ of results.
 In our work, we evaluated the \textit{mbedTLS's} implementation of the \gls{tls} protocol. The obtained
 metrics reflect the algorithm's implementations used within the library.
 
+
 \subsection{Evaluated Metrics}
+
+Explain what was evaluated. Explain why those metrics make sense (e.g. explain why number of CPU Cycles)
+is a good measure.
 
 \subsection{Limitations}
 
@@ -1515,8 +1519,6 @@ L3 cache:            6144K
 * with which options I profiled the resutls with
 * why I chose those options
 ---------------------------------
-
-\subsection{Limitations}
 
 In order to estimate the number of executed instructions, we used \textit{Valgrind}, more specifically
     its \textit{Callgrind} tool. \textit{Valgrind} runs the application on a synthetic CPU. 
@@ -1574,6 +1576,16 @@ atomic instructions executed. For example, on the x86 and x86\_64 architectures,
 instructions using the \textit{lock} prefix. In our evaluation, only single-threaded code was used, therefore
 reason we did not measure $Ge$. This further simplified the formula used by \textit{KCachegrind} to
 $CEst = Ir + 10*Bm + 10*L1m + 100*L2m$.
+
+\subsection{Developed Tools}
+
+Describe the tools that have been developed.
+
+\subsection{mbedTLS Set Up}
+
+Tell that I activated things in mbedTLS that come deactivated by default, since they have been deprecated.
+Some of those things are deactivated, because there are known security problems with them, but they might
+still make sense for IoT, beacuse it might be just "good enough" encryption.
 
 \section{Results and Data Analysis}
 
@@ -1648,6 +1660,158 @@ Furthermore, existing work did not evaluate the costs of individual security ser
 reason, our work was concentrated around the Handshake protocol, even though we did evaluate the costs of the
 Record protocol too.
 
+As mentioned previously, \gls{tls} offers various choices when it comes down to authentication. \gls{ecc}
+and non-\gls{ecc} key sizes cannot be compared directly. For this reason, we defined various security levels,
+which are presented in Table \ref{table:sec-levels}. This table is based on the approximate comparable key sizes
+for symmetric and asymmetric key algorithms based on the best known algorithms for attacking them (table 
+\ref{table:ecc-key-sizes}), which can be found in RFC 4492\cite{RFC4492}. Unfortunately, mbedTLS does not have 
+the exact ECC curves for the  key sizes with the values specified in the the table. For this reason, for \gls{ecc}
+we choose the closest larger value available.
+
+\todo{add forumula and explanation on how I got the ECC sizes for sizes of RSA below 1024 (look at notes in md) }
+
+
+TABLE: (go from 500KB to 8K, as in notes from meetings)
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|l|}
+\hline
+Security Level & Symmetric & ECC & DH/DSA/RSA \\ \hline
+\textit{S1}    & 80        & 163 & 1024       \\ \hline
+\textit{S2}    & 112       & 233 & 2048       \\ \hline
+\textit{S3}    & 128       & 283 & 3072       \\ \hline
+\textit{S4}    & 192       & 409 & 7680       \\ \hline
+\end{tabular}
+\end{table}
+
+All of the graphs and analysis in this section will be for the security level \textit{S2}, since it's the the most commonly
+used one in the internet today, both, for authentication and for \gls{pfs}\cite{QualysSS90:online}. 
+We could not find any any typical values used in the sphere of \gls{iot}.
+In particular:
+
+\begin{itemize}
+  \item if \gls{rsa} authentication is used, the server certificates will contain an $2048$ bit \gls{rsa} key;
+  \item if \gls{dh} is used for \gls{pfs}, the negotiated key will be $2048$ bit long;
+  \item if \gls{ecdh} is used fro \gls{pfs}, the negotiated key will be $256$ bit long and the \textit{secp256r1}
+  curve will be used. The choice of this curve was based on the preferred curve order of Google Chrome $67$, the most
+  used web browser in the world\cite{BrowserS4:online}.
+\end{itemize}
+
+This doesn't mean, however, that we will only analyze \textit{S2}. Other security levels were evaluated and will be
+presented.
+
+\subsection{Key Exchange}
+* Show a graph with all of the ciphersuites
+* Narrow down to ciphersuite with unique key exchange (all use the same hash and encr func)
+* Do a high-level overview analysis of each sost (e.g. we can see that PSKs are the most efficient ones,
+ECC counterpart of DH is more efficient)
+* Note, that  I will be profiling key exchanges
+
+The \textit{mbedTLS} library contains a total of $161$ ciphersuites. Out of those $161$ ciphersuites, there are
+$10$ unique key exchange methods. As described in the Methodology section, in our evaluation we are using a typical \gls{tls} set up,
+\textit{i.e.} with server-side authentication only. This means that the client and server evaluations results will be different.
+For this reason, for each part, there will be a subsection for the client and subsection for the server. 
+
+If the same type of authentication
+was used on the client-side, or if it was not used at all, both of the graphs would be identical. Some differences would be present,
+but they are negligible. Those differences could arise from factors such as implementation details, public key pairs (\textit{e.g.}
+one peer's keys resulting is faster computations) and protocol-specific factors (\textit{e.g.} \textit{ClientKeyExchange}
+message is always sent, while \textit{ServerKeyExchange} might be omitted; distinct internal functionality of the client 
+and the server). For all intents and purposes, we can neglect those differences.
+
+Figure \ref{fig:todo} shows the the cost of the Handshake for each one of the ciphersuites for the client. Figure
+\ref{fig:todo} shows the same information for the server. The graphs present a different shape. This is expected due 
+to the use of public key cryptography. The cost of public and public key operations are different. With \gls{rsa},
+public key operations are generally faster than private keys ones, for \gls{ecc}, it's the contrary. This is confirmed
+by both, our findings, and existing literature \cite{maletsky2015rsa}. The \textit{PSK} key exchange does not
+use asymmetric cryptography, for this reason it has identical costs for both peers.
+
+By looking at the $y$ axis of the client graph, we can find $9$ different groups.
+
+
+\subsection{RSA Key Exchange}
+
+RSA key exchange.
+
+\subsection{DHE-RSA Key Exchange}
+
+RSA with Ephemeral Diffie Hellman key exchange.
+
+\subsection{ECDHE-RSA Key Exchange}
+
+RSA with Elliptic Curve Ephemeral Diffie Hellman key exchange
+
+\subsection{ECHD-RSA Key Exchange}
+
+RSA with Elliptic Curve Diffie Hellman key exchange (non-ephemeral).
+
+\subsection{ECDHE-ECDSA Key Exchange}
+
+ECDSA with Elliptic Curve Ephemeral Diffie Hellman key exchange.
+
+\subsection{ECDH-ECDSA Key Exchange}
+
+ECDSA with Elliptic Curve Diffie Hellman key exchange.
+
+\subsection{PSK Key Exchange}
+
+Pre Shared Key key exchange.
+* tell that PSK key size does not affect the results much and explain why
+
+\subsection{DHE-PSK Key Exchange}
+
+Pre Shared Key with Ephemeral Diffie Hellman key exchange.
+
+\subsection{ECDHE-PSK Key Exchange}
+
+Pre Shared Key with Elliptic Curve Ephemeral Diffie Hellman key exchange.
+
+\subsection{RSA-PSK Key Exchange}
+
+Pre Shared Key with RSA key exchange.
+
+
+\subsection{DHE vs ECDHE}
+
+Comparison of DHE and it's ECC counterpart ECDHE. Analyze by how much one is more expensive than other and why.
+Analyze this difference for differen security levels.
+
+\subsection{RSA vs ECDSA Signing}
+
+Comparison of RSA and an ECC alternative ECDSA. Compare the costs of signing with public and private key.
+Tell how signature verification (public key operation) is always less expensive in RSA (thus, for consrained client
+scenario, we will probably prefer RSA). Compare the total and signature making/varification costs for many security
+levels (put all in a graph). Analyse the costs of RSA and ECDSA individually, then compare.
+
+\subsection{Authenticaition}
+
+Desribe the cost of authentcation.
+
+* Mention/predict how the size of the chain would affect all of this (i.e. tell a minimal-size chain is
+preferred)
+
+\subsection{Perferct Forward Secrecy}
+
+* How does ECC curves affect PFS level
+* The cost of PFS depends on two factors: curve and signature algorithm used to sign the SKE message.
+* Analyze the cost of PFS, for differnt security levels, etc. Tell why it still makes sense to use ECDH, even though
+it does not provide PFS.
+* do an ECHDE vs ECDH comparison
+
+
+\subsection{Confidentiality}
+
+Confidentiality
+
+\subsection{Integirty}
+
+TLS uses HMAC for integrity.
+
+\subsection{Conclusions}
+
+Tell that for constrained client scenario we want to use XYZ set-up, for constrained server scenario, we want to use
+ABC set-up and when both are constrained, use PSK (example). Tell that overall, PSK is the most efficient solution
+(if we want all security services). Put other conclusions...
 
 
 

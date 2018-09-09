@@ -1706,6 +1706,7 @@ presented.
 * Do a high-level overview analysis of each sost (e.g. we can see that PSKs are the most efficient ones,
 ECC counterpart of DH is more efficient)
 * Note, that  I will be profiling key exchanges
+* add full handshake graphs for other key exchange methods (only select few ciphers)
 
 The \textit{mbedTLS} library contains a total of $161$ ciphersuites. Out of those $161$ ciphersuites, there are
 $10$ unique key exchange methods. As described in the Methodology section, in our evaluation we are using a typical \gls{tls} set up,
@@ -1726,7 +1727,24 @@ public key operations are generally faster than private keys ones, for \gls{ecc}
 by both, our findings, and existing literature \cite{maletsky2015rsa}. The \textit{PSK} key exchange does not
 use asymmetric cryptography, for this reason it has identical costs for both peers.
 
-By looking at the $y$ axis of the client graph, we can find $9$ different groups.
+By looking at the $y$ axis of the client and server graphs, $8$ different groups can be distinguished. Each one of them 
+represents a key exchange. Those groups are depicted with the red color.  As previously mentioned, \textit{mbedTLS} has 
+$10$ distinct key exchange methods. However, since some key exchange methods have very similar operations involved,
+the costs for their cost is almost the same, thus only $8$ of them stand out in the graphs. In particular,
+for the client, the cost of the \textit{ECDHE-RSA} and \textit{ECDH-RSA}, as well as the cost of \textit{RSA} and \textit{RSA-PSK}
+are very similar. At the server, there is an analogous situation for the key exchanges \textit{ECDH-RSA} and \textit{ECDH-ECDSA}
+and the key exchanges \textit{RSA} and \textit{RSA-PSK}. Those observations are security-level specific and the situation
+might be different for different security levels. The reasons for that will be explained later in this section.
+
+A \gls{tls} ciphersuite specifies the key exchange algorithm, the symmetric encryption algorithm and the hash function
+that will be used in \gls{hmac}. During the Handshake only one message is encrypted (\textit{Finished}) and the hash function
+is used a few times: to generate the keying material and in the \textit{Finished} message (the exact number of uses
+depends on the ciphersuite, but it is negligible). Thus, everything besides the key exchange will have almost no impact
+impact on the overall cost of the Handshake.
+
+For a normalized comparison of the key exchange methods that follows, the symmetric encryption algorithm
+will be fixed to \textit{AES\_128\_GCM} and the hash function to \textit{SHA256}. This is the preferred choice
+of \textit{Google Chrome 67}.
 
 
 \subsection{RSA Key Exchange}

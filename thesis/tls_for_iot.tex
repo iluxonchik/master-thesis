@@ -1515,6 +1515,7 @@ L3 cache:            6144K
 * how does callgrind work
 * explain how this limits the accuracy of results
 * explain why I went with those instead of actual measures (speed, time limit, etc)
+* desribe CA (RSA 2048 bit key)
 -- put here or other section? --
 * with which options I profiled the resutls with
 * why I chose those options
@@ -1583,9 +1584,20 @@ Describe the tools that have been developed.
 
 \subsection{mbedTLS Set Up}
 
-Tell that I activated things in mbedTLS that come deactivated by default, since they have been deprecated.
+* Tell that I activated things in mbedTLS that come deactivated by default, since they have been deprecated.
 Some of those things are deactivated, because there are known security problems with them, but they might
 still make sense for IoT, beacuse it might be just "good enough" encryption.
+
+For all of the evaluated scenarios, a certificate chain with two certificates was used: the \gls{ca}'s certificate
+and the server's certificate. This is the smallest chain you can have. The \gls{ca}'s keys and signing algorithm was
+the same for all of the certificates. More specifically, all of the server certificates were signed with a
+2048-bit RSA with SHA-256 secure signing scheme, defined in \textit{RFC 8017} \cite{RFC8017}. The chosen
+signature algorithm and key size is based on the usual \gls{ca} practices. For example, Google's root certificate
+with the common name \textit{Google Internet Authority G3} uses this set up.
+
+The server's certificates, however, contained public keys of different sizes, according to the certificate type.
+For this reason, it is possible to deduce the cost of the \gls{ca}'s signature using a different algorithm with a
+different key.
 
 \section{Results and Data Analysis}
 
@@ -1657,7 +1669,7 @@ hashing operations.
 
 It is clear that the Handshake protocol is significantly more complex, with higher possible cost variations.
 Furthermore, existing work did not evaluate the costs of individual security services of \gls{tls}. For this 
-reason, our work was concentrated around the Handshake protocol, even though we did evaluate the costs of the
+reason, our work was concentrated around the Handshake protocol, even though we evaluated the costs of the
 Record protocol too.
 
 As mentioned previously, \gls{tls} offers various choices when it comes down to authentication. \gls{ecc}
@@ -1749,7 +1761,12 @@ of \textit{Google Chrome 67}.
 
 \subsection{RSA Key Exchange}
 
-RSA key exchange.
+The RSA key exchange is performed as follows:
+
+\begin{enumerate}
+  \item Server sends the client 
+  \item Server sends the client
+\end{enumerate}
 
 \subsection{DHE-RSA Key Exchange}
 
@@ -1866,3 +1883,4 @@ to the programmer and provides security services adaptable to the specific conte
 \printglossary[style=long]
 %
 \end{document}
+>

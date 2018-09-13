@@ -1617,24 +1617,17 @@ During the Handshake protocol, the peers authenticate one to another, agree on t
 algorithms and establish the shared keys. During the Record protocol the peers exchange the data securely, 
 using the algorithms and keys negotiated during the Handshake protocol. Those algorithms support the security
 services provided by \gls{tlsd}. For example, peer entity authentication is usually offered by algorithms, such
-as \gls{rsa} or \gls{ecdsa}.
+as \gls{rsa} or \gls{ecdsa}. The cost of the Handshake phase depends on the security services used. The cost
+of the Record phase depends on the amount of data transmitted.
 
-The Record protocol is mostly the use of a symmetric encryption algorithm (\textit{e.g.} AES), used to offer
-confidentiality and an \gls{hmac} algorithm, used to offer data integrity and data origin authentication.
-The performance of symmetric encryption algorithms and hash functions has been studied in detail by existing work. \todo{ref}
-The combination of the various algorithms that compose the Handshake, has not been though. For this reason,
-the majority 
-[[Tell, that the combination of the algorithms of the hanshake has not though]]
-
-There is little variety in the computational costs in the Record Protocol. The core of the Record protocol is the use
-of a symmetric encryption algorithm (\textit{e.g} AES), used to provide confidentiality and an \gls{hmac} algorithm,
-used to provide data integrity and data origin authentication. The \gls{hmac} algorithm is not used if the symmetric
-encryption algorithm is an \gls{aead} cipher, which already offers data integrity.
-Each encryption algorithm has a few possible varieties (\textit{e.g.} the CBC, GCM and CCM modes in AES) and key sizes 
-(\textit{e.g.}, $128$ and $256$ bit for AES). The same is true for \gls{hmac} algorithms, which have a well defined \gls{mac}
-function, key size and output length. As an example, the \textit{HMAC-SHA256} algorithm uses the \textit{SHA256} as its \gls{mac} function,
-has the key size of $256$ bit and outputs a digest of the same size. The performance of symmetric encryption algorithms and hash functions 
-has been studied in detail by existing work. \todo{ref} The cost increases for larger input data are approximately linear. \todo{ref}.
+The core of the Record protocol is the use of a symmetric encryption algorithm (\textit{e.g} AES), used to 
+provide confidentiality and an \gls{hmac} algorithm, used to provide data integrity and data origin authentication. 
+The \gls{hmac} algorithm is not used if the symmetric encryption algorithm is an \gls{aead} cipher, which already 
+guarantees data integrity. Each encryption algorithm has a few possible varieties (\textit{e.g.} the CBC, GCM and CCM modes in AES) 
+and key sizes  (\textit{e.g.}, $128$ and $256$ bit for AES). The same is true for \gls{hmac} algorithms, which 
+have a well defined \gls{mac} function, key size and output length. The performance of symmetric encryption 
+algorithms and hash functions has been studied in detail by existing work. \todo{ref} 
+The is an approximately linear relation between the ammount of data encrypted and the the cost. \todo{ref}.
 
 The previous paragraph does not apply to the Handshake protocol. In this part, there is more variety in the 
 computational cost outcomes. There are a few reasons for that:
@@ -1667,16 +1660,24 @@ Another cryptographic operation that is done in the Handshake phase is keying ma
 does not have a major influence on the computational costs and is the same for both peers, since it's essentially
 hashing operations. 
 
-It is clear that the Handshake protocol is significantly more complex, with higher possible cost variations.
-Furthermore, existing work did not evaluate the costs of individual security services of \gls{tls}. For this 
-reason, our work was concentrated around the Handshake protocol, even though we evaluated the costs of the
-Record protocol too.
+It is clear that the Handshake protocol is significantly more complex, with more possible cost variations.
+Furthermore, existing work neither evaluated the costs of individual security services of \gls{tls}, nor 
+their various combinations. For this reason, our work is concentrated around the Handshake protocol.
 
-As mentioned previously, \gls{tls} offers various choices when it comes down to authentication. \gls{ecc}
-and non-\gls{ecc} key sizes cannot be compared directly. For this reason, we defined various security levels,
-which are presented in Table \ref{table:sec-levels}. This table is based on the approximate comparable key sizes
-for symmetric and asymmetric key algorithms based on the best known algorithms for attacking them (table 
-\ref{table:ecc-key-sizes}), which can be found in RFC 4492\cite{RFC4492}. Unfortunately, mbedTLS does not have 
+This section as follows. Section 8.1 describes the various security levels used for evaluation. Section 8.2
+presents an overview of the costs of authentication and \gls{pfs}. Section 8.3 goes into more detail of the
+costs of those services, with an evaluation of various security levels. In section 8.4 we analyse the cost
+of the Handshake phase for the various \textit{ciphersuites} and security levels. Section 8.5 discusses the cost of
+confidentiality, integrity. Section 8.6 the cost of the Record protocol is analyzed. In that same section we also
+compare the costs of the Handshake protocol to the cost of the Record protocol.
+
+\subsection{Security Levels}
+
+We defined various security levels for evaluation. Those levels are presented in Table \ref{table:tls-sec-lvls}.
+This table is based on the approximate comparable key sizes for symmetric and asymmetric key algorithms based on the best known algorithms for attacking them (table 
+\ref{table:ecc-key-sizes}, which can be found in RFC 4492\cite{RFC4492}.
+
+Unfortunately, mbedTLS does not have 
 the exact ECC curves for the  key sizes with the values specified in the the table. For this reason, for \gls{ecc}
 we choose the closest larger value available.
 
@@ -1693,13 +1694,39 @@ Security Level & Symmetric & ECC & DH/DSA/RSA \\ \hline
 \textit{S2}    & 112       & 233 & 2048       \\ \hline
 \textit{S3}    & 128       & 283 & 3072       \\ \hline
 \textit{S4}    & 192       & 409 & 7680       \\ \hline
+\textit{S5}    & 256       & 571 & 15360      \\ \hline
 \end{tabular}
 \end{table}
 
-All of the graphs and analysis in this section will be for the security level \textit{S2}, since it's the the most commonly
-used one in the internet today, both, for authentication and for \gls{pfs}\cite{QualysSS90:online}. 
-We could not find any any typical values used in the sphere of \gls{iot}.
-In particular:
+\begin{table}[]
+  \begin{tabular}{|l|l|l|l|l|}
+  \hline
+                                                                       & \textbf{low} & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Symmetric Key Size\\ (bits)\end{tabular}  & 128               & 128               & 192           & 256            \\ \hline
+  \begin{tabular}[c]{@{}l@{}}RSA/DH/DSA Key Size\\ (bits)\end{tabular} & 1024              & 2048              & 4092          & 8192           \\ \hline
+  \begin{tabular}[c]{@{}l@{}}ECC Key Size\\ (bits)\end{tabular}        & 163               & 233               & 317           & 420            \\ \hline
+  HMAC                                                                 & SHA-256           & SHA-256           & SHA-384       & SHA-512        \\ \hline
+  \end{tabular}
+  \end{table}
+
+We based the \textbf{normal} security level on the current most used \gls{tls} configuration on the internet \cite{QualysSS90:online}.
+We could not find any typical values used in the sphere of \gls{iot}.
+
+A detailed description of the \textbf{normal} security level follows.
+
+\subsubsection{The normal security level}
+
+A certificate chain with two certificates is used: the \gls{ca}'s certificate
+and the server's certificate. The \gls{ca}'s keys and signing 
+algorithm was the same for all of the certificates. More specifically, all of the server certificates were 
+signed with a $2048$ bit \gls{rsa} with SHA-256 secure signing scheme, defined in \textit{RFC 8017} \cite{RFC8017}. 
+The chosen signature algorithm and key size is based on the usual \gls{ca} practices. For example, 
+Google's root certificate with the common name \textit{Google Internet Authority G3} uses this set up.
+Only server-side authentication is used.
+
+The server's certificates, however, contained public keys of different sizes, according to the certificate type.
+For this reason, it is possible to deduce the cost of the \gls{ca}'s signature using a different algorithm with a
+different key. For the \textbf{normal} security configuration, the certificates used by the server are as follows:
 
 \begin{itemize}
   \item if \gls{rsa} authentication is used, the server certificates will contain an $2048$ bit \gls{rsa} key;
@@ -1709,11 +1736,86 @@ In particular:
   used web browser in the world\cite{BrowserS4:online}.
 \end{itemize}
 
-This doesn't mean, however, that we will only analyze \textit{S2}. Other security levels were evaluated and will be
-presented.
+We decided to use the smallest possible certificate chain, consisting of two certificates. This is not the norm
+on the internet, where the chain size is larger. Adding more certificates to the chain would not provide additional
+information, since that cost can be computed by adding the costs of making/verifying additional signatures.
 
-\subsection{Key Exchange}
-* Show a graph with all of the ciphersuites
+\subsection{Security Services Analysis}
+
+The \gls{tls} protocol offers various security services. The list of security services offered by a connection
+depends on the used ciphersuite. Each ciphersuite consists of a set of algorithms, which have an implication 
+on the performance and cost. It is important to evaluate the cost of each security service to assist in making
+security/performance tradeoffs. A \textit{ciphersuite} can be thought of as \gls{tls} \textit{configuration},
+thus, these terms be used interchangeably.
+
+We will begin with an overview of the costs of authentication and \gls{pfs}. All of the analysis in this section
+are performed on the \textbf{normal} security level. A more detailed analysis, for various security levels
+follows in Section 8.3.
+
+\subsubsection{Authentication}
+
+In \gls{tls} there are two ways of doing authentication: either by using a \gls{psk} or by using asymmetric cryptography.
+Figure \ref{fig:client-auth-normal} shows the client-side cost of authentication of the various \textit{ciphersuites} for 
+the \textbf{normal} security level. Figure \ref{fig:server-auth-normal} shows the same information for the server.
+On average, \gls{psk}-based ciphersuites have lower cost of authentication; for the client that average is
+**X million CPU cycles and for the server **Y million CPU cycles. For non-\gls{psk} ciphersuites, authentication
+is achieved by either the use of \gls{rsa} or \gls{ecdsa}.
+
+In \gls{tls} it hard to talk about the cost of authentication without talking about \gls{pfs}. If a \gls{pfs}-enabled
+ciphersuite is used, an additional piece of information is authenticated: the \textit{ServerKeyExchange} message.
+This message contains a signature over the hash of the public \textit{(EC)DH parameters}. All of the key exchange methods
+which begin with either \textit{ECDHE} or \textit{DHE} incur in that extra cost. The average cost of the extra signature 
+for \gls{rsa} is of **X million instructions, when performing the public key operation (\textit{i.e.} verifying 
+the signature) and **Y million instructions, when performing the private key operation (\textit{i.e.} making the 
+signature). The average cost of the extra signature for \gls{ecdsa} is of **X million instructions, 
+when performing the public key operation  (\textit{i.e.} verifying the signature) and **Y million instructions, 
+when performing the private key operation (\textit{i.e.} making the signature). This information is summarized 
+in tables \ref{table:client-auth-cost}, \ref{table:server-auth-cost} and figures \ref{fig:server-auth-cost} and
+\ref{fig:server-auth-cost}.
+
+\begin{table}[]
+  \centering
+  \caption{Authentication costs for the client}
+  \label{table:client-auth-cost}
+  \begin{tabular}{|l|l|l|}
+  \hline
+        & \begin{tabular}[c]{@{}l@{}}Base Authentication Cost\\ (millions instructions)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Extra PFS Cost\\ (millions instructions)\end{tabular} \\ \hline
+  PSK   & 0                                                                                          & 1234                                                                             \\ \hline
+  RSA   & 1234                                                                                       & 1234                                                                             \\ \hline
+  ECDSA & 1234                                                                                       & 1234                                                                             \\ \hline
+  \end{tabular}
+  \end{table}
+
+\begin{table}[]
+  \centering
+  \caption{Authentication costs for the server}
+  \label{table:server-auth-cost}
+  \begin{tabular}{|l|l|l|}
+  \hline
+        & \begin{tabular}[c]{@{}l@{}}Base Authentication Cost\\ (millions instructions)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Extra PFS Cost\\ (millions instructions)\end{tabular} \\ \hline
+  PSK   & 0                                                                                          & 1234                                                                             \\ \hline
+  RSA   & 1234                                                                                       & 1234                                                                             \\ \hline
+  ECDSA & 1234                                                                                       & 1234                                                                             \\ \hline
+  \end{tabular}
+  \end{table}
+
+\subsubsection{Perfect Forward Secrecy}
+
+In \gls{tls}, \gls{pfs} is achieved either by the use of \gls{dh} or \gls{ecdh} key exchange. The average costs for the
+client and the server are the same: **X million CPU instructions. Only key exchanges which begin with \textit{DHE-} and
+\textit{ECDHE-} offer \gls{pfs}. \textit{ECDH-} ciphersuites have the server's public \gls{ecdh} parameter fixed, thus
+such connections do not offer \gls{pfs}.
+
+\subsection{(More Detailed SS Analysis)}
+
+\subsection{Handshake Protocol Analysis}
+
+The cost of making or verifying this signature is the difference between the \textit{ECHE-*} and its \textit{ECDH-*}.
+For example, ...
+
+
+\subsection{Key Exchange} 
+ * Show a graph with all of the ciphersuites
 * Narrow down to ciphersuite with unique key exchange (all use the same hash and encr func)
 * Do a high-level overview analysis of each sost (e.g. we can see that PSKs are the most efficient ones,
 ECC counterpart of DH is more efficient)
@@ -1761,12 +1863,38 @@ of \textit{Google Chrome 67}.
 
 \subsection{RSA Key Exchange}
 
-The RSA key exchange is performed as follows:
+In \gls{rsa} key exchange, the server authenticates himself to the client through
+an \textit{X.509} public key certificate containing its public RSA key.
+
+The most relevant parts of the RSA key exchange are as follows:
 
 \begin{enumerate}
-  \item Server sends the client 
-  \item Server sends the client
+  \item The client verifies the server's certificate [\textit{RSA CA Cert Verify}]
+\item The client generates a $48$ byte premsater secret [\textit{RSA PMS Gen}
+  \item The client encrypts the premaster secret with the server's public RSA key [\textit{RSA Public}]
+  \item The server decrypts the premaster secret with its private RSA key [\textit{RSA Private}]
+  \item Both peers generate the keying material [\textit{Keying Gen}]
 \end{enumerate}
+
+The costs in \textbf{millions CPU instructions}, for $2048$ bit \gls{rsa} level are as
+presented in Table \ref{tab:rsa-ke-2048}
+
+\begin{table}[]
+\begin{tabular}{|l|l|}
+\hline
+                   & Millions CPU Instructions \\ \hline
+RSA CA Cert Verify & 1                         \\ \hline
+RSA PMS Gen        & 0.377                     \\ \hline
+RSA Public         & 1                         \\ \hline
+RSA Private        & 74                        \\ \hline
+Keying Gen         & 0.696                     \\ \hline
+\end{tabular}
+\end{table}j
+
+\subsubsection{Client}
+
+The total handshake cost for the client is XXXX.
+
 
 \subsection{DHE-RSA Key Exchange}
 

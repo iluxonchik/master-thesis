@@ -1664,11 +1664,11 @@ It is clear that the Handshake protocol is significantly more complex, with more
 Furthermore, existing work neither evaluated the costs of individual security services of \gls{tls}, nor 
 their various combinations. For this reason, our work is concentrated around the Handshake protocol.
 
-This section as follows. Section 8.1 describes the various security levels used for evaluation. Section 8.2
+This section as structured as follows. Section 8.1 describes the various security levels used for evaluation. Section 8.2
 presents an overview of the costs of authentication and \gls{pfs}. Section 8.3 goes into more detail of the
 costs of those services, with an evaluation of various security levels. In section 8.4 we analyse the cost
 of the Handshake phase for the various \textit{ciphersuites} and security levels. Section 8.5 discusses the cost of
-confidentiality, integrity. Section 8.6 the cost of the Record protocol is analyzed. In that same section we also
+confidentiality and integrity. Section 8.6 the cost of the Record protocol is analyzed. In that same section we also
 compare the costs of the Handshake protocol to the cost of the Record protocol.
 
 \subsection{Security Levels}
@@ -1740,7 +1740,7 @@ We decided to use the smallest possible certificate chain, consisting of two cer
 on the internet, where the chain size is larger. Adding more certificates to the chain would not provide additional
 information, since that cost can be computed by adding the costs of making/verifying additional signatures.
 
-\subsection{Security Services Analysis}
+\subsection{Security Services In TLS}
 
 The \gls{tls} protocol offers various security services. The list of security services offered by a connection
 depends on the used ciphersuite. Each ciphersuite consists of a set of algorithms, which have an implication 
@@ -1806,7 +1806,79 @@ client and the server are the same: **X million CPU instructions. Only key excha
 \textit{ECDHE-} offer \gls{pfs}. \textit{ECDH-} ciphersuites have the server's public \gls{ecdh} parameter fixed, thus
 such connections do not offer \gls{pfs}.
 
-\subsection{(More Detailed SS Analysis)}
+\subsection{Security Services Analysis}
+
+TODO: remove this seciton.
+
+In this section, we will do a more detailed analysis of the the costs of authentication and \gls{pfs}.
+We will begin by comparing the costs of \gls{rsa} and \gls{ecdsa} for private and public key operations at various
+security levels. 
+
+Next, the cost of \gls{pfs} will be analyzed. For both, \gls{dh} and \gls{ecdh} we will deconstruct \gls{pfs} into 
+individual steps and examine their costs. This analysis will be done for various security levels. 
+
+The analysed operations will be fitted into the \gls{tls} Handshake process, clarifying its costs in the section that
+follows this one.
+
+\subsection{Authentication Cost Analysis}
+
+In \gls{tls} authentication can be achieved by either using a pre-shared secret or asymmetric cryptography. 
+If a pre-shared secret is used, the cost of authentication is $0$. If asymmetric cryptography is used, there are two
+choices of algorithms: \gls{rsa} and \gls{ecdsa}. Each one of them has advantages and disadvantages, depending on the
+scenario. We will analyse them now.
+
+\gls{rsa} and \gls{ecdsa} have two basic operations: sign and verify. The first one uses the private key, while the
+second one the public key. Figures \ref{fig:rsa-ecdsa-sign-ver-total-normal-sl} compares the performance of the algorithm's
+operations for the \textbf{normal} security level (\textit{i.e.} $2048$ bit \gls{rsa} key and $256$ bit \gls{ecdsa} key).
+
+\todo{figure}
+
+By analyzing the graph, we can can observe two things:
+
+\begin{itemize}
+  \item \gls{rsa} is more efficient at performing public key operations, \textit{i.e.} verifying the signature
+  \item \gls{ecdsa} is more efficient at performing private key operations, \textit{i.e.} making the signature
+\end{itemize}
+
+This holds true for other security levels too, as will be shown further down the text. Let us now analyse each one
+of the algorithms and their costs in more detail. 
+
+\subsubsection{RSA}
+* analyze the costs individually, for every security level; tell by how much there is an increase in every
+* put a table with key size, sign cost, verify cost, total cost
+* put a graph with two lines: one for the growth of the signing operation and one for the cost of the verifying operation,
+as the key size grows.
+
+We have already seen the costs of \gls{rsa} for the \textbf{normal} security level and now we will analyse the
+remaining ones. Table \ref{table:rsa-costs-all-sls} shows the number of CPU instuctions used in performing
+when signing a $32$ byte message and verifying the resulting signature with \gls{rsa}. Figure \ref{fig:rsa-costs-all-sls}
+depicts this information graphically. The cost increase of the public and private key operations, as the security level 
+increases is shown in Figure \ref{fig:rsa-pub-priv-cost-increase}. The percentages show the relative cost increase 
+from the previous security level.
+
+An analysis of the data shows a much higher relative increase in private key operations that in public ones.
+For example, by comparing the \textbf{low} ($1024$ bit \gls{rsa} keys) and \textbf{very high} ($8192$ bit \gls{rsa} keys),
+we can see that while there is a $**X\%$ increase in the costs of private key operations, there is only a $**Y\%$
+increase in the cost of public key operations. The reason for that discrepancy has to do with an optimization
+in the choice of the keys.
+
+\gls{rsa}'s public keys are deliberately chosen to have a small public exponent, such as $e=65537$. This is considered as a
+sensible compromise, since it is famously known to be prime, large enough to avoid the attacks to which 
+small exponents make RSA vulnerable, and can be computed extremely quickly on binary computers \cite{boneh2002fast}\cite{muir2006seifert}.
+A smaller exponent leads to less exponentiation operations, thus better performance. For this reason, public
+key operations with \gls{rsa} are faster than private key ones.
+
+\subsubsection{ECDSA}
+
+\subsubsection{Comparison}
+
+* Comare RSA with ECDSA 
+* Say why RSA performs better in some scenarios and worse in others
+  * public key is chosen is a specific format (a lot of zeroes)
+    * you don't have such a thing for ECDSA
+  * ECDSA keys are a lot smaller, thus the cost difference
+* Say which one is better for which operations
+
 
 \subsection{Handshake Protocol Analysis}
 

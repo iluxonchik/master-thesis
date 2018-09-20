@@ -62,8 +62,25 @@ instructions used, time taken or power used. For this reason, software developer
 that want to use TLS to provide connection security do not have data that can
 assist them in making the security/resouce usage trade-offs.
 
+
 The goal of this work is to evaluate the cost of each security service of the
 TLS protocol. This will assit software developers to make security/resouce usage
 tradeoff judments, according to their needs and limitations. For this reason,
 this work targeted towards developers who whish to add communication security
 to their applications in the IoT environment.
+
+# Proposed Structure
+
+Outline of the proposed structure of the part of the 2nd part of the thesis.
+
+* describe "limitations" of the setup
+  * certificate chain of length 1, CA cert always signed with SHA-1, etc
+
+5. Objectives
+  * describe the objectives of my work
+6. Methodology
+7. Results and Data Analysis
+8. Discussion
+9. Further Work
+  * what I will be doing until December
+10. Conclusion

@@ -108,6 +108,8 @@ vratio=2:3,      % not vertically centered
 %
 \usepackage{makeidx}  % allows for indexgeneration
 %
+\newcounter{footnotesintable}
+%
 \begin{document}
 %
 \frontmatter          % for the preliminaries
@@ -1687,6 +1689,8 @@ we choose the closest larger value available.
 TABLE: (go from 500KB to 8K, as in notes from meetings)
 
 \begin{table}[]
+\centering
+\setcounter{footnotesintable}{0}
 \begin{tabular}{|l|l|l|l|}
 \hline
 Security Level & Symmetric & ECC & DH/DSA/RSA \\ \hline
@@ -1702,19 +1706,27 @@ Security Level & Symmetric & ECC & DH/DSA/RSA \\ \hline
   \begin{tabular}{|l|l|l|l|l|}
   \hline
                                                                        & \textbf{low} & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
-  \begin{tabular}[c]{@{}l@{}}Symmetric Key Size\\ (bits)\end{tabular}  & 128               & 128               & 192           & 256            \\ \hline
+  \begin{tabular}[c]{@{}l@{}}Symmetric Key Size\\ (bits)\end{tabular}  & 128               & 128               & 192\addtocounter{footnote}{1}\addtocounter{footnotesintable}{1}\footnotemark[\thefootnote]             & 256            \\ \hline
   \begin{tabular}[c]{@{}l@{}}RSA/DH/DSA Key Size\\ (bits)\end{tabular} & 1024              & 2048              & 4092          & 8192           \\ \hline
-  \begin{tabular}[c]{@{}l@{}}ECC Key Size\\ (bits)\end{tabular}        & 163               & 233               & 317           & 420            \\ \hline
-  HMAC                                                                 & SHA-256           & SHA-256           & SHA-384       & SHA-512        \\ \hline
+  \begin{tabular}[c]{@{}l@{}}ECC Key Size\\ (bits)\end{tabular}        & 163 \addtocounter{footnote}{1}\addtocounter{footnotesintable}{1}\footnotemark[\thefootnote]               & 233 \addtocounter{footnote}{1}\addtocounter{footnotesintable}{1}\footnotemark[\thefootnote]               & 317\addtocounter{footnote}{1}\addtocounter{footnotesintable}{1}\footnotemark[\thefootnote]             & 420\addtocounter{footnote}{1}\addtocounter{footnotesintable}{1}\footnotemark[\thefootnote]              \\ \hline
+  HMAC                                                                 & SHA-256           & SHA-256           & SHA-384       & SHA-512  \addtocounter{footnote}{1}\addtocounter{footnotesintable}{1}\footnotemark[\thefootnote]      \\ \hline
   \end{tabular}
   \end{table}
 
-We based the \textbf{normal} security level on the current most used \gls{tls} configuration on the internet \cite{QualysSS90:online}.
-We could not find any typical values used in the sphere of \gls{iot}.
+\addtocounter{footnote}{-\thefootnotesintable}
+\addtocounter{footnote}{1}\footnotetext[\thefootnote]{The closest value available in mbedTLS 2.7.0 (rounded up) is $192$}
+\addtocounter{footnote}{1}\footnotetext[\thefootnote]{The closest value available in mbedTLS 2.7.0 (rounded up) is $224$ bit}
+\addtocounter{footnote}{1}\footnotetext[\thefootnote]{The closest value available in mbedTLS 2.7.0 (rounded up)is $256$ bit}
+\addtocounter{footnote}{1}\footnotetext[\thefootnote]{The closest value available in mbedTLS 2.7.0 (rounded up) is $384$ bit}
+\addtocounter{footnote}{1}\footnotetext[\thefootnote]{The closest value available in mbedTLS 2.7.0 (rounded up) is $512$ bit}
+\addtocounter{footnote}{1}\footnotetext[\thefootnote]{The strongest hash function available in mbedTLS is SHA-384}
 
-A detailed description of the \textbf{normal} security level follows.
+We based the \textbf{normal} security level on the current most used \gls{tls} configuration on the internet \cite{QualysSS90:online}.
+We could not find any typical values used in the sphere of \gls{iot}. A detailed description of the \textbf{normal} security level follows.
 
 \subsubsection{The normal security level}
+
+\todo{add section for other security levels}
 
 A certificate chain with two certificates is used: the \gls{ca}'s certificate
 and the server's certificate. The \gls{ca}'s keys and signing 
@@ -1856,10 +1868,12 @@ depicts this information graphically. The cost increase of the public and privat
 increases is shown in Figure \ref{fig:rsa-pub-priv-cost-increase}. The percentages show the relative cost increase 
 from the previous security level.
 
-An analysis of the data shows a much higher relative increase in private key operations that in public ones.
+An alaysis of the data shows that private key operations are always more efficient than the private key ones.
+Moreover, there is a much higher relative increase in private key operations that in public ones.
 For example, by comparing the \textbf{low} ($1024$ bit \gls{rsa} keys) and \textbf{very high} ($8192$ bit \gls{rsa} keys),
 we can see that while there is a $**X\%$ increase in the costs of private key operations, there is only a $**Y\%$
-increase in the cost of public key operations. The reason for that discrepancy has to do with an optimization
+increase in the cost of public key operations. This makes the already high ratio of private to public key operations costs
+even higher, as the security level increases (Figure \ref{fig:rsa-pub-priv-ratio}). The reason for that discrepancy has to do with an optimization
 in the choice of the keys.
 
 \gls{rsa}'s public keys are deliberately chosen to have a small public exponent, such as $e=65537$. This is considered as a
@@ -1870,6 +1884,23 @@ key operations with \gls{rsa} are faster than private key ones.
 
 \subsubsection{ECDSA}
 
+We have already seen the costs of \gls{ecdsa} for the \textbf{normal} security level and now we will analyse the
+remaining ones. Table \ref{table:ecdsa-costs-all-sls} shows the number of CPU instructions used in performing
+when signing a $32$ byte message and verifying the resulting signature with \gls{ecdsa}. Figure \ref{fig:ecdsa-costs-all-sls}
+depicts this information graphically. The cost increase of the public and private key operations, as the security level 
+increases is shown in Figure \ref{fig:ecdsa-pub-priv-cost-increase}. The percentages show the relative cost increase 
+from the previous security level.
+
+An analysis of the data shows a higher relative increase in public key operations, when compared to the private ones.
+That difference is not as dramatic as it is in case of \gls{rsa}, tough. For example, by comparing the 
+\textbf{low} ($224$ bit \gls{ecdsa} keys) and \textbf{very high} ($512$ bit \gls{ecdsa} keys), 
+we can see that there is a $**X\%$ increase in the costs of private key operations, and a  $**Y\%$  increase in the 
+cost of public key operations. Despite that, witihin the range of the security levels available in mbedTLS 2.7.0 (from $224$ bit to $520$ bit \gls{ecc} keys), 
+the prviate keys operations are always less costly than the public ones. The ratio between the costs of the most costly operation and the less costly one
+is not nearly as high as it is for \gls{rsa}, as shown in Figure \ref{fig:ecsa-pub-priv-ratio}.
+
+
+
 \subsubsection{Comparison}
 
 * Comare RSA with ECDSA 
@@ -1878,6 +1909,10 @@ key operations with \gls{rsa} are faster than private key ones.
     * you don't have such a thing for ECDSA
   * ECDSA keys are a lot smaller, thus the cost difference
 * Say which one is better for which operations
+* Say that ratio of more costly to less costly operation is a lot better in ECDSA
+  * this is important if we want to balance out the costs equally
+
+The choice between \gls{rsa} and \gls{ecdsa}
 
 
 \subsection{Handshake Protocol Analysis}
@@ -2083,4 +2118,3 @@ to the programmer and provides security services adaptable to the specific conte
 \printglossary[style=long]
 %
 \end{document}
->

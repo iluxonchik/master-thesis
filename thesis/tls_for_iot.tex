@@ -1752,6 +1752,127 @@ We decided to use the smallest possible certificate chain, consisting of two cer
 on the internet, where the chain size is larger. Adding more certificates to the chain would not provide additional
 information, since that cost can be computed by adding the costs of making/verifying additional signatures.
 
+\subsection{Evaluation of Security Services in TLS}
+
+As mentioned previously, the cost of the Handshake varies greatly, depending on the security level and algorithms used.
+In this section an overview of the Handshake costs for the various configurations will be presented. For this
+first evaluation, we will concentrate on the \textbf{medium} security level, which was defined in the text above.
+\textit{mbedTLS 2.7.0} includes a total of $161$ ciphersuites, with $10$ unique key exchange methods, with $13$ unique
+symmetric key encrypiton algorithms and $4$ unqiue hash functions. Some of the ciphersuites are disabled by default,
+since they are considered weak. In the sphere of \gls{iot}, however, it might still make sense to use them in cerntain
+scenarios, if their cost considerably lower. For this reason, we have enabled and evaluated all of the possible configurations.
+
+Since the evaluted security level the server authenticates, but the client does not,
+a separate analysis for both peers will be made. We will begin with an overview of the costs for the various \gls{tls}
+configurations.
+
+Figures \ref{fig:hs-all-ciphers-cli} and \ref{fig:hs-all-ciphers-srv} depict a graph with the Handshake cost of each one 
+of the ciphersuites, for the client and the server, respectively. In both graphs, $y$ axis represents the number of 
+CPU instructions executed. The ciphersuites have been grouped by the key exchange method. Each bar within a key 
+exchange method group represents a different combination of a symmetric encryption function and a hash function. 
+We decided to omit the name of those combinations, since this information is not crutial for this analysis and it 
+clutters up the graph. What is important to see is the fact taht there is very little  variation in costs within 
+each key exchange method group. This is due to the fact that most of the resources are spent in authenticating and 
+generating the keying material (either using \gls{pfs} or not).
+
+From the anaylysis of Figures \ref{fig:hs-all-ciphers-cli} and \ref{fig:hs-all-ciphers-srv}, it becomes obvious 
+that some of the ciphersuites have  much lower Hanshake costs than the others. For the client, the \textit{PSK} based 
+ciphesuites are the least and \textit{ECHE-ECDSA} are the most expensive ones. For the server, the \textit{PSK} based
+ciphersuites are the least and \textit{DHE-RSA} are the most expensive ones. To make the presented information clearer, 
+we took the average of the costs of all ciphersuites for each key exchange method. This information is presented in
+table \ref{table:hs-all-ciphers-cli-aggr} for the client and in table \ref{table:hs-all-ciphers-srv-aggr} for the server.
+Figures \ref{fig:hs-all-ciphers-cli-aggr} and \ref{fig:hs-all-ciphers-srv-aggr} depict this information graphically.
+ 
+
+Each row and column intersection in the tables \ref{table:hs-all-ciphers-cli-aggr} and \ref{table:hs-all-ciphers-srv-aggr} 
+forms a ciphersuite. The rows separate the various authentication algorithms that can be used. The columns sperate the 
+key exhchange methods that offer \gls{pfs}, from the ones that don't. Each entry of the table presents the average 
+number of CPU cycles with its standard deviation in parenthesis.
+
+\subsubsection{Client}
+
+* ECDHE columns to copmare the cost of different authentications
+* PSK/RSA column to compare the cost of DHE vs ECHDE PFS
+* ECDHE-PSK - X-PSK is the cost of PFS
+
+
+By analyzing table \ref{table:hs-all-ciphers-cli-aggr} figure \ref{fig:hs-all-ciphers-cli-aggr} we can approximate
+the costs of the security serives of authentication and \gls{pfs} for the client. Even though those values are approximations, 
+they are very close actual numbers, since they dominate the costs of the Handshake. All of the costs presented here
+are taken directy from table \ref{table:hs-all-ciphers-cli-aggr} and will be in millions CPU instructions, 
+rounded to $3$ decimal places. 
+
+If \gls{pfs} is used, the cost of the Handshake varies from $52.883$ to $133.524$ 
+million CPU instrutions for \gls{psk} based authentcation, and from $55.538$ to $160.445$ million CPU instructions for 
+asymmetric authentcation. If the seucirity service of \gls{pfs} is foregone, the cost
+of the Handshake varies from $1.199$  to $42.041$ for \gls{psk} based authentcation,
+and from $54.333$ million to $106.8$ for asymmetric authentcation.
+
+If we analyze the values in the \textit{ECDHE} column in table \ref{table:hs-all-ciphers-cli-aggr}, thus fixing the
+algorithm used to offer \gls{pfs} we can compare the costs of authentcation for various algorithms on the client-side.
+For example, we can see that \textit{RSA} authentication costs $2.445$  ($55.538 - 52.883$) more than \gls{psk} authentication and \textit{ECDSA} authentcation costs $104.97$ ($160.445 - 55.538$ ) million CPU instructions more than
+\textit{RSA} authentcation. The total cost of using \gls{psk} for authentcation can be estimated by looking at the
+value in the \textit{PSK} row and \textit{X} column, thus fixing authentcation to \textit{PSK} and not using any other
+algorithm for key agreement: $1.119$. In the same manner, the cost of using \textit{RSA} for authentcation can
+be approximated by taking the value located in row \textit{RSA} and column \textit{X}, thus fixing authentcation
+to \gls{rsa} and not using any other algorithm for key agreement: $4.211$. Even though we cannot estimate the cost
+of using \textit{ECDSA} for authentcation directly from the table, we have already seen that \textit{ECDSA} authentcation
+is $104.97$ more costly than \textit{RSA} authentcation. Thus, the cost of using \textit{ECDSA} for authentcation
+is of $4.211+104.97=109.181$ million CPU instructions.
+
+Similarly, we can compare the costs of using \gls{dh} vs \gls{ecdh} to provide \gls{pfs}, by
+looking at the \gls{psk} (or \gls{rsa}) row, thus fixing the authentcation algorithm. Using \textit{DHE} is 
+$80.641$ ($133.524 - 52.883$) million CPU instructions more expensive than using \textit{ECDHE}. The total cost of \gls{pfs}
+using the \gls{ecdh} algorithm can be computed by fixing the \textit{PSK} row (or \gls{rsa} row) 
+and subtracting the value in the \textit{ECDHE} column from the value in the \textit{X} column. By doing this, we are 
+fixing the authentcation algorithm to \gls{psk} and subtracting the cost of the Handshake when no \gls{pfs} is used, 
+from the cost of the Hanshake when \textit{ECDHE} is used to provide \gls{pfs}. Thus, the cost of using \textit{ECDHE}
+to provide \gls{pfs} is of $51.684$ million CPU cycles ($52.883-1.199$). Since we already know that \textit{DHE} costs
+$80.641$ million CPU instructions more than \textit{ECDHE}, we can compute the cost of using the \textit{DHE} to
+provide \gls{pfs}: $51.684+80.641=132.325$ million CPU instructions.
+
+\subsubsection{Server}
+
+We will now perform the same analysis for the server by analyzing the table \ref{table:hs-all-ciphers-srv-aggr} 
+figure \ref{fig:hs-all-ciphers-srv-aggr}. Once again, the presented costs will be approximations in
+being millions CPU instructions rounded to $3$ decimal places.
+
+If \gls{pfs} is used, the cost of the Handshake varies from $52.883$ to $133.524$ 
+million CPU instrutions for \gls{psk} based authentcation, and from $55.538$ to $160.445$ million CPU instructions for 
+asymmetric authentcation. If the seucirity service of \gls{pfs} is foregone, the cost
+of the Handshake varies from $1.199$  to $42.041$ for \gls{psk} based authentcation,
+and from $54.333$ million to $106.8$ for asymmetric authentcation.
+
+If we analyze the values in the \textit{ECDHE} column in table \ref{table:hs-all-ciphers-cli-aggr}, thus fixing the
+algorithm used to offer \gls{pfs} we can compare the costs of authentcation for various algorithms on the client-side.
+For example, we can see that \textit{RSA} authentication costs $2.445$  ($55.538 - 52.883$) more than \gls{psk} authentication and \textit{ECDSA} authentcation costs $104.97$ ($160.445 - 55.538$ ) million CPU instructions more than
+\textit{RSA} authentcation. The total cost of using \gls{psk} for authentcation can be estimated by looking at the
+value in the \textit{PSK} row and \textit{X} column, thus fixing authentcation to \textit{PSK} and not using any other
+algorithm for key agreement: $1.119$. In the same manner, the cost of using \textit{RSA} for authentcation can
+be approximated by taking the value located in row \textit{RSA} and column \textit{X}, thus fixing authentcation
+to \gls{rsa} and not using any other algorithm for key agreement: $4.211$. Even though we cannot estimate the cost
+of using \textit{ECDSA} for authentcation directly from the table, we have already seen that \textit{ECDSA} authentcation
+is $104.97$ more costly than \textit{RSA} authentcation. Thus, the cost of using \textit{ECDSA} for authentcation
+is of $4.211+104.97=109.181$ million CPU instructions.
+
+Similarly, we can compare the costs of using \gls{dh} vs \gls{ecdh} to provide \gls{pfs}, by
+looking at the \gls{psk} (or \gls{rsa}) row, thus fixing the authentcation algorithm. Using \textit{DHE} is 
+$80.641$ ($133.524 - 52.883$) million CPU instructions more expensive than using \textit{ECDHE}. The total cost of \gls{pfs}
+using the \gls{ecdh} algorithm can be computed by fixing the \textit{PSK} row (or \gls{rsa} row) 
+and subtracting the value in the \textit{ECDHE} column from the value in the \textit{X} column. By doing this, we are 
+fixing the authentcation algorithm to \gls{psk} and subtracting the cost of the Handshake when no \gls{pfs} is used, 
+from the cost of the Hanshake when \textit{ECDHE} is used to provide \gls{pfs}. Thus, the cost of using \textit{ECDHE}
+to provide \gls{pfs} is of $51.684$ million CPU cycles ($52.883-1.199$). Since we already know that \textit{DHE} costs
+$80.641$ million CPU instructions more than \textit{ECDHE}, we can compute the cost of using the \textit{DHE} to
+provide \gls{pfs}: $51.684+80.641=132.325$ million CPU instructions.
+
+\todo{add some conlusions about both, cli and srv. Like}:
+
+* just by looking at the handshake costs we were able to estimate the costs of various security services
+* some ciphers are more costly than others, this comes down to the security services offered by each one, as well
+  as the algos used to offer those security services.
+* the most efficient ones are X,Y,Z
+
 \subsection{Security Services In TLS}
 
 The \gls{tls} protocol offers various security services. The list of security services offered by a connection

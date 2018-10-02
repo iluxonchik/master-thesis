@@ -1754,6 +1754,12 @@ information, since that cost can be computed by adding the costs of making/verif
 
 \subsection{Evaluation of Security Services in TLS}
 
+The \gls{tls} protocol offers various security services. The list of security services offered by a connection
+depends on the used ciphersuite. Each ciphersuite consists of a set of algorithms, which have an implication 
+on the performance and cost. It is important to evaluate the cost of each security service to assist in making
+security/performance tradeoffs. A \textit{ciphersuite} can be thought of as \gls{tls} \textit{configuration},
+thus, these terms be used interchangeably.
+
 As mentioned previously, the cost of the Handshake varies greatly, depending on the security level and algorithms used.
 In this section an overview of the Handshake costs for the various configurations will be presented. For this
 first evaluation, we will concentrate on the \textbf{medium} security level, which was defined in the text above.
@@ -1800,7 +1806,7 @@ rounded to $3$ decimal places.
 If \gls{pfs} is used, the cost of the Handshake varies from $52.883$ to $133.524$ 
 million CPU instrutions for \gls{psk} based authentcation, and from $55.538$ to $160.445$ million CPU instructions for 
 asymmetric authentcation. If the seucirity service of \gls{pfs} is foregone, the cost
-of the Handshake varies from $1.199$  to $42.041$ for \gls{psk} based authentcation,
+of the Handshake varies from $1.199$ to $42.041$ for \gls{psk} based authentcation,
 and from $54.333$ to $106.8$ for asymmetric authentcation.
 
 If we analyze the values in the \textit{ECDHE} column in table \ref{table:hs-all-ciphers-cli-aggr}, thus fixing the
@@ -1884,28 +1890,172 @@ is the most costly one of them. For the server, this situation is reversed. The 
 Section $4.X$, when we analyse the Handshake costs in detail.
 
 As for the \gls{pfs}, in both cases \textit{ECDHE} is about $1.5$ less costly than \textit{DHE}. This gives us a glimpse
-into the benefits of elliptic curve cryptography. The costs of \gls{pfs} are identical for both peers.
+into the benefits of elliptic curve cryptography. The costs of \gls{pfs} are identical for both peers. In the next
+section we will analyse both of the security services in more detail.
 
-\subsection{Security Services In TLS}
+The previous section gave an overview of the security services of authentcation and \gls{pfs}. We deduced their
+approximated cost by analyzing the costs of the Handshake with various ciphersuites. In the follwoing two sections
+we will do a more detailed analysis of those serivces and the underlying algorithms that support them.
 
-The \gls{tls} protocol offers various security services. The list of security services offered by a connection
-depends on the used ciphersuite. Each ciphersuite consists of a set of algorithms, which have an implication 
-on the performance and cost. It is important to evaluate the cost of each security service to assist in making
-security/performance tradeoffs. A \textit{ciphersuite} can be thought of as \gls{tls} \textit{configuration},
-thus, these terms be used interchangeably.
-
-We will begin with an overview of the costs of authentication and \gls{pfs}. All of the analysis in this section
-are performed on the \textbf{normal} security level. A more detailed analysis, for various security levels
-follows in Section 8.3.
-
-\subsubsection{Authentication}
+\subsection{Authentication Cost Analysis}
 
 In \gls{tls} there are two ways of doing authentication: either by using a \gls{psk} or by using asymmetric cryptography.
-Figure \ref{fig:client-auth-normal} shows the client-side cost of authentication of the various \textit{ciphersuites} for 
-the \textbf{normal} security level. Figure \ref{fig:server-auth-normal} shows the same information for the server.
-On average, \gls{psk}-based ciphersuites have lower cost of authentication; for the client that average is
-**X million CPU cycles and for the server **Y million CPU cycles. For non-\gls{psk} ciphersuites, authentication
-is achieved by either the use of \gls{rsa} or \gls{ecdsa}.
+If asymmetric cryptography is used, there are two choices for the algorithm: \gls{rsa} or \gls{ecdsa}.
+
+In the previous section we compared the costs of different authentcation methods by analyzing the total cost of the
+Handshake with different ciphersuites. In this section, we will analyse this security service in detail, including the
+underlying algorithms.
+
+\subsubsection{PSK Authentication Cost Analysis}
+
+In the prevoius seciton we approximated the cost of \gls{psk} authentcation to be $1.119$ million CPU instructions 
+for the client and $1.217$ million CPU instructions for the server. In reality, this cost is very close to zero, since
+both of the parties already have the authentcation key. The approximated value is actually the cost of performing the 
+smallest and least costly Handshake in \textit{mbedTLS}.
+This value can be seen as the "TLS Handshake" ovehead. Approximately $69\%$ of those CPU instructions are spent on
+executing to \gls{prf} function to derive the shared keying material. The tasks of computing own and cheking the other
+party's \textit{Finished} message, both cost approximately $10\%$ of the total Handshake cost. The remaining CPU
+instrucitons are spent on reading/wrting to/from the network and computing the remaining \gls{tls} Handshake messages.
+
+Table \ref{table:hs-key-gen-cost} shows the number of CPU instrucitons spent in the \gls{prf}
+and in computing the \textit{Finished} message for all of the defined security levels. 
+This number is the average of all of the $161$ ciphersuites, with the standard deviation shown in parenthesis.
+An analysis of the table shows that this value is amost the same for all security levels. This can be explaiened by
+the fact that both of the operations are essentially hashing operations and even if the input size varies
+by a few hundred bytes, the total cost does not increase by a lot.
+
+\todo{table}
+
+\subsection{Asymmetric Algorithms Authenticaition Cost Analysis}
+
+If asymmetric cryptography is used for authentcation, there are two
+choices of algorithms: \gls{rsa} and \gls{ecdsa}. Each one of them has advantages and disadvantages, depending on the
+scenario. We will analyse them now.
+
+In \textit{mbedTLS 2.7.0}, there are $31$ ciphersuites that use \gls{rsa} to authenticate ephemeral \gls{dh}/\gls{ecdh} parameters 
+and $17$ ciphersuites that use \gls{ecdsa} to authenticate ephemeral \gls{dh}/\gls{ecdh} parameters. The metrics from those
+ciphersuites can be used to analyze the cost of public and private key operations for both algorithms. Thus, all of the presented
+costs for for \gls{rsa} are an average computed from $31$ runs, and for \gls{ecdsa} an average computed from $17$ runs.
+
+\gls{rsa} and \gls{ecdsa} have two basic operations: sign and verify. The first one uses the private key, while the
+second one the public key. Figures \ref{fig:rsa-ecdsa-sign-ver-total-normal-sl} compares the performance of the algorithm's
+operations for the \textbf{normal} security level (\textit{i.e.} $2048$ bit \gls{rsa} key and $256$ bit \gls{ecdsa} key).
+The \textit{Total} cost is the sum of the \textit{Sign} and \textit{Verify} costs for the corresponding algorithm.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/rsa_ecdsa_cost_normal_sl.png}
+  \caption{\label{fig:rsa-ecdsa-sign-ver-total-normal-sl} RSA and ECDSA operations cost for normal security level}
+\end{figure}
+
+By analyzing the graph, we can can observe two things:
+
+\begin{itemize}
+  \item \gls{rsa} is more efficient at performing public key operations, \textit{i.e.} verifying the signature
+  \item \gls{ecdsa} is more efficient at performing private key operations, \textit{i.e.} making the signature
+\end{itemize}
+
+This holds true for other security levels too, as will be shown further down the text. Let us now analyse each one
+of the algorithms and their costs in more detail. 
+
+\subsubsection{RSA}
+
+We have already seen the costs of \gls{rsa} for the \textbf{normal} security level and now we will analyse the
+remaining ones. Table \ref{table:rsa-costs-all-sls} shows the number of CPU instuctions used in performing
+when signing a $32$ byte message and verifying the resulting signature with \gls{rsa} and \gls{ecdsa}. The values in parenthesis represent the
+standard deviation. All of the values are rounded up to significant digits. 
+
+Figure \ref{fig:rsa-costs-all-sls} depics the costs of \gls{rsa} operations graphically. The data is presented in a logarithmic
+scale. An analysis of the data shows that for all security levels, the cost of private key operations is significatly higher than
+of the public key ones. The cost of the former also increases more, as the security level raises. For example, there is an increase
+of $2145\%$ from the \textit{normal} to \textit{very high} security level for signature creation and of $1102\%$ for singature verification.
+
+This results in a big difference between the cost of creating and verifying signatures, which becomes larger as the security level increases. 
+For example,
+at the \textit{normal} security level signature verification is approximately $74.6$ million CPU instuctions more expensive,
+while at the \textit{very high} security level, this value raises to over $1687$ million, \textit{i.e.} a $2161\%$ increase.
+
+This increase more modest for public key operations. This information is shown in Figure \ref{fig:rsa-pub-priv-cost-increase}. 
+The percentages show the relative cost increase from the previous security level. An analysis Figure \ref{fig:rsa-pub-priv-cost-increase}
+explains the difference between the costs of private and public key operations. As the security level increases, the relative cost
+increase is larger for signing than for verifying. On average, the signing operation cost increase from one security level to another 
+is about $x1.5$ larger than the verifying one. This has a cumulative effect: the constatly larger value increses even more. This
+is shown graphically in Figure \ref{fig:rsa-ecdsa-pub-priv-ratio}, which for \gls{rsa}, presents the ratio between the cost of private and 
+public key operations. As the security level increases, the value becomes larger. 
+
+\begin{table}[]
+  \label{table:rsa-costs-all-sls}
+  \begin{tabular}{|l|l|l|l|l|}
+  \hline
+                    & \textbf{RSA Sign}    & \textbf{RSA Verify} & \textbf{ECDSA Sign} & \textbf{ECDSA Verify} \\ \hline
+  \textbf{low}       & 20559190 (117075)    & 398584 (198)        & 14497591 (49045)    & 26839273 (50816)      \\ \hline
+  \textbf{normal}    & 75738802 (317047)    & 1117868 (748)       & 29512991 (95776)    & 56260702 (162365)     \\ \hline
+  \textbf{high}      & 317087210 (716961)   & 3295296 (254)       & 49150396 (82047)     & 94077150 (130275)     \\ \hline
+  \textbf{very high} & 1700652764 (2283718) & 13436728 (702)      & 59732056 (441815)   & 114744021 (843861)    \\ \hline
+  \end{tabular}
+  \caption{ECDSA and RSA signature cereation and verification costs}
+\end{table}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/rsa_cost_all_sls.png}
+  \caption{\label{fig:rsa-costs-all-sls} RSA operations costs for all security levels (logarithmic scale)}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/rsa_relative_increase.png}
+  \caption{\label{fig:rsa-costs-all-sls} Relative increase of RSA operation costs}
+\end{figure}
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/rsa_ecdsa_operation_ratio.png}
+  \caption{\label{fig:rsa-ecdsa-pub-priv-ratio} Ratio between the most and the least costly operation for RSA and ECDSA}
+\end{figure}
+
+
+The reason for the discrepancy between the cost of public and private key operations has to do with an optimization
+in the choice of the keys. \gls{rsa}'s public keys are deliberately chosen to have a small public exponent, such as $e=65537$. This is considered as a
+sensible compromise, since it is famously known to be prime, large enough to avoid the attacks to which 
+small exponents make RSA vulnerable, and can be computed extremely quickly on binary computers \cite{boneh2002fast}\cite{muir2006seifert}.
+A smaller exponent leads to less exponentiation operations, thus better performance. For this reason, public
+key operations with \gls{rsa} are faster than private key ones.
+
+\subsubsection{ECDSA}
+
+We have already seen the costs of \gls{ecdsa} for the \textbf{normal} security level and now we will analyse the
+remaining ones. Table \ref{table:ecdsa-costs-all-sls} shows the number of CPU instructions used in performing
+when signing a $32$ byte message and verifying the resulting signature with \gls{ecdsa}. Figure \ref{fig:ecdsa-costs-all-sls}
+depicts this information graphically. The cost increase of the public and private key operations, as the security level 
+increases is shown in Figure \ref{fig:ecdsa-pub-priv-cost-increase}. The percentages show the relative cost increase 
+from the previous security level.
+
+An analysis of the data shows a higher relative increase in public key operations, when compared to the private ones.
+That difference is not as dramatic as it is in case of \gls{rsa}, tough. For example, by comparing the 
+\textbf{low} ($224$ bit \gls{ecdsa} keys) and \textbf{very high} ($512$ bit \gls{ecdsa} keys), 
+we can see that there is a $**X\%$ increase in the costs of private key operations, and a  $**Y\%$  increase in the 
+cost of public key operations. Despite that, witihin the range of the security levels available in mbedTLS 2.7.0 (from $224$ bit to $520$ bit \gls{ecc} keys), 
+the prviate keys operations are always less costly than the public ones. The ratio between the costs of the most costly operation and the less costly one
+is not nearly as high as it is for \gls{rsa}, as shown in Figure \ref{fig:ecsa-pub-priv-ratio}.
+
+
+
+\subsubsection{Comparison}
+
+* Comare RSA with ECDSA 
+* Say why RSA performs better in some scenarios and worse in others
+  * public key is chosen is a specific format (a lot of zeroes)
+    * you don't have such a thing for ECDSA
+  * ECDSA keys are a lot smaller, thus the cost difference
+* Say which one is better for which operations
+* Say that ratio of more costly to less costly operation is a lot better in ECDSA
+  * this is important if we want to balance out the costs equally
+
+The choice between \gls{rsa} and \gls{ecdsa}
+
+\subsubsection{Something }
 
 In \gls{tls} it hard to talk about the cost of authentication without talking about \gls{pfs}. If a \gls{pfs}-enabled
 ciphersuite is used, an additional piece of information is authenticated: the \textit{ServerKeyExchange} message.
@@ -1918,6 +2068,7 @@ when performing the public key operation  (\textit{i.e.} verifying the signature
 when performing the private key operation (\textit{i.e.} making the signature). This information is summarized 
 in tables \ref{table:client-auth-cost}, \ref{table:server-auth-cost} and figures \ref{fig:server-auth-cost} and
 \ref{fig:server-auth-cost}.
+
 
 \begin{table}[]
   \centering
@@ -1966,87 +2117,7 @@ individual steps and examine their costs. This analysis will be done for various
 The analysed operations will be fitted into the \gls{tls} Handshake process, clarifying its costs in the section that
 follows this one.
 
-\subsection{Authentication Cost Analysis}
 
-In \gls{tls} authentication can be achieved by either using a pre-shared secret or asymmetric cryptography. 
-If a pre-shared secret is used, the cost of authentication is $0$. If asymmetric cryptography is used, there are two
-choices of algorithms: \gls{rsa} and \gls{ecdsa}. Each one of them has advantages and disadvantages, depending on the
-scenario. We will analyse them now.
-
-\gls{rsa} and \gls{ecdsa} have two basic operations: sign and verify. The first one uses the private key, while the
-second one the public key. Figures \ref{fig:rsa-ecdsa-sign-ver-total-normal-sl} compares the performance of the algorithm's
-operations for the \textbf{normal} security level (\textit{i.e.} $2048$ bit \gls{rsa} key and $256$ bit \gls{ecdsa} key).
-
-\todo{figure}
-
-By analyzing the graph, we can can observe two things:
-
-\begin{itemize}
-  \item \gls{rsa} is more efficient at performing public key operations, \textit{i.e.} verifying the signature
-  \item \gls{ecdsa} is more efficient at performing private key operations, \textit{i.e.} making the signature
-\end{itemize}
-
-This holds true for other security levels too, as will be shown further down the text. Let us now analyse each one
-of the algorithms and their costs in more detail. 
-
-\subsubsection{RSA}
-* analyze the costs individually, for every security level; tell by how much there is an increase in every
-* put a table with key size, sign cost, verify cost, total cost
-* put a graph with two lines: one for the growth of the signing operation and one for the cost of the verifying operation,
-as the key size grows.
-
-We have already seen the costs of \gls{rsa} for the \textbf{normal} security level and now we will analyse the
-remaining ones. Table \ref{table:rsa-costs-all-sls} shows the number of CPU instuctions used in performing
-when signing a $32$ byte message and verifying the resulting signature with \gls{rsa}. Figure \ref{fig:rsa-costs-all-sls}
-depicts this information graphically. The cost increase of the public and private key operations, as the security level 
-increases is shown in Figure \ref{fig:rsa-pub-priv-cost-increase}. The percentages show the relative cost increase 
-from the previous security level.
-
-An alaysis of the data shows that private key operations are always more efficient than the private key ones.
-Moreover, there is a much higher relative increase in private key operations that in public ones.
-For example, by comparing the \textbf{low} ($1024$ bit \gls{rsa} keys) and \textbf{very high} ($8192$ bit \gls{rsa} keys),
-we can see that while there is a $**X\%$ increase in the costs of private key operations, there is only a $**Y\%$
-increase in the cost of public key operations. This makes the already high ratio of private to public key operations costs
-even higher, as the security level increases (Figure \ref{fig:rsa-pub-priv-ratio}). The reason for that discrepancy has to do with an optimization
-in the choice of the keys.
-
-\gls{rsa}'s public keys are deliberately chosen to have a small public exponent, such as $e=65537$. This is considered as a
-sensible compromise, since it is famously known to be prime, large enough to avoid the attacks to which 
-small exponents make RSA vulnerable, and can be computed extremely quickly on binary computers \cite{boneh2002fast}\cite{muir2006seifert}.
-A smaller exponent leads to less exponentiation operations, thus better performance. For this reason, public
-key operations with \gls{rsa} are faster than private key ones.
-
-\subsubsection{ECDSA}
-
-We have already seen the costs of \gls{ecdsa} for the \textbf{normal} security level and now we will analyse the
-remaining ones. Table \ref{table:ecdsa-costs-all-sls} shows the number of CPU instructions used in performing
-when signing a $32$ byte message and verifying the resulting signature with \gls{ecdsa}. Figure \ref{fig:ecdsa-costs-all-sls}
-depicts this information graphically. The cost increase of the public and private key operations, as the security level 
-increases is shown in Figure \ref{fig:ecdsa-pub-priv-cost-increase}. The percentages show the relative cost increase 
-from the previous security level.
-
-An analysis of the data shows a higher relative increase in public key operations, when compared to the private ones.
-That difference is not as dramatic as it is in case of \gls{rsa}, tough. For example, by comparing the 
-\textbf{low} ($224$ bit \gls{ecdsa} keys) and \textbf{very high} ($512$ bit \gls{ecdsa} keys), 
-we can see that there is a $**X\%$ increase in the costs of private key operations, and a  $**Y\%$  increase in the 
-cost of public key operations. Despite that, witihin the range of the security levels available in mbedTLS 2.7.0 (from $224$ bit to $520$ bit \gls{ecc} keys), 
-the prviate keys operations are always less costly than the public ones. The ratio between the costs of the most costly operation and the less costly one
-is not nearly as high as it is for \gls{rsa}, as shown in Figure \ref{fig:ecsa-pub-priv-ratio}.
-
-
-
-\subsubsection{Comparison}
-
-* Comare RSA with ECDSA 
-* Say why RSA performs better in some scenarios and worse in others
-  * public key is chosen is a specific format (a lot of zeroes)
-    * you don't have such a thing for ECDSA
-  * ECDSA keys are a lot smaller, thus the cost difference
-* Say which one is better for which operations
-* Say that ratio of more costly to less costly operation is a lot better in ECDSA
-  * this is important if we want to balance out the costs equally
-
-The choice between \gls{rsa} and \gls{ecdsa}
 
 
 \subsection{Handshake Protocol Analysis}

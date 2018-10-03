@@ -1689,6 +1689,7 @@ we choose the closest larger value available.
 TABLE: (go from 500KB to 8K, as in notes from meetings)
 
 \begin{table}[]
+\label{table:secl-lvl-relations}
 \centering
 \setcounter{footnotesintable}{0}
 \begin{tabular}{|l|l|l|l|}
@@ -1961,7 +1962,7 @@ of the algorithms and their costs in more detail.
 \subsubsection{RSA}
 
 We have already seen the costs of \gls{rsa} for the \textbf{normal} security level and now we will analyse the
-remaining ones. Table \ref{table:rsa-costs-all-sls} shows the number of CPU instuctions used in performing
+remaining ones. Table \ref{table:rsa-costs-all-sls} shows the number of CPU instuctions used
 when signing a $32$ byte message and verifying the resulting signature with \gls{rsa} and \gls{ecdsa}. The values in parenthesis represent the
 standard deviation. All of the values are rounded up to significant digits. 
 
@@ -1975,13 +1976,18 @@ For example,
 at the \textit{normal} security level signature verification is approximately $74.6$ million CPU instuctions more expensive,
 while at the \textit{very high} security level, this value raises to over $1687$ million, \textit{i.e.} a $2161\%$ increase.
 
-This increase more modest for public key operations. This information is shown in Figure \ref{fig:rsa-pub-priv-cost-increase}. 
-The percentages show the relative cost increase from the previous security level. An analysis Figure \ref{fig:rsa-pub-priv-cost-increase}
+This increase more modest for public key operations. This information is shown Table \ref{table:rsa-pub-priv-cost-increase} and graphically 
+in Figure \ref{fig:rsa-pub-priv-cost-increase}. 
+The percentages show the relative cost increase from the previous security level. For example, creating an \gls{rsa} signature costs 
+$268.4\%$ more at \textit{normal} than at \textit{low} security level. An analysis Figure \ref{fig:rsa-pub-priv-cost-increase}
 explains the difference between the costs of private and public key operations. As the security level increases, the relative cost
 increase is larger for signing than for verifying. On average, the signing operation cost increase from one security level to another 
-is about $x1.5$ larger than the verifying one. This has a cumulative effect: the constatly larger value increses even more. This
-is shown graphically in Figure \ref{fig:rsa-ecdsa-pub-priv-ratio}, which for \gls{rsa}, presents the ratio between the cost of private and 
-public key operations. As the security level increases, the value becomes larger. 
+is about $x1.5$ larger than the verifying one. This has a cumulative effect: the constatly larger value increses even more. 
+This is shown graphically in Figure \ref{fig:rsa-ecdsa-pub-priv-ratio}, which for \gls{rsa}, presents the ratio between the cost of private and 
+public key operations. As the seucirity level increases, the value becomes larger. The fact that the signing operation dominates the total cost
+can also be seen graphically in Figure \ref{fig:rsa-pub-priv-cost-increase}. The \textit{Total} cost increase line is very close to the 
+\textit{RSA Sign} cost increase line, in fact, they're almost identical. On average, the \textit{Total} cost incerase is only $1.4\%$ smaller
+than the signing opeartion cost incerase.
 
 \begin{table}[]
   \label{table:rsa-costs-all-sls}
@@ -1996,6 +2002,20 @@ public key operations. As the security level increases, the value becomes larger
   \caption{ECDSA and RSA signature cereation and verification costs}
 \end{table}
 
+
+\begin{table}[]
+\label{table:rsa-pub-priv-cost-increase}
+\begin{tabular}{|l|l|l|l|}
+  \hline
+& \textbf{RSA Sign} & \textbf{RSA Verify} & \textbf{Total} \\ \hline
+\textbf{low}       & -                 & -                   & -              \\ \hline
+\textbf{normal}    & 268.4\%           & 180.5\%             & 266.7\%        \\ \hline
+\textbf{high}      & 318.7\%           & 194.8\%             & 316.9\%        \\ \hline
+\textbf{very high} & 436.3\%           & 307.8\%             & 435\%          \\ \hline
+\end{tabular}
+\caption{Relative increase of RSA operation costs from previous security level}
+\end{table}
+
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/rsa_cost_all_sls.png}
@@ -2005,16 +2025,14 @@ public key operations. As the security level increases, the value becomes larger
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/rsa_relative_increase.png}
-  \caption{\label{fig:rsa-costs-all-sls} Relative increase of RSA operation costs}
+  \caption{\label{fig:rsa-pub-priv-cost-increase} Relative increase of RSA operation costs}
 \end{figure}
-
 
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/rsa_ecdsa_operation_ratio.png}
   \caption{\label{fig:rsa-ecdsa-pub-priv-ratio} Ratio between the most and the least costly operation for RSA and ECDSA}
 \end{figure}
-
 
 The reason for the discrepancy between the cost of public and private key operations has to do with an optimization
 in the choice of the keys. \gls{rsa}'s public keys are deliberately chosen to have a small public exponent, such as $e=65537$. This is considered as a
@@ -2025,35 +2043,84 @@ key operations with \gls{rsa} are faster than private key ones.
 
 \subsubsection{ECDSA}
 
-We have already seen the costs of \gls{ecdsa} for the \textbf{normal} security level and now we will analyse the
-remaining ones. Table \ref{table:ecdsa-costs-all-sls} shows the number of CPU instructions used in performing
-when signing a $32$ byte message and verifying the resulting signature with \gls{ecdsa}. Figure \ref{fig:ecdsa-costs-all-sls}
-depicts this information graphically. The cost increase of the public and private key operations, as the security level 
-increases is shown in Figure \ref{fig:ecdsa-pub-priv-cost-increase}. The percentages show the relative cost increase 
-from the previous security level.
+After analyzing the costs of \gls{rsa}, we will now perform a similar analysis for \gls{ecdsa}. Figure \ref{fig:ecdsa-costs-all-sls}
+shows the costs of \gls{ecdsa} opeartions graphically. The values are taken from Table \ref{table:rsa-costs-all-sls}. Unlike in \gls{rsa}, 
+in \gls{ecdsa} the private key operation is the least costly one. Figure \ref{fig:rsa-ecdsa-pub-priv-ratio} shows this ratio for both, 
+\gls{rsa} and \gls{ecdsa}. Besides the ratio being a lot smaller for \gls{ecdsa}, it increases by very little. This means, that no matter
+the security level, \gls{ecdsa} signature verification will always be about $2$ times more costly than signature creation.
 
-An analysis of the data shows a higher relative increase in public key operations, when compared to the private ones.
-That difference is not as dramatic as it is in case of \gls{rsa}, tough. For example, by comparing the 
-\textbf{low} ($224$ bit \gls{ecdsa} keys) and \textbf{very high} ($512$ bit \gls{ecdsa} keys), 
-we can see that there is a $**X\%$ increase in the costs of private key operations, and a  $**Y\%$  increase in the 
-cost of public key operations. Despite that, witihin the range of the security levels available in mbedTLS 2.7.0 (from $224$ bit to $520$ bit \gls{ecc} keys), 
-the prviate keys operations are always less costly than the public ones. The ratio between the costs of the most costly operation and the less costly one
-is not nearly as high as it is for \gls{rsa}, as shown in Figure \ref{fig:ecsa-pub-priv-ratio}.
+Table \ref{table:ecdsa-relative-cost-increase} shows the relative cost increse of of \gls{ecdsa}'s operations. The percentages 
+show the relative cost increase from the previous security level. Figure \ref{fig:ecdsa-relative-cost-incerase} presents this information
+graphically. There are two major differnces from \gls{rsa}. First, the relative cost incerase 
+of signature creation and verification is very similar. Consequently, the same is true for the total cost increase. This can be confirmed
+graphically in Figure \ref{fig:ecdsa-relative-cost-incerase}, where all of the lines are 
+close one to another. As a result, even with the increase of security level, none of the operations will dominate as much as it happens
+in \gls{rsa}. Second, as the security level increases, the cost increase from the prevoius security level becomes smaller. This makes
+the security level increase more manageable. In total, it's not as costly to increase the security level for \gls{ecdsa} as it for \gls{rsa}.
 
+\begin{table}[]
+  \begin{tabular}{|l|l|l|l|}
+    \hline
+  & \textbf{ECDSA Sign} & \textbf{ECDSA Verify} & \textbf{Total} \\ \hline
+  \textbf{low}       & -                 & -                   & -              \\ \hline
+  \textbf{normal}    & 103.6\%           & 109.6\%             & 107.5\%        \\ \hline
+  \textbf{high}      & 66.5\%            & 67.2\%              & 67\%           \\ \hline
+  \textbf{very high} & 21.5\%            & 22\%                & 21.8\%         \\ \hline
+  \end{tabular}
+  \caption{\label{table:ecdsa-relative-cost-increase} Relative increase of ECDSA operations cost from previous security level}
+  \end{table}
 
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/ecdsa_realtive_cost_increase.png}
+  \caption{\label{fig:ecdsa-relative-cost-incerase} Relative increase of ECDSA operations cost}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/ecdsa-cost-all-sls.png}
+  \caption{\label{fig:ecdsa-costs-all-sls} ECDSA costs for all security levels}
+\end{figure}
+
+In the previous subsection we have described an optimization in the choice of keys for \gls{rsa}. There are no such optimizations 
+for \gls{ecdsa}. For this reason, it is expected that the cost of both operations will increase in similar proportion. The non-optimized
+key (private for \gls{rsa}, private and public for \gls{ecdsa}) operation cost increase is a lot smaller for \gls{ecdsa}. This can be
+explained by the fact that smaller keys are used in \gls{ecdsa}, as we have alerady seen in Table \ref{table:secl-lvl-relations}, and is a big advantage of \gls{ecc}.
 
 \subsubsection{Comparison}
 
-* Comare RSA with ECDSA 
-* Say why RSA performs better in some scenarios and worse in others
-  * public key is chosen is a specific format (a lot of zeroes)
-    * you don't have such a thing for ECDSA
-  * ECDSA keys are a lot smaller, thus the cost difference
-* Say which one is better for which operations
-* Say that ratio of more costly to less costly operation is a lot better in ECDSA
-  * this is important if we want to balance out the costs equally
+After having analysed the costs of \gls{rsa} and \gls{ecdsa}, we will now compare both and draw some conlcusions. The answer to the
+question of which one of algorithms is less costly will vary depending on the security level and the operation. Figure \ref{fig:ecdsa-rsa-costs-all}
+shows the costs of both, \gls{rsa}'s and \gls{ecdsa}'s operations. The data is presented in logarithmic scale. Since for \gls{rsa} most
+of the \textit{Total} cost comes from the signature creation opeartion, those two lines overlap in the graph.
 
-The choice between \gls{rsa} and \gls{ecdsa}
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/rsa_ecdsa_costs_all.png}
+  \caption{\label{fig:ecdsa-rsa-costs-all} RSA and ECDSA cost comparison}
+\end{figure}
+
+By analyzing Figure \ref{fig:ecdsa-rsa-costs-all}, we can answer the question of \textit{Which algorithm is less costly?}:
+
+\begin{itemize}
+  \item \gls{rsa} is always less costly at signature verficiation
+  \item \gls{ecdsa} is always less costly at signature creation
+  \item Total cost of \gls{rsa} is smaller for the \textit{low} and \textit{normal} security levels
+  \item Total cost of \gls{ecdsa} is smaller for the \textit{high} and \textit{very high} security levels
+\end{itemize}
+
+So which algorithm should be used for each security level? The answer to this question is not straighforward and will depend on the environment.
+For example, if the scenario is a constrained client and a non-constrained server, \gls{rsa} would be the last costly choice. If, on the
+other hand, the server is the constrained node, \gls{ecdsa} would be the least costly algorithm. If both of the nodes are
+constrained, for the \textit{low} and \textit{normal} security levels, \gls{rsa} would be the least cotsly choice. If the objective is 
+to have the costs for both peers as similar as possbible, \gls{ecdsa} is the algorithm to use.
+
+This information can also be used to make
+certificate choices for mutual authentcation scenarios, \textit{i.e.} when both, the client and the server authenticate one to another.
+For example, if only one of the nodes is constrained, an \gls{rsa}-singed certificate from the non-constrained node and an \gls{ecdsa}-signed
+certificate from the constrained node would minimize the costs for the constrained node. If both of the nodes are constrained, then the
+choice of the least costly algorithm will be guided by the \textit{Total} cost: \gls{rsa} for the \textit{low} and \textit{normal}
+security levels and \gls{ecdsa} for the \textit{high} and \textit{very high} security levels.
 
 \subsubsection{Something }
 

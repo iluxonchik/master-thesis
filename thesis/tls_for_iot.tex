@@ -1936,7 +1936,8 @@ scenario. We will analyse them now.
 In \textit{mbedTLS 2.7.0}, there are $31$ ciphersuites that use \gls{rsa} to authenticate ephemeral \gls{dh}/\gls{ecdh} parameters 
 and $17$ ciphersuites that use \gls{ecdsa} to authenticate ephemeral \gls{dh}/\gls{ecdh} parameters. The metrics from those
 ciphersuites can be used to analyze the cost of public and private key operations for both algorithms. Thus, all of the presented
-costs for for \gls{rsa} are an average computed from $31$ runs, and for \gls{ecdsa} an average computed from $17$ runs.
+costs for for \gls{rsa} are an average computed from $31$ runs, and for \gls{ecdsa} an average computed from $17$ runs, all from
+different ciphersuites.
 
 \gls{rsa} and \gls{ecdsa} have two basic operations: sign and verify. The first one uses the private key, while the
 second one the public key. Figures \ref{fig:rsa-ecdsa-sign-ver-total-normal-sl} compares the performance of the algorithm's
@@ -1963,8 +1964,13 @@ of the algorithms and their costs in more detail.
 
 We have already seen the costs of \gls{rsa} for the \textbf{normal} security level and now we will analyse the
 remaining ones. Table \ref{table:rsa-costs-all-sls} shows the number of CPU instuctions used
-when signing a $32$ byte message and verifying the resulting signature with \gls{rsa} and \gls{ecdsa}. The values in parenthesis represent the
-standard deviation. All of the values are rounded up to significant digits. 
+when signing a message with size $20$, $32$ or $48$ bytes and verifying the resulting signature with \gls{rsa} and \gls{ecdsa}.
+As already mentioned, the values are an average of $31$ runs for \gls{rsa} and $17$ for \gls{ecdsa}.
+The numbers in parenthesis is the standard deviation. All of the values are rounded up to significant digits. The size of the signed message depends on the output size of the
+hash function used with the ciphersuite. The cost differences between them are minimal, and for this reason we decided not to separate them.
+Table \ref{table:rsa-costs-all-sls-total} presents the sum of the signing and verifying operation cost for \gls{rsa} and \gls{ecdsa}, which we call the \textit{Total} cost. 
+In out tests, both \gls{rsa} and \gls{ecdsa} signed ceritifcates have signatures over a $32$ byte value (output of \textit{SHA-256}), so
+the values in Table \ref{table:rsa-costs-all-sls} apply to those costs too.
 
 Figure \ref{fig:rsa-costs-all-sls} depics the costs of \gls{rsa} operations graphically. The data is presented in a logarithmic
 scale. An analysis of the data shows that for all security levels, the cost of private key operations is significatly higher than
@@ -1990,7 +1996,6 @@ can also be seen graphically in Figure \ref{fig:rsa-pub-priv-cost-increase}. The
 than the signing opeartion cost incerase.
 
 \begin{table}[]
-  \label{table:rsa-costs-all-sls}
   \begin{tabular}{|l|l|l|l|l|}
   \hline
                     & \textbf{RSA Sign}    & \textbf{RSA Verify} & \textbf{ECDSA Sign} & \textbf{ECDSA Verify} \\ \hline
@@ -1999,9 +2004,18 @@ than the signing opeartion cost incerase.
   \textbf{high}      & 317087210 (716961)   & 3295296 (254)       & 49150396 (82047)     & 94077150 (130275)     \\ \hline
   \textbf{very high} & 1700652764 (2283718) & 13436728 (702)      & 59732056 (441815)   & 114744021 (843861)    \\ \hline
   \end{tabular}
-  \caption{ECDSA and RSA signature cereation and verification costs}
-\end{table}
+  \caption{\label{table:rsa-costs-all-sls} RSA and ECDSA signature cereation and verification costs} \end{table}
 
+\begin{table}[]
+  \begin{tabular}{lll}
+                     & \textbf{RSA Total} & \textbf{ECDSA Total} \\
+  \textbf{low}       & 20957774           & 41336864             \\
+  \textbf{normal}    & 76856670           & 85773693             \\
+  \textbf{high}      & 320382506          & 143227546            \\
+  \textbf{very high} & 1714089492         & 174476077           
+  \end{tabular}
+  \caption{\label{table:rsa-costs-all-sls-total} RSA and ECDSA costs of signature creation + signature verification}
+\end{table}
 
 \begin{table}[]
 \label{table:rsa-pub-priv-cost-increase}
@@ -2087,7 +2101,7 @@ for \gls{ecdsa}. For this reason, it is expected that the cost of both operation
 key (private for \gls{rsa}, private and public for \gls{ecdsa}) operation cost increase is a lot smaller for \gls{ecdsa}. This can be
 explained by the fact that smaller keys are used in \gls{ecdsa}, as we have alerady seen in Table \ref{table:secl-lvl-relations}, and is a big advantage of \gls{ecc}.
 
-\subsubsection{Comparison}
+\subsubsection{RSA vs ECDSA}
 
 After having analysed the costs of \gls{rsa} and \gls{ecdsa}, we will now compare both and draw some conlcusions. The answer to the
 question of which one of algorithms is less costly will vary depending on the security level and the operation. Figure \ref{fig:ecdsa-rsa-costs-all}
@@ -2110,10 +2124,10 @@ By analyzing Figure \ref{fig:ecdsa-rsa-costs-all}, we can answer the question of
 \end{itemize}
 
 So which algorithm should be used for each security level? The answer to this question is not straighforward and will depend on the environment.
-For example, if the scenario is a constrained client and a non-constrained server, \gls{rsa} would be the last costly choice. If, on the
+For example, if the scenario is a constrained client and a non-constrained server, \gls{rsa} would be the least costly choice. If, on the
 other hand, the server is the constrained node, \gls{ecdsa} would be the least costly algorithm. If both of the nodes are
-constrained, for the \textit{low} and \textit{normal} security levels, \gls{rsa} would be the least cotsly choice. If the objective is 
-to have the costs for both peers as similar as possbible, \gls{ecdsa} is the algorithm to use.
+constrained, \gls{rsa} would be the least cotsly choice for the \textit{low} and \textit{normal} security levels, and \gls{ecdsa} for the remaining ones. 
+If the objective is  to have the costs for both peers as similar as possbible, \gls{ecdsa} is the algorithm to use.
 
 This information can also be used to make
 certificate choices for mutual authentcation scenarios, \textit{i.e.} when both, the client and the server authenticate one to another.
@@ -2122,46 +2136,193 @@ certificate from the constrained node would minimize the costs for the constrain
 choice of the least costly algorithm will be guided by the \textit{Total} cost: \gls{rsa} for the \textit{low} and \textit{normal}
 security levels and \gls{ecdsa} for the \textit{high} and \textit{very high} security levels.
 
-\subsubsection{Something }
+\subsubsection{The Cost Of Authenticaition in TLS}
 
-In \gls{tls} it hard to talk about the cost of authentication without talking about \gls{pfs}. If a \gls{pfs}-enabled
-ciphersuite is used, an additional piece of information is authenticated: the \textit{ServerKeyExchange} message.
-This message contains a signature over the hash of the public \textit{(EC)DH parameters}. All of the key exchange methods
-which begin with either \textit{ECDHE} or \textit{DHE} incur in that extra cost. The average cost of the extra signature 
-for \gls{rsa} is of **X million instructions, when performing the public key operation (\textit{i.e.} verifying 
-the signature) and **Y million instructions, when performing the private key operation (\textit{i.e.} making the 
-signature). The average cost of the extra signature for \gls{ecdsa} is of **X million instructions, 
-when performing the public key operation  (\textit{i.e.} verifying the signature) and **Y million instructions, 
-when performing the private key operation (\textit{i.e.} making the signature). This information is summarized 
-in tables \ref{table:client-auth-cost}, \ref{table:server-auth-cost} and figures \ref{fig:server-auth-cost} and
-\ref{fig:server-auth-cost}.
-
+Having analyzed the costs of the algorithms that can be used for authentcation, we will now describe the cost of this security service
+for each one of the ciphersuites for the client and the server. Table \ref{table:tls-auth-cost-client} shows authentcation costs for each
+ciphersuite for the client. Table \ref{table:tls-auth-cost-server} shows the same information for the server. Each row specifies a key
+exchange method and each column the security level.
 
 \begin{table}[]
-  \centering
-  \caption{Authentication costs for the client}
-  \label{table:client-auth-cost}
-  \begin{tabular}{|l|l|l|}
+  \begin{tabular}{|l|l|l|l|l|}
   \hline
-        & \begin{tabular}[c]{@{}l@{}}Base Authentication Cost\\ (millions instructions)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Extra PFS Cost\\ (millions instructions)\end{tabular} \\ \hline
-  PSK   & 0                                                                                          & 1234                                                                             \\ \hline
-  RSA   & 1234                                                                                       & 1234                                                                             \\ \hline
-  ECDSA & 1234                                                                                       & 1234                                                                             \\ \hline
+                       & \textbf{low} & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
+  \textbf{PSK}         & 0            & 0               & 0             & 0                  \\ \hline
+  \textbf{RSA}         & 940875       & 2622235         & 7462989       & 28716994           \\ \hline
+  \textbf{RSA-PSK}     & 940875       & 2622235         & 7462989       & 28716994           \\ \hline
+  \textbf{ECDH-RSA}    & 398584       & 1117868         & 3295296       & 13436728           \\ \hline
+  \textbf{ECDH-ECDSA}  & 26839273     & 56260702        & 94077150      & 114744021          \\ \hline
+  \textbf{ECDHE-PSK}   & 0            & 0               & 0             & 0                  \\ \hline
+  \textbf{ECDHE-RSA}   & 797168       & 2235736         & 6590592       & 26873456           \\ \hline
+  \textbf{ECDHE-ECDSA} & 53678546     & 112521404       & 188154300     & 229488042          \\ \hline
+  \textbf{DHE-PSK}     & 0            & 0               & 0             & 0                  \\ \hline
+  \textbf{DHE-RSA}     & 797168       & 2235736         & 6590592       & 26873456           \\ \hline
   \end{tabular}
+  \caption{\label{table:tls-auth-cost-client} Client authentcation costs for all ciphersuites and security levels}
   \end{table}
 
 \begin{table}[]
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+                     & \textbf{low} & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
+\textbf{PSK}         & 0            & 0               & 0             & 0                  \\ \hline
+\textbf{RSA}         & 20362831     & 75129504        & 314975365     & 1691976601         \\ \hline
+\textbf{RSA-PSK}     & 20362831     & 75129504        & 314975365     & 1691976601         \\ \hline
+\textbf{ECDH-RSA}    & 0            & 0               & 0             & 0                  \\ \hline
+\textbf{ECDH-ECDSA}  & 0            & 0               & 0             & 0                  \\ \hline
+\textbf{ECDHE-PSK}   & 0            & 0               & 0             & 0                  \\ \hline
+\textbf{ECDHE-RSA}   & 20559190     & 75738802        & 317087210     & 1700652764         \\ \hline
+\textbf{ECDHE-ECDSA} & 14497591     & 29512991        & 49150396      & 59732056           \\ \hline
+\textbf{DHE-PSK}     & 0            & 0               & 0             & 0                  \\ \hline
+\textbf{DHE-RSA}     & 20559190     & 75738802        & 317087210     & 1700652764         \\ \hline
+\end{tabular}
+  \caption{\label{table:tls-auth-cost-server} Server authentcation costs for all ciphersuites and security levels}
+\end{table}
+
+\begin{figure}
   \centering
-  \caption{Authentication costs for the server}
-  \label{table:server-auth-cost}
-  \begin{tabular}{|l|l|l|}
+  \includegraphics[width=1.0\textwidth]{img/tls-client-auth-cost.png}
+  \caption{\label{fig:tls-auth-cost-client} Client authentcation cost (logarithmic scale)}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/tls-server-auth-cost.png}
+  \caption{\label{fig:tls-auth-cost-server} Server authentcation cost (logarithmic scale)}
+\end{figure}
+
+
+Figures \ref{fig:tls-auth-cost-client} and \ref{fig:tls-auth-cost-server} are a graphical representation of tables \ref{table:tls-auth-cost-client} and \ref{table:tls-auth-cost-server},
+respectively. In both of the figures, the data is presented in logarithmic scale. By looking at the graphs, it becomes evident that the some ciphersuites can be grouped together by authentcation cost.
+For the client, those groups are:
+
+\begin{enumerate}
+  \item \textit{PSK}, \textit{ECDHE-PSK}, \textit{DHE-PSK}
+  \item \textit{ECDH-RSA}
+  \item \textit{ECDHE-RSA}, \textit{DHE-RSA}
+  \item \textit{RSA}, \textit{RSA-PSK}
+  \item \textit{ECHD-ECDSA}
+  \item \textit{ECHDE-ECDSA}
+\end{enumerate}
+
+For the server, those groups are:
+
+\begin{enumerate}
+  \item \textit{PSK}, \textit{ECDHE-PSK}, \textit{DHE-PSK}, \textit{ECDH-RSA}, \textit{ECDH-ECDSA}
+  \item \textit{ECHDE-ECDSA}
+  \item \textit{ECDHE-RSA}, \textit{DHE-RSA}
+  \item \textit{RSA}, \textit{RSA-PSK}
+\end{enumerate}
+
+Inside every group, the authentcation cost is the same, no matter the security level. Group numbers are ordered in ascending cost order, with Group $1$ 
+being the least costly one, Group $2$ the second least costly one, and so on. All ciphersuites in the same group share a common set of operations that 
+are performed to provide authentcation. We will discuss what those operations are further down in the text. Each ciphersuite uses either \gls{psk}, 
+\gls{rsa} or \gls{ecdsa} for authentcation. If only \gls{psk} is used for authentcation, the cost of authentcation is $0$. This is the case of Group 
+$1$ for the client and the server. At the end of the previous section we discussed which algorithm, \gls{rsa} or \gls{ecdsa} would be the least costly 
+choice. An analysis of authentcation costs in \gls{tls} goes in hand with that discussion. By analyzing tables \ref{table:tls-auth-cost-client},\ref{table:tls-auth-cost-server} 
+and figures \ref{fig:tls-auth-cost-client}, \ref{fig:tls-auth-cost-client}, we can see that the cheapest choice for the client is \gls{rsa} and for the
+server is \gls{ecdsa}. Similarly, for \gls{pfs} enabled ciphersuites, if the goal is to make the cost distribution as even as possbile among the peers, 
+\gls{ecdsa} is the preferred choice. Having presented the costs of authentcation for various key exchange methods and made a high-level analysis, we will now go into more detail and
+justify each value.
+
+In \gls{tls} it hard to talk about the cost of authentication without  talking about \gls{pfs}. If a \gls{pfs}-enabled
+ciphersuite is used, an additional piece of information is authenticated in all non-\gls{psk} ciphersuites: the \textit{ServerKeyExchange} message.
+This message contains a signature over the hash of the public \textit{(EC)DH parameters}. This has an implication of singature creation cost
+for the server and a signature verification cost for the client. All non-\gls{psk} key exchange methods which begin with either 
+\textit{ECDHE} or \textit{DHE} incur in that extra cost.  We can use the values for the appropriate security level from table 
+\ref{table:rsa-costs-all-sls} to estimate them. 
+
+All \gls{rsa} server certificates are signed with a $2048$ bit \gls{rsa} key and all \gls{ecdsa} ceritifcates
+are signed with a $256$ bit \gls{ecdsa} key. This signature is made over an \textit{SHA-256} hash, which has an output size of $32$ bytes.
+Thus, we can use the values from the \textit{normal} security level from table \ref{table:rsa-costs-all-sls} to compute the certificate signature
+verification costs.
+
+In \textit{RSA} and \textit{RSA-PSK} ciphersuites, the client uses the \textit{PKCS\#1 v2.1 RSAES-PKCS1\-V1\_5\-ENCRYPT}\cite{RFC3447} 
+encrypiton scheme to encrypt  the $48$ byte premaster secret. The server uses the corresponding \textit{PKCS\#1 v2.1 RSAES-PKCS1\-V1\_5\-DECRYPT}\cite{RFC3447}
+decryption scheme to decrypt it. The cost of those operations are higher than of the regular sign/verify ones, due to extra steps performed.
+Thus, to compute the authentication cost for those ciphersuites, in addition the the values from table \ref{table:rsa-costs-all-sls}, the ones
+from table \ref{table:pkcs-cost} will also be used. In \textit{mbedTLS 2.7.0}, there are a total of
+$38$ ciphersuites that use the \textit{PKCS\#1 v2.1} scheme as part of the authentcation process: $23$
+\textit{RSA} ciphersuites and $15$ \textit{RSA-PSK} ciphersuites. The values in table \ref{table:pkcs-cost} are an average
+of $38$ runs: one for each ciphesuite. The numbers in parenthesis is the standard deviation.
+
+\begin{table}[]
+  \label{table:pkcs-cost}
+  \begin{tabular}{|l|l|l|l|l|}
   \hline
-        & \begin{tabular}[c]{@{}l@{}}Base Authentication Cost\\ (millions instructions)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Extra PFS Cost\\ (millions instructions)\end{tabular} \\ \hline
-  PSK   & 0                                                                                          & 1234                                                                             \\ \hline
-  RSA   & 1234                                                                                       & 1234                                                                             \\ \hline
-  ECDSA & 1234                                                                                       & 1234                                                                             \\ \hline
+                   & \textbf{low}      & \textbf{normal}   & \textbf{high}      & \textbf{very high}   \\ \hline
+  \textbf{Encrypt} & 542291 (836)      & 1504367 (2012)    & 4167693 (2866)     & 15280266 (3748)      \\ \hline
+  \textbf{Decrypt} & 20362831 (125590) & 75129504 (252921) & 314975365 (676291) & 1691976601 (2015526) \\ \hline
   \end{tabular}
+  \caption{Cost of using \textit{PKCS\#1 V2.1 RSAES-PKCS1-v1\_5} encrypiton and decryption schemes with various security levels}
   \end{table}
+
+The encyption operation uses the server's public key and the decryption operation the corresponding private key. Thus, as expected,
+decryption is more costly than the encryption and both of the values increase, as the security level increases.
+
+In order to authenticate, the client and the server perfrom different steps, depending on the ciphersuite. More specifically:
+
+\begin{itemize}
+  \item  in \textit{PSK}, \textit{DHE-PSK} and \textit{ECDHE-PSK} the authentcation is done exclusively through the pre-shared secret, without any
+  operations, thus the authentcation cost is $0$. 
+  \item in \textit{RSA} and \textit{RSA-PSK} the client has to verify the server's \gls{rsa}-signed certificate and encrypt the premaster secret with
+  the server's public \gls{rsa} key, while the server has to decrypt the premaster secret with the corresponding private key.
+  \item in \textit{ECDH-RSA} ciphersuites, the client has to verify the server's \gls{rsa}-signed certificate and the server does not
+  need to perform any operations.
+  \item in \textit{ECDH-ECDSA} ciphersuites, the client has to verify the server's \gls{ecdsa}-signed certificate and the server does not
+  need to perform any operations.
+  \item in \textit{ECHDE-RSA} and \textit{DHE-RSA} ciphersuites the client has to verify the server's \gls{rsa}-signed certificate and 
+  the \textit{(EC)DH} \gls{rsa}-signed parameters, while the server has to perfrom an \gls{rsa} signature over the hash of \textit{(EC)DH} parameters.
+  \item in \textit{ECHDE-ECDSA} ciphersuites the client has to verify the server's \gls{ecdsa}-signed certificate and 
+  the \textit{(EC)DH} \gls{ecdsa}-signed parameters, while the server has to perfrom an \gls{ecdsa} signature over the hash of \textit{(EC)DH} parameters.
+\end{itemize}
+
+In order to compute the authentcation cost for each peer, we use the values from tables \ref{table:rsa-costs-all-sls} and \ref{table:pkcs-cost}, 
+sum them up according to the steps described above. For example, when an \textit{ECDHE-ECDSA} ciphersuite is used at the \textit{normal} security level, 
+the client verify two \gls{ecdsa} signatures: one from the parsed server's certificate 
+and one from the \textit{ServerKeyExchange} message, while the server will only need to perform a signature over the \textit{ECDHE} parameters. 
+Thus, the authentcation cost for the client will be $xx+xx=yy$ and for the server $aa$. Similarly, when an \textit{RSA} or \textit{RSA-PSK} ciphesuite is used at the \textit{normal} security level,
+the client will verify the \gls{rsa} signature in the server's certificate and perform a \textit{PKCS\#1 v2.1 RSAES-PKCS1\-V1\_5} encryption, while the server will only need to perform a
+\textit{PKCS\#1 v2.1 RSAES-PKCS1\-V1\_5} decryption. Thus, the authentcation cost for the client will be $xx+yy=zz$ and for the server
+$lll$. The remaining entries in tables \ref{table:tls-auth-cost-client} and \ref{table:tls-auth-cost-server} are computed in a similar manner.
+
+Since in our evaluated scenario only the server authenticates, tables \ref{table:tls-auth-cost-client} and \ref{table:tls-auth-cost-server}
+are non-identical. If mutual authentcation was used (\textit{i.e.} with both, the client and server authenticating one to another), the client
+and server's table would both be similar to Table \ref{table:tls-auth-cost-server}.
+
+\subsection{Perfect Forward Secrecy Cost}
+
+// TODO
+
+\subsection{TLS Handshake Cost Analysis}
+
+Here, describe the costs of each individual ciphersuite. Remember that we described the steps needed for authentcation and PFS previously.
+What we do here, is sum them up and then say that the costs are somwhat off the actual handshake values, because of some "hidden costs".
+Describe those hidden costs and then show that the values come pretty close.
+
+\subsubsection{The Hidden Costs}
+
+% Look at the table in notes.
+% For cretificate message costs use "mbedtls_ssl_read_record:mbedtls_ssl_parse_certificate"
+
+For the client, there is an additional cost of parsing the \textit{der}-encoded server certificate. The certificate are either signed with
+\gls{rsa} or \gls{ecdsa}. In \textit{mbedTLS 2.7.0} there are $31$ ciphersuites that use \gls{rsa}-signed certificates and $17$ ciphersuites
+that use \gls{ecdsa}-signed certificates. Table \ref{table:cert-parse-cost} contains the cost of parsing the ceritificate for each algorithm
+and security level. This is the cost of parsing the \textit{der}-encoded certificate into internal fields and does not include verifying 
+the ceritifcate's signature. The presented values an average of $31$ executions for \gls{rsa} and $17$ for \gls{ecdsa}, each one with a 
+different ciphersuite. The numbers in parenthesis are standard deviation. An analysis of the table shows that the cost is very similar across all
+algorithms and security levels.
+
+\begin{table}[]
+\label{table:cert-parse-cost}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+               & \textbf{low}   & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
+\textbf{RSA}   & 133166 (12026) & 136025 (10943)  & 141334 (4191) & 157351 (1778)      \\ \hline
+\textbf{ECDSA} & 149768 (5318)  & 153289 (2754)   & 170559 (1714) & 156071 (14)        \\ \hline
+\end{tabular}
+\caption{Cost of parsing the \textit{der} encoded certificate}
+\end{table}
 
 \subsubsection{Perfect Forward Secrecy}
 

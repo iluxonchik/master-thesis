@@ -1753,7 +1753,7 @@ We decided to use the smallest possible certificate chain, consisting of two cer
 on the internet, where the chain size is larger. Adding more certificates to the chain would not provide additional
 information, since that cost can be computed by adding the costs of making/verifying additional signatures.
 
-\subsection{Evaluation of Security Services in TLS}
+\subsection{Evaluation of Security Services in TLS} \label{sec:ss-overview}
 
 The \gls{tls} protocol offers various security services. The list of security services offered by a connection
 depends on the used ciphersuite. Each ciphersuite consists of a set of algorithms, which have an implication 
@@ -1790,7 +1790,6 @@ we took the average of the costs of all ciphersuites for each key exchange metho
 table \ref{table:hs-all-ciphers-cli-aggr} for the client and in table \ref{table:hs-all-ciphers-srv-aggr} for the server.
 Figures \ref{fig:hs-all-ciphers-cli-aggr} and \ref{fig:hs-all-ciphers-srv-aggr} depict this information graphically.
  
-
 Each row and column intersection in the tables \ref{table:hs-all-ciphers-cli-aggr} and \ref{table:hs-all-ciphers-srv-aggr} 
 forms a ciphersuite. The rows separate the various authentication algorithms that can be used. The columns sperate the 
 key exhchange methods that offer \gls{pfs}, from the ones that don't. Each entry of the table presents the average 
@@ -1898,7 +1897,7 @@ The previous section gave an overview of the security services of authentcation 
 approximated cost by analyzing the costs of the Handshake with various ciphersuites. In the follwoing two sections
 we will do a more detailed analysis of those serivces and the underlying algorithms that support them.
 
-\subsection{Authentication Cost Analysis}
+\subsection{Authentication Cost Analysis} \label{sec:auth-cost-analysis}
 
 In \gls{tls} there are two ways of doing authentication: either by using a \gls{psk} or by using asymmetric cryptography.
 If asymmetric cryptography is used, there are two choices for the algorithm: \gls{rsa} or \gls{ecdsa}.
@@ -2000,7 +1999,7 @@ than the signing opeartion cost incerase.
   \hline
                     & \textbf{RSA Sign}    & \textbf{RSA Verify} & \textbf{ECDSA Sign} & \textbf{ECDSA Verify} \\ \hline
   \textbf{low}       & 20559190 (117075)    & 398584 (198)        & 14497591 (49045)    & 26839273 (50816)      \\ \hline
-  \textbf{normal}    & 75738802 (317047)    & 1117868 (748)       & 29512991 (95776)    & 56260702 (162365)     \\ \hline
+  \textbf{normal}    & 75738802 (317047)    & 111786 (748)       & 29512991 (95776)    & 56260702 (162365)     \\ \hline
   \textbf{high}      & 317087210 (716961)   & 3295296 (254)       & 49150396 (82047)     & 94077150 (130275)     \\ \hline
   \textbf{very high} & 1700652764 (2283718) & 13436728 (702)      & 59732056 (441815)   & 114744021 (843861)    \\ \hline
   \end{tabular}
@@ -2281,10 +2280,11 @@ In order to compute the authentcation cost for each peer, we use the values from
 sum them up according to the steps described above. For example, when an \textit{ECDHE-ECDSA} ciphersuite is used at the \textit{normal} security level, 
 the client verify two \gls{ecdsa} signatures: one from the parsed server's certificate 
 and one from the \textit{ServerKeyExchange} message, while the server will only need to perform a signature over the \textit{ECDHE} parameters. 
-Thus, the authentcation cost for the client will be $xx+xx=yy$ and for the server $aa$. Similarly, when an \textit{RSA} or \textit{RSA-PSK} ciphesuite is used at the \textit{normal} security level,
-the client will verify the \gls{rsa} signature in the server's certificate and perform a \textit{PKCS\#1 v2.1 RSAES-PKCS1\-V1\_5} encryption, while the server will only need to perform a
-\textit{PKCS\#1 v2.1 RSAES-PKCS1\-V1\_5} decryption. Thus, the authentcation cost for the client will be $xx+yy=zz$ and for the server
-$lll$. The remaining entries in tables \ref{table:tls-auth-cost-client} and \ref{table:tls-auth-cost-server} are computed in a similar manner.
+Thus, the authentcation cost for the client will be $56260702+56260702=112521404$ and for the server $29512991$. Similarly, when an \textit{RSA} or 
+\textit{RSA-PSK} ciphesuite is used at the \textit{normal} security level, the client will verify the \gls{rsa} signature in the server's certificate 
+and perform a \textit{PKCS\#1 v2.1 RSAES-PKCS1\-V1\_5} encryption, while the server will only need to perform a
+\textit{PKCS\#1 v2.1 RSAES-PKCS1\-V1\_5} decryption. Thus, the authentcation cost for the client will be $1117868+1504367=2622235$ and for the server
+$75129504$. The remaining entries in tables \ref{table:tls-auth-cost-client} and \ref{table:tls-auth-cost-server} are computed in a similar manner.
 
 Since in our evaluated scenario only the server authenticates, tables \ref{table:tls-auth-cost-client} and \ref{table:tls-auth-cost-server}
 are non-identical. If mutual authentcation was used (\textit{i.e.} with both, the client and server authenticating one to another), the client
@@ -2292,7 +2292,75 @@ and server's table would both be similar to Table \ref{table:tls-auth-cost-serve
 
 \subsection{Perfect Forward Secrecy Cost}
 
-// TODO
+In \gls{tls} there are two ways of achieving \gls{pfs}: either by using the \gls{dh} algorithm or its \gls{ecc} counterpart \gls{ecdh}.
+In section \ref{sec:ss-overview} we estimated the cost of \gls{pfs} and compared the two methods of achieving it by analyzing the total cost of the
+Handshake with different ciphersuites. In this section, we will analyse this security service in detail, including the underlying algorithms.
+In \gls{dh} and \gls{ecdh} the same basic operations are performed by each peer in sequence: generate a public/private keypair, exchange the public values
+and derive the shared secret.
+
+In \textit{mbedTLS 2.7.0} there are a total of $78$ ciphersuties that offer \gls{pfs}. $41$ of them use the \gls{ecdh} algorithm and $37$ of them use
+the \gls{dh} algorithm. There are also $26$ ciphersuites that do not offer \gls{pfs}, but still use the \gls{ecdh} algorithm. The metrics obtained from the 
+Handshake analysis with those ciphersuites can be used to analyze the cost of the algorithms. Since the operations performed at the client and 
+the server side are identical, we do not need to present two separate analysis, like we did throughout Section \ref{sec:auth-cost-analysis}. 
+Moreover for \textit{ECDHE} and \textit{DHE}, we can analyze the metrics from both  of the peers in conjunction, thus doubling the sample size. 
+As for \textit{ECDH} ciphersuites, we can use the client-side results to analyze the cost of all \gls{ecdh} operations and the server-side results 
+to analyze the cost of the shared \gls{ecdh} secret generation operation.
+
+Thus, all the presented cost values for \gls{ecdh}'s ephemeral key pair generation are an average computed from $108$ runs ($41$ from each
+peer's \gls{pfs} ciphersuites and $26$ from client's non-\gls{pfs} ciphersuites),
+and for the shared secret generation an average of $134$ runs ($41$ from each peer's \gls{pfs} ciphersuites and $26$ from each peer's non-\gls{pfs} 
+ciphersuites). For the \gls{dh} algorithm, the average is computed from $74$ runs ($37$ from each peer). 
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/ecdh-dh-cost-normal-sl.png}
+  \caption{\label{fig:ecdh-dh-cost-normal-sl} ECDH and DH operations cost for normal security level}
+\end{figure}
+
+Figure \ref{fig:ecdh-dh-cost-normal-sl} compares the cost of \gls{ecdh}'s and \gls{dh}'s operations for the \textbf{normal} security level.
+The total cost is the of the keypair and shared secret generation values for the corresponding algorithm. By analyzing the graph, we can can 
+observe two things:
+
+\begin{itemize}
+  \item \gls{ecdh} is less costly than \gls{dh}
+  \item for both algorithms, the costs of generating the key pair and the shared secret are very similar.
+\end{itemize}
+
+We will now analyze each one of the algorithms and their costs in more detail.
+
+\subsubsection{ECDH Cost Analysis}
+
+In \gls{ecdh}, two basic operations are performed by each peer: first, a public/private \gls{ecc} keypair is generated, followed by a generation of
+the shared secret. The resulting shared secret will be a 2D coordinate on the curve $(x,y)$. In \gls{tls} the $y$ value is discarded and $x$ is
+used as the preshared secret.
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+                   & \textbf{ECDH Gen Keypair} & \textbf{ECDH Gen Secret} & \textbf{DH Gen Keypair} & \textbf{DH Gen Secret} \\ \hline
+\textbf{low}       & 12942518 (33356)          & 12462677 (55222)         & 10455300 (31005)        & 10279378 (27044)       \\ \hline
+\textbf{normal}    & 27483912 (94940)          & 26958612 (137745)        & 67136033 (108793)       & 66712994 (107669)      \\ \hline
+\textbf{high}      & 45900358 (65731)          & 44331330 (100040)        & 474938146 (490496)      & 473634908 (493588)     \\ \hline
+\textbf{very high} & 54449740 (487567)         & 53531554 (776984)        & 3592631108 (2792006)    & 3586324217 (2791154)   \\ \hline
+\end{tabular}
+\caption{\label{demo} demo}
+\end{table}
+
+\subsubsection{(EC)DH algorithm and (EC)DH ciphersuites}
+
+In order to avoid confusion in the text that follows, it is important to distinguish the \textit{ECDH} ciphersuite from the \gls{ecdh} algorithm. 
+In \gls{tls} there \textit{ECDH} and \textit{ECDHE} ciphersuites. Both use the \gls{ecdh} algorithm, but only \textit{ECDHE} ciphersuites offer \gls{pfs}.
+The \textit{E} in \textit{ECDHE} stands for \textit{ephemeral}. While in \textit{ECHDE} ciphersuties, both the client and the server 
+generate ephemeral \gls{ecdh} parameters, in \textit{ECDH} ciphersuites at least one of the peer's parameters are \textbf{fixed} 
+within its cretificate. In our scenario, only the server authenticates to the client, thus in \textit{ECDH} ciphersuites the server's 
+\gls{ecdh} parameters will be fixed within its certificate, while the client will have to generate new ones for each connection. 
+More specifically, in \textit{ECHDE} ciphersuites, with each  new Handshake, both the client and the server generate a new (\textit{i.e.} ephemeral) 
+public/private \gls{ecc} key pair that will be used with  the \gls{ecdh} algorithm. On the other hand, in \textit{ECDH} ciphersuites, only the client 
+will generate a new public/private \gls{ecc} key pair, since ther server's public key is fixed within its certificate. Thus in \textit{ECDH} 
+ciphersuites, if the server's long-term shared secret, \textit{i.e.t} it's private \gls{ecc} key, is compomised the previous comunication's secrets 
+can be computed (if the client's public \gls{ecdh} paramters that are sent in the clear are recorded), thus also compromising the confidentiality of 
+the past communications. The destinction between the \textit{DH} ciphersuite from \gls{dh} algorithm is equivalent. Although \textit{DH} (\textit{i.e}
+non-ephemeral \gls{dh}) ciphersuites exist in \gls{tls}, they are not implemented in \textit{mbedTLS 2.7.0}.
 
 \subsection{TLS Handshake Cost Analysis}
 

@@ -10,10 +10,11 @@
 % \documentclass[runningheads,a4paper]{llncs}
 \documentclass{llncs}
  
-%\usepackage[justification=justified]{caption} 
+\usepackage[justification=justified]{caption} 
 \usepackage{geometry}
 
 %\usepackage[group-separator={,}]{siunitx}k
+\usepackage{numprint}
 
 \geometry{
 a4paper,         % or letterpaper
@@ -27,6 +28,9 @@ vratio=2:3,      % not vertically centered
 %%% WARN: custom extension
 %\usepackage{xcolor}
 \usepackage[table,xcdraw]{xcolor}
+\usepackage{multirow}
+\usepackage[normalem]{ulem}
+\useunder{\uline}{\ul}{}
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}\PackageWarning{TODO:}{#1!}}
 
 %%% GLOSSARIES
@@ -1793,11 +1797,41 @@ ciphersuites are the least and \textit{DHE-RSA} are the most expensive ones. To 
 we took the average of the costs of all ciphersuites for each key exchange method. This information is presented in
 table \ref{table:hs-all-ciphers-cli-aggr} for the client and in table \ref{table:hs-all-ciphers-srv-aggr} for the server.
 Figures \ref{fig:hs-all-ciphers-cli-aggr} and \ref{fig:hs-all-ciphers-srv-aggr} depict this information graphically.
+
+
+\begin{table}[]
+\begin{tabular}{cl|l|l|l|l|l|}
+\cline{3-7}
+\multicolumn{1}{l}{}                                                                        &                          & \multicolumn{2}{c|}{{\ul PFS}}            & \multicolumn{3}{c|}{{\ul No PFS}}                                                                     \\ \cline{2-7} 
+\multicolumn{1}{l|}{}                                                                       & \cellcolor[HTML]{C0C0C0} & \textbf{DHE}             & \textbf{ECDHE} & \textbf{ECDH}            & \textbf{RSA}                                    & \textbf{X}               \\ \hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Sym\\ Auth\end{tabular}}                    & \textbf{PSK}             & 135.443                  & 55.805         & \cellcolor[HTML]{C0C0C0} & 4.543                                           & 1.354                    \\ \hline
+\multicolumn{1}{|c|}{}                                                                      & \textbf{RSA}             & 138.198                  & 58.608         & 57.412                   & \cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} } & 4.559                    \\ \cline{2-7} 
+\multicolumn{1}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}Asym\\ Auth\end{tabular}}} & \textbf{ECDSA}           & \cellcolor[HTML]{C0C0C0} & 168.954        & 112.585                  & \cellcolor[HTML]{C0C0C0}                        & \cellcolor[HTML]{C0C0C0} \\ \hline
+\end{tabular}
+\centering
+\caption{\label{table:hs-all-ciphers-cli-aggr} Average Handshake cost for the client in millions CPU instructions}
+\end{table}
+
+
+\begin{table}[]
+\begin{tabular}{cl|l|l|l|l|l|}
+\cline{3-7}
+\multicolumn{1}{l}{}                                                                        &                          & \multicolumn{2}{c|}{{\ul PFS}}            & \multicolumn{3}{c|}{{\ul No PFS}}                                                                     \\ \cline{2-7} 
+\multicolumn{1}{l|}{}                                                                       & \cellcolor[HTML]{C0C0C0} & \textbf{DHE}             & \textbf{ECDHE} & \textbf{ECDH}            & \textbf{RSA}                                    & \textbf{X}               \\ \hline
+\multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}}Sym\\ Auth\end{tabular}}                    & \textbf{PSK}             & 135.535                  & 56.021         & \cellcolor[HTML]{C0C0C0} & 77.369                                          & 1.383                    \\ \hline
+\multicolumn{1}{|c|}{}                                                                      & \textbf{RSA}             & 212.255                  & 132.433        & 29.155                   & \cellcolor[HTML]{C0C0C0}{\color[HTML]{333333} } & 77.261                   \\ \cline{2-7} 
+\multicolumn{1}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}Asym\\ Auth\end{tabular}}} & \textbf{ECDSA}           & \cellcolor[HTML]{C0C0C0} & 86.097         & 29.094                   & \cellcolor[HTML]{C0C0C0}                        & \cellcolor[HTML]{C0C0C0} \\ \hline
+\end{tabular}
+\centering
+\caption{\label{table:hs-all-ciphers-srv-aggr} Average Handshake cost for the server in millions CPU instructions}
+\end{table}
  
 Each row and column intersection in the tables \ref{table:hs-all-ciphers-cli-aggr} and \ref{table:hs-all-ciphers-srv-aggr} 
 forms a ciphersuite. The rows separate the various authentication algorithms that can be used. The columns sperate the 
 key exhchange methods that offer \gls{pfs}, from the ones that don't. Each entry of the table presents the average 
-number of CPU cycles with its standard deviation in parenthesis.
+number of CPU instrucitons, in millions. In order to simplify this initial analysis, we are not presenting the standard deviation
+values for the averages and are rounding up the results to millions, with $3$ decimal places. In Section \ref{sec:tls-hs-cost} we will present a 
+more detailed evaluation for all security levels.
 
 \subsubsection{Client}
 
@@ -1807,37 +1841,39 @@ they are very close actual numbers, since they dominate the costs of the Handsha
 are taken directy from table \ref{table:hs-all-ciphers-cli-aggr} and will be in millions CPU instructions, 
 rounded to $3$ decimal places.
 
-If \gls{pfs} is used, the cost of the Handshake varies from $52.883$ to $133.524$ 
-million CPU instrutions for \gls{psk} based authentcation, and from $55.538$ to $160.445$ million CPU instructions for 
+If \gls{pfs} is used, the cost of the Handshake varies from $55.805$ to $135.443$ 
+million CPU instrutions for \gls{psk} based authentcation, and from $58.608$ to $168.954$ million CPU instructions for 
 asymmetric authentcation. If the seucirity service of \gls{pfs} is foregone, the cost
-of the Handshake varies from $1.199$ to $42.041$ for \gls{psk} based authentcation,
-and from $54.333$ to $106.8$ for asymmetric authentcation.
+of the Handshake varies from $1.354$ to $4.543$ for \gls{psk} based authentcation,
+and from $4.559$ to $112.585$ for asymmetric authentcation.
 
 If we analyze the values in the \textit{ECDHE} column in table \ref{table:hs-all-ciphers-cli-aggr}, thus fixing the
 algorithm used to offer \gls{pfs} we can compare the costs of authentcation for various algorithms on the client-side.
-For example, we can see that \textit{RSA} authentication costs $2.445$  ($55.538 - 52.883$) 
-more than \gls{psk} authentication and \textit{ECDSA} authentcation costs $104.97$ ($160.445 - 55.538$) 
+For example, we can see that \textit{RSA} authentication costs $2.803$  ($58.608 - 55.805$) 
+more than \gls{psk} authentication and \textit{ECDSA} authentcation costs $110.346$ ($168.954 - 58.608$) 
 million CPU instructions more than
 \textit{RSA} authentcation. The total cost of using \gls{psk} for authentcation can be estimated by looking at the
 value in the \textit{PSK} row and \textit{X} column, thus fixing authentcation to \textit{PSK} and not using any other
-algorithm for key agreement: $1.119$. In the same manner, the cost of using \textit{RSA} for authentcation can
+algorithm for key agreement: $1.354$. In the same manner, the cost of using \textit{RSA} for authentcation can
 be approximated by taking the value located in row \textit{RSA} and column \textit{X}, thus fixing authentcation
-to \gls{rsa} and not using any other algorithm for key agreement: $4.211$. Even though we cannot estimate the cost
+to \gls{rsa} and not using any other algorithm for key agreement: $4.559$. Even though we cannot estimate the cost
 of using \textit{ECDSA} for authentcation directly from the table, we have already seen that \textit{ECDSA} authentcation
-is $104.97$ more costly than \textit{RSA} authentcation. Thus, the cost of using \textit{ECDSA} for authentcation
-is of $109.181 (4.211+104.97)$ million CPU instructions. When compared, authentcation with \gls{rsa} is
-$276.318\%$ more expensive than with \gls{psk} and authentcation with \gls{ecdsa} is $2492.757\%$ more expensive than with \gls{rsa}.
+is $110.346$ more costly than \textit{RSA} authentcation. Thus, the cost of using \textit{ECDSA} for authentcation
+is of $114.905 (4.559+110.346)$ million CPU instructions. When compared, authentcation with \gls{rsa} is
+$236.7\%$ more expensive than with \gls{psk} and authentcation with \gls{ecdsa} is $2420.4\%$ more 
+expensive than with \gls{rsa}.
 
 Similarly, we can compare the costs of using \gls{dh} vs \gls{ecdh} to provide \gls{pfs}, by
 looking at the \gls{psk} (or \gls{rsa}) row, thus fixing the authentcation algorithm. Using \textit{DHE} is 
-$80.641$ ($133.524 - 52.883$) million CPU instructions more $(+152.489\%)$ expensive than using \textit{ECDHE}. The total cost of \gls{pfs}
+$76.638$ ($135.443 - 55.805$) million CPU instructions more $(+142.7\%)$ expensive than using \textit{ECDHE}. 
+The total cost of \gls{pfs}
 using the \gls{ecdh} algorithm can be computed by fixing the \textit{PSK} row (or \gls{rsa} row) 
 and subtracting the value in the \textit{ECDHE} column from the value in the \textit{X} column. By doing this, we are 
 fixing the authentcation algorithm to \gls{psk} and subtracting the cost of the Handshake when no \gls{pfs} is used, 
 from the cost of the Hanshake when \textit{ECDHE} is used to provide \gls{pfs}. Thus, the cost of using \textit{ECDHE}
-to provide \gls{pfs} is of $51.684$ million CPU cycles ($52.883-1.199$). Since we already know that \textit{DHE} costs
-$80.641$ million CPU instructions more than \textit{ECDHE}, we can compute the cost of using the \textit{DHE} to
-provide \gls{pfs}: $132.325 (51.684+80.641)$ million CPU instructions.
+to provide \gls{pfs} is of $54.451$ million CPU cycles ($55.805-1.354$). Since we already know that \textit{DHE} costs
+$76.638$ million CPU instructions more than \textit{ECDHE}, we can compute the cost of using the \textit{DHE} to
+provide \gls{pfs}: $131.089 (54.451+76.638)$ million CPU instructions.
 
 \subsubsection{Server}
 
@@ -2666,7 +2702,10 @@ but now there would be no \textit{ECDH} client/server side separaion:
   \item \textit{DHE} ciphersuitse
 \end{enumerate}
 
-\subsection{TLS Handshake Cost Analysis}
+\subsection{TLS Handshake Cost Analysis} \label{sec:tls-hs-cost}
+
+Having analyzed the costs of the authentcation and \gls{pfs} security services in \gls{tls}, we will now put everything together and
+analyze the total cost of the handshake. 
 
 Here, describe the costs of each individual ciphersuite. Remember that we described the steps needed for authentcation and PFS previously.
 What we do here, is sum them up and then say that the costs are somwhat off the actual handshake values, because of some "hidden costs".

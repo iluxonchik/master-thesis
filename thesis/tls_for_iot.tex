@@ -1927,7 +1927,7 @@ by a few hundred bytes, the total cost does not increase by a lot.
 
 \todo{table}
 
-\subsection{Asymmetric Algorithms Authenticaition Cost Analysis}
+\subsection{Asymmetric Algorithms Authenticaition Cost Analysis} 
 
 If asymmetric cryptography is used for authentcation, there are two
 choices of algorithms: \gls{rsa} and \gls{ecdsa}. Each one of them has advantages and disadvantages, depending on the
@@ -1973,20 +1973,22 @@ In out tests, both \gls{rsa} and \gls{ecdsa} signed ceritifcates have signatures
 the values in Table \ref{table:rsa-costs-all-sls} apply to those costs too.
 
 Figure \ref{fig:rsa-costs-all-sls} depics the costs of \gls{rsa} operations graphically. The data is presented in a logarithmic
-scale. An analysis of the data shows that for all security levels, the cost of private key operations is significatly higher than
+scale. An analysis of the data shows that the exponential trendline is the one that best fits the cost incrase for both, signature creation and 
+verification. This is a result of modular exponentiation being \gls{rsa}'s core operaion. Moreover, for all security levels, the cost of 
+private key operations is significatly higher than
 of the public key ones. The cost of the former also increases more, as the security level raises. For example, there is an increase
 of $2145\%$ from the \textit{normal} to \textit{very high} security level for signature creation and of $1102\%$ for singature verification.
 
-This results in a big difference between the cost of creating and verifying signatures, which becomes larger as the security level increases. 
-For example,
-at the \textit{normal} security level signature verification is approximately $74.6$ million CPU instuctions more expensive,
+This results in a big difference between the cost of creating and verifying signatures, which becomes larger as the security level increases.
+For example, at the \textit{normal} security level signature verification is approximately $74.6$ million CPU instuctions more expensive,
 while at the \textit{very high} security level, this value raises to over $1687$ million, \textit{i.e.} a $2161\%$ increase.
 
 This increase more modest for public key operations. This information is shown Table \ref{table:rsa-pub-priv-cost-increasee} and graphically 
 in Figure \ref{fig:rsa-pub-priv-cost-increase}. 
 The percentages show the relative cost increase from the previous security level. For example, creating an \gls{rsa} signature costs 
-$268.4\%$ more at \textit{normal} than at \textit{low} security level. Table \ref{table:rsa-absolute-cost-increase} presents the absolute cost
-increase from the previous security level. The numbers are always going up, with the signature creation increase being sinficantly larger 
+$268.4\%$ more at \textit{normal} than at \textit{low} security level. For all operations, the cost increase is exponential. 
+The consequences of the exponential cost increase are shown in table \ref{table:rsa-absolute-cost-increase}, wich presents this relative increase 
+in terms of absolute values. The numbers are always going up, with the signature creation increase being sinficantly larger 
 than the signature verification one. An analysis Figure \ref{fig:rsa-pub-priv-cost-increase}
 explains the difference between the costs of private and public key operations. As the security level increases, the relative cost
 increase is larger for signing than for verifying. On average, the signing operation cost increase from one security level to another 
@@ -2072,9 +2074,11 @@ key operations with \gls{rsa} are faster than private key ones.
 After analyzing the costs of \gls{rsa}, we will now perform a similar analysis for \gls{ecdsa}. Figure \ref{fig:ecdsa-costs-all-sls}
 shows the costs of \gls{ecdsa} opeartions graphically. The values are taken from Table \ref{table:rsa-costs-all-sls}. Unlike in \gls{rsa}, 
 in \gls{ecdsa} the private key operation is the least costly one. Figure \ref{fig:rsa-ecdsa-pub-priv-ratio} shows this ratio for both, 
-\gls{rsa} and \gls{ecdsa}. Besides the ratio being a lot smaller for \gls{ecdsa}, it increases by very little. This means, that no matter
+\gls{rsa} and \gls{ecdsa}. Besides the ratio being a lot smaller for \gls{ecdsa}, it vaires very little. This means, that no matter
 the security level, \gls{ecdsa} signature verification will always be about $2$ times more costly than signature creation.
 
+As it's shown in figure \ref{fig:ecdsa-costs-all-sls}, a logarithmic trendline is the one that best fits the cost incrase for both, 
+signature creation and verification.
 Table \ref{table:ecdsa-relative-cost-increase} shows the relative cost increse of of \gls{ecdsa}'s operations. The percentages 
 show the relative cost increase from the previous security level. Figure \ref{fig:ecdsa-relative-cost-incerase} presents this information
 graphically. There are two major differnces from \gls{rsa}. First, the relative cost incerase 
@@ -2083,8 +2087,10 @@ graphically in Figure \ref{fig:ecdsa-relative-cost-incerase}, where all of the l
 close one to another. As a result, even with the increase of security level, none of the operations will dominate as much as it happens
 in \gls{rsa}. Second, as the security level increases, the cost increase from the prevoius security level becomes smaller. In fact, after the
 \textbf{high} security level, the absolute cost increase starts decreasing as well. We can see this in table \ref{table:ecdsa-absolute-cost-increase}.
-Although not presented here, this trend continues for higher security levels. 
-Those properties of \gls{ecdsa} makes the security level increase more manageable. It's not as costly to increase the security level for \gls{ecdsa} as it for \gls{rsa}.
+This is a consequence of the cost increase being logarithmic, which is a result of \gls{ecdsa}'s core mathematical operation being
+multiplication of a scalar by a point on the curve. Although not presented here, this trend continues for higher security levels. 
+Those properties of \gls{ecdsa} makes the security level increase more manageable. It's not as costly to increase the security level for 
+\gls{ecdsa} as it for \gls{rsa}.
 
 \begin{table}[]
   \begin{tabular}{|l|l|l|l|}
@@ -2118,16 +2124,17 @@ Those properties of \gls{ecdsa} makes the security level increase more manageabl
 
 \begin{figure}
   \centering
-  \includegraphics[width=1.0\textwidth]{img/ecdsa-cost-all-sls.png}
+  \includegraphics[width=1.0\textwidth]{img/ecdsa_cost_all_sls.png}
   \caption{\label{fig:ecdsa-costs-all-sls} ECDSA costs for all security levels}
 \end{figure}
 
 In the previous subsection we have described an optimization in the choice of keys for \gls{rsa}. There are no such optimizations 
 for \gls{ecdsa}. For this reason, it is expected that the cost of both operations will increase in similar proportion. The non-optimized
 key (private for \gls{rsa}, private and public for \gls{ecdsa}) operation cost increase is a lot smaller for \gls{ecdsa}. This can be
-explained by the fact that smaller keys are used in \gls{ecdsa}, as we have alerady seen in Table \ref{table:secl-lvl-relations}, and is a big advantage of \gls{ecc}.
+explained by the fact that smaller keys are used in \gls{ecdsa}, as we have alerady seen in Table \ref{table:secl-lvl-relations},
+and is a big advantage of \gls{ecc}.
 
-\subsubsection{RSA vs ECDSA}
+\subsubsection{RSA vs ECDSA} \label{sec:rsa-vs-ecdsa}
 
 After having analysed the costs of \gls{rsa} and \gls{ecdsa}, we will now compare both and draw some conlcusions. The answer to the
 question of which one of algorithms is less costly will vary depending on the security level and the operation. Figure \ref{fig:ecdsa-rsa-costs-all}
@@ -2145,6 +2152,8 @@ By analyzing Figure \ref{fig:ecdsa-rsa-costs-all}, we can answer the question of
 \begin{itemize}
   \item \gls{rsa} is always less costly at signature verficiation
   \item \gls{ecdsa} is always less costly at signature creation
+  \item \gls{rsa}'s cost increase is exponential
+  \item \gls{ecdsa}'s cost increase is logarithmic
   \item Total cost of \gls{rsa} is smaller for the \textit{low} and \textit{normal} security levels
   \item Total cost of \gls{ecdsa} is smaller for the \textit{high} and \textit{very high} security levels
 \end{itemize}
@@ -2153,8 +2162,11 @@ By analayzing tables \ref{table:rsa-pub-priv-cost-increasee}, \ref{table:rsa-abs
 \ref{table:ecdsa-absolute-cost-increase} which show the relative and absolute cost increases for \gls{rsa} and \gls{ecdsa} opeartions, repectively,
 we can see that as the secrity level increases, the cost of \gls{rsa} operations increases more and more, while after the \textbf{normal} security
 level, the absolute cost increase of \gls{ecdsa} operations starts going down. Although not presented here, our tests show that this trend holds true
-for higher security levels as well. For this reason, it is safe to say that for security levels higher than the ones that we defined,
-\gls{ecdsa} would be the preferred choice.
+for higher security levels as well. This is a consequence of \gls{rsa} having an exponential cost increase, while \gls{ecdsa} a logarithmic one.
+For this reason, it is safe to say that for security levels higher than the ones that we defined, \gls{ecdsa} would be the preferred choice.
+\gls{rsa}' cost incrases exponentially due to the mathematical operation at the algorithm's core: modular exponentiation. Similarly, the cost
+increase in \gls{ecdsa} is logarithmic, due it's \gls{ecc} properties: the base mathematical operation is multiplication of a scalar by a point on the
+curve.
 
 So which algorithm should be used for each security level? The answer to this question is not straighforward and will depend on the environment.
 For example, if the scenario is a constrained client and a non-constrained server, \gls{rsa} would be the least costly choice. If, on the
@@ -2367,14 +2379,14 @@ their costs in more detail.
 
 \subsubsection{ECDH Cost Analysis}
 
-In \gls{ecdh}, two basic operations are performed by each peer: first, a public/private \gls{ecc} keypair is generated, followed by a generation of
+In \gls{ecdh}, two basic operations are performed by each peer: first, a public/private \gls{ecc} keypair is generated, followed by generation of
 the shared secret. The resulting shared secret will be a 2D $(x,y)$ coordinate on the curve. In \gls{tls} the $y$ value is discarded and $x$ is
 used as the preshared secret. Computing the private key is cheap, since it's just a randomly generated number. The costly part is the computation of
 the public key and the shared secret, since for both it involves multiplications of a scalar by a point on the elliptic curve.
 
 We have already seen the costs of \gls{ecdh} for the \textbf{normal} secrurity level and now we will analyse the remaining ones. Table
-\ref{table:ecdh-dh-costs-all-sls} shows the number of CPU instrucitons for each operation. As already mentioned, the values are an average of
-$108$ runs for the \gls{ecdh}'s key generation, $134$ runs for \gls{ecdh}'s shared secret generation and of $34$ runs for both of \gls{dh}'s
+\ref{table:ecdh-dh-costs-all-sls} shows the number of CPU instrucitons for each \gls{ecdh} and \gls{dh} operation. As already mentioned, the values are 
+an average of $108$ runs for the \gls{ecdh}'s key generation, $134$ runs for \gls{ecdh}'s shared secret generation and of $34$ runs for both of \gls{dh}'s
 opeartions. The numbers presented in parenthesis is the standard deviation. All of the values are rounded up to signinficant digits.
 Table \ref{table:ecdh-dh-costs-total-all-sls} presents the sum of keypair and shared secret generation operations for for \gls{ecdh} and \gls{dh},
 which we call the \textit{Total} cost. For both algorithms, the cost of generating the private key is less than $1\%$ of the keypair generation operation.
@@ -2382,7 +2394,8 @@ This is expected as the private key is just a randomly generated number, with si
 
 Figure \ref{fig:ecdh-costs-all-sls} depicts the cost of \gls{ecdh} operations graphically. For all security levels the total cost is almost
 evenly divided bewtween the keypair and the shared secret generation. This is justified by the fact that the underlying mathematical operation is
-the same in both cases: multiplications of a scalar by a point on the curve.
+the same when generating the public/private keys and the shared secret: multiplications of a scalar by a point on the curve. An analysis of the figure
+also shows that a logarithmic trendline is the one that best fits the cost incrase for all operations.
 
 \begin{table}[]
 \begin{tabular}{|l|l|l|l|l|}
@@ -2414,121 +2427,137 @@ the same in both cases: multiplications of a scalar by a point on the curve.
   \caption{\label{fig:ecdh-costs-all-sls} ECDH operations costs for all security levels}
 \end{figure}
 
-Table \ref{table:ecdh-dh-relative-cost-increase} shows the relative cost increase of \gls{ecdh} and \gls{dh} operations from the previous security
-level.  Table \ref{table:ecdh-absolute-cost-increase} shows the absolute cost increase for \gls{ecdh}.
+Table \ref{table:ecdh-relative-cost-increase} shows the relative cost increase of \gls{ecdh} operations from the previous security
+level, with figure \ref{fig:ecdh-dh-relative-cost-increase} showing this same information graphically or the \textit{Total} cost increase (the blue line). 
+We're only presenting the the \textit{ECDH Total} column in the graph, because all are very similar, thus the $3$ lines would covering one another.
+The total relative cost increase represents the average of the values of keypair and shared secret generation relative increase. 
+By analyzing the table and the corresponding graph, we can see  that as the security level increases, the cost increase  from the prevoius security 
+level becomes smaller. The effect decrease on the absolute cost increase can be seen in table \ref{table:ecdh-absolute-cost-increase}. 
+This table shows the absolute increase in the number of CPU instructions from 
+the previous security level. What can be clearly seen in this table is that after the \textbf{high} security level, the absolute cost increase starts 
+going down. Although not presented here, those trends continue for higher security levels.
+
+There is a striking resemblance between the cost analysis of \gls{ecdh} and \gls{ecdsa}. In both algorithms, the cost increase is logarithmic. 
+In fact, the percentages for \gls{ecdsa} and \gls{ecdh} in tables \ref{table:ecdsa-relative-cost-increase}
+and \ref{table:ecdh-relative-cost-increase}, we can see that the numbers are very similar. This similarity also reflects in the
+trend that can be seen in tables \ref{table:ecdsa-absolute-cost-increase} and \ref{table:ecdh-absolute-cost-increase}, where in both cases, the
+absolute cost increase starts going down from the \textbf{high} security level and onwards. Those similarities are not a coincidence, but rather
+a result of the \gls{ecc} properties of both algorithms, more specifically, a consequence of the multiplication of a scalar by a point on
+the curve being the core mathematical opeartion.
 
 \begin{table}[]
   \begin{tabular}{|l|l|l|l|}
   \hline
-                     & \textbf{ECDH Gen Keypair} & \textbf{ECDH Gen Shared} \\ \hline
-  \textbf{low}       & -                         & -                        \\ \hline
-  \textbf{normal}    & 112.3\%                   & 116.3\%                  \\ \hline
-  \textbf{high}      & 67\%                      & 64.4\%                   \\ \hline
-  \textbf{very high} & 18.6\%                    & 20.8\%                   \\ \hline
+                     & \textbf{ECDH Gen Keypair} & \textbf{ECDH Gen Shared} & \textbf{ECDH Total}  \\ \hline
+  \textbf{low}       & -                         & -                        & -                    \\ \hline
+  \textbf{normal}    & 112.3\%                   & 116.3\%                  & 114.3\%              \\ \hline
+  \textbf{high}      & 67\%                      & 64.4\%                   & 65.7\%               \\ \hline
+  \textbf{very high} & 18.6\%                    & 20.8\%                   & 19.8\%               \\ \hline
   \end{tabular}
-  \caption{\label{table:echdh-realative-cost-increase} Relative increase of ECDH and DH operation costs from previous security level}
+  \caption{\label{table:ecdh-relative-cost-increase} Relative increase of ECDH operation costs from previous security level}
   \end{table}
 
-
 \begin{table}[]
-  \begin{tabular}{|l|l|l|l|l|l|l|}
-  \hline
-                     \textbf{DH Gen Keypair} & \textbf{DH Gen Shared} & \textbf{DH Gen Total} \\ \hline
-  \textbf{low}       & -                       & -                      & -                    \\ \hline
-  \textbf{normal}    & 542.1\%                 & 549\%                  & 545.5\%               \\ \hline
-  \textbf{high}      & 607.4\%                 & 610\%                  & 608.7\%               \\ \hline
-  \textbf{very high} & 656.4\%                 & 657.2\%                & 656.8\%               \\ \hline
-  \end{tabular}
-  \caption{\label{table:dh-realative-cost-increase} Relative increase of ECDH and DH operation costs from previous security level}
-  \end{table}
-
-% Delete begin
-
-
-Figure \ref{fig:rsa-costs-all-sls} depics the costs of \gls{rsa} operations graphically. The data is presented in a logarithmic
-scale. An analysis of the data shows that for all security levels, the cost of private key operations is significatly higher than
-of the public key ones. The cost of the former also increases more, as the security level raises. For example, there is an increase
-of $2145\%$ from the \textit{normal} to \textit{very high} security level for signature creation and of $1102\%$ for singature verification.
-
-This results in a big difference between the cost of creating and verifying signatures, which becomes larger as the security level increases. 
-For example,
-at the \textit{normal} security level signature verification is approximately $74.6$ million CPU instuctions more expensive,
-while at the \textit{very high} security level, this value raises to over $1687$ million, \textit{i.e.} a $2161\%$ increase.
-
-This increase more modest for public key operations. This information is shown Table \ref{table:rsa-pub-priv-cost-increase} and graphically 
-in Figure \ref{fig:rsa-pub-priv-cost-increase}. 
-The percentages show the relative cost increase from the previous security level. For example, creating an \gls{rsa} signature costs 
-$268.4\%$ more at \textit{normal} than at \textit{low} security level. An analysis Figure \ref{fig:rsa-pub-priv-cost-increase}
-explains the difference between the costs of private and public key operations. As the security level increases, the relative cost
-increase is larger for signing than for verifying. On average, the signing operation cost increase from one security level to another 
-is about $x1.5$ larger than the verifying one. This has a cumulative effect: the constatly larger value increses even more. 
-This is shown graphically in Figure \ref{fig:rsa-ecdsa-pub-priv-ratio}, which for \gls{rsa}, presents the ratio between the cost of private and 
-public key operations. As the seucirity level increases, the value becomes larger. The fact that the signing operation dominates the total cost
-can also be seen graphically in Figure \ref{fig:rsa-pub-priv-cost-increase}. The \textit{Total} cost increase line is very close to the 
-\textit{RSA Sign} cost increase line, in fact, they're almost identical. On average, the \textit{Total} cost incerase is only $1.4\%$ smaller
-than the signing opeartion cost incerase.
-
-\begin{table}[]
-  \begin{tabular}{|l|l|l|l|l|}
-  \hline
-                    & \textbf{RSA Sign}    & \textbf{RSA Verify} & \textbf{ECDSA Sign} & \textbf{ECDSA Verify} \\ \hline
-  \textbf{low}       & 20559190 (117075)    & 398584 (198)        & 14497591 (49045)    & 26839273 (50816)      \\ \hline
-  \textbf{normal}    & 75738802 (317047)    & 111786 (748)       & 29512991 (95776)    & 56260702 (162365)     \\ \hline
-  \textbf{high}      & 317087210 (716961)   & 3295296 (254)       & 49150396 (82047)     & 94077150 (130275)     \\ \hline
-  \textbf{very high} & 1700652764 (2283718) & 13436728 (702)      & 59732056 (441815)   & 114744021 (843861)    \\ \hline
-  \end{tabular}
-  \caption{\label{table:rsa-costs-all-sls} RSA and ECDSA signature cereation and verification costs} \end{table}
-
-\begin{table}[]
-  \begin{tabular}{lll}
-                     & \textbf{RSA Total} & \textbf{ECDSA Total} \\
-  \textbf{low}       & 20957774           & 41336864             \\
-  \textbf{normal}    & 76856670           & 85773693             \\
-  \textbf{high}      & 320382506          & 143227546            \\
-  \textbf{very high} & 1714089492         & 174476077           
-  \end{tabular}
-  \caption{\label{table:rsa-costs-all-sls-total} RSA and ECDSA costs of signature creation + signature verification}
-\end{table}
-
-\begin{table}[]
-\label{table:rsa-pub-priv-cost-increase}
 \begin{tabular}{|l|l|l|l|}
-  \hline
-& \textbf{RSA Sign} & \textbf{RSA Verify} & \textbf{Total} \\ \hline
-\textbf{low}       & -                 & -                   & -              \\ \hline
-\textbf{normal}    & 268.4\%           & 180.5\%             & 266.7\%        \\ \hline
-\textbf{high}      & 318.7\%           & 194.8\%             & 316.9\%        \\ \hline
-\textbf{very high} & 436.3\%           & 307.8\%             & 435\%          \\ \hline
+\hline
+                   & \textbf{ECDH Gen Keypair} & \textbf{ECDH Gen Shared} & \textbf{ECDH Total} \\ \hline
+\textbf{low}       & -                         & -                        & -                   \\ \hline
+\textbf{normal}    & 14541394                  & 14495935                 & 29037329            \\ \hline
+\textbf{high}      & 18416446                  & 17372718                 & 35789164            \\ \hline
+\textbf{very high} & 8549382                   & 9200224                  & 17749606            \\ \hline
 \end{tabular}
-\caption{Relative increase of RSA operation costs from previous security level}
+\caption{\label{table:ecdh-absolute-cost-increase} Absolute increase of ECDH operation costs from previous security level}
 \end{table}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/rsa_cost_all_sls.png}
-  \caption{\label{fig:rsa-costs-all-sls} RSA operations costs for all security levels (logarithmic scale)}
-\end{figure}
+  \begin{figure}
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/ecdh_dh_relative_cost_increase.png}
+    \caption{\label{fig:ecdh-dh-relative-cost-increase} Relative increase of ECDH and DH operation costs}
+  \end{figure}
+
+\subsubsection{DH Cost Analysis}
+
+Similarly to \gls{ecdh}, in \gls{dh} two basic operations are performed by each peer: first, a public/private \gls{dh} keypair is generated, followed
+by generation of the shared secret, which in \gls{tls}, is used as the premaster secret. Computing the private key is cheap, since it's just a randomly 
+generated number. The costly part is the computation of the public key and the shared secret, since both of the operations involve mudular exponentiations.
+
+We will once again refer to table \ref{table:ecdh-dh-costs-all-sls} for the cost analysis, but this time focusing on \gls{dh}. Figure
+\ref{fig:dh-costs-all-sls} shows the costs of \gls{dh}'s operations for all security levels graphically. Just like in \gls{ecdh}, the total cost
+is almost evenly devided between the keypair and shared secret generation. This is a consequence of the fact that generating the public/private keys
+and the shared secret involves the same type of mathematical operations, thus their costs are similar. An analysis of the figure
+also shows that an exponential trendline is the one that best fits the cost incrase for all operations.
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/dh_costs_all_sls.png}
+    \caption{\label{fig:dh-costs-all-sls} DH operations costs for all security levels}
+  \end{figure}
+
+Table \ref{table:dh-relative-cost-increase} shows the relative cost increase of \gls{dh} operations from the previous security level. The \textit{Total} 
+cost increase is depicted graphically in figure \ref{fig:ecdh-dh-relative-cost-increase} (red line). We're only presenting the the \textit{DH Total} column 
+in the graph, because all are very similar, thus the $3$ lines would covering one another. The total relative cost increase represents the average of the 
+values of keypair and shared secret generation relative increase. An analayzing of table \ref{fig:ecdh-dh-relative-cost-increase} and figure
+\ref{fig:fig:ecdh-dh-relative-cost-increase} shows as the security level increases, the relative \gld{dh} cost increase becomes larger. In fact,
+this cost increase is exponential. Although not presented here, this holds true for security levels higher than \textbf{very high}. 
+The effect of this exponential increase can be seen in table \ref{table:dh-absolute-cost-increase}, which shows the absolute cost increase from 
+the previous security level.
+
+\begin{table}[]
+  \begin{tabular}{|l|l|l|l|}
+  \hline
+                     \textbf{DH Gen Keypair} & \textbf{DH Gen Shared}   & \textbf{DH Total}   \\ \hline
+  \textbf{low}       & -                       & -                      & -                       \\ \hline
+  \textbf{normal}    & 542.1\%                 & 549\%                  & 545.5\%                 \\ \hline
+  \textbf{high}      & 607.4\%                 & 610\%                  & 608.7\%                 \\ \hline
+  \textbf{very high} & 656.4\%                 & 657.2\%                & 656.8\%                 \\ \hline
+  \end{tabular}
+  \caption{\label{table:dh-relative-cost-increase} Relative increase of DH operation costs from previous security level}
+  \end{table}
+
+  \begin{table}[]
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+                       & \textbf{DH Gen Keypair} & \textbf{DH Gen Shared} & \textbf{DH Total} \\ \hline
+    \textbf{low}       & -                       & -                      & -                 \\ \hline
+    \textbf{normal}    & 56680733                & 56433616               & 113114349         \\ \hline
+    \textbf{high}      & 407802113               & 406921914              & 814724027         \\ \hline
+    \textbf{very high} & 3117692962              & 3112689309             & 6230382271        \\ \hline
+    \end{tabular}
+    \caption{\label{table:dh-absolute-cost-increase} Absolute increase of DH operation costs from previous security level}
+    \end{table}
+
+Similarly to \gls{rsa}, \gls{dh} has an exponential cost increase. This similarity is a consequence of both algorithms having the same mathematical
+operation at their core: modular exponentiation.
+
+\subsubsection{ECDH vs DH}
+
+Having analysed the costs of \gls{ecdh} and \gls{dh}, we will now compare them and draw some conclusions. Unlike in our comparison of
+\gls{rsa} and \gls{ecdsa} in Section \ref{sec:rsa-vs-ecdsa}, the answer to which one of the algorithms is less costly, is straighforward.
+In \gls{rsa} and \gls{ecdsa} the cost the signature creation and verification operations is different, so the choice of the least costly
+option depended not only on the security level, but also on whether we were optimizing for the client or the server. In \gls{ecdh} and \gls{dh},
+the total cost is almost evenly divided between the keypair and the shared secret generation. Thus, we can make our decision simply
+by analysing table \ref{table:ecdh-table:ecdh-dh-costs-total-all-sls} and choosing which algorithm has the smallest value for each security level.
+However, in order to simplify the analysis, we have plotted the table \ref{table:ecdh-dh-costs-all-sls} in figure \ref{fig:ecdh-dh-costs-all}, which
+presents the data in logarithmic scale.
+
+By looking at figure \ref{fig:ecdh-costs-all-sls} it's easy to see which algorithm has the smallest costs. If the \textbf{low} security level is being used, 
+\gls{dh} is the least costly choice, if the \textbf{normal} or any security level above is being used, \gls{ecdh} is. Moreover, we can clearly see that
+for each algorithm, the costs of their opeartions is very similar, since we have overlapping lines. The logarithmic and exponential properties of
+\gls{ecdh} and \gls{dh}, respectively, are also visible by shape of the lines. Since we are using logarithmic scale for the $y$ axis, the
+exponential cost growth of \gls{dh} manifests in the shape of a line.
 
 \begin{figure}
   \centering
-  \includegraphics[width=1.0\textwidth]{img/rsa_relative_increase.png}
-  \caption{\label{fig:rsa-pub-priv-cost-increase} Relative increase of RSA operation costs}
+  \includegraphics[width=1.0\textwidth]{img/ecdh_dh_costs_all.png}
+  \caption{\label{fig:ecdh-dh-costs-all} ECDH and DH cost comparison (logarithmic scale)}
 \end{figure}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/rsa_ecdsa_operation_ratio.png}
-  \caption{\label{fig:rsa-ecdsa-pub-priv-ratio} Ratio between the most and the least costly operation for RSA and ECDSA}
-\end{figure}
+Although not presented here, the logarithmic and exponential growth trends for \gls{ecdsa} and \gls{dh}, respectively, hold true even for
+security levels higher than \textbf{very high}. For security levels above \textbf{low}, from the costs and security prespective, there are no
+reasons of chooisng \gls{dh} over \gls{ecdh}, for either peer. For this reason, for security level above \textbf{low} it makes sense to abandon the 
+use of \gls{dh}, in favor of \gls{ecdh} completely. As a benefit of removing the \gls{dh} code implementation, the storage footpirnt will be smaller.
 
-The reason for the discrepancy between the cost of public and private key operations has to do with an optimization
-in the choice of the keys. \gls{rsa}'s public keys are deliberately chosen to have a small public exponent, such as $e=65537$. This is considered as a
-sensible compromise, since it is famously known to be prime, large enough to avoid the attacks to which 
-small exponents make RSA vulnerable, and can be computed extremely quickly on binary computers \cite{boneh2002fast}\cite{muir2006seifert}.
-A smaller exponent leads to less exponentiation operations, thus better performance. For this reason, public
-key operations with \gls{rsa} are faster than private key ones.
-
-% Delete end
+% NOTE: regarding the dhm code size look at mbedtls-2.7.0/library/CMakeFiles/mbedcrypto.dir/dhm.c.o
 
 \subsubsection{(EC)DH algorithm and (EC)DH ciphersuites}
 

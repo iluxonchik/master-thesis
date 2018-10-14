@@ -32,7 +32,6 @@ vratio=2:3,      % not vertically centered
 \usepackage[normalem]{ulem}
 \useunder{\uline}{\ul}{}
 \newcommand{\todo}[1]{\textcolor{red}{TODO: #1}\PackageWarning{TODO:}{#1!}}
-
 %%% GLOSSARIES
 \usepackage{glossaries}
 
@@ -1550,7 +1549,7 @@ host CPU (the \gls{jit} compilation step). This process is illustrated in Figure
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/how_valgrind_works.png}
-  \caption{\label{fig:how_valgrind_works} How Valgrind works}
+  \centering \caption{\label{fig:how_valgrind_works} How Valgrind works}
 \end{figure}
 
 In our case, the \textit{tool plugin} is \textit{Callgrind}. Among other metrics, \textit{Callgrind}
@@ -1785,8 +1784,10 @@ Figures \ref{fig:hs-all-ciphers-cli} and \ref{fig:hs-all-ciphers-srv} depict a g
 of the ciphersuites, for the client and the server, respectively. In both graphs, $y$ axis represents the number of 
 CPU instructions executed. The ciphersuites have been grouped by the key exchange method. Each bar within a key 
 exchange method group represents a different combination of a symmetric encryption function and a hash function. 
-We decided to omit the name of those combinations, since this information is not crutial for this analysis and it 
-clutters up the graph. What is important to see is the fact taht there is very little  variation in costs within 
+The pink rectangles group the ciphersuites by the key excahnge method. The numbers at the top of each rectangles indicate the average 
+number of CPU  instrucitons, in millions, used to perfrom the handshake for that key exchange method. The values are taken
+from tables \ref{table:hs-all-ciphers-cli-aggr} and \ref{table:hs-all-ciphers-cli-aggr}.
+An analysis of both figures shows that there is very little variation in costs within 
 each key exchange method group. This is due to the fact that most of the resources are spent in authenticating and 
 generating the keying material (either using \gls{pfs} or not).
 
@@ -1809,7 +1810,7 @@ Figures \ref{fig:hs-all-ciphers-cli-aggr} and \ref{fig:hs-all-ciphers-srv-aggr} 
 \multicolumn{1}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}Asym\\ Auth\end{tabular}}} & \textbf{ECDSA}           & \cellcolor[HTML]{C0C0C0} & 168.954        & 112.585                  & \cellcolor[HTML]{C0C0C0}                        & \cellcolor[HTML]{C0C0C0} \\ \hline
 \end{tabular}
 \centering
-\caption{\label{table:hs-all-ciphers-cli-aggr} Average Handshake cost for the client in millions CPU instructions}
+\centering \caption{\label{table:hs-all-ciphers-cli-aggr} Average Handshake cost for the client in millions CPU instructions}
 \end{table}
 
 
@@ -1823,7 +1824,7 @@ Figures \ref{fig:hs-all-ciphers-cli-aggr} and \ref{fig:hs-all-ciphers-srv-aggr} 
 \multicolumn{1}{|c|}{\multirow{-2}{*}{\begin{tabular}[c]{@{}c@{}}Asym\\ Auth\end{tabular}}} & \textbf{ECDSA}           & \cellcolor[HTML]{C0C0C0} & 86.097         & 29.094                   & \cellcolor[HTML]{C0C0C0}                        & \cellcolor[HTML]{C0C0C0} \\ \hline
 \end{tabular}
 \centering
-\caption{\label{table:hs-all-ciphers-srv-aggr} Average Handshake cost for the server in millions CPU instructions}
+\centering \caption{\label{table:hs-all-ciphers-srv-aggr} Average Handshake cost for the server in millions CPU instructions}
 \end{table}
  
 Each row and column intersection in the tables \ref{table:hs-all-ciphers-cli-aggr} and \ref{table:hs-all-ciphers-srv-aggr} 
@@ -1854,7 +1855,9 @@ more than \gls{psk} authentication and \textit{ECDSA} authentcation costs $110.3
 million CPU instructions more than
 \textit{RSA} authentcation. The total cost of using \gls{psk} for authentcation can be estimated by looking at the
 value in the \textit{PSK} row and \textit{X} column, thus fixing authentcation to \textit{PSK} and not using any other
-algorithm for key agreement: $1.354$. In the same manner, the cost of using \textit{RSA} for authentcation can
+algorithm for key agreement: $1.354$. In fact, we can consider this value to be the overhead of \gls{tls} for the client,
+since this is basically the cost of establishing the most basic \gls{tls} conncection available in \textit{mbedTLS 2.7.0}.
+In the same manner, the cost of using \textit{RSA} for authentcation can
 be approximated by taking the value located in row \textit{RSA} and column \textit{X}, thus fixing authentcation
 to \gls{rsa} and not using any other algorithm for key agreement: $4.559$. Even though we cannot estimate the cost
 of using \textit{ECDSA} for authentcation directly from the table, we have already seen that \textit{ECDSA} authentcation
@@ -1881,38 +1884,40 @@ We will now perform the same analysis for the server by analyzing the table \ref
 figure \ref{fig:hs-all-ciphers-srv-aggr}. Once again, the presented costs will be approximations in
 being millions CPU instructions rounded to $3$ decimal places.
 
-If \gls{pfs} is used, the cost of the Handshake varies from $52.938$ to $133.583$ 
-million CPU instrutions for \gls{psk} based authentcation, and from $81.502$ to $208.721$ million CPU instructions for 
+If \gls{pfs} is used, the cost of the Handshake varies from $56.021$ to $135.535$ 
+million CPU instrutions for \gls{psk} based authentcation, and from $86.097$ to $212.255$ million CPU instructions for 
 asymmetric authentcation. If the seucirity service of \gls{pfs} is foregone, the cost
-of the Handshake varies from $1.217$  to $75.593$ for \gls{psk} based authentcation,
-and from $27.519$ to $274.607$ for asymmetric authentcation.
+of the Handshake varies from $1.383$  to $77.369$ for \gls{psk} based authentcation,
+and from $27.094$ to $77.261$ for asymmetric authentcation.
 
 If we analyze the values in the \textit{ECDHE} column in table \ref{table:hs-all-ciphers-srv-aggr}, thus fixing the
 algorithm used to offer \gls{pfs} we can compare the costs of authentcation for various algorithms on the server-side.
-For example, we can see that \textit{RSA} authentication costs $74.819$ ($127.757 - 52.938$) more than \gls{psk} 
-authentication and \textit{ECDSA} authentcation costs $46.255$ ($81.502 - 127.757$) million CPU instructions less 
+For example, we can see that \textit{RSA} authentication costs $76.412$ ($132.433-56.021$) more than \gls{psk} 
+authentication and \textit{ECDSA} authentcation costs $46.336$ ($132.433-86.097$) million CPU instructions less 
 than \textit{RSA} authentcation. The total cost of using \gls{psk} for authentcation can be estimated 
 by looking at the
 value in the \textit{PSK} row and \textit{X} column, thus fixing authentcation to \textit{PSK} and not using any other
-algorithm for key agreement: $1.217$. In the same manner, the cost of using \textit{RSA} for authentcation can
+algorithm for key agreement: $1.383$. In fact, we can consider this value to be the overhead of \gls{tls} for the client,
+since this is basically the cost of establishing the most basic \gls{tls} conncection available in \textit{mbedTLS 2.7.0}. 
+In the same manner, the cost of using \textit{RSA} for authentcation can
 be approximated by taking the value located in row \textit{RSA} and column \textit{X}, thus fixing authentcation
-to \gls{rsa} and not using any other algorithm for key agreement: $75.840$. Even though we cannot estimate the cost
+to \gls{rsa} and not using any other algorithm for key agreement: $77.261$. Even though we cannot estimate the cost
 of using \textit{ECDSA} for authentcation directly from the table, we have already seen that \textit{ECDSA} authentcation
-is $46.255$ less costly than \textit{RSA} authentcation. Thus, the cost of using \textit{ECDSA} for authentcation
-is of $(29.585) 75.840-46.255$ million CPU instructions. When compared, authentcation with \gls{ecdsa} is
-$2330.978\%$ more expensive than with \gls{psk} and authentcation with \gls{rsa} is $156.346\%$ more expensive 
+is $46.336$ less costly than \textit{RSA} authentcation. Thus, the cost of using \textit{ECDSA} for authentcation
+is of $30.925 (77.261-46.336)$ million CPU instructions. When compared, authentcation with \gls{ecdsa} is
+$2136.1\%$ more expensive than with \gls{psk} and authentcation with \gls{rsa} is $149.8\%$ more expensive 
 than with \gls{ecdsa}.
 
 Similarly, we can compare the costs of using \gls{dh} vs \gls{ecdh} to provide \gls{pfs}, by
 looking at the \gls{psk} (or \gls{rsa}) row, thus fixing the authentcation algorithm. Using \textit{DHE} is 
-$80.645$ ($133.583 - 52.938$) million CPU instructions more expensive $(+152.339\%)$ than using \textit{ECDHE}. The total cost of \gls{pfs}
+$79.514$ ($135.535 - 56.021$) million CPU instructions more expensive $(+141.9\%)$ than using \textit{ECDHE}. The total cost of \gls{pfs}
 using the \gls{ecdh} algorithm can be computed by fixing the \textit{PSK} row (or \gls{rsa} row) 
 and subtracting the value in the \textit{ECDHE} column from the value in the \textit{X} column. By doing this, we are 
 fixing the authentcation algorithm to \gls{psk} and subtracting the cost of the Handshake when no \gls{pfs} is used, 
 from the cost of the Hanshake when \textit{ECDHE} is used to provide \gls{pfs}. Thus, the cost of using \textit{ECDHE}
-to provide \gls{pfs} is of $51.721$ million CPU cycles ($52.938-1.217$). Since we already know that \textit{DHE} costs
-$80.645$ million CPU instructions more than \textit{ECDHE}, we can compute the cost of using the \textit{DHE} to
-provide \gls{pfs}: $132.372 (51.727+80.645)$ million CPU instructions.
+to provide \gls{pfs} is of $54.638 (56.021-1.383)$ million CPU cycles . Since we already know that \textit{DHE} costs
+$79.514$ million CPU instructions more than \textit{ECDHE}, we can compute the cost of using the \textit{DHE} to
+provide \gls{pfs}: $134.152 (54.638+79.514)$ million CPU instructions.
 
 \subsubsection{Conclusion}
 
@@ -1927,14 +1932,14 @@ Our analysis showed that \textit{PSK} based ciphersuites are the most efficient 
 and the server, thus their popularity in the \gls{iot} environment \todo{ref}. Symmetric authentcation is, by far,
 the least costly one for both peers. For the client, \gls{rsa} is the second least costly authentcation and \gls{ecdsa}
 is the most costly one of them. For the server, this situation is reversed. The reasons for that will be explained in
-Section $4.X$, when we analyse the Handshake costs in detail.
+Section \ref{sec:asym-algs-analysis}, when we analyse the Handshake costs in detail.
 
 As for the \gls{pfs}, in both cases \textit{ECDHE} is about $1.5$ less costly than \textit{DHE}. This gives us a glimpse
 into the benefits of elliptic curve cryptography. The costs of \gls{pfs} are identical for both peers. In the next
 section we will analyse both of the security services in more detail.
 
 The previous section gave an overview of the security services of authentcation and \gls{pfs}. We deduced their
-approximated cost by analyzing the costs of the Handshake with various ciphersuites. In the follwoing two sections
+approximated cost by analyzing the costs of the Handshake with various ciphersuites. In the section that follows
 we will do a more detailed analysis of those serivces and the underlying algorithms that support them.
 
 \subsection{Authentication Cost Analysis} \label{sec:auth-cost-analysis}
@@ -1966,7 +1971,7 @@ by a few hundred bytes, the total cost does not increase by a lot.
 
 \todo{table}
 
-\subsection{Asymmetric Algorithms Authenticaition Cost Analysis} 
+\subsection{Asymmetric Algorithms Authenticaition Cost Analysis} \label{sec:asym-algs-analysis} 
 
 If asymmetric cryptography is used for authentcation, there are two
 choices of algorithms: \gls{rsa} and \gls{ecdsa}. Each one of them has advantages and disadvantages, depending on the
@@ -1986,7 +1991,7 @@ The \textit{Total} cost is the sum of the \textit{Sign} and \textit{Verify} cost
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/rsa_ecdsa_cost_normal_sl.png}
-  \caption{\label{fig:rsa-ecdsa-sign-ver-total-normal-sl} RSA and ECDSA operations cost for normal security level}
+  \centering \caption{\label{fig:rsa-ecdsa-sign-ver-total-normal-sl} RSA and ECDSA operations cost for normal security level}
 \end{figure}
 
 By analyzing the graph, we can can observe two things:
@@ -2047,7 +2052,7 @@ than the signing opeartion cost incerase.
   \textbf{high}      & 317087210 (716961)   & 3295296 (254)       & 49150396 (82047)     & 94077150 (130275)     \\ \hline
   \textbf{very high} & 1700652764 (2283718) & 13436728 (702)      & 59732056 (441815)   & 114744021 (843861)    \\ \hline
   \end{tabular}
-  \caption{\label{table:rsa-costs-all-sls} RSA and ECDSA signature cereation and verification costs} \end{table}
+  \centering \caption{\label{table:rsa-costs-all-sls} RSA and ECDSA signature cereation and verification costs} \end{table}
 
 \begin{table}[]
   \begin{tabular}{|l|l|l|}
@@ -2057,7 +2062,7 @@ than the signing opeartion cost incerase.
   \textbf{high}      & 320382506          & 143227546            \\ \hline
   \textbf{very high} & 1714089492         & 174476077           
   \end{tabular}
-  \caption{\label{table:rsa-costs-all-sls-total} RSA and ECDSA costs of signature creation + signature verification}
+  \centering \caption{\label{table:rsa-costs-all-sls-total} RSA and ECDSA costs of signature creation + signature verification}
 \end{table}
 
 \begin{table}[]
@@ -2068,7 +2073,7 @@ than the signing opeartion cost incerase.
 \textbf{high}      & 318.7\%           & 194.8\%             & 316.9\%        \\ \hline
 \textbf{very high} & 436.3\%           & 307.8\%             & 435\%          \\ \hline
 \end{tabular}
-\caption{\label{table:rsa-pub-priv-cost-increasee} Relative increase of RSA operation costs from previous security level}
+\centering \caption{\label{table:rsa-pub-priv-cost-increasee} Relative increase of RSA operation costs from previous security level}
 \end{table}
 
 \begin{table}[]
@@ -2080,25 +2085,25 @@ than the signing opeartion cost incerase.
   \textbf{high}      & 241348408         & 2177428             & 243525836          \\ \hline
   \textbf{very high} & 1383565554        & 10141432            & 1393706986         \\ \hline
   \end{tabular}
-  \caption{\label{table:rsa-absolute-cost-increase} Absolute increase of RSA operation costs from previous security level}
+  \centering \caption{\label{table:rsa-absolute-cost-increase} Absolute increase of RSA operation costs from previous security level}
   \end{table}
 
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/rsa_cost_all_sls.png}
-  \caption{\label{fig:rsa-costs-all-sls} RSA operations costs for all security levels (logarithmic scale)}
+  \centering \caption{\label{fig:rsa-costs-all-sls} RSA operations costs for all security levels (logarithmic scale)}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/rsa_relative_increase.png}
-  \caption{\label{fig:rsa-pub-priv-cost-increase} Relative increase of RSA operation costs}
+  \centering \caption{\label{fig:rsa-pub-priv-cost-increase} Relative increase of RSA operation costs}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/rsa_ecdsa_operation_ratio.png}
-  \caption{\label{fig:rsa-ecdsa-pub-priv-ratio} Ratio between the most and the least costly operation for RSA and ECDSA}
+  \centering \caption{\label{fig:rsa-ecdsa-pub-priv-ratio} Ratio between the most and the least costly operation for RSA and ECDSA}
 \end{figure}
 
 The reason for the discrepancy between the cost of public and private key operations has to do with an optimization
@@ -2140,7 +2145,7 @@ Those properties of \gls{ecdsa} makes the security level increase more manageabl
   \textbf{high}      & 66.5\%            & 67.2\%              & 67\%           \\ \hline
   \textbf{very high} & 21.5\%            & 22\%                & 21.8\%         \\ \hline
   \end{tabular}
-  \caption{\label{table:ecdsa-relative-cost-increase} Relative increase of ECDSA operations cost from previous security level}
+  \centering \caption{\label{table:ecdsa-relative-cost-increase} Relative increase of ECDSA operations cost from previous security level}
   \end{table}
 
 \begin{table}[]
@@ -2152,19 +2157,19 @@ Those properties of \gls{ecdsa} makes the security level increase more manageabl
 \textbf{high}      & 19637405            & 37816448              & 57453853             \\ \hline
 \textbf{very high} & 10581660            & 20666871              & 31248531             \\ \hline
 \end{tabular}
-\caption{\label{table:ecdsa-absolute-cost-increase} Absolute increase of ECDSA operations cost from previous security level}
+\centering \caption{\label{table:ecdsa-absolute-cost-increase} Absolute increase of ECDSA operations cost from previous security level}
 \end{table}
 
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/ecdsa_realtive_cost_increase.png}
-  \caption{\label{fig:ecdsa-relative-cost-incerase} Relative increase of ECDSA operations cost}
+  \centering \caption{\label{fig:ecdsa-relative-cost-incerase} Relative increase of ECDSA operations cost}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/ecdsa_cost_all_sls.png}
-  \caption{\label{fig:ecdsa-costs-all-sls} ECDSA costs for all security levels}
+  \centering \caption{\label{fig:ecdsa-costs-all-sls} ECDSA costs for all security levels}
 \end{figure}
 
 In the previous subsection we have described an optimization in the choice of keys for \gls{rsa}. There are no such optimizations 
@@ -2183,7 +2188,7 @@ of the \textit{Total} cost comes from the signature creation opeartion, those tw
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/rsa_ecdsa_costs_all.png}
-  \caption{\label{fig:ecdsa-rsa-costs-all} RSA and ECDSA cost comparison}
+  \centering \caption{\label{fig:ecdsa-rsa-costs-all} RSA and ECDSA cost comparison}
 \end{figure}
 
 By analyzing Figure \ref{fig:ecdsa-rsa-costs-all}, we can answer the question of \textit{Which algorithm is less costly?}:
@@ -2242,7 +2247,7 @@ exchange method and each column the security level.
   \textbf{DHE-PSK}     & 0            & 0               & 0             & 0                  \\ \hline
   \textbf{DHE-RSA}     & 797168       & 2235736         & 6590592       & 26873456           \\ \hline
   \end{tabular}
-  \caption{\label{table:tls-auth-cost-client} Client authentcation costs for all ciphersuites and security levels}
+  \centering \caption{\label{table:tls-auth-cost-client} Client authentcation costs for all ciphersuites and security levels}
   \end{table}
 
 \begin{table}[]
@@ -2260,19 +2265,19 @@ exchange method and each column the security level.
 \textbf{DHE-PSK}     & 0            & 0               & 0             & 0                  \\ \hline
 \textbf{DHE-RSA}     & 20559190     & 75738802        & 317087210     & 1700652764         \\ \hline
 \end{tabular}
-  \caption{\label{table:tls-auth-cost-server} Server authentcation costs for all ciphersuites and security levels}
+  \centering \caption{\label{table:tls-auth-cost-server} Server authentcation costs for all ciphersuites and security levels}
 \end{table}
 
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/tls-client-auth-cost.png}
-  \caption{\label{fig:tls-auth-cost-client} Client authentcation cost (logarithmic scale)}
+  \centering \caption{\label{fig:tls-auth-cost-client} Client authentcation cost (logarithmic scale)}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/tls-server-auth-cost.png}
-  \caption{\label{fig:tls-auth-cost-server} Server authentcation cost (logarithmic scale)}
+  \centering \caption{\label{fig:tls-auth-cost-server} Server authentcation cost (logarithmic scale)}
 \end{figure}
 
 
@@ -2337,7 +2342,7 @@ of $38$ runs: one for each ciphesuite. The numbers in parenthesis is the standar
   \textbf{Encrypt} & 542291 (836)      & 1504367 (2012)    & 4167693 (2866)     & 15280266 (3748)      \\ \hline
   \textbf{Decrypt} & 20362831 (125590) & 75129504 (252921) & 314975365 (676291) & 1691976601 (2015526) \\ \hline
   \end{tabular}
-  \caption{\label{table:pkcs-costt} Cost of using \textit{PKCS\#1 V2.1 RSAES-PKCS1-v1\_5} encrypiton and decryption schemes with various security levels}
+  \centering \caption{\label{table:pkcs-costt} Cost of using \textit{PKCS\#1 V2.1 RSAES-PKCS1-v1\_5} encrypiton and decryption schemes with various security levels}
   \end{table}
 
 The encyption operation uses the server's public key and the decryption operation the corresponding private key. Thus, as expected,
@@ -2398,7 +2403,7 @@ ciphersuites). For the \gls{dh} algorithm, the average for both operations is co
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/ecdh-dh-cost-normal-sl.png}
-  \caption{\label{fig:ecdh-dh-cost-normal-sl} ECDH and DH operations cost for normal security level}
+  \centering \caption{\label{fig:ecdh-dh-cost-normal-sl} ECDH and DH operations cost for normal security level}
 \end{figure}
 
 Figure \ref{fig:ecdh-dh-cost-normal-sl} compares the cost of \gls{ecdh}'s and \gls{dh}'s operations for the \textbf{normal} security level.
@@ -2445,7 +2450,7 @@ also shows that a logarithmic trendline is the one that best fits the cost incra
 \textbf{high}      & 45900358 (65731)          & 44331330 (100040)        & 474938146 (490496)      & 473634908 (493588)     \\ \hline
 \textbf{very high} & 54449740 (487567)         & 53531554 (776984)        & 3592631108 (2792006)    & 3586324217 (2791154)   \\ \hline
 \end{tabular}
-\caption{\label{table:ecdh-dh-costs-all-sls} ECDH and DH costs for all secruity levels}
+\centering \caption{\label{table:ecdh-dh-costs-all-sls} ECDH and DH costs for all secruity levels}
 \end{table}
 
 \begin{table}[]
@@ -2457,13 +2462,13 @@ also shows that a logarithmic trendline is the one that best fits the cost incra
 \textbf{high}      & 90231688            & 948573054         \\ \hline
 \textbf{very high} & 90231688            & 7178955325        \\ \hline
 \end{tabular}
-\caption{\label{table:ecdh-dh-costs-total-all-sls} ECDH and DH costs of the sum of keypair and shared secret generation}
+\centering \caption{\label{table:ecdh-dh-costs-total-all-sls} ECDH and DH costs of the sum of keypair and shared secret generation}
 \end{table}
 
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/ecdh_cost_all_sls.png}
-  \caption{\label{fig:ecdh-costs-all-sls} ECDH operations costs for all security levels}
+  \centering \caption{\label{fig:ecdh-costs-all-sls} ECDH operations costs for all security levels}
 \end{figure}
 
 Table \ref{table:ecdh-relative-cost-increase} shows the relative cost increase of \gls{ecdh} operations from the previous security
@@ -2493,7 +2498,7 @@ the curve being the core mathematical opeartion.
   \textbf{high}      & 67\%                      & 64.4\%                   & 65.7\%               \\ \hline
   \textbf{very high} & 18.6\%                    & 20.8\%                   & 19.8\%               \\ \hline
   \end{tabular}
-  \caption{\label{table:ecdh-relative-cost-increase} Relative increase of ECDH operation costs from previous security level}
+  \centering \caption{\label{table:ecdh-relative-cost-increase} Relative increase of ECDH operation costs from previous security level}
   \end{table}
 
 \begin{table}[]
@@ -2505,13 +2510,13 @@ the curve being the core mathematical opeartion.
 \textbf{high}      & 18416446                  & 17372718                 & 35789164            \\ \hline
 \textbf{very high} & 8549382                   & 9200224                  & 17749606            \\ \hline
 \end{tabular}
-\caption{\label{table:ecdh-absolute-cost-increase} Absolute increase of ECDH operation costs from previous security level}
+\centering \caption{\label{table:ecdh-absolute-cost-increase} Absolute increase of ECDH operation costs from previous security level}
 \end{table}
 
   \begin{figure}
     \centering
     \includegraphics[width=1.0\textwidth]{img/ecdh_dh_relative_cost_increase.png}
-    \caption{\label{fig:ecdh-dh-relative-cost-increase} Relative increase of ECDH and DH operation costs}
+    \centering \caption{\label{fig:ecdh-dh-relative-cost-increase} Relative increase of ECDH and DH operation costs}
   \end{figure}
 
 \subsubsection{DH Cost Analysis}
@@ -2529,7 +2534,7 @@ also shows that an exponential trendline is the one that best fits the cost incr
   \begin{figure}
     \centering
     \includegraphics[width=1.0\textwidth]{img/dh_costs_all_sls.png}
-    \caption{\label{fig:dh-costs-all-sls} DH operations costs for all security levels}
+    \centering \caption{\label{fig:dh-costs-all-sls} DH operations costs for all security levels}
   \end{figure}
 
 Table \ref{table:dh-relative-cost-increase} shows the relative cost increase of \gls{dh} operations from the previous security level. The \textit{Total} 
@@ -2550,7 +2555,7 @@ the previous security level.
   \textbf{high}      & 607.4\%                 & 610\%                  & 608.7\%                 \\ \hline
   \textbf{very high} & 656.4\%                 & 657.2\%                & 656.8\%                 \\ \hline
   \end{tabular}
-  \caption{\label{table:dh-relative-cost-increase} Relative increase of DH operation costs from previous security level}
+  \centering \caption{\label{table:dh-relative-cost-increase} Relative increase of DH operation costs from previous security level}
   \end{table}
 
   \begin{table}[]
@@ -2562,7 +2567,7 @@ the previous security level.
     \textbf{high}      & 407802113               & 406921914              & 814724027         \\ \hline
     \textbf{very high} & 3117692962              & 3112689309             & 6230382271        \\ \hline
     \end{tabular}
-    \caption{\label{table:dh-absolute-cost-increase} Absolute increase of DH operation costs from previous security level}
+    \centering \caption{\label{table:dh-absolute-cost-increase} Absolute increase of DH operation costs from previous security level}
     \end{table}
 
 Similarly to \gls{rsa}, \gls{dh} has an exponential cost increase. This similarity is a consequence of both algorithms having the same mathematical
@@ -2588,7 +2593,7 @@ exponential cost growth of \gls{dh} manifests in the shape of a line.
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/ecdh_dh_costs_all.png}
-  \caption{\label{fig:ecdh-dh-costs-all} ECDH and DH cost comparison (logarithmic scale)}
+  \centering \caption{\label{fig:ecdh-dh-costs-all} ECDH and DH cost comparison (logarithmic scale)}
 \end{figure}
 
 Although not presented here, the logarithmic and exponential growth trends for \gls{ecdsa} and \gls{dh}, respectively, hold true even for
@@ -2639,7 +2644,7 @@ presenting multiple tables, we decided to show the cost of \gls{pfs} and the \te
 \textbf{DHE-PSK}                           & 20734678                        & 133849027                       & 948573054                        & 7178955325                        \\ \hline
 \textbf{DHE-RSA}                           & 25405195                        & 133849027                        & 948573054                        & 7178955325                        \\ \hline
 \end{tabular}
-\caption{\label{table:pfs-cost-client} \gls{pfs} and \textit{ECDH} key exchange for the client}
+\centering \caption{\label{table:pfs-cost-client} \gls{pfs} and \textit{ECDH} key exchange for the client}
 \end{table}
 
 \begin{table}[]
@@ -2659,7 +2664,7 @@ presenting multiple tables, we decided to show the cost of \gls{pfs} and the \te
 \textbf{DHE-PSK}                           & 20734678                        & 133849027                       & 948573054                        & 7178955325                       \\ \hline
 \textbf{DHE-RSA}                           & 20734678                        & 133849027                       & 948573054                        & 7178955325                       \\ \hline
 \end{tabular}
-\caption{\label{table:pfs-cost-server} \gls{pfs} and \textit{ECDH} key exchange for the server}
+\centering \caption{\label{table:pfs-cost-server} \gls{pfs} and \textit{ECDH} key exchange for the server}
 \end{table}
 
 Table \ref{table:pfs-cost-client} shows the cots of \gls{pfs} and the \gls{ecdh} key exhchange for the client and table \ref{table:pfs-cost-server}
@@ -2671,7 +2676,7 @@ the client and the server. For the server, the cost of \gls{ecdh} key exchange i
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/pfs_cost_all_sls.png}
-  \caption{\label{fig:pfs-cost-all-sls} \gls{pfs} and \textit{ECDH} key exchange costs (logarithmic scale)}
+  \centering \caption{\label{fig:pfs-cost-all-sls} \gls{pfs} and \textit{ECDH} key exchange costs (logarithmic scale)}
 \end{figure}
 
 Figure \ref{fig:pfs-cost-all-sls} shows the costs of tables \ref{table:pfs-cost-client} and \ref{table:pfs-cost-server} graphically, in logarithmic scale.
@@ -2705,18 +2710,41 @@ but now there would be no \textit{ECDH} client/server side separaion:
 \subsection{TLS Handshake Cost Analysis} \label{sec:tls-hs-cost}
 
 Having analyzed the costs of the authentcation and \gls{pfs} security services in \gls{tls}, we will now put everything together and
-analyze the total cost of the handshake. 
+analyze the total cost of the handshake. We have alredy seen the Handshake cost for the \textbf{normal} security level in
+Section \ref{sec:ss-overview}. In this section, we will present a more detailed analysis of this and the remaining security levels.
 
-Here, describe the costs of each individual ciphersuite. Remember that we described the steps needed for authentcation and PFS previously.
-What we do here, is sum them up and then say that the costs are somwhat off the actual handshake values, because of some "hidden costs".
-Describe those hidden costs and then show that the values come pretty close.
+Tables \ref{table:client-hs-cost-all-sls} and \ref{table:server-hs-cost-all-sls} show the average handshake cost for each one of the
+key excahnge methods, for the client and server, respectively. The number in parenthesis in each table entry is the standard deviation.
+The evaluated scenario is the most common one: only the server authenticates to the client.
 
-Show figures for the HS costs for the client and the server and say that we can see different cost groups there (count the groups)
+In \textit{mbedTLS 2.7.0} there is a total of $161$ ciphersuites. Table \ref{table:mbedtls-num-ciphers} shows the number of 
+ciphersuites per each key exchange method available in \textit{mbedTLS 2.7.0}. For each key exchange method, the average was obtained 
+from a run with each one of the ciphersuites that use that key exchange.
+
+\begin{table}[]
+\begin{tabular}{ll}
+\hline
+\multicolumn{1}{|l|}{}                     & \multicolumn{1}{l|}{\textbf{Num Ciphersuites}} \\ \hline
+\multicolumn{1}{|l|}{\textbf{PSK}}         & \multicolumn{1}{l|}{19}                        \\ \hline
+\multicolumn{1}{|l|}{\textbf{RSA-PSK}}     & \multicolumn{1}{l|}{15}                        \\ \hline
+\multicolumn{1}{|l|}{\textbf{RSA}}         & \multicolumn{1}{l|}{23}                        \\ \hline
+\multicolumn{1}{|l|}{\textbf{ECDH-RSA}}    & \multicolumn{1}{l|}{13}                        \\ \hline
+\multicolumn{1}{|l|}{\textbf{ECDH-ECDSA}}  & \multicolumn{1}{l|}{13}                        \\ \hline
+\multicolumn{1}{|l|}{\textbf{ECDHE-PSK}}   & \multicolumn{1}{l|}{11}                        \\ \hline
+\multicolumn{1}{|l|}{\textbf{ECDHE-RSA}}   & \multicolumn{1}{l|}{13}                        \\ \hline
+\multicolumn{1}{|l|}{\textbf{ECDHE-ECDSA}} & \multicolumn{1}{l|}{17}                        \\ \hline
+\multicolumn{1}{|l|}{\textbf{DHE-PSK}}     & \multicolumn{1}{l|}{19}                        \\ \hline
+\multicolumn{1}{|l|}{\textbf{DHE-RSA}}     & \multicolumn{1}{l|}{18}                        \\ \hline
+Total                                      & 161                                           
+\end{tabular}
+\centering
+\centering \caption{\label{table:mbedtls-num-ciphers} Number of ciphersuites per key exchange method in \textit{mbedTLS 2.7.0}}
+\end{table}
 
 \begin{table}[]
   \begin{tabular}{|l|l|l|l|l|}
   \hline
-                       & \textbf{low}      & \textbf{medium}    & \textbf{high}      & \textbf{very high}   \\ \hline
+                       & \textbf{low}      & \textbf{normal}    & \textbf{high}      & \textbf{very high}   \\ \hline
   \textbf{PSK}         & 1354543 (51058)   & 1353865 (51289)    & 1355005 (51004)    & 1354829 (51043)      \\ \hline
   \textbf{RSA-PSK}     & 3536763 (71446)   & 4543238 (76038)    & 7293473 (84814)    & 18578392 (103341)    \\ \hline
   \textbf{RSA}         & 3556430 (59010)   & 4558935 (68078)    & 7309587 (71844)    & 18608492 (82623)     \\ \hline
@@ -2728,13 +2756,13 @@ Show figures for the HS costs for the client and the server and say that we can 
   \textbf{DHE-PSK}     & 22189619 (55603)  & 135442518 (309751) & 950212732 (787892) & 7181764421 (5195398) \\ \hline
   \textbf{DHE-RSA}     & 24250886 (94421)  & 138197524 (198704) & 955840114 (861069) & 7196088947 (6405987) \\ \hline
   \end{tabular}
-  \caption{\label{table:client-hs-cost-all-sls} Handshake costs for the client}
+  \centering \caption{\label{table:client-hs-cost-all-sls} Handshake costs for the client}
   \end{table}
 
   \begin{table}[]
 \begin{tabular}{|l|l|l|l|l|}
 \hline
-                     & \textbf{low}      & \textbf{medium}    & \textbf{high}       & \textbf{very high}   \\ \hline
+                     & \textbf{low}      & \textbf{normal}    & \textbf{high}       & \textbf{very high}   \\ \hline
 \textbf{PSK}         & 1380956 (50888)   & 1382849 (50737)    & 1381497 (50891)     & 1382002 (50903)      \\ \hline
 \textbf{RSA-PSK}     & 22515609 (111975) & 77368868 (275574)  & 317389619 (662953)  & 1694178055 (2427763) \\ \hline
 \textbf{RSA}         & 22456180 (121140) & 77260738 (239418)  & 317196961 (698637)  & 1694747500 (1705523) \\ \hline
@@ -2746,8 +2774,147 @@ Show figures for the HS costs for the client and the server and say that we can 
 \textbf{DHE-PSK}     & 22308029 (76182)  & 135535409 (232955) & 950691653 (1289706) & 7181243788 (5402427) \\ \hline
 \textbf{DHE-RSA}     & 43602094 (154553) & 212251542 (364611) & 1268235354 (857921) & 8883866054 (5993186) \\ \hline
 \end{tabular}
-  \caption{\label{table:server-hs-cost-all-sls} Handshake costs for the server}
+  \centering \centering \caption{\label{table:server-hs-cost-all-sls} Handshake costs for the server}
 \end{table}
+
+Figures \ref{fig:client-hs-cost-all-sls} and \ref{fig:server-hs-cost-all-sls} are a graphical representation of tables \ref{table:client-hs-cot-all-sls}
+and \ref{table:server-hs-cost-all-sls}, respectively. The $x$ axis specifies the security level. The $y$ axis presents the number 
+of CPU instrucitons used when performing the Hanshake with the specified key exchage method and security level. 
+The values are presented in logarithmic scale.  What can be clearly seen in those 
+graphs, is that even though there are $10$ unique key excahnge methods, the costs of some of them overlap, because they are similar.
+If two or more key exchange methods have similar costs, we say that they belong to the same \textit{cost group}. A \textit{cost gorup}
+can also contain a single key exchage method, if its costs are significantly different from all others. In figures
+\ref{fig:client-hs-cost-all-sls} and \ref{fig:server-hs-cost-all-sls} two or more key exchange methods belong to the same
+cost group if their lines overlap throughout all security levels. By analyzing figure \ref{fig:client-hs-cost-all-sls} we can
+find $6$ cost groups at the client-side:
+
+\begin{enumerate}
+  \item \textit{PSK}
+  \item \textit{RSA}, \textit{RSA-PSK}
+  \item \textit{ECDHE-PSK}, \textit{ECDHE-RSA}, \textit{ECDH-RSA}
+  \item \textit{ECDH-ECDSA}
+  \item \textit{ECHDE-ECDSA}
+  \item \textit{DHE-PSK}, \textit{DHE-RSA}
+\end{enumerate}
+
+Similarly, by analyzing figure \ref{fig:server-hs-cost-all-sls}, we can find $8$ cost groups for the server side:
+
+\begin{enumerate}
+  \item \textit{PSK}
+  \item \textit{ECDH-RSA}, \textit{ECDH-ECDSA}
+  \item \textit{ECHDE-PSK}, \textit{ECDHE-ECDSA}
+  \item \textit{RSA}, \textit{RSA-PSK}
+  \item \textit{ECDHE-RSA}
+  \item \textit{DHE-PSK}
+  \item \textit{DHE-RSA}
+\end{enumerate}
+
+The groups are presented in asceding cost order. For both, the client and the server, the \textit{PSK} key exchange is, by far,
+the cheapest option. The most expensive key exhchange method depends on the peer and the security level. If we had to choose one
+option for the title of the most expensive one, \textit{DHE-RSA} would be the answer, since this is true after the
+\textbf{normal} security level for the client and after \textbf{low} security level for the server. \textit{DHE-PSK} is not
+far away from that, specially for the client. Once again we see the advantage of \gls{ecc}, with the cost increase of 
+key exchanges that use \textit{ECDH(E)} and/or \textit{ECDSA} being much slower than of the ones that use \textit{DHE} and \textit{RSA}
+instead. This is a manifestation of logarithmic (for \gls{ecc}) vs exponential (for non-\gls{ecc}) cost increase.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/client_hs_costs_all_sls.png}
+  \centering \caption{\label{fig:client-sl-costs-all-sls} Client handshake costs for all security levels}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/server_hs_costs_all_sls.png}
+  \centering \caption{\label{fig:server-sl-costs-all-sls} Server handshake costs for all security levels}
+\end{figure}
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|}
+\hline
+                     & \textbf{Asymmetric Auth} & \textbf{PFS} \\ \hline
+\textbf{PSK}         & No                       & No           \\ \hline
+\textbf{RSA-PSK}     & Yes                      & No           \\ \hline
+\textbf{RSA}         & Yes                      & No           \\ \hline
+\textbf{ECDH-RSA}    & Yes                      & No           \\ \hline
+\textbf{ECDH-ECDSA}  & Yes                      & No           \\ \hline
+\textbf{ECDHE-PSK}   & No                       & Yes          \\ \hline
+\textbf{ECDHE-RSA}   & Yes                      & Yes          \\ \hline
+\textbf{ECDHE-ECDSA} & Yes                      & Yes          \\ \hline
+\textbf{DHE-PSK}     & No                       & Yes          \\ \hline
+\textbf{DHE-RSA}     & Yes                      & Yes          \\ \hline
+\end{tabular}
+\centering \caption{\label{table:key-exch-sec-ser} Security services offered by each key exchage}
+\end{table}
+
+
+Due to the constrained nature of \gls{iot} devices, it is important to choose the least costly option for the desired secure
+connection properties.
+The cost differences between key exhchange methods exist for two reasons. First, different key exchage methods offer different
+security services. Table \ref{table:key-exch-sec-ser} shows the security services offered by each key exchage method. Second, as
+discussed and analyzed throughout Section \ref{sec:auth-cost-analysis}, different algorithms can be used to offer the same 
+security service, thus leading to different costs. In order to make a choice of the cheapest key 
+exchange method, we need to answer $4$ questions:
+
+\begin{enumerate}
+  \item what is the desired security level?
+  \item do we want to optimize for the client, the server or both?
+  \item is asymmetric authentcation necessary?
+  \item is \gls{pfs} necessary?
+\end{enumerate}
+
+Figures \ref{fig:dt-low-sl}, \ref{fig:dt-normal-sl}, \ref{fig:dt-high-sl}, \ref{fig:dt-veryhigh-dt} are decision trees that
+help in selecting the cheapest key exchage method for the \textbf{low}, \textbf{normal}, \textbf{high} and \textbf{very high}
+security levels, respectively, according to the security requirements. Each on the decision trees answers the $4$ questions
+mentioend above. The key exchage methods are presented in order of the cheapest to the most expensive one. If two exchage methods
+belong to one of the cost groups presented above, they are are presented as such in the figures too. The cost differences between 
+the ciphersuites within the same cost group are very small and can be ignored. If the choice is to optmize for the client/server,
+ciphersuites are ordered to minimize client/server costs. If the choice is choice is to optimize for both, the
+ciphersuite are orderd to miniize the total costs, \textit{i.e.} the sum of the costs for the client and the server.
+
+As an example of how to use the decision trees in order to select the cheapest key exchage method, let us consider the scenario
+where the desired security level is \textbf{normal}, asymmetric authentcation is required, \gls{pfs} is not and we would like to
+minimize the cost for the constraied client. Since the chosen security level is normal, \ref{fig:dt-normal-sl} will be used.
+We begin at the \textit{Optmize For} node and go left, to follow the \textit{client} path, since that's the peer that we
+want to optimzie for. Since asymmetric authentcation is required, from the \textit{Asymm Auth?} node we follow the \textit{yes}
+path. This takes us to the \textit{PFS?} node, where we go right to follow the \textit{no} path, since \gls{pfs} is not required.
+We finally arrive at a terminal node which lists the suitable key exchange methods, starting with the cheapest one.
+In our case, the least costly key exhchange method is either \textit{RSA} or \textit{RSA-PSK}. Both of them belong to the same
+cost group for having very similar costs, thus both are presented in the same numeric position. The second least costly option 
+is \textit{ECDH-RSA}, and the most costly one is \textit{ECDH-ECDSA}. Table \ref{table:client-hs-cost-all-sls} can be consulted for
+precise Handshake costs. After making a decision on which key exchage method(s) is(are) acceptable, either one of ciphersuites that
+use them can be chosen.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/dt_low_sl.png}
+  \centering \caption{\label{fig:dt-low-sl} \textbf{low} security level decision tree for the cheapest key exchage}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/dt_normal_sl.png}
+  \centering \caption{\label{fig:dt-normal-sl} \textbf{normal} security level decision tree for the cheapest key exchage}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/dt_high_sl.png}
+  \centering \caption{\label{fig:dt-high-sl} \textbf{high} security level decision tree for the cheapest key exchage}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/dt_veryhigh_sl.png}
+  \centering \caption{\label{fig:dt-veryhigh-sl} \textbf{very high} security level decision tree for the cheapest key exchage}
+\end{figure}
+ 
+
+Here, describe the costs of each individual ciphersuite. Remember that we described the steps needed for authentcation and PFS previously.
+What we do here, is sum them up and then say that the costs are somwhat off the actual handshake values, because of some "hidden costs".
+Describe those hidden costs and then show that the values come pretty close.
+
+Show figures for the HS costs for the client and the server and say that we can see different cost groups there (count the groups)
 
 \subsubsection{The Hidden Costs}
 
@@ -2770,7 +2937,7 @@ algorithms and security levels.
 \textbf{RSA}   & 133166 (12026) & 136025 (10943)  & 141334 (4191) & 157351 (1778)      \\ \hline
 \textbf{ECDSA} & 149768 (5318)  & 153289 (2754)   & 170559 (1714) & 156071 (14)        \\ \hline
 \end{tabular}
-\caption{Cost of parsing the \textit{der} encoded certificate}
+\centering \caption{Cost of parsing the \textit{der} encoded certificate}
 \end{table}
 
 \subsubsection{Perfect Forward Secrecy}

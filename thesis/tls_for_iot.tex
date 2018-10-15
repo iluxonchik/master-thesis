@@ -237,7 +237,9 @@ We have also found a security issue within the
 has been assigned a \textit{CVE} with the id \textit{CVE-2018-1000520}\cite{NVDCVE2094:online}.
 It is an authentication problem, where certificates signed with an incorrect algorithm
 were accepted in some cases. More specifically, \textit{ECDH(E)-RSA} ciphersuites allowed \gls{ecdsa}-signed
-certificates, when only \gls{rsa}-signed ones should be.
+certificates, when only \gls{rsa}-signed ones should be. We also found a bug in \textit{mbedTLS}'s test suite
+related to the use of deprecated \textit{SHA-1}-signed certificates and submitted a code fix to 
+it \cite{sslserve89:onelin}\cite{updatete23:online}.
 
 The document is organized as follows: Section 2 describes the background. It
 introduces some of the concepts that will be used throughout
@@ -1750,6 +1752,18 @@ scenarios, if their cost considerably lower. For this reason, we have enabled an
 Since the evaluated security level the server authenticates, but the client does not,
 a separate analysis for both peers will be made. We will begin with an overview of the costs for the various \gls{tls}
 configurations.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/hs_cost_cli.png}
+  \centering \caption{\label{fig:hs-all-ciphers-cli} Client handshake cost for all of the $161$ ciphersuites}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/hs_cost_srv.png}
+  \centering \caption{\label{fig:hs-all-ciphers-srv} Server handshake cost for all of the $161$ ciphersuites}
+\end{figure}
 
 Figures \ref{fig:hs-all-ciphers-cli} and \ref{fig:hs-all-ciphers-srv} depict a graph with the Handshake cost of each one
 of the ciphersuites, for the client and the server, respectively. In both graphs, $y$ axis represents the number of

@@ -174,7 +174,7 @@ of interconnected devices, which exchange data with one another over
 the internet. While they are many types of IoT devices, all of them
 are restricted: they have limited memory, processing power and
 available energy. Examples of IoT devices include temperature sensors,
-smart lightbulb and physical activity trackers.
+smart light bulb and physical activity trackers.
 
 While inter-device communication has numerous benefits, it is important
 to ensure the security of that communication. For example, when you log
@@ -225,8 +225,8 @@ assist them in making the security/resource usage trade-offs
 
 The goal of this work is to evaluate the cost of each security service of the
 TLS protocol. This will assist software developers to make security/resource usage
-tradeoff judgments, according to their needs and limitations. For this reason,
-this work targeted towards developers who whish to add communication security
+trade-off judgments, according to their needs and limitations. For this reason,
+this work targeted towards developers who wish to add communication security
 to their applications in the IoT environment.
 
 In the process of the work on this dissertation, we have made several
@@ -355,7 +355,7 @@ A secure communication established using \gls{tls} has two phases. In the first
 phase, the communicating peers authenticate one to another and negotiate the parameters, such as the secret keys and the encryption algorithm. In the
 second phase, they exchange cryptographically protected data under
 the previously negotiated parameters. The first phase is done under the
-Handshke Protocol and the second under the Record Protocol. In order to
+Handshake Protocol and the second under the Record Protocol. In order to
 achieve its goals, during the Handshake Protocol the client and the server
 exchange various messages. The message flow is depicted in Figure \ref{fig:tls-12-handshake} and described in more detail in Section
 \ref{hsp}.
@@ -1487,7 +1487,7 @@ The \textit{valgrind} tool consists of two parts, the \textit{valgrind core} and
 plugin}. The \textit{valgrind core} transforms the machine code into a simpler form called
 \gls{ir}. The \gls{ir} code is then passed to the \textit{tool plugin}, which modifies the
 \gls{ir} code as needed, typically by instrumenting it. This modified \gls{ir} code is then passed back to the
-\textit{valgrind core}, which transforms it back into machine code. That recomplied machine code  will then run on the
+\textit{valgrind core}, which transforms it back into machine code. That recompiled machine code  will then run on the
 host CPU (the \gls{jit} compilation step). This process is illustrated in Figure \ref{fig:how_valgrind_works}.
 
 \begin{figure}
@@ -2369,7 +2369,7 @@ sum them up according to the steps described above. For example, when an \textit
 the client verify two \gls{ecdsa} signatures: one from the parsed server's certificate
 and one from the \textit{ServerKeyExchange} message, while the server will only need to perform a signature over the \textit{ECDHE} parameters.
 Thus, the authentication cost for the client will be $56260702+56260702=112521404$ and for the server $29512991$. Similarly, when an \textit{RSA} or
-\textit{RSA-PSK} ciphesuite is used at the \textit{normal} security level, the client will verify the \gls{rsa} signature in the server's certificate
+\textit{RSA-PSK} ciphersuite is used at the \textit{normal} security level, the client will verify the \gls{rsa} signature in the server's certificate
 and perform a \textit{PKCS\#1 v2.1 RSAES-PKCS1\-V1\_5} encryption, while the server will only need to perform a
 \textit{PKCS\#1 v2.1 RSAES-PKCS1\-V1\_5} decryption. Thus, the authentication cost for the client will be $1117868+1504367=2622235$ and for the server
 $75129504$. The remaining entries in tables \ref{table:tls-auth-cost-client} and \ref{table:tls-auth-cost-server} are computed in a similar manner.
@@ -2439,7 +2439,7 @@ which we call the \textit{Total} cost. For both algorithms, the cost of generati
 This is expected as the private key is just a randomly generated number, with size specific to the elliptic curves group.
 
 Figure \ref{fig:ecdh-costs-all-sls} depicts the cost of \gls{ecdh} operations graphically. For all security levels the total cost is almost
-evenly divided bewtween the keypair and the shared secret generation. This is justified by the fact that the underlying mathematical operation is
+evenly divided between the keypair and the shared secret generation. This is justified by the fact that the underlying mathematical operation is
 the same when generating the public/private keys and the shared secret: multiplications of a scalar by a point on the curve. An analysis of the figure
 also shows that a logarithmic trendline is the one that best fits the cost increase for all operations.
 
@@ -2477,7 +2477,7 @@ Table \ref{table:ecdh-relative-cost-increase} shows the relative cost increase o
 level, with figure \ref{fig:ecdh-dh-relative-cost-increase} showing this same information graphically or the \textit{Total} cost increase (the blue line).
 We're only presenting the the \textit{ECDH Total} column in the graph, because all are very similar, thus the $3$ lines would covering one another.
 The total relative cost increase represents the average of the values of keypair and shared secret generation relative increase.
-By analyzing the table and the corresponding graph, we can see  that as the security level increases, the cost increase  from the prevoius security
+By analyzing the table and the corresponding graph, we can see  that as the security level increases, the cost increase  from the previous security
 level becomes smaller. The effect decrease on the absolute cost increase can be seen in table \ref{table:ecdh-absolute-cost-increase}.
 This table shows the absolute increase in the number of CPU cycles from
 the previous security level. What can be clearly seen in this table is that after the \textbf{high} security level, the absolute cost increase starts
@@ -2914,7 +2914,7 @@ use them can be chosen.
 In section \ref{sec:auth-cost-in-tls} we analyzed the cost of authentication in \gls{tls} and in section \ref{sec:pfs-cost-in-tls}
 the cost of \gls{pfs} in \gls{tls}. Tables \ref{table:tls-auth-cost-client}, \ref{table:pfs-cost-server},
 \ref{table:pfs-cost-client} and \ref{table:pfs-cost-server} show the authentication and \gls{pfs} costs for the client and the server,
-respectively. However, in order to compute the cost of the Handshake for a given key exhchange method and security level, it
+respectively. However, in order to compute the cost of the Handshake for a given key exchange method and security level, it
 is not enough to sum the corresponding values from the authentication and \gls{pfs} cost tables. The overhead of establishing the \gls{tls} connection and
 the parsing/record layer costs. As discussed previously, we can consider the cost of the \textit{PSK} handshake as the \gls{tls} overhead.
 The parsing and the record layer costs are additional costs that the
@@ -2973,17 +2973,17 @@ which can be found in in table \ref{table:client-hs-cost-all-sls} (\textit{ECDHE
 The difference of $123502$ ($96730901-96607399$) CPU cycles comes from other additional costs, such as reading and writing slightly larger
 messages, namely the \textit{ServerKeyExchange} and the \textit{ClientKeyExchange}.
 
-\subsection{Confidentiality and Itegrity Cost Analysis} \label{sec:confid-costs}
+\subsection{Confidentiality and Integrity Cost Analysis} \label{sec:confid-costs}
 
-Having analyzed the cost of authenticatication and \gls{pfs}, we will now briefly analyze the cost of the confidentiality and integrity services.
+Having analyzed the cost of authentication and \gls{pfs}, we will now briefly analyze the cost of the confidentiality and integrity services.
 In \gls{tls}, it does not make sense to analyze both of the services separately, since they're offered as a whole as a part of the ciphersuite.
 For this reason, we will analyze them together.
 
-In \textit{mbedTLS 2.7.0} implements $13$ non-null unique encrytion algorithms and $4$ unique hash functions. There are $6$ \textit{AES} 
+In \textit{mbedTLS 2.7.0} implements $13$ non-null unique encryption algorithms and $4$ unique hash functions. There are $6$ \textit{AES} 
 algorithms, $4$ \textit{CAMELLIA} algorithms,
 $1$ \textit{DES} algorithm, $1$ \textit{3DES} algorithm and $1$ \textit{RC4} algorithm. The $4$ available hash functions are \textit{SHA-1}, 
 \textit{SHA-256}, \textit{SHA-384} and \textit{MD5}.
-For non-\gls{aead} ciphers, the combination of a symmetric encryption algorithm and a hash function is used to provide the security servies of confidentiality and 
+For non-\gls{aead} ciphers, the combination of a symmetric encryption algorithm and a hash function is used to provide the security services of confidentiality and 
 integrity. For \gls{aead} ciphers the symmetric encryption algorithm provides both, confidentiality and integrity, so there is no need
 to use an additional hash function.
 
@@ -3003,15 +3003,15 @@ encryption ciphersuites: \textit{NULL-MD5}, \textit{NULL-SHA}, \textit{NULL-SHA2
 For non-\gls{aead} algorithms combined with a hash function, the majority of the cost is spent in data encryption.
 
 In Section \ref{sec:tls-hs-cost} we analyzed the cost of the handshake. However, it only makes sense to heavily optimize handshake
-if the amout of transmitted data is small. This is, in fact, true for many \gls{iot} devices. But what exactly is a \textit{small} amount of data?
+if the amount of transmitted data is small. This is, in fact, true for many \gls{iot} devices. But what exactly is a \textit{small} amount of data?
 
 In order to answer those questions we profiled the costs of encrypting data with the \textit{AES-128-GCM} (\textbf{low} and 
 \textbf{normal} security levels) and \textit{AES-256-GCM} (\textbf{high} and \textbf{very high} security levels). 
-We selected those algorithms because they were among the cheapest ones to provide the required security level and are prefered by
+We selected those algorithms because they were among the cheapest ones to provide the required security level and are preferred by
 browsers, such as \textit{Google Chrome 67}. The cost of encryption and decryption for those algorithms are similar\cite{ertaul2016performance}.
 For each
 one of the algorithms, we encrypted data sizes from starting from $1$ byte up to $16250000$ bytes (approximately $15.5$ mega bytes),
-with $100$ byte incremenets in each run. Thus, a total of $162500$ runs was made with each algorithm. It is expected for encryption costs to
+with $100$ byte increments in each run. Thus, a total of $162500$ runs was made with each algorithm. It is expected for encryption costs to
 grow linearly with the amount of encrypted data, thus we applied linear regression to the collected metrics in order in order to
 obtain a formula that approximates the cost of encryption for any amount of data. Our analysis yielded the following formulas for the
 cost of encryption with \textit{AES-128-GCM} and \textit{AES-256-GCM}, respectively: $NumCC=104*NumBytes+22680$ and $NumCC=105*NumBytes+22740$ ($R²=1$ for both).
@@ -3019,7 +3019,7 @@ $NumCC$ is the number of CPU Cycles and $NumBytes$ is the number of bytes encryp
 larger than of \textit{AES-128-GCM}.
 
 The derived formulas can be used to answer the question of when the costs spent on data encryption equate the costs
-spent on performing the handshake. For example, let's compute this number for the client, when it perfroms an
+spent on performing the handshake. For example, let's compute this number for the client, when it performs an
 \textit{ECDHE-ECDSA} handshake at the \textit{normal} security level. First, we obtain the number of CPU cycles
 used to perform the handshake from table \ref{table:client-hs-cost-all-sls}: $168954007$. After that we simply
 replace $NumCC$ with that value in the formula and solve for $NumBytes$: $168954007=104*NumBytes+22680 \Leftrightarrow NumBytes \approx 1624340$.
@@ -3029,7 +3029,7 @@ Figures \ref{fig:cli-conf-hs-low}, \ref{fig:cli-conf-hs-normal} and \ref{fig:cli
 when the encryption/decryption costs equate the handshake costs for the \textbf{low}, \textbf{normal} and \textbf{high}
 security levels, respectively. Figures \ref{fig:srv-conf-hs-low}, \ref{fig:srv-conf-hs-normal} and \ref{fig:srv-conf-hs-high}
 show the same information for the server. We did not present the graphs for the \textit{very high} security level,
-because the overhelming cost of some key exhchange methods made the visual analysis of the graph hard (due to scale).
+because the overwhelming cost of some key exchange methods made the visual analysis of the graph hard (due to scale).
 
 \begin{figure}
   \centering
@@ -3070,27 +3070,95 @@ because the overhelming cost of some key exhchange methods made the visual analy
 
 \subsection{Conclusions} \label{sec:ss-cost-conclusions}
 
-In this section evaluted the cost of security services of authentication, \gls{pfs}, confidentiality and integrity
+In this section evaluated the cost of security services of authentication, \gls{pfs}, confidentiality and integrity
 in \gls{tls}. To do this, we defined $4$ security levels and analyzed the costs for each one. The majority of
 analysis was concentrated around the handshake and the security services that it offers.
 
-We began by evaluating the algorithms 
+In \gls{tls} there are two ways of doing authentication: \gls{psk} or asymmetric cryptography. We showed that the
+cost of \gls{psk} authentication is essentially $0$ and we can consider the cost of performing the 
+handshake with a \textit{PSK} ciphersuite can be considered as the \gls{tls} overhead.
+
+In \gls{tls}, authentication with asymmetric cryptography can be done in two ways: either by using \gls{rsa}
+of \gls{ecdsa}. We began by analyzing the costs of those two algorithms. We concluded that \gls{rsa} was
+faster at public key operations (\textit{i.e.} signature verification) and \gls{ecdsa} was faster at private key
+operations (\textit{i.e.} signature creation). An analyzes of the algorithm's costs showed that as the security level
+increases, while \gls{rsa}'s cost increase exponentially, \gls{ecdsa}'s increase logarithmically. This is a result of the
+\gls{ecc} properties of the algorithm.
+
+After evaluating the costs individual algorithms that can be used to provide asymmetric authentication in \gls{tls}, we
+used those results to compute the authentication cost in \gls{tls}, for each one of its key exchange methods.
+
+After analyzing the cost of authentication, we turned our attention to \gls{pfs}. In \gls{tls} there are two ways
+of achieving \gls{pfs}: either by using \gls{ecdh} or \gls{dh}. We decomposed each algorithm into individual steps
+and analyzed their cost. As the security level increases, the cost of \gls{dh} grows exponentially, while the cost
+of \gls{ecdh} logarithmically. In that sense, \gls{dh} is similar to \gls{rsa} and \gls{ecdh} to \gls{ecdsa}.
+This similarity is a consequence of the fact, the underlying mathematical operation is the same for \gls{dh} and
+\gls{rsa} (modular exponentiation), and for \gls{ecdh} and \gls{ecdsa} (multiplication of a scalar by a point on 
+the elliptic curve).
+
+After evaluating the costs of the algorithms that can be used to provide \gls{pfs} in \gls{tls}, we used those results
+to arrive that \gls{pfs} cost for each on of the key exchange methods.
+
+Having computed the costs of authentication and \gls{pfs} we were now ready to compute the cost of the \gls{tls} handshake
+as a whole. We presented a formula that decomposed the handshake costs its individual parts: $Handshake Cost = TLS Overhead + Auth Cost + PFS Cost + Additional Costs$. 
+We compared the costs
+obtained from the formula to the actual handshake cost values that we acquired by profiling various client-server
+executions and shown that both are similar.
+
+Finally, we analyzed the costs of confidentiality and integrity. First, we compared the costs of all of the
+symmetric algorithm/hash function combinations available in \textit{mbedTLS 2.7.0}. As expected,
+\gls{aead} algorithms preformed the best among the block ciphers. After that we chose two \gls{aead} ciphers and
+analyzed how much data it would be necessary to encrypt with them to equate the handshake costs.
 
 \section{Conclusion}
 
 The lack of security in \gls{iot} is a serious issue that can lead to a high monetary costs,
 when botnets infect the devices. Recent
-attacks clearly show that serious damage can be caused. An old saying attributed to the
+attacks clearly show that serious damage can be caused \cite{sec17ant94:online}. An old saying attributed to the
 \gls{nsa} states that "Attacks always get better; they never get worse".
 Combined with the fact that the number of \gls{iot} devices is growing at a high
 pace, without any major improvements to their security, makes it clear
 that it is fundamental for this issue to be addressed.
 
-While there are well established security solutions, not all of them can be used
-with \gls{iot} devices, due their constrained nature. One such example is
-the (D)\gls{tls} protocol, that because of its heavyweight nature is not suitable for a large part of \gls{iot} devices. With the proposed work,
-we want to contribute to this area, by designing a solution that is suitable for the \gls{iot} devices, transparent
-to the programmer and provides security services adaptable to the specific context needs.
+\gls{tls} is one of the most communication security protocols in the world. It offers the
+security services of authentication, confidentiality, privacy, integrity, replay
+protection and perfect forward secrecy. It is not a requirement to use all of
+those services for every TLS connection. The protocol is similar to
+a framework, in the sense that you can enable some of the security
+services on a per-connection basis.
+
+While \gls{tls} does have many configurations, not all of them can be used with the \gls{iot},
+due to the constrained nature of the devices. In many cases it is necessary to make security/cost
+trade-offs. In order to be able to make them, it is important to know the costs of each security
+service. Current work offers no such information. Thus, a software developer wishing to use \gls{tls}
+for connection security in a constrained environment does not have a reference to go to.
+
+In our work, we decomposed \gls{tls} into individual parts and evaluated the cost of each security service.
+We have evaluated the cost of every \gls{tls} configuration available in \textit{mbedTLS 2.7.0} and the underlying
+algorithms. The herein presented results can be used to make informed decisions about the security/cost trade-offs,
+specific to the environment.
+
+The results presented here were obtained on a powerful, modern-day computer. Despite that, they are still
+relevant when considering the costs on constrained \gls{iot} devices. While on a different device, the absolute cost 
+numbers will be different, they would still maintain a similar proportion one to another and follow a similar trend.
+Moreover, the developed tooling can be used to obtain profiling results on any machine, thus giving device-specific 
+cost information. The formula used to obtain the CPU cycle count estimate can also be changed to one's needs.
+
+\subsubsection{Future Work}
+
+While the use of \textit{callgrind} helped to obtain and analyze large a amount of different results, there are other
+cost metrics that would be interesting to analyze. First, it's important to remember than an estimate of the number
+of CPU cycles was used. It would be of interest to obtain the actual count of CPU cycles, by querying the
+processor directly. Tools such as PAPI\cite{dongarra2001using} can be used for this purpose.
+
+Many \gls{iot} devices have very limited power (\textit{e.g.} working of a battery). Thus, it would be interesting
+analyze the cost of \gls{tls} in terms of power usage. This would also allow to reach interesting conclusions, such as:
+\textit{Using the TLS configuration X would reduce the device's battery life by Y days}.
+
+Time is another interesting metric to consider. While an \gls{iot} device might be connected to a power source and
+only make occasional connections, such a motion sensor, it would be of little use if it takes it a very long time
+to establish connection. This would allow to associate time values to each part of \gls{tls}.
+Finally, all of the mentioned metrics should be obtained on \gls{iot} hardware.
 
 % ---- Bibliography ----
 %

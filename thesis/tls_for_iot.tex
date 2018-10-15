@@ -1626,8 +1626,8 @@ It is clear that the Handshake protocol is significantly more complex, with more
 Furthermore, existing work neither evaluated the costs of individual security services of \gls{tls}, nor
 their various combinations. For this reason, our work is concentrated around the Handshake protocol.
 
-\todo{TODO}
-This section as structured as follows. Section \ref{sec:sls} describes the various security levels used for evaluation. Section \ref{sec:ss-overview}
+This section as structured as follows. Section \ref{sec:sls} describes the various security levels used for evaluation. 
+Section \ref{sec:ss-overview}
 presents an overview of the costs of authentication and \gls{pfs}. Section \ref{sec:psk-cost-analysis} discusses the costs of symmetric (or \gls{psk})
 authentication. In Section \ref{sec:asym-algs-analysis} we analyze the costs of asymmetric authentication. We begin by analyzing the cost of \gls{rsa}'s
 and \gls{ecdsa}'s  operations and then put everything together and present the authentication cost for each key exchange method (thus, for each ciphersuite).
@@ -2039,17 +2039,19 @@ than the signing operation cost increase.
 
 \begin{table}[]
   \begin{tabular}{|l|l|l|}
+  \hline
                      & \textbf{RSA Total} & \textbf{ECDSA Total} \\ \hline
   \textbf{low}       & 20957774           & 41336864             \\ \hline
   \textbf{normal}    & 76856670           & 85773693             \\ \hline
   \textbf{high}      & 320382506          & 143227546            \\ \hline
-  \textbf{very high} & 1714089492         & 174476077
+  \textbf{very high} & 1714089492         & 174476077            \\ \hline
   \end{tabular}
   \centering \caption{\label{table:rsa-costs-all-sls-total} RSA and ECDSA costs of signature creation + signature verification}
 \end{table}
 
 \begin{table}[]
 \begin{tabular}{|l|l|l|l|}
+\hline
                    & \textbf{RSA Sign} & \textbf{RSA Verify} & \textbf{Total} \\ \hline
 \textbf{low}       & -                 & -                   & -              \\ \hline
 \textbf{normal}    & 268.4\%           & 180.5\%             & 266.7\%        \\ \hline
@@ -2535,7 +2537,7 @@ the previous security level.
 \begin{table}[]
   \begin{tabular}{|l|l|l|l|}
   \hline
-                     \textbf{DH Gen Keypair} & \textbf{DH Gen Shared}   & \textbf{DH Total}   \\ \hline
+                     & \textbf{DH Gen Keypair} & \textbf{DH Gen Shared}   & \textbf{DH Total}   \\ \hline
   \textbf{low}       & -                       & -                      & -                       \\ \hline
   \textbf{normal}    & 542.1\%                 & 549\%                  & 545.5\%                 \\ \hline
   \textbf{high}      & 607.4\%                 & 610\%                  & 608.7\%                 \\ \hline
@@ -2936,7 +2938,6 @@ algorithms and security levels.
                & \textbf{low}   & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
 \textbf{RSA}   & 511728 (45373) & 544227 (47594)  & 607542 (51576) & 735237 (59853)      \\ \hline
 \textbf{ECDSA} & 548841 (45064) & 662348 (45175) & 666866 (45923)  & 704135 (48247)        \\ \hline
-\textbf{}
 \end{tabular}
 \centering \caption{ \label{table:cert-parse-cost} Additional costs of parsing the certificate}
 

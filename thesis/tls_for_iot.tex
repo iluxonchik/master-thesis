@@ -1618,7 +1618,7 @@ computational cost outcomes. There are a few reasons for that:
 \end{itemize}
 
 Another cryptographic operation that is done in the Handshake phase is keying material generation. This part, however,
-does not have a major influence on the computational costs and is the same for both peers, since it's essentially
+does not have a major influence on the computational costs and is the same for both peers, since it is essentially
 hashing operations.
 
 It is clear that the Handshake protocol is significantly more complex, with more possible cost variations.
@@ -1942,7 +1942,7 @@ shared keying material and in reading/writing the \textit{Finished} message.
 
 Table \ref{table:hs-key-gen-cost} shows the number of CPU cycles spent in the \gls{prf}
 and in computing the \textit{Finished} message for all of the defined security levels.
-This number is the average of the runs with each one the $161$ ciphersuites for both of the peers. Thus, it's
+This number is the average of the runs with each one the $161$ ciphersuites for both of the peers. Thus, it is
 an average of $322$ samples. The standard deviation shown in parenthesis.
 An analysis of the table shows that the cost of \gls{prf} is almost the same for all security levels. This can be explained by
 the fact that both of the operations are essentially hashing operations and even if the input size varies
@@ -2117,7 +2117,7 @@ in \gls{ecdsa} the private key operation is the least costly one. Figure \ref{fi
 \gls{rsa} and \gls{ecdsa}. Besides the ratio being a lot smaller for \gls{ecdsa}, it varies very little. This means, that no matter
 the security level, \gls{ecdsa} signature verification will always be about $2$ times more costly than signature creation.
 
-As it's shown in figure \ref{fig:ecdsa-costs-all-sls}, a logarithmic trendline is the one that best fits the cost increase for both,
+As it is shown in figure \ref{fig:ecdsa-costs-all-sls}, a logarithmic trendline is the one that best fits the cost increase for both,
 signature creation and verification.
 Table \ref{table:ecdsa-relative-cost-increase} shows the relative cost increase of of \gls{ecdsa}'s operations. The percentages
 show the relative cost increase from the previous security level. Figure \ref{fig:ecdsa-relative-cost-incerase} presents this information
@@ -2205,7 +2205,7 @@ level, the absolute cost increase of \gls{ecdsa} operations starts going down. A
 for higher security levels as well. This is a consequence of \gls{rsa} having an exponential cost increase, while \gls{ecdsa} a logarithmic one.
 For this reason, it is safe to say that for security levels higher than the ones that we defined, \gls{ecdsa} would be the preferred choice.
 \gls{rsa}' cost increases exponentially due to the mathematical operation at the algorithm's core: modular exponentiation. Similarly, the cost
-increase in \gls{ecdsa} is logarithmic, due it's \gls{ecc} properties: the base mathematical operation is multiplication of a scalar by a point on the
+increase in \gls{ecdsa} is logarithmic, due its \gls{ecc} properties: the base mathematical operation is multiplication of a scalar by a point on the
 curve.
 
 So which algorithm should be used for each security level? The answer to this question is not straightforward and will depend on the environment.
@@ -2417,14 +2417,14 @@ observe two things:
 The first observation is true starting from the \textbf{normal} security level and onwards.
 The fact that for each algorithm the cost of generating the public/private keypair is very similar to the cost of generating secret is not a coincidence.
 \gls{ecdh} and \gls{dh} use different mathematical operations, but for each one of them, those operations are the same for generating the keypair
-and the shared secret. Thus, it's expected for the cost of both steps being almost identical. We will now analyze each one of the algorithms and
+and the shared secret. Thus, it is expected for the cost of both steps being almost identical. We will now analyze each one of the algorithms and
 their costs in more detail.
 
 \subsubsection{ECDH Cost Analysis}
 
 In \gls{ecdh}, two basic operations are performed by each peer: first, a public/private \gls{ecc} keypair is generated, followed by generation of
 the shared secret. The resulting shared secret will be a 2D $(x,y)$ coordinate on the curve. In \gls{tls} the $y$ value is discarded and $x$ is
-used as the preshared secret. Computing the private key is cheap, since it's just a randomly generated number. The costly part is the computation of
+used as the preshared secret. Computing the private key is cheap, since it is just a randomly generated number. The costly part is the computation of
 the public key and the shared secret, since for both it involves multiplications of a scalar by a point on the elliptic curve.
 
 We have already seen the costs of \gls{ecdh} for the \textbf{normal} security level and now we will analyze the remaining ones. Table
@@ -2521,7 +2521,7 @@ the curve being the core mathematical operation.
 \subsubsection{DH Cost Analysis}
 
 Similarly to \gls{ecdh}, in \gls{dh} two basic operations are performed by each peer: first, a public/private \gls{dh} keypair is generated, followed
-by generation of the shared secret, which in \gls{tls}, is used as the premaster secret. Computing the private key is cheap, since it's just a randomly
+by generation of the shared secret, which in \gls{tls}, is used as the premaster secret. Computing the private key is cheap, since it is just a randomly
 generated number. The costly part is the computation of the public key and the shared secret, since both of the operations involve modular exponentiations.
 
 We will once again refer to table \ref{table:ecdh-dh-costs-all-sls} for the cost analysis, but this time focusing on \gls{dh}. Figure
@@ -2583,7 +2583,7 @@ by analyzing table \ref{table:ecdh-dh-costs-total-all-sls} and choosing which al
 However, in order to simplify the analysis, we have plotted the table \ref{table:ecdh-dh-costs-all-sls} in figure \ref{fig:ecdh-dh-costs-all}, which
 presents the data in logarithmic scale.
 
-By looking at figure \ref{fig:ecdh-costs-all-sls} it's easy to see which algorithm has the smallest costs. If the \textbf{low} security level is being used,
+By looking at figure \ref{fig:ecdh-dh-costs-all} it is easy to see which algorithm has the smallest costs. If the \textbf{low} security level is being used,
 \gls{dh} is the least costly choice, if the \textbf{normal} or any security level above is being used, \gls{ecdh} is. Moreover, we can clearly see that
 for each algorithm, the costs of their operations is very similar, since we have overlapping lines. The logarithmic and exponential properties of
 \gls{ecdh} and \gls{dh}, respectively, are also visible by shape of the lines. Since we are using logarithmic scale for the $y$ axis, the
@@ -2616,7 +2616,7 @@ within its certificate. In our scenario, only the server authenticates to the cl
 More specifically, in \textit{ECHDE} ciphersuites, with each  new Handshake, both the client and the server generate a new (\textit{i.e.} ephemeral)
 public/private \gls{ecc} key pair that will be used with the \gls{ecdh} algorithm. On the other hand, in \textit{ECDH} ciphersuites, only the client
 will generate a new public/private \gls{ecc} key pair, since the server's public key is fixed within its certificate. Thus in \textit{ECDH}
-ciphersuites, if the server's long-term shared secret, \textit{i.e.t} it's private \gls{ecc} key, is compromised the previous communication's secrets
+ciphersuites, if the server's long-term shared secret, \textit{i.e.t} its private \gls{ecc} key, is compromised the previous communication's secrets
 can be computed (if the client's public \gls{ecdh} parameters that are sent in the clear are recorded), thus also compromising the confidentiality of
 the past communications. The distinction between the \textit{DH} ciphersuite from \gls{dh} algorithm is equivalent. Although \textit{DH} (\textit{i.e}
 non-ephemeral \gls{dh}) ciphersuites exist in \gls{tls}, they are not implemented in \textit{mbedTLS 2.7.0}.
@@ -2694,7 +2694,7 @@ In the figure, we can group the costs into $4$ groups, presented in increasing c
 In the evaluated scenario, only the server authenticates to the client. If mutual authentication was used (\textit{i.e.} with both, the client
 and server authenticating one to another), the costs of \textit{ECDH} ciphersuites would become the same for the client and the server, with the client
 having its cost reduced. In the mutual authentication scenario, the client, just like the server, would only have to generate the shared secret, since
-it's public key would be fixed in its certificate. Thus, the client's \gls{pfs} and \textit{ECDH} costs would be identical to the ones of the server,
+its public key would be fixed in its certificate. Thus, the client's \gls{pfs} and \textit{ECDH} costs would be identical to the ones of the server,
 presented in table \ref{table:pfs-cost-server}. Figure \ref{fig:pfs-cost-all-sls} would still look the same, except that the client's \textit{ECDH}
 ciphersuite costs would become the same as the server's. Thus, the costs could still be separated into the $4$ groups mentioned above,
 but now there would be no \textit{ECDH} client/server side separation:
@@ -2916,7 +2916,7 @@ is not enough to sum the corresponding values from the authentication and \gls{p
 the parsing/record layer costs. As discussed previously, we can consider the cost of the \textit{PSK} handshake as the \gls{tls} overhead.
 The parsing and the record layer costs are additional costs that the
 peers spend in parsing and reading/writing certain messages not included in the \gls{tls} overhead cost.
-Here, reading/writing does not refer to reading/writing to the network, but rather to the record layer. Namely, it's the cost of creating/verifying
+Here, reading/writing does not refer to reading/writing to the network, but rather to the record layer. Namely, it is the cost of creating/verifying
 the message \gls{mac}. We will refer to those costs as \textit{Additional Costs}.
 
 The majority of the \textit{Additional Costs} come from the \textit{Certificate} message.
@@ -2959,7 +2959,7 @@ key exchange, from the \gls{tls} security service costs that we presented in sec
 First, we will need to get the \textit{TLSOverhead} value. We can obtain in from the entry located at the
 \textit{ECDHE-RSA} row and \textit{high} column in table \ref{table:client-hs-cost-all-sls}: $1355005$. \textit{AuthCost} can be obtained
 from the \textit{ECDHE-RSA} row and \textit{high} column in table \ref{table:tls-auth-cost-client}: $4413164$. Similarly \textit{PFSCost}
-can be obtained from table \ref{table:pfs-cost-client}, where the \textit{ECDHE-RSA} row and \textit{normal} column intersect: $90231688$.
+can be obtained from table \ref{table:pfs-cost-client}, where the \textit{ECDHE-RSA} row and \textit{high} column intersect: $90231688$.
 For the additional certificate parsing costs, we will consult table \ref{table:cert-parse-cost}. Since the certificate is an \gls{rsa} signed one,
 we will use the value from \textit{RSA} row and \textit{high} column: $607542$. All that's left now is insert those values in the formula:
 $Handshake Cost = TLS Overhead + Auth Cost + PFS Cost + Additional Costs = 1355005 + 4413164 + 90231688 + 607542 = 96607399$.
@@ -3144,7 +3144,7 @@ cost information. The formula used to obtain the CPU cycle count estimate can al
 \subsubsection{Future Work}
 
 While the use of \textit{callgrind} helped to obtain and analyze large a amount of different results, there are other
-cost metrics that would be interesting to analyze. First, it's important to remember than an estimate of the number
+cost metrics that would be interesting to analyze. First, it is important to remember than an estimate of the number
 of CPU cycles was used. It would be of interest to obtain the actual count of CPU cycles, by querying the
 processor's counters directly. Tools such as PAPI\cite{dongarra2001using} can be used for this purpose.
 

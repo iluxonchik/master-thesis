@@ -37,7 +37,10 @@
     ],
     "cSpell.words": [
         "ciphersuite",
-        "ciphersuites"
+        "ciphersuites",
+        "ecdh",
+        "mbed",
+        "tls"
     ],
     "cSpell.language": "en"
 }

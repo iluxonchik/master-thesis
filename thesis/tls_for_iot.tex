@@ -103,6 +103,8 @@ vratio=2:3,      % not vertically centered
 \newacronym{jit}{JIT}{just-in-time}
 \newacronym{ir}{IR}{Intermediate Representation}
 
+\glsunset{tlsd}
+
 
 %%% WARN: added as specified here:
 % https://tex.stackexchange.com/questions/272200/table-of-contents-showing-the-title-as-only-entry-latex
@@ -165,16 +167,50 @@ to make security/cost trade-offs based on the environment needs and limitations.
 \keywords{TLS, DTLS, SSL, IoT, cryptography, protocol, lightweight cryptography}
 \end{abstract}
 %
+
 \section{Introduction}
 %
 
 In recent years there has been a sharp increase in the number of IoT
-devices and this trend is expected to continue. The IoT is a network
+devices and this trend is expected to continue\cite{IoTnumb83:online}. The IoT is a network
 of interconnected devices, which exchange data with one another over
-the internet. While they are many types of IoT devices, all of them
+the internet. In fact, it can be any object that has an assigned
+IP address and is provided with the ability to transfer data over a network. 
+While there are many types of IoT devices, all of them
 are restricted: they have limited memory, processing power and
 available energy. Examples of IoT devices include temperature sensors,
-smart light bulb and physical activity trackers.
+smart light bulbs and physical activity trackers.
+Even a salt shaker\cite{SMALTThe76:online} can now be part of the global network.
+
+The \gls{iot} technology provides many benefits, from personal comfort to
+transforming entire industries, mainly due to increased connectivity and
+new sources for data analysis. The technological development, however, tends to focus on
+innovative design rather than on security. \gls{iot} devices frequently
+connect to networks using inadequate security and are hard to update when
+vulnerabilities are found.
+
+This lack of security in the \gls{iot} ecosystem has been exploited by the
+the \textit{Mirai} botnet\cite{sec17ant94:online} when it overwhelmed several high-profile
+targets with massive \gls{ddos} attacks. This is the most devastating attack involving \gls{iot}
+devices done to date. However, the \textit{Reaper} botnet\cite{ReaperCa10:online} could be
+even worse if it is ever put to malicious use. Similar attacks will inadvertently
+come in the future.
+
+In the process of the work on this dissertation, we have made several
+contributions to the \gls{tls} $1.3$ specification, and were formally recognized as 
+contributors\cite{Mergepul65:online}. Our name can be found in the document specifying \gls{tls} $1.3$\cite{RFC8446}.
+Although to the lesser extent, we have also contributed to \gls{dtls} $1.3$ specification\cite{DTLS13:online}.
+We have found a security issue within the
+\gls{tls} implementation of the \textit{mbedTLS} library. We reported it and it
+has been assigned a \textit{CVE} with the id \textit{CVE-2018-1000520}\cite{NVDCVE2094:online}.
+It is an authentication problem, where certificates signed with an incorrect algorithm
+were accepted in some cases. More specifically, \textit{ECDH(E)-RSA} ciphersuites allowed \gls{ecdsa}-signed
+certificates, when only \gls{rsa}-signed ones should have been. We also found a bug in \textit{mbedTLS}'s test suite
+related to the use of deprecated \textit{SHA-1}-signed certificates and submitted a code fix to 
+it\cite{sslserve89:onelin}\cite{updatete23:online}.
+
+\subsection{Motivation}
+%
 
 While inter-device communication has numerous benefits, it is important
 to ensure the security of that communication. For example, when you log
@@ -184,9 +220,9 @@ account. Having your account compromised means that a malicious entity
 might steal your money. Similarly, when you are transferring funds via
 online banking, you want the contents of that operation to be
 invisible to an observer, for privacy reasons. It is also desirable
-that no party is able to tamper with the transmitted data en transit,
+that no party is able to tamper with the data en transit,
 as it may lead to undesired consequences, such as the transfer of a
-larger amount than you intended. Proper communications security allows
+larger amount than intended. Proper communications security allows
 those goals to be achieved.
 
 \gls{tls} is one of the most used protocols for communication security. It
@@ -196,50 +232,118 @@ protection and perfect forward secrecy. It is not a requirement to use all of
 those services for every TLS connection. The protocol is similar to
 a framework, in the sense that you can enable individual security
 services on a per-connection basis. For example, when you are downloading
-software updates, data confidentiality is probably not a concern,
-data authenticity and integrity, however, is. In TLS, it is possible for a connection
+software updates, while data confidentiality is probably not a concern,
+data authenticity and integrity, are. In \gls{tls}, it is possible for a connection
 to only offer authenticity and integrity, without offering confidentiality.
 Foregoing unnecessary services will lead to a smaller resource usage,
 which in turn leads to smaller execution time and power usage. This
 is especially important in the context of IoT, due to the constrained
-nature of the devices.
+nature of the devices. 
+
+Existing work does not explore the computational costs
+of the security services available in \gls{tls}. Examples of such costs are the 
+number of CPU cycles executed, time taken and power used.  
+Thus, developers wishing to deploy the \gls{tls} protocol
+in constrained environments do not have a resource that would help them in choosing a \gls{tls}
+configuration appropriate to the environment's needs and limitations.
+
+\gls{tls} is designed to run on top of a reliable, connection-oriented
+protocol, such as TCP. \gls{dtls} is the version of \gls{tls} that runs on top
+of an unreliable transport protocol, such as UDP. Most \gls{iot} devices have
+very limited processing power, storage and energy. Moreover, the performance of
+TCP is known to be inefficient in wireless networks, due to its congestion control
+algorithm. This situation is worsened with the use of low-power radios and lossy
+links found in sensor networks. Therefore, in many cases the use of TCP with \gls{iot}
+is not the best option. For this reason, \gls{dtls}, which runs on top
+of UDP, is used more frequently in such devices. 
+While the work of this dissertation will be focused on \gls{tls}, the majority of it
+can also be applied to \gls{dtls}. This is a consequence of \gls{dtls} being 
+just an adaption of \gls{tls} over unreliable  transport protocols, 
+without changes to the core protocol.
 
 There are numerous IoT devices, each one with different hardware
 capabilities and security requirements. For example, some IoT
-devices have the capability of using public key cryptography,
-while for others symmetric cryptography is the only option
+devices have the resources to use public key cryptography,
+while for others symmetric cryptography is the only option.
 In some cases, the communicating devices require data authenticity, confidentiality
 and integrity (e.g. when logging in into a device), while in others data
 authenticity and integrity is enough (e.g. when transferring updates).
 
-TLS was not designed for the constrained environment of IoT. Despite that,
+\gls{tls} was not designed for the constrained environment of IoT. Despite that,
 it is a malleable protocol and can be configured to one's needs. In essence,
 it is a combination of various security algorithms that together form
 a protocol for communication security. If configured
-properly, it is possible to use it in the context of IoT. Existing work
-does not address the computational cost evaluation of the various security services
-offered by TLS individually. An example of a computational is the number of CPU
-cycles used, time taken or power used. Thus, software developers
-who want to use TLS to provide connection security do not have data that can
-assist them in making the security/resource usage trade-offs
+properly, it is possible to use it in the context of IoT.
 
-The goal of this work is to evaluate the cost of each security service of the
-TLS protocol. This will assist software developers to make security/resource usage
-trade-off judgments, according to their needs and limitations. For this reason,
-this work targeted towards developers who wish to add communication security
-to their applications in the IoT environment.
+The majority of existing work on \gls{tlsd} optimization proposes 
+a solution that is either tied to a
+specific protocol, such as \gls{coap}, or requires an introduction of a third-party
+entity, such as the trust anchor in the case of the S3K system\cite{S3KScala62:online} or
+even both. This has two main issues. First, a protocol-specific solution cannot
+be easily used in an environment where (D)\gls{tls} is not used with that protocol.
+Second, the requirement of a third-party
+introduces additional cost and complexity, which will be a big resistance factor
+in adopting the technology. This is especially true for developers working on
+personal projects or projects for small businesses, leaving the communications insecure
+in the worse case scenario. Therefore a solution that is protocol independent and fully 
+compatible with the \gls{tlsd} standard and existing infrastructure is desired.
 
-In the process of the work on this dissertation, we have made several
-contributions to the \gls{tls} $1.3$ specification, and were formally recognized as 
-contributors\cite{Mergepul65:online}. Our name can be found in the document specifying \gls{tls} $1.3$\cite{RFC8446}.
-We have also found a security issue within the
-\gls{tls} implementation of the \textit{mbedTLS} library. We reported it and it
-has been assigned a \textit{CVE} with the id \textit{CVE-2018-1000520}\cite{NVDCVE2094:online}.
-It is an authentication problem, where certificates signed with an incorrect algorithm
-were accepted in some cases. More specifically, \textit{ECDH(E)-RSA} ciphersuites allowed \gls{ecdsa}-signed
-certificates, when only \gls{rsa}-signed ones should be. We also found a bug in \textit{mbedTLS}'s test suite
-related to the use of deprecated \textit{SHA-1}-signed certificates and submitted a code fix to 
-it \cite{sslserve89:onelin}\cite{updatete23:online}.
+Another issue with the existing literature is that it almost exclusively focuses on \gls{dtls} optimization
+and not all of it can be applied to \gls{tls}. Herein we want to further explore \gls{tls} optimization. 
+There is clearly a need for that,
+especially with \gls{coap} over TCP and \gls{tls} standard\cite{I-D.ietf-core-coap-tcp-tls} being currently developed. The
+mentioned standard does not explore any \gls{tls} optimizations, and since any
+\gls{iot} device using it in the future would benefit from them, this is an important
+area to explore.
+
+\subsection{Objectives}
+
+(D)\gls{tls} is a complex protocol with numerous possible configurations. Each configuration
+provides different set security services and a different security level. This has a direct
+impact on the resource usage. Thus, the cost of a \gls{tlsd} connection can be lowered,
+by using an appropriate configuration. Typically, this involves making security/cost trade-offs.
+Optimizing the connection cost by selecting one of the numerous configurations available in \gls{tlsd}
+ meets our goals of being protocol independent, fully compatible with
+existing infrastructure and targeting \gls{tls} optimization specifically.
+
+The objective of this work is to provide a means of assisting application developers
+who wish to include secure communications in their applications to make
+security/resource usage trade-offs, according to the environment's needs
+and limitations. In order to achieve this goal, the cost of each individual security service
+will be evaluated. With this information, the programer will be able to choose a configuration that
+meets his security requirements and device constraints. If the limitations of the device's hardware
+do not allow to meet the requirements, the programer may decide on an alternative configuration, possibly with
+a loss of some security services and a lower security level, or forgo using (D)\gls{tls} altogether.
+Thus, this work is targeted towards developers and InfoSec professionals who wish to add communication security
+to applications in the IoT environment.
+
+In our work, we evaluated the \textit{mbedTLS 2.7.0}'s\cite{SSLLibra13:online} implementation of the \gls{tls} protocol version $1.2$.
+\textit{mbedTLS} is among the most popular libraries with a \gls{tls} implementation for embedded systems. \gls{tls} protocol 
+version $1.2$ is currently the most used version of \gls{tls} on the internet \cite{QualysSS90:online}. The work on
+the dissertation started before \gls{tls} protocol's version $1.3$ specification was finished and there were no embedded device
+libraries which implemented it.  For this reason we did not evaluate \gls{tls} 1.3. Despite that, the results
+obtained in this work apply to it as well, since the core functionality of the security services remained mostly unchanged.
+
+The cost metric that we used is the number of CPU cycles. The profiled instructions are CPU-bound, thus
+the number of CPU cycles will be proportional to time. To be more precise, we will measure an estimate of 
+the number of CPU cycles. Section \ref{sec:eval-metrics-and-lims} contains a detailed description of the evaluated costs 
+and its limitations.
+
+\subsection{Results}
+
+In summary, the results of this work are enumerated as follows:
+
+\begin{enumerate}
+  \item Evaluate the costs of the security services of confidentiality, integrity, \gls{pfs} and authentication in \gls{tls}
+  \item Evaluate and compare the costs of various alternative algorithms which can be used to provide each one of the security services
+  \item Evaluate and compare the costs of all of the possible \gls{tls} configurations present in \textit{mbedTLS 2.7.0}
+  \item Contribute to the \gls{tls} protocol's version $1.3$ specification
+  \item Contribute to the \gls{dtls} protocol's version $1.3$ specification
+  \item Find and report a security vulnerability present in \textit{mbedTLS 2.7.0}
+  \item Find, report and submit a patch to fix a bug present in \textit{mbedTLS 2.7.0}
+\end{enumerate}
+
+\subsection{Structure of The Document}
 
 The document is organized as follows: Section 2 describes the background. It
 introduces some of the concepts that will be used throughout
@@ -1379,60 +1483,6 @@ there has been new work done in this area since the release of this profile.
 There is a document specifying an architecture for a firmware update
 mechanism for \gls{iot} devices\cite{I-D.moran-suit-architecture} currently in Internet-Draft state.
 
-\section{Objectives}
-
-\gls{iot} devices have limited resources. Those resources are processing speed, memory and power.
-Communication security is a desirable property in the context of interconnected devices.
-There are many protocols that can be used to provide communication security. (D)\gls{tls} among the
-most used ones for this purpose.
-
-The majority of existing work on \gls{tlsd} optimization proposes 
-a solution that is either tied to a
-specific protocol, such as \gls{coap}, or requires an introduction of a third-party
-entity, such as the trust anchor in the case of the S3K system\cite{S3KScala62:online} or
-even both. This has two main issues. First, a protocol-specific solution cannot
-be easily used in an environment where (D)\gls{tls} is not used with that protocol.
-Second, the requirement of a third-party
-introduces additional cost and complexity, which will be a big resistance factor
-in adopting the technology. This is specially true for developers working on
-personal projects or projects for small businesses, leaving the communications insecure
-in the worse case scenario. Therefore a solution that is protocol independent and fully 
-compatible with the \gls{tlsd} standard and existing infrastructure is desired.
-
-Another issue with the existing literature is that it almost exclusively focuses on \gls{dtls} optimization
-and not all of it can be applied to \gls{tls}. Herein we want to further explore \gls{tls} optimization. 
-There is clearly a need for that,
-specially with \gls{coap} over TCP and \gls{tls} standard being currently developed. The
-mentioned standard does not explore any \gls{tls} optimizations, and since any
-\gls{iot} device using it in the future would benefit from them, this is an important
-area to explore.
-
-(D)\gls{tls} is a complex protocol with numerous possible configurations. Each configuration
-provides different set security services and a different security level. This has a direct
-impact on the resource usage. Thus, the cost of a \gls{tlsd} connection can be lowered,
-by using an appropriate configuration. Typically, this involves making security/cost trade-offs.
-Optimizing the connection cost in this way meets our goals of being protocol independent, fully compatible with
-existing infrastructure and targeting \gls{tls} optimization specifically.
-
-A (D)\gls{tls} configuration consists of a key exchange algorithm, an encryption algorithm and
-a hash function. There are numerous choices for each, which leads to
-numerous possible configurations. As an example, the \textit{mbedTLS 2.7.0} library has a total
-of $161$ possible configurations.
-Existing work does not explore the costs of those configurations. It also fails to
-establish a relationship between the security services, security level and their associated
-costs in the context of (D)\gls{tls}. Developers wishing to deploy the (D)\gls{tls} protocol
-in constrained environments do not have a tool or resource that would help them to select a (D)\gls{tls}
-configuration appropriate to the environment's needs and limitations.
-
-The objective of this work is to provide a means of assisting application developers
-who wish to include secure communications in their applications to make
-security level/resource usage trade-offs, according to the environment's needs
-and limitations. In order to achieve this goal, the costs of each individual security service
-will be evaluated. With this information, the programer will be able to choose a configuration that
-meets his security requirements and device constraints. If the limitations of the device's hardware
-do not allow to meet the requirements, the programer may decide on an alternative configuration, possibly with
-a loss of some security services and a lower security level, or forgo using (D)\gls{tls} altogether.
-
 \section{Methodology}
 
 In (D)\gls{tls} the key the authentication algorithm, the encryption algorithm, the
@@ -1468,7 +1518,7 @@ of CPU cycles executed. To be more precise, an estimate of that value. In the ne
 evaluated metric in more detail, as well as describe its limitations.
 
 
-\subsection{Evaluated Metrics and Limitations}
+\subsection{Evaluated Metrics and Limitations} \label{sec:eval-metrics-and-lims}
 
 In order to estimate the number of executed cycles, we used \textit{valgrind}, more specifically
     its \textit{callgrind} tool. \textit{valgrind} runs the application on a synthetic CPU.

@@ -3064,6 +3064,42 @@ because the overwhelming cost of some key exchange methods made the visual analy
   \centering \caption{\label{fig:srv-conf-hs-high} Server handshake vs confidentiality cost for the \textbf{high} security level}
 \end{figure}
 
+\subsection{}
+
+We have also used PAPI to measure the number of actual CPU cycles used the time taken. In this section, we will compare the estimates
+of the nubmer of CPU cycles obtained with valgrind with the number of CPU cycles returned by PAPI and analyze the time measurments.
+
+We will begin with a comparison between the number of CPU cycles reported by valgrind and PAPI. All of the presented graphs
+show by how much \textit{callgrind}'s results differ from \textit{PAPI}'s results. Those differences are presented as
+percentages. If the percentage is positive, it means that \textit{callgrind}'s reported result is larger than \textit{PAPI}'s,
+if the percentage is negative, it means that it's smaller. For example, in figure \ref{fig:todo}, the value of \gls{rsa} decryption
+for the low security level is $-10.68\%$, which mean's that the result reported by \textit{callgrind} is $10.68\%$ smaller than the one
+returned by \textit{PAPI}. Similarly, the value of \gls{rsa} decryption for the \textbf{normal} security level in figure \ref{fig:todo}
+is $34.33\%$, which means that the result returned by \textit{callgrind} is $34.33\%$ larger than the one returned by \textit{PAPI}.
+
+%% RSA
+
+Figure \ref{fig:papi-vs-callgrind-rsa-cost} shows the difference between the costs for \gls{rsa} operations reported by \textit{callgrind} 
+and \textit{PAPI}.
+As it shows, \textit{callgrind}'s estimates were always higher than the actual number of CPU cycles used. The larger the security
+level, the larger the difference is. That difference was also higher for signature creation than for verification. Despite that, 
+the ratio between the costs of signature verification and creation is similar for \textit{callrind} and \textit{PAPI}, as is shown in
+figures \ref{fig:rsa-ecdsa-pub-priv-ratio} (for \textit{callgrind}) and \ref{fig:rsa-ecdsa-pub-priv-ratio-papi} (for \textit{PAPI}).
+
+%% ECDSA
+
+Figure \ref{fig:papi-vs-callgrind-rsa-cost} shows the difference between the costs for \gls{ecdsa} operations reported by \textit{callgrind} 
+and \textit{PAPI}.
+Just like with \gls{rsa}, \textit{callgrind}'s estimates were always higher than the actual number of CPU cycles used. For the low security
+level \gls{ecdsa} singature creation estiamte reported by \textit{callgrind} was very close to the real value reported by \textit{PAPI}.
+For the signature verification, \textit{callgrind}'s estimate is always more than the double of the real value. The difference between
+the costs reported by \textit{callgrind} and \textit{PAPI}, as the security level increases, is different for signature creation and verification.
+While the signature creation cost difference increases with the security level, for signature verification it starts decreasing from the \textbf{normal}
+security level. As a result, this difference becomes higher for the signature creation than verification at the \textbf{very high} security level.
+Unlike for \gls{rsa} the ratio between the most and least costly public key operation is very different when comparing \textit{callgrind}'s predictions
+(figure \ref{fig:fig:rsa-ecdsa-pub-priv-ratio}) to the actual values obtained from \textit{PAPI} (\ref{fig:rsa-ecdsa-pub-priv-ratio-papi}).
+While with \textit{callgrind} that ratio remains approximately constant, with \textit{PAPI} it increases with the security level.
+
 
 \subsection{Discussion} \label{sec:ss-cost-conclusions}
 

@@ -1,0 +1,6 @@
+Things to cover:
+* offered security services and how
+
+Things I dind't cover:
+* security + connection state elements explicitly
+*

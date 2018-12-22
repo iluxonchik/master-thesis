@@ -3086,9 +3086,47 @@ level, the larger the difference is. That difference was also higher for signatu
 the ratio between the costs of signature verification and creation is similar for \textit{callrind} and \textit{PAPI}, as is shown in
 figures \ref{fig:rsa-ecdsa-pub-priv-ratio} (for \textit{callgrind}) and \ref{fig:rsa-ecdsa-pub-priv-ratio-papi} (for \textit{PAPI}).
 
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/papi-vs-callgrind-rsa-cost.png}
+  \centering \caption{\label{fig:papi-vs-callgrind-rsa-cost} Percentage by which RSA signature creation and verification callgrind results differ from PAPI results}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/rsa-ecdsa-pub-priv-ratio-papi.png}
+  \centering \caption{\label{fig:rsa-ecdsa-pub-priv-ratio-papi} RSA Sign/Verify and ECDSA Verify/Sign ratios for PAPI}
+\end{figure}
+
+
+%%  RSA Encrypt/Decrypt
+Figure \ref{fig:papi-vs-callgrind-rsa-encr-cost} shows the difference between the costs of \gls{rsa} encrypiton and decrypiton operations
+reported by \textit{callgrind} and \textit{PAPI}. \gls{rsa} encryption and decrypiton operations were perfomed under the \textit{PKCS\#1 v2.1 RSAES-PKCS1-V15ENCRYPT}
+and \textit{PKCS\#1 v2.1 RSAES-PKCS1-V15DECRYPT} schemes, respectively.
+An analysis of the figure shows that while \gls{rsa} encryption costs are always underestiamted by \textit{callgrind}, \gls{rsa} decryption costs
+are underestiamted at the \textbf{low} security level and overstimated for the remaining ones. As a result, the ratio between the decrypiton
+and encryption costs is different for \textit{callgrind} and \textit{PAPI}, as is shown in figure \ref{fig:papi-vs-rsa-ecnr-ratio}. As the
+actual CPU cycle count shows, the ratio is not as large as \textit{callgrind} predicted. Up until the \textbf{very high} security level,
+the ratio reported by \textit{PAPI} does not vary by a lot. This means that the costs of for the encryption and decryption opreations both
+increase in similar proportions. While there is a considerable increase of this ratio at the \textbf{very high} security level, which
+suggests that the costs of the decrypiton opraiton increased by a considerably larger factor than of the encryption, it is still almost
+$3$ times smaller than the one predicted by \textit{callgrind}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/papi-vs-callgrind-rsa-encr-cost.png}
+  \centering \caption{\label{fig:papi-vs-callgrind-rsa-encr-cost} Percentage by which RSA encrypiton and decrypiton callgrind results differ from PAPI results}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/papi-vs-callgrind-rsa-encr-ratio.png}
+  \centering \caption{\label{fig:papi-vs-rsa-ecnr-ratio} RSA Decrypt/Encrypt Ratio for Callgrind and PAPI}
+\end{figure}
+
 %% ECDSA
 
-Figure \ref{fig:papi-vs-callgrind-rsa-cost} shows the difference between the costs for \gls{ecdsa} operations reported by \textit{callgrind} 
+Figure \ref{fig:papi-vs-callgrind-ecdsa-cost} shows the difference between the costs for \gls{ecdsa} operations reported by \textit{callgrind} 
 and \textit{PAPI}.
 Just like with \gls{rsa}, \textit{callgrind}'s estimates were always higher than the actual number of CPU cycles used. For the low security
 level \gls{ecdsa} singature creation estiamte reported by \textit{callgrind} was very close to the real value reported by \textit{PAPI}.
@@ -3097,9 +3135,45 @@ the costs reported by \textit{callgrind} and \textit{PAPI}, as the security leve
 While the signature creation cost difference increases with the security level, for signature verification it starts decreasing from the \textbf{normal}
 security level. As a result, this difference becomes higher for the signature creation than verification at the \textbf{very high} security level.
 Unlike for \gls{rsa} the ratio between the most and least costly public key operation is very different when comparing \textit{callgrind}'s predictions
-(figure \ref{fig:fig:rsa-ecdsa-pub-priv-ratio}) to the actual values obtained from \textit{PAPI} (\ref{fig:rsa-ecdsa-pub-priv-ratio-papi}).
+(figure \ref{fig:rsa-ecdsa-pub-priv-ratio}) to the actual values obtained from \textit{PAPI} (\ref{fig:rsa-ecdsa-pub-priv-ratio-papi}).
 While with \textit{callgrind} that ratio remains approximately constant, with \textit{PAPI} it increases with the security level.
 
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/papi-vs-callgrind-ecdsa-cost.png}
+  \centering \caption{\label{fig:papi-vs-callgrind-ecdsa-cost} Percentage by which ECDSA signature creation and verification callgrind results differ from PAPI results}
+\end{figure}
+
+%% Authentication Costs 
+%% note: putting client's graph in log scale, does not show some values on the graph
+
+Figures \ref{fig:papi-vs-auth-costs-client} and \ref{fig:papi-vs-auth-costs-server} show the difference between authentication costs reported by 
+\textit{callgrind} and \textit{PAPI} for the client and the server, respectively. For the client, the ciphersuites with a non-null 
+difference with the exception of \textit{DHE-RSA}, all follow the same pattern. Their \textit{callgrind} costs are underestiamted for the \textit{low} security level, 
+after which the absolute percentual difference 
+decreases at the \textbf{normal}, followed by an incerase in the direction of overestimation at the \textbf{high} and \textbf{very high}
+security levels. While \textit{DHE-RSA}'s cost is also underestiamted for the \textbf{low} security level, the absolute percentual difference is 
+higher at the  \textbf{normal} security level. At the \textbf{very high} security level, the cost of authentication for the \textit{ECDH-RSA} ciphersuite 
+is disproportionally overestimated. The average absolute percentual difference among all ciphersuites and security levels for the client is $98\%$, 
+if however the outlier is disregarded, it is $69\%$.
+Among all securiy levels the \textbf{normal} is the one whose \textit{callgrind} predictions
+are closer to the real values. On averge, the \textbf{normal} security level's percentual difference is of $20\%$, in absolute value.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/papi-vs-auth-costs-client.png}
+  \centering \caption{\label{fig:papi-vs-auth-costs-client} Percentage by which authentication callgrind results differ from PAPI results for the client}
+\end{figure}
+
+Similarly for the client, the \textbf{low} security level is the one that has the smallest absolute percentual difference for the server.
+For both parties, the higher the security level, the higher this difference is. In the case of the server, however, there are no outliers.
+The average absolute percentual difference among all ciphersuites and security levels for the server is $72\%$.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/papi-vs-auth-costs-server.png}
+  \centering \caption{\label{fig:papi-vs-auth-costs-server} Percentage by which authentication callgrind results differ from PAPI results for the server} 
+ \end{figure}
 
 \subsection{Discussion} \label{sec:ss-cost-conclusions}
 

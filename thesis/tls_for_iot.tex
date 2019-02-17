@@ -15,6 +15,11 @@
 
 %\usepackage[group-separator={,}]{siunitx}k
 \usepackage{numprint}
+\usepackage[utf8]{inputenc}
+\usepackage{newunicodechar}
+\newunicodechar{²}{\ensuremath{{}^2}}
+\newunicodechar{≥}{\ensuremath{\geq}}
+
 
 \geometry{
 a4paper,         % or letterpaper
@@ -3263,7 +3268,7 @@ analyze the cost of \gls{tls} in terms of power usage. This would also allow to 
 Time is another interesting metric to consider. While an \gls{iot} device might be connected to a power source and
 only make occasional connections, such a motion sensor, it would be of little use if it takes it a very long time
 to establish connection. This would allow to associate time values to each part of \gls{tls}.
-Finally, all of the mentioned metrics should be obtained on \gls{iot} hardware.
+Finally, all of the mentioned metrics should be obtained on \gls{iot} hardware. Hello
 
 % ---- Bibliography ----
 %

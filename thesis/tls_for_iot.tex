@@ -107,6 +107,7 @@ vratio=2:3,      % not vertically centered
 \newacronym{iana}{IANA}{Internet Assigned Numbers Authority}
 \newacronym{jit}{JIT}{just-in-time}
 \newacronym{ir}{IR}{Intermediate Representation}
+\newacronym{papi}{PAPI}{Performance Apppicaiton Programming Interface}
 
 \glsunset{tlsd}
 
@@ -314,7 +315,12 @@ existing infrastructure and targeting \gls{tls} optimization specifically.
 The objective of this work is to provide a means of assisting application developers
 who wish to include secure communications in their applications to make
 security/resource usage trade-offs, according to the environment's needs
-and limitations. In order to achieve this goal, the cost of each individual security service
+and limitations. We will give a general overview of of the costs of the \gls{tls} protocol as a whole and
+of its individual parts. This is will allow us to answer questions such as \textit{How much will we save if we use protocol X instead of Y for authentication?}.
+Thus, performing evaluations on specific \gls{iot} hardware or analyzing \gls{tls}-specific optimizations
+on it is outside of the scope of this paper.
+
+In order to achieve our goal, the cost of each individual security service
 will be evaluated. With this information, the programer will be able to choose a configuration that
 meets his security requirements and device constraints. If the limitations of the device's hardware
 do not allow to meet the requirements, the programer may decide on an alternative configuration, possibly with
@@ -329,10 +335,11 @@ the dissertation started before \gls{tls} protocol's version $1.3$ specification
 libraries which implemented it.  For this reason we did not evaluate \gls{tls} 1.3. Despite that, the results
 obtained in this work apply to it as well, since the core functionality of the security services remained mostly unchanged.
 
-The cost metric that we used is the number of CPU cycles. The profiled instructions are CPU-bound, thus
-the number of CPU cycles will be proportional to time. To be more precise, we will measure an estimate of 
-the number of CPU cycles. Section \ref{sec:eval-metrics-and-lims} contains a detailed description of the evaluated costs 
-and its limitations.
+We used two cost metrics: the estimated number of CPU cycles and the time taken. The time values were read direcly from
+the processor's registers. The profiled instructions are CPU-bound, thus the number of CPU cycles will be proportional to time,
+as will later show in our analysis. Later in the text we will show that our esitmates do reflect real values, by comparing them to time
+measurments obtained directly from the CPU registers. Section \ref{sec:eval-metrics-and-lims} contains a detailed description of the 
+evaluated costs and their limitations.
 
 \subsection{Results}
 
@@ -1504,7 +1511,7 @@ the previous phase. This part is known as the record protocol.
 \end{enumerate}
 
 The relative cost of each phase depends on the chosen algorithms, as well as the amount of data
-transferred. For this reason, it is important to evaluate the costs of both of them.
+transferred. For this reason, it is important to evaluate the costs of both.
 
 \acrshort{tlsd} has numerous possible configurations. Each one of those configurations is defined
 in an \gls{rfc}. Each ciphersuite is assigned a unique identification number. \gls{iana} is responsible for
@@ -1518,12 +1525,38 @@ and error-prone. For this reason, we developed tools that would automate the pro
 of results.
 
 In our work, we evaluated the \textit{mbedTLS's} implementation of the \gls{tls} protocol, thus obtained
-metrics reflect the algorithm's implementations used within the library. The metric that we evaluated is the number
-of CPU cycles executed. To be more precise, an estimate of that value. In the next section we will analyze the
-evaluated metric in more detail, as well as describe its limitations.
+metrics reflect the algorithm's implementations used within the library. 
+We focused our analysis on two metrics: an estimated numbers of CPU cycles executed and time taken.
+The obtained time metrics were not estimated, but rather values read directly from the processor's registers.
+As we will show in later sections, the estimates reflect the real values.
 
+There are well-established, industry-standard tools for collecting and analyzing the estimated computational costs,
+such as the number of CPU cycles. Two of such tools are \textit{valgrind} and \textit{callgrind} and it's the ones that we used. 
+Relying on such tooling allowed us to analyze the costs of \gls{tls} at both, the hiher and lower levels.
+First, \textit{valgrind} allowed us to collect cost metrics for every part of \gls{tls}. Then, \textit{callgrind}
+allowed us to visualize those costs and map the architecture of the codebase to relevant parts of \gls{tls} (\textit{i.e.}
+which functions in the code correspond to which \gls{tls} operations).
+
+Similarly, tools for reading performance related hardware counters directly from the processor exist. 
+One of such tools is \gls{papi} \cite{dongarra2001using}.
+After analyzing the estimated costs, we instructed the relevant parts of the code with \gls{papi}, in order to obtain
+cost metrics directy from the processor's registers. More specifically, we measured time. A comparison of the estimates
+and the real values showed that they are proportional one to another. 
+
+\gls{tls}. First we collected a wide array of metrics with \textit{valgrind} and \textit{callgrind}, which allowed to
+analyze the costs of \gls{tls} at both, high and low levels. After that, we studied the costs obtained by reading
+the relevant counters directly from the processor and showed that they are proportional to the estimated ones.
+
+In the next section we will analyze the evaluated metrics in detail, as well as describe their limitations.
 
 \subsection{Evaluated Metrics and Limitations} \label{sec:eval-metrics-and-lims}
+
+In this section we will describe the metrics that we evaluted, the environment in which the evaluation
+was performed and the limitations of our approaches. We will present our descriptions in the same order
+that we performed them: first estimating performance measurments with \textit{valgrind}, followed
+by collecting values directly from the processor's counters with \textit{papi}.
+
+\subsubsection{Estimation with Valgrind and Callgrind}
 
 In order to estimate the number of executed cycles, we used \textit{valgrind}, more specifically
     its \textit{callgrind} tool. \textit{valgrind} runs the application on a synthetic CPU.
@@ -1597,11 +1630,39 @@ LL Cache             & 6291456 B, 64 B, 12-way associative       \\ \hline
 \centering \caption{\label{table:local-machine} Local machine's characteristics}
 \end{table}
 
+\subsubsection{Reading Values From Processor Counters with PAPI}
+
+In order to obtain the actual processor time spent on various parts of \gls{tls} 
+we used \gls{papi}. Hardware designers added registers to the processors to measure various 
+aspects of its function. Those registers act as performance counters that count specific
+signals related to processor's funtion, such as the number of instructions executed and total
+time elapsed. \gls{papi} provides a standard interface for accessing those counters.
+
+\gls{papi} provides interfaces to measure both, virtual and processor time. \textit{Real time},
+also known as \textit{wall clock time} is total elapsed time, including the time slices used
+by ohter processes, as well as the time spent while the process was blocked, while, for example,
+waiting for I/O operations to complete. \textit{Virtual time}, also known as \textit{user time},
+is amount of time spent in user mode within the process (\textit{i.e.} time spent in kernel mode is not included). 
+This measure is the actual CPU time used in executing the process and does not include time slices 
+used by other processes or the time the process spends blocked. For our purposes, only the \textit{virtual time}
+was relevant and it was the one that we measured.
+
+Just like with \textit{valgrind}, all of our \gls{papi} evaluations were perfomed on the machine
+described in table \ref{table:local-machine}. However, in order to keep the metrics consistent,
+we disabled Intel Turbo Boost \cite{charles2009evaluation} and fixed the processor's speed to the lowest available frequency
+of $800Mhz$.
+
+\subsubsection{Limitations}
+
+The metrics obtained with \textit{valgrind}/\textit{callgrind} are just estimated values, which do not
+necessarily reflect the real ones. For this reason, we complemented them with \gls{papi} measures, which
+are read directly from the processor's registers.
+
 We did not collect any measures on typical \gls{iot} processors. Despite that, the presented metrics are are still
 relevant. If collected on an \gls{iot} processor, the metrics would maintain a similar proportion, thus
 the conclusions and analysis presented would still hold true. Moreover, it is possible to run \textit{callgrind}
 on an \gls{iot} processor (either manually or using our automated tooling) and use those metrics for more accurate 
-and device-specific CPU cycle estimation. In the next section we will describe which we tools developed in order 
+and device-specific CPU cycle estimation. The same is true for \gls{papi}. In the next section we will describe which we tools developed in order 
 to collect the metrics presented in this work. It is possible to use those tools in a local environment to 
 automate metric collection.
 
@@ -1645,7 +1706,7 @@ and key sizes  (\textit{e.g.}, $128$ and $256$ bit for AES). The same is true fo
 have a well defined \gls{mac} function, key size and output length. The performance of symmetric encryption
 algorithms and hash functions has been studied in detail by existing work \cite{nadeem2005performance} \cite{mathew2010performance}.
 There is an approximately linear relation between the amount of data encrypted and the the cost, as we 
-show in Section\ref{sec:sec:confid-costs}.
+show in Section \ref{sec:confid-costs}.
 
 The previous paragraph does not apply to the Handshake protocol. In this part, there is more variety in the
 computational cost outcomes. There are a few reasons for that:
@@ -3069,9 +3130,62 @@ because the overwhelming cost of some key exchange methods made the visual analy
   \centering \caption{\label{fig:srv-conf-hs-high} Server handshake vs confidentiality cost for the \textbf{high} security level}
 \end{figure}
 
+
+\subsection{PAPI Measurments and Their Comparison To The Estimated Values}
+
+We also used \gls{papi} to measure time. In this section, we will compare the estimates of the number of CPU cycles
+obtained with \textit{valgrind} with the time values obtained with \gls{papi}. In order to obtain the time metrics with
+\gls{papi} we used the same approach and the same number of runs as with \textit{valgrind}. The 
+
+\textit{The iron law of processor performance}\cite{yadin2016computer} states that the time
+taken by a program execution is proportional to the number of instuctions (\textit{I}), 
+the average number of cycles per instruction (\textit{CPI}) and the amount of time per each processor
+cycle (\textit{CT}): $CPU Time = I * CPI * CT$. The number of CPU cycles can be computed as 
+follows: $CPU Cycles = I * CPI$. This means taht the program execution time can be expressed 
+as a product of the number of CPU cycles and a constant: $CPU Time = CPU Cycles * CT$.
+Thus, we expect the graphs with time in the $y$ axis to look the same, but have smaller
+values. The results obtained with \gls{papi} matched our expectations.
+
+TODO: section instronduction.
+
+\subsubsection{PAPI Handhsake Cost Analysis}
+
+Figures \ref{fig:client-hs-cost-all-sls-papi} and \ref{fig:server-hs-cost-all-sls-papi} show the time taken to preform the handshake with each one
+of the ciphersuites, for each one of the security levels. The $x$ axis specifies the security level. The $y$ axis specifies the time taken in microseconds,
+when performing the handshake with the specified key exchange method and security level. The values are presented in logarithmic scale. A comparison of
+\ref{fig:client-hs-cost-all-sls-papi} to \ref{fig:client-hs-cost-all-sls} and of \ref{fig:server-hs-cost-all-sls-papi} to \ref{fig:server-hs-cost-all-sls-papi} shows that they look identical,
+differing only on the $y$ values. This holds true not only for the overally \textit{handshake} cost, but for all other costs that we analyzed as well. The ratio between
+each realted set of operations is also similar.
+
+\subsubsection{Comparing Valgrind and PAPI Ratios}
+
+Figure \ref{fig:papi-operations-ratio} depicts the ratio between \gls{rsa} signature creation and verification, \gls{rsa}
+encryption and decryption, \gls{ecdsa} signature verification and creation, \gls{ecdh} keypair and shared secret generation and
+\gls{dh} keypair and shared secret generation for both, \textit{valgrind} and \gls{papi}. We purpusefuly devided the more
+costly operation by the least costly one, so that all of the ratios are positive. An analysis of the figure shows that
+both, the \textit{valgrind} and the \gls{papi} ratios are very similar. This is specially true for the \gls{ecdh}, \gls{dh}
+and \gls{ecdsa}. For \gls{dh} there is no difference, for \gls{ecdh}, \textit{callgrind}'s ratio is $0.96\%$ larger at the \textit{high} and
+\textit{very high} security levels, and for \gls{ecdsa} the ratio differs only for the \textit{low} 
+security level, where it's $9.2\%$ larger in \textit{callgrind} than in \textit{papi}. The largest difference in ratio
+is observed for opeartions that use \gls{rsa}, but this difference gets smaller as the security level increases. In fact,
+this is the general trend for all of the cases. \textit{callgrind}'s \gls{rsa}'s sign/verify ratio is $24.87\%$ larger than \gls{papi}'s
+for the \textit{low} security level this differnce is only $3.6\%$. Following the trend, \textit{callgrind}'s \gls{rsa}'s encrypt/decrypt ratio is $19.41\%$ higher
+than \textit{papi}'s for the low security level, and $7.3\%$ higher for the \textit{high} security level.
+
+Given that the ratios described above are similar, the algorithm cost comparisons for the various security levels remain valid for \gls{papi}'s time values as well.
+Consequently, this is also true for the security services, since they are composed of those algirithms. The graphs for the security services and algorithms look very similar
+the \textit{valgrind} ones, for this reason, they have been included in the annex without any further analysis.
+
+\subsubsection{The Handshake Cost Formula}
+
+TODO: write
+
+\subsubsection{Discussion}
+
+
 \subsection{}
 
-We have also used PAPI to measure the number of actual CPU cycles used the time taken. In this section, we will compare the estimates
+We have also used \gls{papi} to measure the number of actual CPU cycles used the time taken. In this section, we will compare the estimates
 of the nubmer of CPU cycles obtained with valgrind with the number of CPU cycles returned by PAPI and analyze the time measurments.
 
 We will begin with a comparison between the number of CPU cycles reported by valgrind and PAPI. All of the presented graphs
@@ -3184,7 +3298,9 @@ The average absolute percentual difference among all ciphersuites and security l
 
 In this section evaluated the cost of security services of authentication, \gls{pfs}, confidentiality and integrity
 in \gls{tls}. To do this, we defined $4$ security levels and analyzed the costs for each one. The majority of
-analysis was focused on the handshake and the security services that it offers.
+analysis was focused on the handshake and the security services that it offers. We did performed the analysis at
+two levels: first by using the estimated number of CPU cycles obtained with \textit{valgrind}, and then using the
+execution time values obtained with \texit{papi}.
 
 In \gls{tls} there are two ways of doing authentication: \gls{psk} or asymmetric cryptography. We showed that the
 cost of \gls{psk} authentication is essentially $0$ and we can consider the cost of performing the 
@@ -3219,6 +3335,12 @@ Finally, we analyzed the costs of confidentiality and integrity. First, we compa
 symmetric algorithm/hash function combinations available in \textit{mbedTLS 2.7.0}. As expected,
 \gls{aead} algorithms preformed the best among the block ciphers. After that we chose two \gls{aead} ciphers and
 analyzed how much data it would be necessary to encrypt with them to equate the handshake costs.
+
+The analysis the \gls{papi} results showed us that the estimates obtained with \textit{valgrind} do reflect the real world values. 
+Not only the higher-level results are similar in comparison to one another, but at the lower level, the ratios between the algorithms 
+used by the security services also are. Thus, the estimates from the previous sections can be used for relative comparisons between the 
+costs of security services and security levels in \gls{tls}, thus allowing to achieve the goals of this work. The time costs presented in 
+this seciton and in the Annex provide concrete, real-world reference values for the various parts of the \gls{tls} protocol.
 
 \section{Conclusion}
 

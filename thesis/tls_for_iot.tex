@@ -166,8 +166,8 @@ high computational and memory demands. Most of the existing work focuses on \gls
 and cannot be easily integrated with existing deployments. Existing work fails
 to evaluate the cost of various \gls{tls} configurations and its security services.
 This work focuses on cost analysis of the security services of the TLS protocol.
-We evaluate the number of CPU cycles used by the TLS configurations
-and by each individual security service. Software developers can use this information
+We evaluate the number of CPU cycles used and time taken by each \gls{tls} configuration
+and security service. Software developers can use this information
 to make security/cost trade-offs based on the environment needs and limitations.  
 
 \keywords{TLS, DTLS, SSL, IoT, cryptography, protocol, lightweight cryptography}
@@ -332,7 +332,7 @@ In our work, we evaluated the \textit{mbedTLS 2.7.0}'s\cite{SSLLibra13:online} i
 \textit{mbedTLS} is among the most popular libraries with a \gls{tls} implementation for embedded systems. \gls{tls} protocol 
 version $1.2$ is currently the most used version of \gls{tls} on the internet \cite{QualysSS90:online}. The work on
 the dissertation started before \gls{tls} protocol's version $1.3$ specification was finished and there were no embedded device
-libraries which implemented it.  For this reason we did not evaluate \gls{tls} 1.3. Despite that, the results
+libraries which implemented it.  For this reason we did not evaluate \gls{tls} $1.3$. Despite that, the results
 obtained in this work apply to it as well, since the core functionality of the security services remained mostly unchanged.
 
 We used two cost metrics: the estimated number of CPU cycles and the time taken. The time values were read direcly from
@@ -361,7 +361,7 @@ The document is organized as follows: Section 2 describes the background. It
 introduces some of the concepts that will be used throughout
 the document. Section 3 describes the \gls{tls} and \gls{dtls} protocol
 versions $1.2$ and $1.3$, with a focus on the version $1.2$ since
-it is the latest and the most used version of the protocol (version $1.3$ is still in
+it is the latest and the most used version of the protocol at the time we started this work (version $1.3$ was still in
 draft mode). Section 4 describes all of the related work done in the area and
 the current state of the art. Section 5 describes the objectives of the work and evaluation 
 are described in more detail. 
@@ -959,9 +959,6 @@ corresponding extended \codeword{CleintHello}, and if this happens, the client m
 Due to limited space, \gls{tls} $1.3$\cite{I-D.ietf-tls-tls13} will not be described in detail. 
 The focus was on \gls{tls} $1.2$ instead, because at the time the work on the thesis started, 
 \gls{tls} $1.3$ is still in draft mode and $1.2$ was the latest and the recommended to use version.
-Despite the protocol name not suggesting it, \gls{tls} $1.3$ is
-very different from \gls{tls} 1.2. It should have probably been called
-\gls{tls} $2.0$ instead.
 
 Numerous differences from \gls{tls} $1.3$ to $1.2$ have been mentioned throughout the document.
 Various characteristics found in \gls{tls} $1.3$ make it more suitable for the context
@@ -1668,25 +1665,33 @@ automate metric collection.
 
 \subsection{Developed Tools}
 
-\textit{mbedTLS 2.7.0} includes many possible configurations for a \gls{tls} connection. It would be unfeasible to
+\textit{mbedTLS 2.7.0} provides numerous possible configurations for a \gls{tls} connection. It would be unfeasible to
 perform a thorough and precise evaluation of its \gls{tls} implementation manually. For this reason, we developed a set
-of tools to automate those tasks. In general, the developed tools served one for two purposes: metric collection and
-collected metric analysis.
+of tools to automate those tasks. In general, the developed tools served one of two purposes: metric collection and
+collected metric analysis, for both \textit{valgrind} and \gls{papi}. All of the developed tooling is open-source
+and available online.
 
-For the metric collection, we developed tools that would run a client-server connection with a set of ciphersuites.
-Both, the client and server executables would be profiled with the \textit{callgrind} tool and the metrics would be saved.
-It is also possible to specify how many bytes of data the client would send to the server and vice-versa.
-This allows us to collect data encryption metrics.
+In order to collect the relevant metrics, we developed automated tools that would run a client-server connection with a specified set
+of ciphersuites and save the collected metrics for later analysis. \textit{callgrind} outputs files with the profiling information,
+so we used those files directly \cite{iluxonch23:online}. As for the \gls{papi} results, we programmed a custom metrics collector that 
+would group the metrics and save them in \textit{JSON} format \cite{iluxonch67:online}. In order to isolate ciphersuites with unique encryption
+algirithms for the purposes of encryption algorithms cost analsys, we developed a command-line tool
+that performs that filtering \cite{iluxonch73:online}.
 
-For collected metric analysis, we developed tools that would use the collected \textit{callgrind} metrics to estimate the
-number of CPU cycles for the specified \textit{mbedTLS} functions. \textit{mbedTLS} functions either implement \gls{tls} functionalities
-(\textit{e.g.} the handshake protocol) or functionalities used by \gls{tls} (\textit{e.g.} \gls{rsa} signature creation).
-After associating the function name(s) to each desired functionality, we could analyze their costs. The collected metrics can either
-be analyzed individually (\textit{e.g.} compute the cost the handshake for a specific ciphersuite) or in conjunction (\textit{e.g.}
+After being collected, the metrics were ready to be analyzed. For \textit{callgrind} we developed tools that would use the collected 
+measurments to estimate the number of CPU cycles for the specified \textit{mbedTLS} functions \cite{iluxonch23:online} \cite{iluxonch44:online}. 
+\textit{mbedTLS} functions either implement \gls{tls} security services
+(\textit{e.g.} authentication) or primitives used by \gls{tls} them (\textit{e.g.} \gls{rsa} signature creation).
+After associating the function name(s) to each relevant security service and primitive, their costs could be studied. 
+Our tools allow to analyze the collected metrics both, individually (\textit{e.g.} compute the cost the handshake for a specific ciphersuite), and in conjunction (\textit{e.g.}
 compute the average cost of the handshake for all of the ciphersuites that use a specific key exchange method).
+A separate set of tooling with equivalent functionality was developed in order to analyze the time results obtained with \gls{papi} \cite{iluxonch67:online}.
 
-All of the tools that we developed are open-source and their code can be found online \cite{iluxonch23:online},\cite{iluxonch44:online}, \cite{iluxonch73:online}.
-
+In order to collect the \textit{valgrind} metrics, no modification of \textit{mbedTLS}'s source code was necessary. To obtain the time measurments, the relevant
+parts of the \textit{mbedTLS} code had to be instrumented with \gls{papi} \cite{iluxonch24:online}. In both cases, dedicated client and server
+executables were developed \cite{iluxonch24:online}. Each executable accepts two arguments: the \textit{id} of the ciphersuite to use and the number of bytes to transmit to the other
+peer. This set up allowed us to profile the costs of all security services for each one of the ciphersuites.
+   \cite{iluxonch24:online}
 
 \section{Results and Data Analysis}
 
@@ -1752,7 +1757,12 @@ Section \ref{sec:tls-hs-cost} puts the information from the previous sections to
 We do both, present actual handshake cost values obtained by profiling its cost directly, and show how to use the information from the previous sections to 
 arrive to those cost values without the need of executing and profiling the handshake costs directly. We decompose \gls{tls} costs into a single formula.
 In Section \ref{sec:confid-costs} we discuss costs of confidentiality in \gls{tls} and compare the performance of all of the symmetric encryption algorithms
-present in \textit{mbedTLS 2.7.0}. Finally, in section \ref{sec:ss-cost-conclusions} we present some conclusions.
+present in \textit{mbedTLS 2.7.0}. Having analyzed the estimates obtained with \textit{valgrind}, we will turn our focus to time costs obtained with \gls{papi}.
+Section \ref{sec:papi-handshake} presents handshake time measurments collected with \gls{papi} and compares them to
+the \textit{valgrind} ones from Section \ref{sec:tls-hs-cost}. As we will show, they are similar. In Section \ref{sec:papi-valgrind-ratios} we go further,
+and compare \gls{papi}'s ratios of related algorithm opearations to the \textit{valgrind} ones. In essence, we will compare \gls{papi}'s results to the valgrind
+one's analyzed in Sections \ref{sec:asym-algs-analysis} and \ref{sec:pfs-costs}, and once again show that they are similar.
+Finally, in section \ref{sec:ss-cost-conclusions} we present some conclusions.
 
 \subsection{Security Levels} \label{sec:sls}
 
@@ -3131,7 +3141,7 @@ because the overwhelming cost of some key exchange methods made the visual analy
 \end{figure}
 
 
-\subsection{PAPI Measurments and Their Comparison To The Estimated Values}
+\subsection{Time Measurments with PAPI and Their Comparison To The Estimated Values}
 
 We also used \gls{papi} to measure time. In this section, we will compare the estimates of the number of CPU cycles
 obtained with \textit{valgrind} with the time values obtained with \gls{papi}. In order to obtain the time metrics with
@@ -3146,9 +3156,19 @@ as a product of the number of CPU cycles and a constant: $CPU Time = CPU Cycles 
 Thus, we expect the graphs with time in the $y$ axis to look the same, but have smaller
 values. The results obtained with \gls{papi} matched our expectations.
 
-TODO: section instronduction.
+\subsubsection{PAPI Handhsake Time Cost Analysis} \label{sec:papi-handshake}
 
-\subsubsection{PAPI Handhsake Cost Analysis}
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/hs_papi_client.png}
+  \centering \caption{\label{fig:client-hs-cost-all-sls-papi} Client handshake cost in microseconds for all security levels (logarithmic scale)}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/hs_papi_server.png}
+  \centering \caption{\label{fig:server-hs-cost-all-sls-papi} Server handshake cost in microseconds for all security levels (logarithmic scale)}
+\end{figure}
 
 Figures \ref{fig:client-hs-cost-all-sls-papi} and \ref{fig:server-hs-cost-all-sls-papi} show the time taken to preform the handshake with each one
 of the ciphersuites, for each one of the security levels. The $x$ axis specifies the security level. The $y$ axis specifies the time taken in microseconds,
@@ -3157,12 +3177,19 @@ when performing the handshake with the specified key exchange method and securit
 differing only on the $y$ values. This holds true not only for the overally \textit{handshake} cost, but for all other costs that we analyzed as well. The ratio between
 each realted set of operations is also similar.
 
-\subsubsection{Comparing Valgrind and PAPI Ratios}
+\subsubsection{Comparing Valgrind and PAPI Ratios} \label{sec:papi-valgrind-ratios}
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/papi-ratio.png}
+  \centering \caption{\label{fig:papi-operations-ratio} Ratio of time taken between a set of related operations for \gls{papi} and \textit{callgrind} (logarithmic scale)}
+\end{figure}
 
 Figure \ref{fig:papi-operations-ratio} depicts the ratio between \gls{rsa} signature creation and verification, \gls{rsa}
 encryption and decryption, \gls{ecdsa} signature verification and creation, \gls{ecdh} keypair and shared secret generation and
 \gls{dh} keypair and shared secret generation for both, \textit{valgrind} and \gls{papi}. We purpusefuly devided the more
-costly operation by the least costly one, so that all of the ratios are positive. An analysis of the figure shows that
+costly operation by the least costly one, so that all of the ratios are positive. The results are presented in logarithmic scale. An analysis of the figure shows that
 both, the \textit{valgrind} and the \gls{papi} ratios are very similar. This is specially true for the \gls{ecdh}, \gls{dh}
 and \gls{ecdsa}. For \gls{dh} there is no difference, for \gls{ecdh}, \textit{callgrind}'s ratio is $0.96\%$ larger at the \textit{high} and
 \textit{very high} security levels, and for \gls{ecdsa} the ratio differs only for the \textit{low} 
@@ -3176,131 +3203,13 @@ Given that the ratios described above are similar, the algorithm cost comparison
 Consequently, this is also true for the security services, since they are composed of those algirithms. The graphs for the security services and algorithms look very similar
 the \textit{valgrind} ones, for this reason, they have been included in the annex without any further analysis.
 
-\subsubsection{The Handshake Cost Formula}
-
-TODO: write
-
-\subsubsection{Discussion}
-
-
-\subsection{}
-
-We have also used \gls{papi} to measure the number of actual CPU cycles used the time taken. In this section, we will compare the estimates
-of the nubmer of CPU cycles obtained with valgrind with the number of CPU cycles returned by PAPI and analyze the time measurments.
-
-We will begin with a comparison between the number of CPU cycles reported by valgrind and PAPI. All of the presented graphs
-show by how much \textit{callgrind}'s results differ from \textit{PAPI}'s results. Those differences are presented as
-percentages. If the percentage is positive, it means that \textit{callgrind}'s reported result is larger than \textit{PAPI}'s,
-if the percentage is negative, it means that it's smaller. For example, in figure \ref{fig:todo}, the value of \gls{rsa} decryption
-for the low security level is $-10.68\%$, which mean's that the result reported by \textit{callgrind} is $10.68\%$ smaller than the one
-returned by \textit{PAPI}. Similarly, the value of \gls{rsa} decryption for the \textbf{normal} security level in figure \ref{fig:todo}
-is $34.33\%$, which means that the result returned by \textit{callgrind} is $34.33\%$ larger than the one returned by \textit{PAPI}.
-
-%% RSA
-
-Figure \ref{fig:papi-vs-callgrind-rsa-cost} shows the difference between the costs for \gls{rsa} operations reported by \textit{callgrind} 
-and \textit{PAPI}.
-As it shows, \textit{callgrind}'s estimates were always higher than the actual number of CPU cycles used. The larger the security
-level, the larger the difference is. That difference was also higher for signature creation than for verification. Despite that, 
-the ratio between the costs of signature verification and creation is similar for \textit{callrind} and \textit{PAPI}, as is shown in
-figures \ref{fig:rsa-ecdsa-pub-priv-ratio} (for \textit{callgrind}) and \ref{fig:rsa-ecdsa-pub-priv-ratio-papi} (for \textit{PAPI}).
-
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/papi-vs-callgrind-rsa-cost.png}
-  \centering \caption{\label{fig:papi-vs-callgrind-rsa-cost} Percentage by which RSA signature creation and verification callgrind results differ from PAPI results}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/rsa-ecdsa-pub-priv-ratio-papi.png}
-  \centering \caption{\label{fig:rsa-ecdsa-pub-priv-ratio-papi} RSA Sign/Verify and ECDSA Verify/Sign ratios for PAPI}
-\end{figure}
-
-
-%%  RSA Encrypt/Decrypt
-Figure \ref{fig:papi-vs-callgrind-rsa-encr-cost} shows the difference between the costs of \gls{rsa} encrypiton and decrypiton operations
-reported by \textit{callgrind} and \textit{PAPI}. \gls{rsa} encryption and decrypiton operations were perfomed under the \textit{PKCS\#1 v2.1 RSAES-PKCS1-V15ENCRYPT}
-and \textit{PKCS\#1 v2.1 RSAES-PKCS1-V15DECRYPT} schemes, respectively.
-An analysis of the figure shows that while \gls{rsa} encryption costs are always underestiamted by \textit{callgrind}, \gls{rsa} decryption costs
-are underestiamted at the \textbf{low} security level and overstimated for the remaining ones. As a result, the ratio between the decrypiton
-and encryption costs is different for \textit{callgrind} and \textit{PAPI}, as is shown in figure \ref{fig:papi-vs-rsa-ecnr-ratio}. As the
-actual CPU cycle count shows, the ratio is not as large as \textit{callgrind} predicted. Up until the \textbf{very high} security level,
-the ratio reported by \textit{PAPI} does not vary by a lot. This means that the costs of for the encryption and decryption opreations both
-increase in similar proportions. While there is a considerable increase of this ratio at the \textbf{very high} security level, which
-suggests that the costs of the decrypiton opraiton increased by a considerably larger factor than of the encryption, it is still almost
-$3$ times smaller than the one predicted by \textit{callgrind}.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/papi-vs-callgrind-rsa-encr-cost.png}
-  \centering \caption{\label{fig:papi-vs-callgrind-rsa-encr-cost} Percentage by which RSA encrypiton and decrypiton callgrind results differ from PAPI results}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/papi-vs-callgrind-rsa-encr-ratio.png}
-  \centering \caption{\label{fig:papi-vs-rsa-ecnr-ratio} RSA Decrypt/Encrypt Ratio for Callgrind and PAPI}
-\end{figure}
-
-%% ECDSA
-
-Figure \ref{fig:papi-vs-callgrind-ecdsa-cost} shows the difference between the costs for \gls{ecdsa} operations reported by \textit{callgrind} 
-and \textit{PAPI}.
-Just like with \gls{rsa}, \textit{callgrind}'s estimates were always higher than the actual number of CPU cycles used. For the low security
-level \gls{ecdsa} singature creation estiamte reported by \textit{callgrind} was very close to the real value reported by \textit{PAPI}.
-For the signature verification, \textit{callgrind}'s estimate is always more than the double of the real value. The difference between
-the costs reported by \textit{callgrind} and \textit{PAPI}, as the security level increases, is different for signature creation and verification.
-While the signature creation cost difference increases with the security level, for signature verification it starts decreasing from the \textbf{normal}
-security level. As a result, this difference becomes higher for the signature creation than verification at the \textbf{very high} security level.
-Unlike for \gls{rsa} the ratio between the most and least costly public key operation is very different when comparing \textit{callgrind}'s predictions
-(figure \ref{fig:rsa-ecdsa-pub-priv-ratio}) to the actual values obtained from \textit{PAPI} (\ref{fig:rsa-ecdsa-pub-priv-ratio-papi}).
-While with \textit{callgrind} that ratio remains approximately constant, with \textit{PAPI} it increases with the security level.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/papi-vs-callgrind-ecdsa-cost.png}
-  \centering \caption{\label{fig:papi-vs-callgrind-ecdsa-cost} Percentage by which ECDSA signature creation and verification callgrind results differ from PAPI results}
-\end{figure}
-
-%% Authentication Costs 
-%% note: putting client's graph in log scale, does not show some values on the graph
-
-Figures \ref{fig:papi-vs-auth-costs-client} and \ref{fig:papi-vs-auth-costs-server} show the difference between authentication costs reported by 
-\textit{callgrind} and \textit{PAPI} for the client and the server, respectively. For the client, the ciphersuites with a non-null 
-difference with the exception of \textit{DHE-RSA}, all follow the same pattern. Their \textit{callgrind} costs are underestiamted for the \textit{low} security level, 
-after which the absolute percentual difference 
-decreases at the \textbf{normal}, followed by an incerase in the direction of overestimation at the \textbf{high} and \textbf{very high}
-security levels. While \textit{DHE-RSA}'s cost is also underestiamted for the \textbf{low} security level, the absolute percentual difference is 
-higher at the  \textbf{normal} security level. At the \textbf{very high} security level, the cost of authentication for the \textit{ECDH-RSA} ciphersuite 
-is disproportionally overestimated. The average absolute percentual difference among all ciphersuites and security levels for the client is $98\%$, 
-if however the outlier is disregarded, it is $69\%$.
-Among all securiy levels the \textbf{normal} is the one whose \textit{callgrind} predictions
-are closer to the real values. On averge, the \textbf{normal} security level's percentual difference is of $20\%$, in absolute value.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/papi-vs-auth-costs-client.png}
-  \centering \caption{\label{fig:papi-vs-auth-costs-client} Percentage by which authentication callgrind results differ from PAPI results for the client}
-\end{figure}
-
-Similarly for the client, the \textbf{low} security level is the one that has the smallest absolute percentual difference for the server.
-For both parties, the higher the security level, the higher this difference is. In the case of the server, however, there are no outliers.
-The average absolute percentual difference among all ciphersuites and security levels for the server is $72\%$.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/papi-vs-auth-costs-server.png}
-  \centering \caption{\label{fig:papi-vs-auth-costs-server} Percentage by which authentication callgrind results differ from PAPI results for the server} 
- \end{figure}
-
 \subsection{Discussion} \label{sec:ss-cost-conclusions}
 
 In this section evaluated the cost of security services of authentication, \gls{pfs}, confidentiality and integrity
 in \gls{tls}. To do this, we defined $4$ security levels and analyzed the costs for each one. The majority of
 analysis was focused on the handshake and the security services that it offers. We did performed the analysis at
 two levels: first by using the estimated number of CPU cycles obtained with \textit{valgrind}, and then using the
-execution time values obtained with \texit{papi}.
+execution time values obtained with \gls{papi}.
 
 In \gls{tls} there are two ways of doing authentication: \gls{psk} or asymmetric cryptography. We showed that the
 cost of \gls{psk} authentication is essentially $0$ and we can consider the cost of performing the 
@@ -3370,7 +3279,9 @@ We have evaluated the cost of every \gls{tls} configuration available in \textit
 algorithms. The herein presented results can be used to make informed decisions about the security/cost trade-offs,
 specific to the environment.
 
-The results presented here were obtained on a powerful, modern-day computer. Despite that, they are still
+First, we did a thorough analysis of \gls{tls}, by analyzing the number of estimated CPU cycles obtained with \textit{callgrind}.
+After that, we showed that the estimates are close to the real values, by comparing them to the time metrics obtained directly from
+the processor's registers. The results presented here were obtained on a powerful, modern-day computer. Despite that, they are still
 relevant when considering the costs on constrained \gls{iot} devices. While on a different device, the absolute cost 
 numbers will be different, they would still maintain a similar proportion one to another and follow a similar trend.
 Moreover, the developed tooling can be used to obtain profiling results on any machine, thus giving device-specific 
@@ -3378,19 +3289,16 @@ cost information. The formula used to obtain the CPU cycle count estimate can al
 
 \subsubsection{Future Work}
 
-While the use of \textit{callgrind} helped to obtain and analyze large a amount of different results, there are other
-cost metrics that would be interesting to analyze. First, it is important to remember than an estimate of the number
-of CPU cycles was used. It would be of interest to obtain the actual count of CPU cycles, by querying the
-processor's counters directly. Tools such as PAPI\cite{dongarra2001using} can be used for this purpose.
+In our work we obtained and analyzed a large number of metrics obtained with \textit{callgrind}. While \textit{callgrind}
+provides only an estiamtes of the CPU cycles used, we later showed  that they reflect real values by comparing them with the
+time results obtained with \gls{papi}. However, it is important to remember that those mertics were obtained on a general-purpose
+computer. While we fixed the CPU frequency and disabled some hardware optimizations, the environment on an \gls{iot} device is still
+expected to be very different, due factors such as a lower clock frequency, memory and cache size. Thus, it would be interesting to 
+measure time on an gls{iot} device, since the results will differ.
 
-Many \gls{iot} devices have very limited power (\textit{e.g.} working of a battery). Thus, it would be interesting
-analyze the cost of \gls{tls} in terms of power usage. This would also allow to reach interesting conclusions, such as:
-\textit{Using the TLS configuration X would reduce the device's battery life by Y days}.
-
-Time is another interesting metric to consider. While an \gls{iot} device might be connected to a power source and
-only make occasional connections, such a motion sensor, it would be of little use if it takes it a very long time
-to establish connection. This would allow to associate time values to each part of \gls{tls}.
-Finally, all of the mentioned metrics should be obtained on \gls{iot} hardware. Hello
+Another characteristic of numerous \gls{iot} devices is limited power (\textit{e.g.} using battery as a power source). 
+Thus, it would be interesting analyze the cost of \gls{tls} in terms of power usage. This would also allow to reach 
+interesting conclusions, such as: \textit{Using the TLS configuration X would reduce the device's battery life by Y days}.
 
 % ---- Bibliography ----
 %

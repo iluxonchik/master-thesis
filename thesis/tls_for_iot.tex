@@ -1,11 +1,6 @@
 % This is the file where my Master Thesis will be written. It uses the adapted
 % LNCS Template.
 %
-% I'll be using a few codes in the comments, which can be easily looked up:
-% * NOTE: theseis-text related comments
-% * TODO: thesis-related TODO's
-% * WARN: latex/formatting-related warningss
-%
 % WARN: for running head, subsititute the line below by:
 % \documentclass[runningheads,a4paper]{llncs}
 \documentclass{llncs}
@@ -3150,10 +3145,10 @@ obtained with \textit{valgrind} with the time values obtained with \gls{papi}. I
 \textit{The iron law of processor performance}\cite{yadin2016computer} states that the time
 taken by a program execution is proportional to the number of instuctions (\textit{I}), 
 the average number of cycles per instruction (\textit{CPI}) and the amount of time per each processor
-cycle (\textit{CT}): $CPU Time = I * CPI * CT$. The number of CPU cycles can be computed as 
+cycle (\textit{CT}): $CPU Time = I * CPI * CT$. The number of CPU cycles can be approximated as 
 follows: $CPU Cycles = I * CPI$. This means taht the program execution time can be expressed 
 as a product of the number of CPU cycles and a constant: $CPU Time = CPU Cycles * CT$.
-Thus, we expect the graphs with time in the $y$ axis to look the same, but have smaller
+Thus, we expect the graphs with time in the $y$ axis to look similar, but have smaller
 values. The results obtained with \gls{papi} matched our expectations.
 
 \subsubsection{PAPI Handhsake Time Cost Analysis} \label{sec:papi-handshake}
@@ -3247,9 +3242,11 @@ analyzed how much data it would be necessary to encrypt with them to equate the 
 
 The analysis the \gls{papi} results showed us that the estimates obtained with \textit{valgrind} do reflect the real world values. 
 Not only the higher-level results are similar in comparison to one another, but at the lower level, the ratios between the algorithms 
-used by the security services also are. Thus, the estimates from the previous sections can be used for relative comparisons between the 
-costs of security services and security levels in \gls{tls}, thus allowing to achieve the goals of this work. The time costs presented in 
-this seciton and in the Annex provide concrete, real-world reference values for the various parts of the \gls{tls} protocol.
+used by the security services also are. As the \textit{The iron law of processor performance} suggested, the time values can be approximated as 
+the estimated number of CPU cycles multiplied by a factor smaller than $1$. Thus, the estimates from the previous sections can be used for 
+relative comparisons between the costs of security services and security levels in \gls{tls}, thus allowing to achieve the goals of this work. 
+The time costs presented in this seciton and in the Annex provide concrete, real-world reference values for the costs of the various parts of 
+the \gls{tls} protocol.
 
 \section{Conclusion}
 
@@ -3308,4 +3305,8 @@ interesting conclusions, such as: \textit{Using the TLS configuration X would re
 %
 \printglossary[style=long]
 %
+
+\appendix
+\section{\\Annex Tables}
+hello
 \end{document}

@@ -2162,7 +2162,7 @@ than the signing operation cost increase.
   \textbf{high}      & 317087210 (716961)   & 3295296 (254)       & 49150396 (82047)     & 94077150 (130275)     \\ \hline
   \textbf{very high} & 1700652764 (2283718) & 13436728 (702)      & 59732056 (441815)   & 114744021 (843861)    \\ \hline
   \end{tabular}
-  \centering \caption{\label{table:rsa-costs-all-sls} RSA and ECDSA signature creation and verification costs} \end{table}
+  \centering \caption{\label{table:rsa-costs-all-sls} RSA and ECDSA signature creation and verification costs. Numbers in parenthesis is the standard deviation} \end{table}
 
 \begin{table}[]
   \begin{tabular}{|l|l|l|}
@@ -2713,7 +2713,7 @@ presenting multiple tables, we decided to show the cost of \gls{pfs} and the \te
 \textbf{DHE-PSK}                           & 20734678                        & 133849027                       & 948573054                        & 7178955325                        \\ \hline
 \textbf{DHE-RSA}                           & 25405195                        & 133849027                        & 948573054                        & 7178955325                        \\ \hline
 \end{tabular}
-\centering \caption{\label{table:pfs-cost-client} \gls{pfs} and \textit{ECDH} key exchange for the client}
+\centering \caption{\label{table:pfs-cost-client} \gls{pfs} and \textit{ECDH} key exchange cost for the client}
 \end{table}
 
 \begin{table}[]
@@ -2733,7 +2733,7 @@ presenting multiple tables, we decided to show the cost of \gls{pfs} and the \te
 \textbf{DHE-PSK}                           & 20734678                        & 133849027                       & 948573054                        & 7178955325                       \\ \hline
 \textbf{DHE-RSA}                           & 20734678                        & 133849027                       & 948573054                        & 7178955325                       \\ \hline
 \end{tabular}
-\centering \caption{\label{table:pfs-cost-server} \gls{pfs} and \textit{ECDH} key exchange for the server}
+\centering \caption{\label{table:pfs-cost-server} \gls{pfs} and \textit{ECDH} key exchange cost for the server}
 \end{table}
 
 Table \ref{table:pfs-cost-client} shows the cots of \gls{pfs} and the \gls{ecdh} key exchange for the client and table \ref{table:pfs-cost-server}
@@ -3307,6 +3307,27 @@ interesting conclusions, such as: \textit{Using the TLS configuration X would re
 %
 
 \appendix
-\section{\\Annex Tables}
-hello
+\renewcommand\thefigure{\thesection.\arabic{figure}}    
+\renewcommand\thetable{\thesection.\arabic{table}}    
+\section{Appendix}
+\setcounter{figure}{0}  
+\setcounter{table}{0}  
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/hs_papi_server.png}
+  \centering \caption{\label{fig:server-hs-cost-all-sls-papi-o} Server handshake cost in microseconds for all security levels (logarithmic scale)}
+\end{figure}
+
+\begin{table}[]
+  \begin{tabular}{|l|l|l|l|l|}
+  \hline
+                 & \textbf{low}   & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
+  \textbf{RSA}   & 511728 (45373) & 544227 (47594)  & 607542 (51576) & 735237 (59853)      \\ \hline
+  \textbf{ECDSA} & 548841 (45064) & 662348 (45175) & 666866 (45923)  & 704135 (48247)        \\ \hline
+  \end{tabular}
+  \centering \caption{ \label{table:cert-parse-cost-a} Additional costs of parsing the certificate}
+  
+  \end{table}
+
 \end{document}

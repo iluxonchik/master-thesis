@@ -2153,41 +2153,6 @@ can also be seen graphically in Figure \ref{fig:rsa-pub-priv-cost-increase}. The
 \textit{RSA Sign} cost increase line, in fact, they're almost identical. On average, the \textit{Total} cost increase is only $1.4\%$ smaller
 than the signing operation cost increase.
 
-\begin{table}[]
-  \begin{tabular}{|l|l|l|l|l|}
-  \hline
-                    & \textbf{RSA Sign}    & \textbf{RSA Verify} & \textbf{ECDSA Sign} & \textbf{ECDSA Verify} \\ \hline
-  \textbf{low}       & 20559190 (117075)    & 398584 (198)        & 14497591 (49045)    & 26839273 (50816)      \\ \hline
-  \textbf{normal}    & 75738802 (317047)    & 1117868 (748)       & 29512991 (95776)    & 56260702 (162365)     \\ \hline
-  \textbf{high}      & 317087210 (716961)   & 3295296 (254)       & 49150396 (82047)     & 94077150 (130275)     \\ \hline
-  \textbf{very high} & 1700652764 (2283718) & 13436728 (702)      & 59732056 (441815)   & 114744021 (843861)    \\ \hline
-  \end{tabular}
-  \centering \caption{\label{table:rsa-costs-all-sls} RSA and ECDSA signature creation and verification costs. Numbers in parenthesis is the standard deviation} \end{table}
-
-\begin{table}[]
-  \begin{tabular}{|l|l|l|}
-  \hline
-                     & \textbf{RSA Total} & \textbf{ECDSA Total} \\ \hline
-  \textbf{low}       & 20957774           & 41336864             \\ \hline
-  \textbf{normal}    & 76856670           & 85773693             \\ \hline
-  \textbf{high}      & 320382506          & 143227546            \\ \hline
-  \textbf{very high} & 1714089492         & 174476077            \\ \hline
-  \end{tabular}
-  \centering \caption{\label{table:rsa-costs-all-sls-total} RSA and ECDSA costs of signature creation + signature verification}
-\end{table}
-
-\begin{table}[]
-  \begin{tabular}{|l|l|l|l|}
-  \hline
-                     & \textbf{RSA Sign} & \textbf{RSA Verify} & \textbf{RSA Total} \\ \hline
-  \textbf{low}       & -                 & -                   & -                  \\ \hline
-  \textbf{normal}    & 55179612          & 719284              & 55898896           \\ \hline
-  \textbf{high}      & 241348408         & 2177428             & 243525836          \\ \hline
-  \textbf{very high} & 1383565554        & 10141432            & 1393706986         \\ \hline
-  \end{tabular}
-  \centering \caption{\label{table:rsa-absolute-cost-increase} Absolute increase of RSA operation costs from previous security level}
-  \end{table}
-
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/rsa_cost_all_sls.png}
@@ -2234,19 +2199,6 @@ This is a consequence of the cost increase being logarithmic, which is a result 
 multiplication of a scalar by a point on the curve. Although not presented here, this trend continues for higher security levels.
 Those properties of \gls{ecdsa} makes the security level increase more manageable. It's not as costly to increase the security level for
 \gls{ecdsa} as it for \gls{rsa}.
-
-
-\begin{table}[]
-\begin{tabular}{|l|l|l|l|}
-\hline
-                   & \textbf{ECDSA Sign} & \textbf{ECDSA Verify} & \textbf{ECDSA Total} \\ \hline
-\textbf{low}       & -                   & -                     & -                    \\ \hline
-\textbf{normal}    & 15015400            & 29421429              & 44436829             \\ \hline
-\textbf{high}      & 19637405            & 37816448              & 57453853             \\ \hline
-\textbf{very high} & 10581660            & 20666871              & 31248531             \\ \hline
-\end{tabular}
-\centering \caption{\label{table:ecdsa-absolute-cost-increase} Absolute increase of ECDSA operations cost from previous security level}
-\end{table}
 
 \begin{figure}
   \centering
@@ -2321,42 +2273,6 @@ Having analyzed the costs of the algorithms that can be used for authentication,
 for each one of the ciphersuites for the client and the server. Table \ref{table:tls-auth-cost-client} shows authentication costs for each
 ciphersuite for the client. Table \ref{table:tls-auth-cost-server} shows the same information for the server. Each row specifies a key
 exchange method and each column the security level.
-
-\begin{table}[]
-  \begin{tabular}{|l|l|l|l|l|}
-  \hline
-                       & \textbf{low} & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
-  \textbf{PSK}         & 0            & 0               & 0             & 0                  \\ \hline
-  \textbf{RSA}         & 654077       & 2622235         & 5285561       & 16398134           \\ \hline
-  \textbf{RSA-PSK}     & 654077       & 2622235         & 5285561       & 16398134           \\ \hline
-  \textbf{ECDH-RSA}    & 1117868      & 1117868         & 1117868       & 1117868           \\ \hline
-  \textbf{ECDH-ECDSA}  & 56260702     & 56260702        & 56260702      & 56260702          \\ \hline
-  \textbf{ECDHE-PSK}   & 0            & 0               & 0             & 0                  \\ \hline
-  \textbf{ECDHE-RSA}   & 1516452       & 2235736         & 4413164       & 14554596           \\ \hline
-  \textbf{ECDHE-ECDSA} & 83099975     & 112521404       & 150337852     & 171004723          \\ \hline
-  \textbf{DHE-PSK}     & 0            & 0               & 0             & 0                  \\ \hline
-  \textbf{DHE-RSA}     & 1516452       & 2235736         & 4413164       & 14554596           \\ \hline
-  \end{tabular}
-  \centering \caption{\label{table:tls-auth-cost-client} Client authentication costs for all ciphersuites and security levels}
-  \end{table}
-
-\begin{table}[]
-\begin{tabular}{|l|l|l|l|l|}
-\hline
-                     & \textbf{low} & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
-\textbf{PSK}         & 0            & 0               & 0             & 0                  \\ \hline
-\textbf{RSA}         & 20362831     & 75129504        & 314975365     & 1691976601         \\ \hline
-\textbf{RSA-PSK}     & 20362831     & 75129504        & 314975365     & 1691976601         \\ \hline
-\textbf{ECDH-RSA}    & 0            & 0               & 0             & 0                  \\ \hline
-\textbf{ECDH-ECDSA}  & 0            & 0               & 0             & 0                  \\ \hline
-\textbf{ECDHE-PSK}   & 0            & 0               & 0             & 0                  \\ \hline
-\textbf{ECDHE-RSA}   & 20559190     & 75738802        & 317087210     & 1700652764         \\ \hline
-\textbf{ECDHE-ECDSA} & 14497591     & 29512991        & 49150396      & 59732056           \\ \hline
-\textbf{DHE-PSK}     & 0            & 0               & 0             & 0                  \\ \hline
-\textbf{DHE-RSA}     & 20559190     & 75738802        & 317087210     & 1700652764         \\ \hline
-\end{tabular}
-  \centering \caption{\label{table:tls-auth-cost-server} Server authentication costs for all ciphersuites and security levels}
-\end{table}
 
 \begin{figure}
   \centering
@@ -2535,30 +2451,6 @@ evenly divided between the keypair and the shared secret generation. This is jus
 the same when generating the public/private keys and the shared secret: multiplications of a scalar by a point on the curve. An analysis of the figure
 also shows that a logarithmic trendline is the one that best fits the cost increase for all operations.
 
-\begin{table}[]
-\begin{tabular}{|l|l|l|l|l|}
-\hline
-                   & \textbf{ECDH Gen Keypair} & \textbf{ECDH Gen Secret} & \textbf{DH Gen Keypair} & \textbf{DH Gen Secret} \\ \hline
-\textbf{low}       & 12942518 (33356)          & 12462677 (55222)         & 10455300 (31005)        & 10279378 (27044)       \\ \hline
-\textbf{normal}    & 27483912 (94940)          & 26958612 (137745)        & 67136033 (108793)       & 66712994 (107669)      \\ \hline
-\textbf{high}      & 45900358 (65731)          & 44331330 (100040)        & 474938146 (490496)      & 473634908 (493588)     \\ \hline
-\textbf{very high} & 54449740 (487567)         & 53531554 (776984)        & 3592631108 (2792006)    & 3586324217 (2791154)   \\ \hline
-\end{tabular}
-\centering \caption{\label{table:ecdh-dh-costs-all-sls} ECDH and DH costs for all security levels}
-\end{table}
-
-\begin{table}[]
-\begin{tabular}{|l|l|l|}
-\hline
-                   & \textbf{ECDH Total} & \textbf{DH Total} \\ \hline
-\textbf{low}       & 25405195            & 20734678          \\ \hline
-\textbf{normal}    & 54442524            & 133849027         \\ \hline
-\textbf{high}      & 90231688            & 948573054         \\ \hline
-\textbf{very high} & 90231688            & 7178955325        \\ \hline
-\end{tabular}
-\centering \caption{\label{table:ecdh-dh-costs-total-all-sls} ECDH and DH costs of the sum of keypair and shared secret generation}
-\end{table}
-
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/ecdh_cost_all_sls.png}
@@ -2581,18 +2473,6 @@ trend that can be seen in tables \ref{table:ecdsa-absolute-cost-increase} and \r
 absolute cost increase starts going down from the \textbf{high} security level and onwards. Those similarities are not a coincidence, but rather
 a result of the \gls{ecc} properties of both algorithms, more specifically, a consequence of the multiplication of a scalar by a point on
 the curve being the core mathematical operation.
-
-\begin{table}[]
-\begin{tabular}{|l|l|l|l|}
-\hline
-                   & \textbf{ECDH Gen Keypair} & \textbf{ECDH Gen Shared} & \textbf{ECDH Total} \\ \hline
-\textbf{low}       & -                         & -                        & -                   \\ \hline
-\textbf{normal}    & 14541394                  & 14495935                 & 29037329            \\ \hline
-\textbf{high}      & 18416446                  & 17372718                 & 35789164            \\ \hline
-\textbf{very high} & 8549382                   & 9200224                  & 17749606            \\ \hline
-\end{tabular}
-\centering \caption{\label{table:ecdh-absolute-cost-increase} Absolute increase of ECDH operation costs from previous security level}
-\end{table}
 
   \begin{figure}
     \centering
@@ -2625,19 +2505,6 @@ An analyzis of figure \ref{fig:ecdh-dh-relative-cost-increase} shows as the secu
 \gls{dh} cost increase becomes larger. In fact, this cost increase is exponential. Although not presented here, this holds true for 
 security levels higher than \textbf{very high}. The effect of this exponential increase can be seen in table 
 \ref{table:dh-absolute-cost-increase}, which shows the absolute cost increase from the previous security level.
-
-
-  \begin{table}[]
-    \begin{tabular}{|l|l|l|l|}
-    \hline
-                       & \textbf{DH Gen Keypair} & \textbf{DH Gen Shared} & \textbf{DH Total} \\ \hline
-    \textbf{low}       & -                       & -                      & -                 \\ \hline
-    \textbf{normal}    & 56680733                & 56433616               & 113114349         \\ \hline
-    \textbf{high}      & 407802113               & 406921914              & 814724027         \\ \hline
-    \textbf{very high} & 3117692962              & 3112689309             & 6230382271        \\ \hline
-    \end{tabular}
-    \centering \caption{\label{table:dh-absolute-cost-increase} Absolute increase of DH operation costs from previous security level}
-    \end{table}
 
 Similarly to \gls{rsa}, \gls{dh} has an exponential cost increase. This similarity is a consequence of both algorithms having the same mathematical
 operation at their core: modular exponentiation.
@@ -2695,46 +2562,6 @@ Even though the \textit{ECDH} key exchange does not offer \gls{pfs}, it is still
 the \gls{ecdh} algorithm. The additional costs for \textit{ECDH} ciphersuites are significant, and in our evaluated scenario where only the server
 authenticates to the client, there is no distinction in costs between \textit{ECDHE} and \textit{ECDH} ciphersuites for the client. Instead of
 presenting multiple tables, we decided to show the cost of \gls{pfs} and the \textit{ECDH} key exchange in a single one.
-
-\begin{table}[]
-\begin{tabular}{|l|l|l|l|l|}
-\hline
-                                           & \textbf{low}                    & \textbf{normal}                 & \textbf{high}                   & \textbf{very high}               \\ \hline
-\textbf{PSK}                               & 0                               & 0                               & 0                               & 0                                \\ \hline
-\textbf{RSA-PSK}                           & 0                               & 0                               & 0                               & 0                                \\ \hline
-\textbf{RSA}                               & 0                               & 0                               & 0                               & 0                                \\ \hline
-\rowcolor[HTML]{9B9B9B}
-{\color[HTML]{333333} \textbf{ECDH-RSA}}   & {\color[HTML]{333333} 25405195} & {\color[HTML]{333333} 54442524} & {\color[HTML]{333333} 90231688} & {\color[HTML]{333333} 107981294} \\ \hline
-\rowcolor[HTML]{9B9B9B}
-{\color[HTML]{333333} \textbf{ECDH-ECDSA}} & {\color[HTML]{333333} 25405195} & {\color[HTML]{333333} 54442524} & {\color[HTML]{333333} 90231688} & {\color[HTML]{333333} 107981294} \\ \hline
-\textbf{ECDHE-PSK}                         & 25405195                        & 54442524                        & 90231688                        & 107981294                        \\ \hline
-\textbf{ECDHE-RSA}                         & 25405195                        & 54442524                        & 90231688                        & 107981294                        \\ \hline
-\textbf{ECDHE-ECDSA}                       & 25405195                        & 54442524                        & 90231688                        & 107981294                        \\ \hline
-\textbf{DHE-PSK}                           & 20734678                        & 133849027                       & 948573054                        & 7178955325                        \\ \hline
-\textbf{DHE-RSA}                           & 25405195                        & 133849027                        & 948573054                        & 7178955325                        \\ \hline
-\end{tabular}
-\centering \caption{\label{table:pfs-cost-client} \gls{pfs} and \textit{ECDH} key exchange cost for the client}
-\end{table}
-
-\begin{table}[]
-\begin{tabular}{|l|l|l|l|l|}
-\hline
-                                           & \textbf{low}                    & \textbf{normal}                 & \textbf{high}                   & \textbf{very high}              \\ \hline
-\textbf{PSK}                               & 0                               & 0                               & 0                               & 0                               \\ \hline
-\textbf{RSA-PSK}                           & 0                               & 0                               & 0                               & 0                               \\ \hline
-\textbf{RSA}                               & 0                               & 0                               & 0                               & 0                               \\ \hline
-\rowcolor[HTML]{9B9B9B}
-{\color[HTML]{333333} \textbf{ECDH-RSA}}   & {\color[HTML]{333333} 12462677} & {\color[HTML]{333333} 26958612} & {\color[HTML]{333333} 44331330} & {\color[HTML]{333333} 53531554} \\ \hline
-\rowcolor[HTML]{9B9B9B}
-{\color[HTML]{333333} \textbf{ECDH-ECDSA}} & {\color[HTML]{333333} 12462677} & {\color[HTML]{333333} 26958612} & {\color[HTML]{333333} 44331330} & {\color[HTML]{333333} 53531554} \\ \hline
-\textbf{ECDHE-PSK}                         & 25405195                        & 54442524                        & 90231688                        & 107981294                       \\ \hline
-\textbf{ECDHE-RSA}                         & 25405195                        & 54442524                        & 90231688                        & 107981294                       \\ \hline
-\textbf{ECDHE-ECDSA}                       & 25405195                        & 54442524                        & 90231688                        & 107981294                       \\ \hline
-\textbf{DHE-PSK}                           & 20734678                        & 133849027                       & 948573054                        & 7178955325                       \\ \hline
-\textbf{DHE-RSA}                           & 20734678                        & 133849027                       & 948573054                        & 7178955325                       \\ \hline
-\end{tabular}
-\centering \caption{\label{table:pfs-cost-server} \gls{pfs} and \textit{ECDH} key exchange cost for the server}
-\end{table}
 
 Table \ref{table:pfs-cost-client} shows the cots of \gls{pfs} and the \gls{ecdh} key exchange for the client and table \ref{table:pfs-cost-server}
 for the server. As a reminder, only \textit{ECDHE} and \textit{DHE} ciphersuites offer \gls{pfs}. \textit{ECDH-RSA} and \textit{ECDH-ECDSA}
@@ -2808,42 +2635,6 @@ Total                                      & 161
 \end{tabular}
 \centering
 \centering \caption{\label{table:mbedtls-num-ciphers} Number of ciphersuites per key exchange method in \textit{mbedTLS 2.7.0}}
-\end{table}
-
-\begin{table}[]
-  \begin{tabular}{|l|l|l|l|l|}
-  \hline
-                       & \textbf{low}      & \textbf{normal}    & \textbf{high}      & \textbf{very high}   \\ \hline
-  \textbf{PSK}         & 1354543 (51058)   & 1353865 (51289)    & 1355005 (51004)    & 1354829 (51043)      \\ \hline
-  \textbf{RSA-PSK}     & 3536763 (71446)   & 4543238 (76038)    & 7293473 (84814)    & 18578392 (103341)    \\ \hline
-  \textbf{RSA}         & 3556430 (59010)   & 4558935 (68078)    & 7309587 (71844)    & 18608492 (82623)     \\ \hline
-  \textbf{ECDH-RSA}    & 28433250 (97731)  & 57412269 (122298)  & 93325335 (102107)  & 111532116 (623350)   \\ \hline
-  \textbf{ECDH-ECDSA}  & 83731926 (78435)  & 112585306 (128327) & 148415289 (126285) & 166815336 (554471)   \\ \hline
-  \textbf{ECDHE-PSK}   & 26819362 (68991)  & 55805138 (138561)  & 91713096 (142807)  & 109203285 (813689)   \\ \hline
-  \textbf{ECDHE-RSA}   & 28862986 (105477) & 58608367 (214574)  & 96730901 (93708)   & 124773055 (696488)   \\ \hline
-  \textbf{ECDHE-ECDSA} & 110524836 (93990) & 168954007 (267635) & 242501399 (149155) & 280626510 (1071418)  \\ \hline
-  \textbf{DHE-PSK}     & 22189619 (55603)  & 135442518 (309751) & 950212732 (787892) & 7181764421 (5195398) \\ \hline
-  \textbf{DHE-RSA}     & 24250886 (94421)  & 138197524 (198704) & 955840114 (861069) & 7196088947 (6405987) \\ \hline
-  \end{tabular}
-  \centering \caption{\label{table:client-hs-cost-all-sls} Handshake costs for the client}
-  \end{table}
-
-  \begin{table}[]
-\begin{tabular}{|l|l|l|l|l|}
-\hline
-                     & \textbf{low}      & \textbf{normal}    & \textbf{high}       & \textbf{very high}   \\ \hline
-\textbf{PSK}         & 1380956 (50888)   & 1382849 (50737)    & 1381497 (50891)     & 1382002 (50903)      \\ \hline
-\textbf{RSA-PSK}     & 22515609 (111975) & 77368868 (275574)  & 317389619 (662953)  & 1694178055 (2427763) \\ \hline
-\textbf{RSA}         & 22456180 (121140) & 77260738 (239418)  & 317196961 (698637)  & 1694747500 (1705523) \\ \hline
-\textbf{ECDH-RSA}    & 14534087 (49806)  & 29154666 (127699)  & 46480720 (107771)   & 55636527 (576001)    \\ \hline
-\textbf{ECDH-ECDSA}  & 14521154 (58001)  & 29094320 (111114)  & 46390603 (132250)   & 55927921 (688074)    \\ \hline
-\textbf{ECDHE-PSK}   & 26869449 (110405) & 56020895 (147825)  & 91773474 (94656)    & 109500050 (905013)   \\ \hline
-\textbf{ECDHE-RSA}   & 48164890 (126885) & 132433386 (379327) & 409652623 (951326)  & 1810563620 (3011341) \\ \hline
-\textbf{ECDHE-ECDSA} & 41984222 (82371)  & 86096716 (192885)  & 141506181 (147013)  & 169996896 (1051307)  \\ \hline
-\textbf{DHE-PSK}     & 22308029 (76182)  & 135535409 (232955) & 950691653 (1289706) & 7181243788 (5402427) \\ \hline
-\textbf{DHE-RSA}     & 43602094 (154553) & 212251542 (364611) & 1268235354 (857921) & 8883866054 (5993186) \\ \hline
-\end{tabular}
-  \centering \centering \caption{\label{table:server-hs-cost-all-sls} Handshake costs for the server}
 \end{table}
 
 Figures \ref{fig:client-hs-cost-all-sls} and \ref{fig:server-hs-cost-all-sls} are a graphical representation of tables \ref{table:client-hs-cost-all-sls}
@@ -3313,21 +3104,211 @@ interesting conclusions, such as: \textit{Using the TLS configuration X would re
 \setcounter{figure}{0}  
 \setcounter{table}{0}  
 
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/hs_papi_server.png}
-  \centering \caption{\label{fig:server-hs-cost-all-sls-papi-o} Server handshake cost in microseconds for all security levels (logarithmic scale)}
-\end{figure}
+\begin{table}[]
+  \begin{tabular}{|l|l|l|l|l|}
+  \hline
+                    & \textbf{RSA Sign}    & \textbf{RSA Verify} & \textbf{ECDSA Sign} & \textbf{ECDSA Verify} \\ \hline
+  \textbf{low}       & 20559190 (117075)    & 398584 (198)        & 14497591 (49045)    & 26839273 (50816)      \\ \hline
+  \textbf{normal}    & 75738802 (317047)    & 1117868 (748)       & 29512991 (95776)    & 56260702 (162365)     \\ \hline
+  \textbf{high}      & 317087210 (716961)   & 3295296 (254)       & 49150396 (82047)     & 94077150 (130275)     \\ \hline
+  \textbf{very high} & 1700652764 (2283718) & 13436728 (702)      & 59732056 (441815)   & 114744021 (843861)    \\ \hline
+  \end{tabular}
+  \centering \caption{\label{table:rsa-costs-all-sls} RSA and ECDSA signature creation and verification costs. Numbers in parenthesis is the standard deviation} \end{table}
+
+\begin{table}[]
+  \begin{tabular}{|l|l|l|}
+  \hline
+                     & \textbf{RSA Total} & \textbf{ECDSA Total} \\ \hline
+  \textbf{low}       & 20957774           & 41336864             \\ \hline
+  \textbf{normal}    & 76856670           & 85773693             \\ \hline
+  \textbf{high}      & 320382506          & 143227546            \\ \hline
+  \textbf{very high} & 1714089492         & 174476077            \\ \hline
+  \end{tabular}
+  \centering \caption{\label{table:rsa-costs-all-sls-total} RSA and ECDSA costs of signature creation + signature verification}
+\end{table}
+
+\begin{table}[]
+  \begin{tabular}{|l|l|l|l|}
+  \hline
+                     & \textbf{RSA Sign} & \textbf{RSA Verify} & \textbf{RSA Total} \\ \hline
+  \textbf{low}       & -                 & -                   & -                  \\ \hline
+  \textbf{normal}    & 55179612          & 719284              & 55898896           \\ \hline
+  \textbf{high}      & 241348408         & 2177428             & 243525836          \\ \hline
+  \textbf{very high} & 1383565554        & 10141432            & 1393706986         \\ \hline
+  \end{tabular}
+  \centering \caption{\label{table:rsa-absolute-cost-increase} Absolute increase of RSA operation costs from previous security level}
+  \end{table}
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|l|}
+\hline
+                   & \textbf{ECDSA Sign} & \textbf{ECDSA Verify} & \textbf{ECDSA Total} \\ \hline
+\textbf{low}       & -                   & -                     & -                    \\ \hline
+\textbf{normal}    & 15015400            & 29421429              & 44436829             \\ \hline
+\textbf{high}      & 19637405            & 37816448              & 57453853             \\ \hline
+\textbf{very high} & 10581660            & 20666871              & 31248531             \\ \hline
+\end{tabular}
+\centering \caption{\label{table:ecdsa-absolute-cost-increase} Absolute increase of ECDSA operations cost from previous security level}
+\end{table}
 
 \begin{table}[]
   \begin{tabular}{|l|l|l|l|l|}
   \hline
-                 & \textbf{low}   & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
-  \textbf{RSA}   & 511728 (45373) & 544227 (47594)  & 607542 (51576) & 735237 (59853)      \\ \hline
-  \textbf{ECDSA} & 548841 (45064) & 662348 (45175) & 666866 (45923)  & 704135 (48247)        \\ \hline
+                       & \textbf{low} & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
+  \textbf{PSK}         & 0            & 0               & 0             & 0                  \\ \hline
+  \textbf{RSA}         & 654077       & 2622235         & 5285561       & 16398134           \\ \hline
+  \textbf{RSA-PSK}     & 654077       & 2622235         & 5285561       & 16398134           \\ \hline
+  \textbf{ECDH-RSA}    & 1117868      & 1117868         & 1117868       & 1117868           \\ \hline
+  \textbf{ECDH-ECDSA}  & 56260702     & 56260702        & 56260702      & 56260702          \\ \hline
+  \textbf{ECDHE-PSK}   & 0            & 0               & 0             & 0                  \\ \hline
+  \textbf{ECDHE-RSA}   & 1516452       & 2235736         & 4413164       & 14554596           \\ \hline
+  \textbf{ECDHE-ECDSA} & 83099975     & 112521404       & 150337852     & 171004723          \\ \hline
+  \textbf{DHE-PSK}     & 0            & 0               & 0             & 0                  \\ \hline
+  \textbf{DHE-RSA}     & 1516452       & 2235736         & 4413164       & 14554596           \\ \hline
   \end{tabular}
-  \centering \caption{ \label{table:cert-parse-cost-a} Additional costs of parsing the certificate}
-  
+  \centering \caption{\label{table:tls-auth-cost-client} Client authentication costs for all ciphersuites and security levels}
   \end{table}
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+                     & \textbf{low} & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
+\textbf{PSK}         & 0            & 0               & 0             & 0                  \\ \hline
+\textbf{RSA}         & 20362831     & 75129504        & 314975365     & 1691976601         \\ \hline
+\textbf{RSA-PSK}     & 20362831     & 75129504        & 314975365     & 1691976601         \\ \hline
+\textbf{ECDH-RSA}    & 0            & 0               & 0             & 0                  \\ \hline
+\textbf{ECDH-ECDSA}  & 0            & 0               & 0             & 0                  \\ \hline
+\textbf{ECDHE-PSK}   & 0            & 0               & 0             & 0                  \\ \hline
+\textbf{ECDHE-RSA}   & 20559190     & 75738802        & 317087210     & 1700652764         \\ \hline
+\textbf{ECDHE-ECDSA} & 14497591     & 29512991        & 49150396      & 59732056           \\ \hline
+\textbf{DHE-PSK}     & 0            & 0               & 0             & 0                  \\ \hline
+\textbf{DHE-RSA}     & 20559190     & 75738802        & 317087210     & 1700652764         \\ \hline
+\end{tabular}
+  \centering \caption{\label{table:tls-auth-cost-server} Server authentication costs for all ciphersuites and security levels}
+\end{table}
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+                   & \textbf{ECDH Gen Keypair} & \textbf{ECDH Gen Secret} & \textbf{DH Gen Keypair} & \textbf{DH Gen Secret} \\ \hline
+\textbf{low}       & 12942518 (33356)          & 12462677 (55222)         & 10455300 (31005)        & 10279378 (27044)       \\ \hline
+\textbf{normal}    & 27483912 (94940)          & 26958612 (137745)        & 67136033 (108793)       & 66712994 (107669)      \\ \hline
+\textbf{high}      & 45900358 (65731)          & 44331330 (100040)        & 474938146 (490496)      & 473634908 (493588)     \\ \hline
+\textbf{very high} & 54449740 (487567)         & 53531554 (776984)        & 3592631108 (2792006)    & 3586324217 (2791154)   \\ \hline
+\end{tabular}
+\centering \caption{\label{table:ecdh-dh-costs-all-sls} ECDH and DH costs for all security levels. Numbers in parenthesis are the standard deviation.}
+\end{table}
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|}
+\hline
+                   & \textbf{ECDH Total} & \textbf{DH Total} \\ \hline
+\textbf{low}       & 25405195            & 20734678          \\ \hline
+\textbf{normal}    & 54442524            & 133849027         \\ \hline
+\textbf{high}      & 90231688            & 948573054         \\ \hline
+\textbf{very high} & 90231688            & 7178955325        \\ \hline
+\end{tabular}
+\centering \caption{\label{table:ecdh-dh-costs-total-all-sls} ECDH and DH costs of the sum of keypair and shared secret generation}
+\end{table}
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|l|}
+\hline
+                   & \textbf{ECDH Gen Keypair} & \textbf{ECDH Gen Shared} & \textbf{ECDH Total} \\ \hline
+\textbf{low}       & -                         & -                        & -                   \\ \hline
+\textbf{normal}    & 14541394                  & 14495935                 & 29037329            \\ \hline
+\textbf{high}      & 18416446                  & 17372718                 & 35789164            \\ \hline
+\textbf{very high} & 8549382                   & 9200224                  & 17749606            \\ \hline
+\end{tabular}
+\centering \caption{\label{table:ecdh-absolute-cost-increase} Absolute increase of ECDH operation costs from previous security level}
+\end{table}
+
+\begin{table}[]
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+                       & \textbf{DH Gen Keypair} & \textbf{DH Gen Shared} & \textbf{DH Total} \\ \hline
+    \textbf{low}       & -                       & -                      & -                 \\ \hline
+    \textbf{normal}    & 56680733                & 56433616               & 113114349         \\ \hline
+    \textbf{high}      & 407802113               & 406921914              & 814724027         \\ \hline
+    \textbf{very high} & 3117692962              & 3112689309             & 6230382271        \\ \hline
+    \end{tabular}
+    \centering \caption{\label{table:dh-absolute-cost-increase} Absolute increase of DH operation costs from previous security level}
+\end{table}
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+                                           & \textbf{low}                    & \textbf{normal}                 & \textbf{high}                   & \textbf{very high}               \\ \hline
+\textbf{PSK}                               & 0                               & 0                               & 0                               & 0                                \\ \hline
+\textbf{RSA-PSK}                           & 0                               & 0                               & 0                               & 0                                \\ \hline
+\textbf{RSA}                               & 0                               & 0                               & 0                               & 0                                \\ \hline
+\rowcolor[HTML]{9B9B9B}
+{\color[HTML]{333333} \textbf{ECDH-RSA}}   & {\color[HTML]{333333} 25405195} & {\color[HTML]{333333} 54442524} & {\color[HTML]{333333} 90231688} & {\color[HTML]{333333} 107981294} \\ \hline
+\rowcolor[HTML]{9B9B9B}
+{\color[HTML]{333333} \textbf{ECDH-ECDSA}} & {\color[HTML]{333333} 25405195} & {\color[HTML]{333333} 54442524} & {\color[HTML]{333333} 90231688} & {\color[HTML]{333333} 107981294} \\ \hline
+\textbf{ECDHE-PSK}                         & 25405195                        & 54442524                        & 90231688                        & 107981294                        \\ \hline
+\textbf{ECDHE-RSA}                         & 25405195                        & 54442524                        & 90231688                        & 107981294                        \\ \hline
+\textbf{ECDHE-ECDSA}                       & 25405195                        & 54442524                        & 90231688                        & 107981294                        \\ \hline
+\textbf{DHE-PSK}                           & 20734678                        & 133849027                       & 948573054                        & 7178955325                        \\ \hline
+\textbf{DHE-RSA}                           & 25405195                        & 133849027                        & 948573054                        & 7178955325                        \\ \hline
+\end{tabular}
+\centering \caption{\label{table:pfs-cost-client} \gls{pfs} and \textit{ECDH} key exchange cost for the client}
+\end{table}
+
+\begin{table}[]
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+                                           & \textbf{low}                    & \textbf{normal}                 & \textbf{high}                   & \textbf{very high}              \\ \hline
+\textbf{PSK}                               & 0                               & 0                               & 0                               & 0                               \\ \hline
+\textbf{RSA-PSK}                           & 0                               & 0                               & 0                               & 0                               \\ \hline
+\textbf{RSA}                               & 0                               & 0                               & 0                               & 0                               \\ \hline
+\rowcolor[HTML]{9B9B9B}
+{\color[HTML]{333333} \textbf{ECDH-RSA}}   & {\color[HTML]{333333} 12462677} & {\color[HTML]{333333} 26958612} & {\color[HTML]{333333} 44331330} & {\color[HTML]{333333} 53531554} \\ \hline
+\rowcolor[HTML]{9B9B9B}
+{\color[HTML]{333333} \textbf{ECDH-ECDSA}} & {\color[HTML]{333333} 12462677} & {\color[HTML]{333333} 26958612} & {\color[HTML]{333333} 44331330} & {\color[HTML]{333333} 53531554} \\ \hline
+\textbf{ECDHE-PSK}                         & 25405195                        & 54442524                        & 90231688                        & 107981294                       \\ \hline
+\textbf{ECDHE-RSA}                         & 25405195                        & 54442524                        & 90231688                        & 107981294                       \\ \hline
+\textbf{ECDHE-ECDSA}                       & 25405195                        & 54442524                        & 90231688                        & 107981294                       \\ \hline
+\textbf{DHE-PSK}                           & 20734678                        & 133849027                       & 948573054                        & 7178955325                       \\ \hline
+\textbf{DHE-RSA}                           & 20734678                        & 133849027                       & 948573054                        & 7178955325                       \\ \hline
+\end{tabular}
+\centering \caption{\label{table:pfs-cost-server} \gls{pfs} and \textit{ECDH} key exchange cost for the server}
+\end{table}
+
+\begin{table}[]
+  \begin{tabular}{|l|l|l|l|l|}
+  \hline
+                       & \textbf{low}      & \textbf{normal}    & \textbf{high}      & \textbf{very high}   \\ \hline
+  \textbf{PSK}         & 1354543 (51058)   & 1353865 (51289)    & 1355005 (51004)    & 1354829 (51043)      \\ \hline
+  \textbf{RSA-PSK}     & 3536763 (71446)   & 4543238 (76038)    & 7293473 (84814)    & 18578392 (103341)    \\ \hline
+  \textbf{RSA}         & 3556430 (59010)   & 4558935 (68078)    & 7309587 (71844)    & 18608492 (82623)     \\ \hline
+  \textbf{ECDH-RSA}    & 28433250 (97731)  & 57412269 (122298)  & 93325335 (102107)  & 111532116 (623350)   \\ \hline
+  \textbf{ECDH-ECDSA}  & 83731926 (78435)  & 112585306 (128327) & 148415289 (126285) & 166815336 (554471)   \\ \hline
+  \textbf{ECDHE-PSK}   & 26819362 (68991)  & 55805138 (138561)  & 91713096 (142807)  & 109203285 (813689)   \\ \hline
+  \textbf{ECDHE-RSA}   & 28862986 (105477) & 58608367 (214574)  & 96730901 (93708)   & 124773055 (696488)   \\ \hline
+  \textbf{ECDHE-ECDSA} & 110524836 (93990) & 168954007 (267635) & 242501399 (149155) & 280626510 (1071418)  \\ \hline
+  \textbf{DHE-PSK}     & 22189619 (55603)  & 135442518 (309751) & 950212732 (787892) & 7181764421 (5195398) \\ \hline
+  \textbf{DHE-RSA}     & 24250886 (94421)  & 138197524 (198704) & 955840114 (861069) & 7196088947 (6405987) \\ \hline
+  \end{tabular}
+  \centering \caption{\label{table:client-hs-cost-all-sls} Handshake costs for the client}
+  \end{table}
+
+  \begin{table}[]
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+                     & \textbf{low}      & \textbf{normal}    & \textbf{high}       & \textbf{very high}   \\ \hline
+\textbf{PSK}         & 1380956 (50888)   & 1382849 (50737)    & 1381497 (50891)     & 1382002 (50903)      \\ \hline
+\textbf{RSA-PSK}     & 22515609 (111975) & 77368868 (275574)  & 317389619 (662953)  & 1694178055 (2427763) \\ \hline
+\textbf{RSA}         & 22456180 (121140) & 77260738 (239418)  & 317196961 (698637)  & 1694747500 (1705523) \\ \hline
+\textbf{ECDH-RSA}    & 14534087 (49806)  & 29154666 (127699)  & 46480720 (107771)   & 55636527 (576001)    \\ \hline
+\textbf{ECDH-ECDSA}  & 14521154 (58001)  & 29094320 (111114)  & 46390603 (132250)   & 55927921 (688074)    \\ \hline
+\textbf{ECDHE-PSK}   & 26869449 (110405) & 56020895 (147825)  & 91773474 (94656)    & 109500050 (905013)   \\ \hline
+\textbf{ECDHE-RSA}   & 48164890 (126885) & 132433386 (379327) & 409652623 (951326)  & 1810563620 (3011341) \\ \hline
+\textbf{ECDHE-ECDSA} & 41984222 (82371)  & 86096716 (192885)  & 141506181 (147013)  & 169996896 (1051307)  \\ \hline
+\textbf{DHE-PSK}     & 22308029 (76182)  & 135535409 (232955) & 950691653 (1289706) & 7181243788 (5402427) \\ \hline
+\textbf{DHE-RSA}     & 43602094 (154553) & 212251542 (364611) & 1268235354 (857921) & 8883866054 (5993186) \\ \hline
+\end{tabular}
+  \centering \centering \caption{\label{table:server-hs-cost-all-sls} Handshake costs for the server}
+\end{table}
 
 \end{document}

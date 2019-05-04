@@ -2928,7 +2928,7 @@ because the overwhelming cost of some key exchange methods made the visual analy
 \end{figure}
 
 
-\subsection{Time Measurments with PAPI and Their Comparison To The Estimated Values}
+\subsection{PAPI Time Cost Analysis and Comparison To Estimated CPU Cycles }
 
 We also used \gls{papi} to measure time. In this section, we will compare the estimates of the number of CPU cycles
 obtained with \textit{valgrind} with the time values obtained with \gls{papi}. In order to obtain the time metrics with
@@ -2943,7 +2943,7 @@ as a product of the number of CPU cycles and a constant: $CPU Time = CPU Cycles 
 Thus, we expect the graphs with time in the $y$ axis to look similar, but have smaller
 values. The results obtained with \gls{papi} matched our expectations.
 
-\subsubsection{PAPI Handhsake Time Cost Analysis} \label{sec:papi-handshake}
+\subsubsection{Handhsake Time Cost Analysis} \label{sec:papi-handshake}
 
 \begin{figure}
   \centering
@@ -2964,7 +2964,7 @@ when performing the handshake with the specified key exchange method and securit
 differing only on the $y$ values. This holds true not only for the overally \textit{handshake} cost, but for all other costs that we analyzed as well. The ratio between
 each realted set of operations is also similar.
 
-\subsubsection{Comparing Valgrind and PAPI Ratios} \label{sec:papi-valgrind-ratios}
+\subsubsection{PAPI and Valgrind Ratios Comparison} \label{sec:papi-valgrind-ratios}
 
 
 \begin{figure}
@@ -3091,7 +3091,6 @@ interesting conclusions, such as: \textit{Using the TLS configuration X would re
 
 % ---- Bibliography ----
 %
-\nocite{*}
 \bibliographystyle{unsrt}
 \bibliography{tls_for_iot,papers}
 %
@@ -3291,7 +3290,7 @@ interesting conclusions, such as: \textit{Using the TLS configuration X would re
   \textbf{DHE-PSK}     & 22189619 (55603)  & 135442518 (309751) & 950212732 (787892) & 7181764421 (5195398) \\ \hline
   \textbf{DHE-RSA}     & 24250886 (94421)  & 138197524 (198704) & 955840114 (861069) & 7196088947 (6405987) \\ \hline
   \end{tabular}
-  \centering \caption{\label{table:client-hs-cost-all-sls} Handshake costs for the client in number of CPU cycles}
+  \centering \caption{\label{table:client-hs-cost-all-sls} Handshake costs for the client in number of CPU cycles. Numbers in parenthesis are the standard deviation}
   \end{table}
 
   \begin{table}[]
@@ -3309,7 +3308,7 @@ interesting conclusions, such as: \textit{Using the TLS configuration X would re
 \textbf{DHE-PSK}     & 22308029 (76182)  & 135535409 (232955) & 950691653 (1289706) & 7181243788 (5402427) \\ \hline
 \textbf{DHE-RSA}     & 43602094 (154553) & 212251542 (364611) & 1268235354 (857921) & 8883866054 (5993186) \\ \hline
 \end{tabular}
-  \centering \centering \caption{\label{table:server-hs-cost-all-sls} Handshake costs for the server in number of CPU cycles}
+  \centering \centering \caption{\label{table:server-hs-cost-all-sls} Handshake costs for the server in number of CPU cycles. Numbers in parenthesis are the standard deviation}
 \end{table}
 
 
@@ -3325,5 +3324,136 @@ interesting conclusions, such as: \textit{Using the TLS configuration X would re
       \caption{RSA and ECDSA signature creation and verification costs in microseconds. Numbers in parenthesis is the standard deviation}
       \label{table:rsa-ecdsa-costs-papi}
       \end{table}
+
+      \begin{table}[]
+        \begin{tabular}{|l|l|l|l|l|}
+        \hline
+         \backslashbox{Key\\Exchange}{Security\\Level}                    & \textbf{low} & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
+        \textbf{PSK}         & 0            & 0               & 0             & 0                  \\ \hline
+        \textbf{ECDHE-PSK}   & 0            & 0               & 0             & 0                  \\ \hline
+        \textbf{DHE-PSK}     & 0            & 0               & 0             & 0                  \\ \hline
+        \textbf{ECDH-RSA}    & 683 (9)       & 683 (6)          & 678 (11)       & 682 (6)             \\ \hline
+        \textbf{ECDHE-RSA}   & 1014 (120)    & 1446 (115)       & 2805 (122)     & 8406 (123)          \\ \hline
+        \textbf{DHE-RSA}     & 1000 (119)    & 1439 (103)       & 2798 (119)     & 8388 (126)          \\ \hline
+        \textbf{RSA}         & 1061 (14)     & 1712 (23)        & 3436 (25)      & 9806 (55)           \\ \hline
+        \textbf{RSA-PSK}     & 1060 (9)      & 1710 (22)        & 3438 (27)      & 9804 (51)           \\ \hline
+        \textbf{ECDH-ECDSA}  & 30722 (272)   & 30847 (243)      & 30631 (210)    & 30765 (363)         \\ \hline
+        \textbf{ECDHE-ECDSA} & 46368 (3693)  & 62989 (3636)     & 83322 (3383)   & 97615 (2980)        \\ \hline
+        \end{tabular}
+        \caption{Client authentication costs for all ciphersuites and security levels in microseconds}
+        \label{table:papi-cli-auth-cost}
+        \end{table}
+
+        \begin{table}[]
+          \begin{tabular}{|l|l|l|l|l|}
+          \hline
+          \backslashbox{Key\\Exchange}{Security\\Level}                    & \textbf{low} & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
+          \textbf{PSK}         & 0            & 0               & 0             & 0                  \\ \hline
+          \textbf{ECDHE-PSK}   & 0            & 0               & 0             & 0                  \\ \hline
+          \textbf{DHE-PSK}     & 0            & 0               & 0             & 0                  \\ \hline
+          \textbf{ECDH-RSA}    & 0            & 0               & 0             & 0                  \\ \hline
+          \textbf{ECDHE-RSA}   & 11342 (138)   & 41659 (342)      & 176241 (997)   & 939913 (3238)       \\ \hline
+          \textbf{DHE-RSA}     & 11329 (135)   & 41689 (694)      & 176192 (1197)  & 939929 (3698)       \\ \hline
+          \textbf{RSA}         & 11286 (178)   & 41403 (411)      & 175097 (1089)  & 936521 (3356)       \\ \hline
+          \textbf{RSA-PSK}     & 11259 (156)   & 41372 (348)      & 175107 (1114)  & 935820 (3347)       \\ \hline
+          \textbf{ECDH-ECDSA}  & 0            & 0               & 0             & 0                  \\ \hline
+          \textbf{ECDHE-ECDSA} & 8474 (2008)   & 16117 (440)      & 26947 (221)    & 34231 (334)         \\ \hline
+          \end{tabular}
+          \caption{Server authentication costs for all ciphersuites and security levels in microseconds}
+          \label{table:server-auth-costs-papi}
+          \end{table}
+
+          \begin{table}[]
+            \begin{tabular}{|l|l|l|l|l|}
+            \hline
+             \backslashbox{Security\\Level}{Operation}                  & \textbf{ECDH Gen Keypair} & \textbf{ECDH Gen Shared} & \textbf{DH Gen Keypair} & \textbf{DH Gen Shared} \\ \hline
+            \textbf{low}       & 6884 (45)                 & 6593 (67)                 & 6028 (127)               & 5878 (171)              \\ \hline
+            \textbf{normal}    & 15049 (158)                & 14693 (131)               & 37422 (325)              & 36969 (275)             \\ \hline
+            \textbf{high}      & 25139 (305)                & 24297 (187)               & 263498 (843)             & 262432 (927)            \\ \hline
+            \textbf{very high} & 31270 (342)                & 30830 (455)               & 1959755 (3784)           & 1955550 (4082)          \\ \hline
+            \end{tabular}
+            \caption{ECDH  and  DH  costs  for  all  security  levels  in  microseconds.  Numbers  in parenthesis are the standard deviation}
+            \label{table:papi-ecd-dh-costs}
+            \end{table}
+
+            \begin{table}[]
+              \begin{tabular}{|l|l|l|l|l|}
+              \hline
+               \backslashbox{Key\\Exchange}{Security\\Level}                    & \textbf{low} & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
+              \textbf{PSK}         & 1024 (97)    & 1038 (95)        & 1013 (82)      & 1028 (96)           \\ \hline
+              \textbf{RSA-PSK}     & 2531 (121)    & 3204 (103)       & 4954 (125)     & 11388 (136)         \\ \hline
+              \textbf{RSA}         & 2537 (132)    & 3202 (108)       & 4948 (124)     & 11387 (140)         \\ \hline
+              \textbf{ECDH-RSA}    & 15709 (187)  & 31966 (309)      & 51570 (389)    & 64849 (538)         \\ \hline
+              \textbf{ECDH-ECDSA}  & 45665 (384)   & 61924 (386)      & 81463 (385)    & 94748 (651)         \\ \hline
+              \textbf{ECDHE-PSK}   & 14605 (148)  & 30893 (264)      & 50525 (438)    & 63219 (641)         \\ \hline
+              \textbf{ECDHE-RSA}   & 16138 (344)  & 32831 (371)      & 53778 (397)    & 72269 (761)         \\ \hline
+              \textbf{ECDHE-ECDSA} & 61255 (3776)  & 94156 (3729)     & 134140 (3479)  & 161190 (3168)       \\ \hline
+              \textbf{DHE-PSK}     & 13086 (283)  & 75520 (426)      & 527114 (1356)  & 3916656 (6127)      \\ \hline
+              \textbf{DHE-RSA}     & 14607(382)   & 77476 (521)      & 531919 (1841)  & 3930292 (6979)      \\ \hline
+              \end{tabular}
+              \caption{Handshake costs for the client in microseconds. Numbers in parenthesis are the standard deviation}
+              \label{table:hs-costs-cli-papi}
+              \end{table}
+
+              \begin{table}[]
+                \begin{tabular}{|l|l|l|l|l|}
+                \hline
+                 \backslashbox{Key\\Exchange}{Security\\Level}                    & \textbf{low} & \textbf{normal} & \textbf{high} & \textbf{very high} \\ \hline
+                \textbf{PSK}         & 1029 (90)     & 1048 (89)        & 1021 (76)      & 1033 (90)           \\ \hline
+                \textbf{RSA-PSK}     & 12668 (166)   & 42809 (355)      & 176543 (1118)  & 937388 (3348)       \\ \hline
+                \textbf{RSA}         & 12685 (188)   & 42828 (414)      & 176527 (1091)  & 938082 (3359)       \\ \hline
+                \textbf{ECDH-RSA}    & 8129 (180)    & 16187 (322)      & 26366 (2121)   & 32412 (483)         \\ \hline
+                \textbf{ECDH-ECDSA}  & 8137 (200)    & 16160 (170)      & 25842 (233)    & 32350 (473)         \\ \hline
+                \textbf{ECDHE-PSK}   & 14769 (256)   & 30919 (291)      & 50787 (321)    & 63563 (548)         \\ \hline
+                \textbf{ECDHE-RSA}   & 26628 (485)   & 73075 (591)      & 227665 (1194)  & 1004212 (3334)      \\ \hline
+                \textbf{ECDHE-ECDSA} & 24408 (4163)  & 48707 (3657)     & 79316 (3321)   & 98991 (2870)        \\ \hline
+                \textbf{DHE-PSK}     & 13139 (147)   & 75741 (423)      & 527735 (1390)  & 3925059 (9696)      \\ \hline
+                \textbf{DHE-RSA}     & 24964 (365)   & 117961 (1399)    & 704677 (1918)  & 4864588 (13183)     \\ \hline
+                \end{tabular}
+                \caption{Handshake costs for the server in microseconds. Numbers in parenthesis are the standard deviation}
+                \label{table:server-hs-costs-papi}
+                \end{table}
+
+                \begin{figure}
+                  \centering
+                  \includegraphics[width=1.0\textwidth]{img/papi-client-auth-cost.png}
+                  \centering \caption{Authentication cost for the client in microseconds (logarithmic scale)}
+                \end{figure}
+
+                \begin{figure}
+                  \centering
+                  \includegraphics[width=1.0\textwidth]{img/papi-server-auth-cost.png}
+                  \centering \caption{Authentication cost for the server in microseconds (logarithmic scale)}
+                \end{figure}
+
+                \begin{figure}
+                  \centering
+                  \includegraphics[width=1.0\textwidth]{img/papi-ecdsa-sign-verify.png}
+                  \centering \caption{ECDSA signature creation and verification costs in microseconds}
+                \end{figure}
+
+                \begin{figure}
+                  \centering
+                  \includegraphics[width=1.0\textwidth]{img/papi-rsa-sign-verify.png}
+                  \centering \caption{RSA signature creation and verification costs in microseconds (logarithmic scale)}
+                \end{figure}
+
+                \begin{figure}
+                  \centering
+                  \includegraphics[width=1.0\textwidth]{img/papi-rsa-sign-verify.png}
+                  \centering \caption{RSA encryption and decryption costs in microseconds (logarithmic scale)}
+                \end{figure}
+
+                \begin{figure}
+                  \centering
+                  \includegraphics[width=1.0\textwidth]{img/papi-ecdh-cost.png}
+                  \centering \caption{ECDH keypair and shared secret generation costs in microseconds (logarithmic scale)}
+                \end{figure}
+
+                \begin{figure}
+                  \centering
+                  \includegraphics[width=1.0\textwidth]{img/papi-ecdh-cost.png}
+                  \centering \caption{DH keypair and shared secret generation costs in microseconds (logarithmic scale)}
+                \end{figure}
 
 \end{document}

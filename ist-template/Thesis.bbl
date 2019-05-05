@@ -1,0 +1,97 @@
+\begin{thebibliography}{14}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[IoT()]{IoTnumb83:online}
+{IoT: number of connected devices worldwide 2012-2025}.
+\newblock
+  \url{https://www.statista.com/statistics/471264/iot-number-of-connected-devices-worldwide/}.
+\newblock (Accessed on 11/18/2018).
+
+\bibitem[SMA(2017)]{SMALTThe76:online}
+{SMALT - The Smart Home Device That Elevates Your Dining Experience}.
+\newblock {Electronic Gadget}, 2017.
+\newblock URL \url{http://www.mysmalt.com/}.
+\newblock (Accessed on 01/05/2018).
+
+\bibitem[Antonakakis et~al.(2017)Antonakakis, April, Bailey, Bernhard,
+  Bursztein, Cochran, Durumeric, Halderman, Invernizzi, Kallitsis,
+  et~al.]{sec17ant94:online}
+M.~Antonakakis, T.~April, M.~Bailey, M.~Bernhard, E.~Bursztein, J.~Cochran,
+  Z.~Durumeric, J.~A. Halderman, L.~Invernizzi, M.~Kallitsis, et~al.
+\newblock Understanding the mirai botnet.
+\newblock 2017.
+
+\bibitem[Krebs(2017)]{ReaperCa10:online}
+B.~Krebs.
+\newblock Reaper: Calm before the iot security storm? — krebs on security.
+\newblock
+  \url{https://krebsonsecurity.com/2017/10/reaper-calm-before-the-iot-security-storm/},
+  10 2017.
+\newblock (Accessed on 01/04/2018).
+
+\bibitem[Mer()]{Mergepul65:online}
+Addition to tls 1.3 contributors list.
+\newblock
+  \url{https://github.com/tlswg/tls13-spec/commit/43461876882a60251ecf24fb097f0ce2d7be4745}.
+\newblock (Accessed on 01/11/2018).
+
+\bibitem[Rescorla(2018)]{RFC8446}
+E.~Rescorla.
+\newblock The transport layer security (tls) protocol version 1.3.
+\newblock RFC 8446, RFC Editor, August 2018.
+
+\bibitem[DTL()]{DTLS13:online}
+Commits by iluxonchik tlswg/dtls13-spec.
+\newblock \url{https://github.com/tlswg/dtls13-spec/commits?author=iluxonchik}.
+\newblock (Accessed on 11/18/2018).
+
+\bibitem[NVD()]{NVDCVE2094:online}
+Nvd - cve-2018-1000520.
+\newblock \url{https://nvd.nist.gov/vuln/detail/CVE-2018-1000520}.
+\newblock (Accessed on 10/10/2018).
+
+\bibitem[ssl()]{sslserve89:onelin}
+ssl\_server.c and ssl\_client1.c are using an sha-1 signed certificate.
+\newblock \url{https://github.com/ARMmbed/mbedtls/issues/1519}.
+\newblock (Accessed on 10/15/2018).
+
+\bibitem[upd()]{updatete23:online}
+update test rsa certificate to use sha-256 instead of sha-1 by iluxonchik.
+\newblock \url{https://github.com/ARMmbed/mbedtls/pull/1520}.
+\newblock (Accessed on 10/15/2018).
+
+\bibitem[Raza et~al.(2016)Raza, Seitz, Sitenkov, and
+  Selander]{S3KScala62:online}
+S.~Raza, L.~Seitz, D.~Sitenkov, and G.~Selander.
+\newblock S3k: Scalable security with symmetric keys—dtls key establishment
+  for the internet of things.
+\newblock \emph{IEEE Transactions on Automation Science and Engineering},
+  13\penalty0 (3):\penalty0 1270--1280, 2016.
+
+\bibitem[Bormann et~al.(2017)Bormann, Lemay, Tschofenig, Hartke, Silverajan,
+  and Raymor]{I-D.ietf-core-coap-tcp-tls}
+C.~Bormann, S.~Lemay, H.~Tschofenig, K.~Hartke, B.~Silverajan, and B.~Raymor.
+\newblock {CoAP (Constrained Application Protocol) over TCP, TLS, and
+  WebSockets}.
+\newblock Internet-Draft draft-ietf-core-coap-tcp-tls-11, IETF Secretariat,
+  December 2017.
+\newblock URL
+  \url{http://www.ietf.org/internet-drafts/draft-ietf-core-coap-tcp-tls-11.txt}.
+\newblock
+  \url{http://www.ietf.org/internet-drafts/draft-ietf-core-coap-tcp-tls-11.txt}.
+
+\bibitem[SSL()]{SSLLibra13:online}
+{mbed TLS (formely PolarSSL): SSL/TLS Library For Embedded Devices}.
+\newblock URL \url{https://tls.mbed.org/}.
+\newblock (Accessed on 12/19/2017).
+
+\bibitem[Qua()]{QualysSS90:online}
+Qualys ssl labs - ssl pulse.
+\newblock \url{https://www.ssllabs.com/ssl-pulse/}.
+\newblock (Accessed on 09/08/2018).
+
+\end{thebibliography}

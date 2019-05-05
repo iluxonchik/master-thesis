@@ -1,0 +1,64 @@
+This is BibTeX, Version 0.99d (TeX Live 2018)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: Thesis.aux
+The style file: abbrvunsrtnat.bst
+Database file #1: tls_for_iot.bib
+Database file #2: papers.bib
+Warning--I didn't find a database entry for "jameson:adjointns"
+Warning--I didn't find a database entry for "nocedal:opt"
+Warning--I didn't find a database entry for "marta:ijcfd"
+Warning--I didn't find a database entry for "marta:ijcfd1"
+Warning--I didn't find a database entry for "marta:ijcfd2"
+Warning--I didn't find a database entry for "marta:ijcfd3"
+Warning--I didn't find a database entry for "marta:ijcfd4"
+Warning--empty year in IoTnumb83:online
+Warning--empty journal in sec17ant94:online
+Warning--empty year in Mergepul65:online
+Warning--empty year in DTLS13:online
+Warning--empty year in NVDCVE2094:online
+Warning--empty year in sslserve89:onelin
+Warning--empty year in updatete23:online
+Warning--empty year in SSLLibra13:online
+Warning--empty year in QualysSS90:online
+You've used 14 entries,
+            2481 wiz_defined-function locations,
+            643 strings with 7018 characters,
+and the built_in function-call counts, 3927 in all, are:
+= -- 331
+> -- 149
+< -- 4
++ -- 74
+- -- 46
+* -- 257
+:= -- 552
+add.period$ -- 46
+call.type$ -- 14
+change.case$ -- 28
+chr.to.int$ -- 14
+cite$ -- 32
+duplicate$ -- 207
+empty$ -- 429
+format.name$ -- 51
+if$ -- 867
+int.to.chr$ -- 1
+int.to.str$ -- 15
+missing$ -- 2
+newline$ -- 82
+num.names$ -- 15
+pop$ -- 180
+preamble$ -- 1
+purify$ -- 14
+quote$ -- 0
+skip$ -- 120
+stack$ -- 0
+substring$ -- 68
+swap$ -- 30
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 98
+warning$ -- 9
+while$ -- 12
+width$ -- 0
+write$ -- 177
+(There were 16 warnings)

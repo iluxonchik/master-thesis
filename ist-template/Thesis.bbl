@@ -1,4 +1,4 @@
-\begin{thebibliography}{14}
+\begin{thebibliography}{87}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -93,5 +93,525 @@ C.~Bormann, S.~Lemay, H.~Tschofenig, K.~Hartke, B.~Silverajan, and B.~Raymor.
 Qualys ssl labs - ssl pulse.
 \newblock \url{https://www.ssllabs.com/ssl-pulse/}.
 \newblock (Accessed on 09/08/2018).
+
+\bibitem[Barker(2016)]{Recommen44:online}
+E.~Barker.
+\newblock {Recommendation for Key Management, Part 1: General}.
+\newblock \emph{NIST special publication}, 2016.
+\newblock URL
+  \url{http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r4.pdf}.
+
+\bibitem[{Bundesamt fur Sicherheit in der Informationstechnik
+  (BSI)}(2017)]{Kryptogr1:online}
+{Bundesamt fur Sicherheit in der Informationstechnik (BSI)}.
+\newblock {Kryptographische Verfahren: Empfehlungen und Schlüssellängen,
+  Version 2017-01}.
+\newblock 2017.
+\newblock URL
+  \url{https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Publikationen/TechnischeRichtlinien/TR02102/BSI-TR-02102.pdf?blob=publicationFile}.
+
+\bibitem[Bormann et~al.(2014)Bormann, Ersue, and Keranen]{RFC7228}
+C.~Bormann, M.~Ersue, and A.~Keranen.
+\newblock {Terminology for Constrained-Node Networks}.
+\newblock RFC 7228, RFC Editor, May 2014.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc7228.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc7228.txt}.
+
+\bibitem[Cooper et~al.(2008{\natexlab{a}})Cooper, Santesson, Farrell, Boeyen,
+  Housley, and Polk]{rfc5280}
+D.~Cooper, S.~Santesson, S.~Farrell, S.~Boeyen, R.~Housley, and W.~Polk.
+\newblock {Internet X.509 Public Key Infrastructure Certificate and Certificate
+  Revocation List (CRL) Profile}.
+\newblock RFC 5280, RFC Editor, May 2008{\natexlab{a}}.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc5280.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc5280.txt}.
+
+\bibitem[Dierks and Rescorla(2008)]{RFC5246}
+T.~Dierks and E.~Rescorla.
+\newblock {The Transport Layer Security (TLS) Protocol Version 1.2}.
+\newblock RFC 5246, RFC Editor, August 2008.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc5246.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc5246.txt}.
+
+\bibitem[Freier et~al.(2011)Freier, Karlton, and Kocher]{RFC6101}
+A.~Freier, P.~Karlton, and P.~Kocher.
+\newblock The secure sockets layer (ssl) protocol version 3.0.
+\newblock RFC 6101, RFC Editor, August 2011.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc6101.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc6101.txt}.
+
+\bibitem[Salowey et~al.(2008)Salowey, Zhou, Eronen, and Tschofenig]{RFC5077}
+J.~Salowey, H.~Zhou, P.~Eronen, and H.~Tschofenig.
+\newblock {Transport Layer Security (TLS) Session Resumption without
+  Server-Side State}.
+\newblock RFC 5077, RFC Editor, January 2008.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc5077.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc5077.txt}.
+
+\bibitem[Checkoway et~al.(2016)Checkoway, Maskiewicz, Garman, Fried, Cohney,
+  Green, Heninger, Weinmann, Rescorla, and Shacham]{DualECJu15:online}
+S.~Checkoway, J.~Maskiewicz, C.~Garman, J.~Fried, S.~Cohney, M.~Green,
+  N.~Heninger, R.-P. Weinmann, E.~Rescorla, and H.~Shacham.
+\newblock A systematic analysis of the juniper dual ec incident.
+\newblock In \emph{Proceedings of the 2016 ACM SIGSAC Conference on Computer
+  and Communications Security}, pages 468--479. ACM, 2016.
+
+\bibitem[Blake-Wilson et~al.(2006{\natexlab{a}})Blake-Wilson, Bolyard, Gupta,
+  Hawk, and Moeller]{RFC4492}
+S.~Blake-Wilson, N.~Bolyard, V.~Gupta, C.~Hawk, and B.~Moeller.
+\newblock {Elliptic Curve Cryptography (ECC) Cipher Suites for Transport Layer
+  Security (TLS)}.
+\newblock RFC 4492, RFC Editor, May 2006{\natexlab{a}}.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc4492.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc4492.txt}.
+
+\bibitem[Wouters et~al.(2014)Wouters, Tschofenig, Gilmore, Weiler, and
+  Kivinen]{RFC7250}
+P.~Wouters, H.~Tschofenig, J.~Gilmore, S.~Weiler, and T.~Kivinen.
+\newblock {Using Raw Public Keys in Transport Layer Security (TLS) and Datagram
+  Transport Layer Security (DTLS)}.
+\newblock RFC 7250, RFC Editor, June 2014.
+
+\bibitem[Blake-Wilson et~al.(2006{\natexlab{b}})Blake-Wilson, Nystrom, Hopwood,
+  Mikkelsen, and Wright]{RFC4366}
+S.~Blake-Wilson, M.~Nystrom, D.~Hopwood, J.~Mikkelsen, and T.~Wright.
+\newblock {Transport Layer Security (TLS) Extensions}.
+\newblock RFC 4366, RFC Editor, April 2006{\natexlab{b}}.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc4366.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc4366.txt}.
+
+\bibitem[Dierks and Allen(1999)]{RFC2246}
+T.~Dierks and C.~Allen.
+\newblock {The TLS Protocol Version 1.0}.
+\newblock RFC 2246, RFC Editor, January 1999.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc2246.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc2246.txt}.
+
+\bibitem[Rescorla(2017)]{I-D.ietf-tls-tls13}
+E.~Rescorla.
+\newblock {The Transport Layer Security (TLS) Protocol Version 1.3}.
+\newblock Internet-Draft draft-ietf-tls-tls13-22, IETF Secretariat, November
+  2017.
+\newblock URL
+  \url{http://www.ietf.org/internet-drafts/draft-ietf-tls-tls13-22.txt}.
+\newblock
+  \url{http://www.ietf.org/internet-drafts/draft-ietf-tls-tls13-22.txt}.
+
+\bibitem[Krawczyk and Eronen(2010)]{RFC5869}
+H.~Krawczyk and P.~Eronen.
+\newblock {HMAC-based Extract-and-Expand Key Derivation Function (HKDF)}.
+\newblock RFC 5869, RFC Editor, May 2010.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc5869.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc5869.txt}.
+
+\bibitem[Rescorla and Modadugu(2012)]{RFC6347}
+E.~Rescorla and N.~Modadugu.
+\newblock {Datagram Transport Layer Security Version 1.2}.
+\newblock RFC 6347, RFC Editor, January 2012.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc6347.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc6347.txt}.
+
+\bibitem[Rescorla et~al.(2017)Rescorla, Tschofenig, and
+  Modadugu]{I-D.ietf-tls-dtls13}
+E.~Rescorla, H.~Tschofenig, and N.~Modadugu.
+\newblock {The Datagram Transport Layer Security (DTLS) Protocol Version 1.3}.
+\newblock Internet-Draft draft-ietf-tls-dtls13-22, IETF Secretariat, November
+  2017.
+\newblock URL
+  \url{http://www.ietf.org/internet-drafts/draft-ietf-tls-dtls13-22.txt}.
+\newblock
+  \url{http://www.ietf.org/internet-drafts/draft-ietf-tls-dtls13-22.txt}.
+
+\bibitem[Biryukov and Perrin(2017)]{Stateoft96:online}
+A.~Biryukov and L.~P. Perrin.
+\newblock State of the art in lightweight symmetric cryptography.
+\newblock 2017.
+
+\bibitem[Ronen et~al.(2017)Ronen, Shamir, Weingarten, and
+  O’Flynn]{cryptoeprint:2016:1047}
+E.~Ronen, A.~Shamir, A.-O. Weingarten, and C.~O’Flynn.
+\newblock Iot goes nuclear: Creating a zigbee chain reaction.
+\newblock In \emph{Security and Privacy (SP), 2017 IEEE Symposium on}, pages
+  195--212. IEEE, 2017.
+
+\bibitem[Katagi and Moriai(2012)]{b5b8db9716:online}
+M.~Katagi and S.~Moriai.
+\newblock Lightweight cryptography for the internet of things.
+\newblock \emph{Sony Corporation}, pages 7--10, 2012.
+
+\bibitem[Neuman et~al.(2005)Neuman, Yu, Hartman, and Raeburn]{RFC4120}
+C.~Neuman, T.~Yu, S.~Hartman, and K.~Raeburn.
+\newblock {The Kerberos Network Authentication Service (V5)}.
+\newblock RFC 4120, RFC Editor, July 2005.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc4120.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc4120.txt}.
+
+\bibitem[Eronen and Tschofenig(2005)]{RFC4279}
+P.~Eronen and H.~Tschofenig.
+\newblock {Pre-Shared Key Ciphersuites for Transport Layer Security (TLS)}.
+\newblock RFC 4279, RFC Editor, December 2005.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc4279.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc4279.txt}.
+
+\bibitem[Montenegro et~al.(2007)Montenegro, Kushalnagar, Hui, and
+  Culler]{RFC4944}
+G.~Montenegro, N.~Kushalnagar, J.~Hui, and D.~Culler.
+\newblock {Transmission of IPv6 Packets over IEEE 802.15.4 Networks}.
+\newblock RFC 4944, RFC Editor, September 2007.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc4944.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc4944.txt}.
+
+\bibitem[Hui and Thubert(2011)]{RFC6282}
+J.~Hui and P.~Thubert.
+\newblock {Compression Format for IPv6 Datagrams over IEEE 802.15.4-Based
+  Networks}.
+\newblock RFC 6282, RFC Editor, September 2011.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc6282.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc6282.txt}.
+
+\bibitem[Raza et~al.(2012)Raza, Trabalza, and Voigt]{6LoWPANC53:online}
+S.~Raza, D.~Trabalza, and T.~Voigt.
+\newblock 6lowpan compressed dtls for coap.
+\newblock In \emph{Distributed Computing in Sensor Systems (DCOSS), 2012 IEEE
+  8th International Conference on}, pages 287--289. IEEE, 2012.
+
+\bibitem[Bormann(2014)]{RFC7400}
+C.~Bormann.
+\newblock {6LoWPAN-GHC: Generic Header Compression for IPv6 over Low-Power
+  Wireless Personal Area Networks (6LoWPANs)}.
+\newblock RFC 7400, RFC Editor, November 2014.
+
+\bibitem[Ayadi et~al.(2010)Ayadi, Ros, and Toutain]{I-D.aayadi-6lowpan-tcphc}
+A.~Ayadi, D.~Ros, and L.~Toutain.
+\newblock {TCP header compression for 6LoWPAN}.
+\newblock Internet-Draft draft-aayadi-6lowpan-tcphc-01, IETF Secretariat,
+  October 2010.
+\newblock URL
+  \url{http://www.ietf.org/internet-drafts/draft-aayadi-6lowpan-tcphc-01.txt}.
+\newblock
+  \url{http://www.ietf.org/internet-drafts/draft-aayadi-6lowpan-tcphc-01.txt}.
+
+\bibitem[Raza et~al.(2013)Raza, Shafagh, Hewage, Hummen, and
+  Voigt]{LitheLig40:online}
+S.~Raza, H.~Shafagh, K.~Hewage, R.~Hummen, and T.~Voigt.
+\newblock Lithe: Lightweight secure coap for the internet of things.
+\newblock \emph{IEEE Sensors Journal}, 13\penalty0 (10):\penalty0 3711--3720,
+  2013.
+
+\bibitem[Bormann and Shelby(2016)]{RFC7959}
+C.~Bormann and Z.~Shelby.
+\newblock {Block-Wise Transfers in the Constrained Application Protocol
+  (CoAP)}.
+\newblock RFC 7959, RFC Editor, August 2016.
+
+\bibitem[Con()]{ContikiT75:online}
+Contiki: The open source operating system for the internet of things.
+\newblock \url{http://www.contiki-os.org/}.
+\newblock (Accessed on 01/03/2018); HTTPS link was not used because it is
+  broken.
+
+\bibitem[Capossele et~al.(2015)Capossele, Cervo, De~Cicco, and
+  Petrioli]{Security5:online}
+A.~Capossele, V.~Cervo, G.~De~Cicco, and C.~Petrioli.
+\newblock Security as a coap resource: an optimized dtls implementation for the
+  iot.
+\newblock In \emph{Communications (ICC), 2015 IEEE International Conference
+  on}, pages 549--554. IEEE, 2015.
+
+\bibitem[Keoh et~al.(2013)Keoh, Kumar, and Shelby]{I-D.keoh-dtls-profile-iot}
+S.~Keoh, S.~Kumar, and Z.~Shelby.
+\newblock {Profiling of DTLS for CoAP-based IoT Applications}.
+\newblock Internet-Draft draft-keoh-dtls-profile-iot-00, IETF Secretariat, June
+  2013.
+\newblock URL
+  \url{http://www.ietf.org/internet-drafts/draft-keoh-dtls-profile-iot-00.txt}.
+\newblock
+  \url{http://www.ietf.org/internet-drafts/draft-keoh-dtls-profile-iot-00.txt}.
+
+\bibitem[Shelby et~al.(2014)Shelby, Hartke, and Bormann]{RFC7252}
+Z.~Shelby, K.~Hartke, and C.~Bormann.
+\newblock The constrained application protocol (coap).
+\newblock RFC 7252, RFC Editor, June 2014.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc7252.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc7252.txt}.
+
+\bibitem[Gura et~al.(2004)Gura, Patel, Wander, Eberle, and
+  Shantz]{Comparin25:Online}
+N.~Gura, A.~Patel, A.~Wander, H.~Eberle, and S.~C. Shantz.
+\newblock Comparing elliptic curve cryptography and rsa on 8-bit cpus.
+\newblock In \emph{CHES}, volume~4, pages 119--132. Springer, 2004.
+
+\bibitem[Ateniese et~al.(2013)Ateniese, Bianchi, Capossele, and
+  Petrioli]{LowcostS87:online}
+G.~Ateniese, G.~Bianchi, A.~Capossele, and C.~Petrioli.
+\newblock Low-cost standard signatures in wireless sensor networks: a case for
+  reviving pre-computation techniques?
+\newblock In \emph{Proceedings of NDSS 2013}, 2013.
+
+\bibitem[Tschofenig and Fossati(2016)]{RFC7925}
+H.~Tschofenig and T.~Fossati.
+\newblock {Transport Layer Security (TLS) / Datagram Transport Layer Security
+  (DTLS) Profiles for the Internet of Things}.
+\newblock RFC 7925, RFC Editor, July 2016.
+
+\bibitem[Simon et~al.(2008)Simon, Aboba, and Hurst]{rfc5216}
+D.~Simon, B.~Aboba, and R.~Hurst.
+\newblock {The EAP-TLS Authentication Protocol}.
+\newblock RFC 5216, RFC Editor, March 2008.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc5216.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc5216.txt}.
+
+\bibitem[Cooper et~al.(2008{\natexlab{b}})Cooper, Santesson, Farrell, Boeyen,
+  Housley, and Polk]{RFCabc}
+D.~Cooper, S.~Santesson, S.~Farrell, S.~Boeyen, R.~Housley, and W.~Polk.
+\newblock {Internet X.509 Public Key Infrastructure Certificate and Certificate
+  Revocation List (CRL) Profile}.
+\newblock RFC 5280, RFC Editor, May 2008{\natexlab{b}}.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc5280.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc5280.txt}.
+
+\bibitem[Santesson and Tschofenig(2016)]{RFC7924}
+S.~Santesson and H.~Tschofenig.
+\newblock {Transport Layer Security (TLS) Cached Information Extension}.
+\newblock RFC 7924, RFC Editor, July 2016.
+
+\bibitem[Santesson et~al.(2013)Santesson, Myers, Ankney, Malpani, Galperin, and
+  Adams]{RFC6960}
+S.~Santesson, M.~Myers, R.~Ankney, A.~Malpani, S.~Galperin, and C.~Adams.
+\newblock {X.509 Internet Public Key Infrastructure Online Certificate Status
+  Protocol - OCSP}.
+\newblock RFC 6960, RFC Editor, June 2013.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc6960.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc6960.txt}.
+
+\bibitem[Eastlake(2011)]{RFC6066}
+D.~Eastlake.
+\newblock {Transport Layer Security (TLS) Extensions: Extension Definitions}.
+\newblock RFC 6066, RFC Editor, January 2011.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc6066.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc6066.txt}.
+
+\bibitem[Sheffer et~al.(2015)Sheffer, Holz, and Saint-Andre]{RFC7525}
+Y.~Sheffer, R.~Holz, and P.~Saint-Andre.
+\newblock {Recommendations for Secure Use of Transport Layer Security (TLS) and
+  Datagram Transport Layer Security (DTLS)}.
+\newblock BCP 195, RFC Editor, May 2015.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc7525.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc7525.txt}.
+
+\bibitem[Tal~Be'ery(2013)]{Microsof72:online}
+A.~S. Tal~Be'ery.
+\newblock {A perfect CRIME? Only TIME will tell}.
+\newblock
+  \url{https://media.blackhat.com/eu-13/briefings/Beery/bh-eu-13-a-perfect-crime-beery-wp.pdf},
+  2013.
+\newblock (Accessed on 01/04/2018).
+
+\bibitem[Seggelmann et~al.(2012)Seggelmann, Tuexen, and Williams]{RFC6520}
+R.~Seggelmann, M.~Tuexen, and M.~Williams.
+\newblock {Transport Layer Security (TLS) and Datagram Transport Layer Security
+  (DTLS) Heartbeat Extension}.
+\newblock RFC 6520, RFC Editor, February 2012.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc6520.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc6520.txt}.
+
+\bibitem[Eastlake et~al.(2005)Eastlake, Schiller, and Crocker]{rfc4086}
+D.~Eastlake, J.~Schiller, and S.~Crocker.
+\newblock {Randomness Requirements for Security}.
+\newblock BCP 106, RFC Editor, June 2005.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc4086.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc4086.txt}.
+
+\bibitem[Gutmann(2014)]{RFC7366}
+P.~Gutmann.
+\newblock {Encrypt-then-MAC for Transport Layer Security (TLS) and Datagram
+  Transport Layer Security (DTLS)}.
+\newblock RFC 7366, RFC Editor, September 2014.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc7366.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc7366.txt}.
+
+\bibitem[Bhargavan et~al.(2015)Bhargavan, Delignat-Lavaud, Pironti, Langley,
+  and Ray]{RFC7627}
+K.~Bhargavan, A.~Delignat-Lavaud, A.~Pironti, A.~Langley, and M.~Ray.
+\newblock {Transport Layer Security (TLS) Session Hash and Extended Master
+  Secret Extension}.
+\newblock RFC 7627, RFC Editor, September 2015.
+
+\bibitem[Bhargavan et~al.(2014)Bhargavan, Lavaud, Fournet, Pironti, and
+  Strub]{TripleHa89:online}
+K.~Bhargavan, A.~D. Lavaud, C.~Fournet, A.~Pironti, and P.~Y. Strub.
+\newblock Triple handshakes and cookie cutters: Breaking and fixing
+  authentication over tls.
+\newblock In \emph{Security and Privacy (SP), 2014 IEEE Symposium on}, pages
+  98--113. IEEE, 2014.
+
+\bibitem[Rescorla et~al.(2010)Rescorla, Ray, Dispensa, and Oskov]{RFC5746}
+E.~Rescorla, M.~Ray, S.~Dispensa, and N.~Oskov.
+\newblock {Transport Layer Security (TLS) Renegotiation Indication Extension}.
+\newblock RFC 5746, RFC Editor, February 2010.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc5746.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc5746.txt}.
+
+\bibitem[Popov(2015)]{RFC7465}
+A.~Popov.
+\newblock {Prohibiting RC4 Cipher Suites}.
+\newblock RFC 7465, RFC Editor, February 2015.
+\newblock URL \url{http://www.rfc-editor.org/rfc/rfc7465.txt}.
+\newblock \url{http://www.rfc-editor.org/rfc/rfc7465.txt}.
+
+\bibitem[Ope(2017)]{OpenMobi29:online}
+{LightweightM2M V1.0 Overview}, 2017.
+\newblock URL
+  \url{http://www.openmobilealliance.org/wp/Overviews/lightweightm2m_overview.htm}.
+\newblock (Accessed on 12/30/2017).
+
+\bibitem[Moran et~al.(2017)Moran, Meriac, and
+  Tschofenig]{I-D.moran-suit-architecture}
+B.~Moran, M.~Meriac, and H.~Tschofenig.
+\newblock {A Firmware Update Architecture for Internet of Things Devices}.
+\newblock Internet-Draft draft-moran-suit-architecture-00, IETF Secretariat,
+  October 2017.
+\newblock URL
+  \url{http://www.ietf.org/internet-drafts/draft-moran-suit-architecture-00.txt}.
+\newblock
+  \url{http://www.ietf.org/internet-drafts/draft-moran-suit-architecture-00.txt}.
+
+\bibitem[IANA()]{IANA_ciphers_list:online}
+IANA.
+\newblock Transport layer security (tls) parameters.
+\newblock
+  \url{https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml}.
+\newblock (Accessed on 08/20/2018).
+
+\bibitem[mbe()]{mbedTLS_ciphers_list:online}
+Supported ssl / tls ciphersuites - mbedtls.
+\newblock \url{https://tls.mbed.org/supported-ssl-ciphersuites}.
+\newblock (Accessed on 08/20/2018).
+
+\bibitem[Terpstra et~al.(2010)Terpstra, Jagode, You, and
+  Dongarra]{dongarra2001using}
+D.~Terpstra, H.~Jagode, H.~You, and J.~Dongarra.
+\newblock Collecting performance data with papi-c.
+\newblock In \emph{Tools for High Performance Computing 2009}, pages 157--173.
+  Springer, 2010.
+
+\bibitem[cac()]{cachegrind_source:online}
+globalconfig.cpp source file.
+\newblock
+  \url{https://api.kde.org/4.14-api/kdesdk-apidocs/kcachegrind/html/globalconfig_8cpp_source.html#l00073}.
+\newblock (Accessed on 08/22/2018).
+
+\bibitem[Charles et~al.(2009)Charles, Jassi, Ananth, Sadat, and
+  Fedorova]{charles2009evaluation}
+J.~Charles, P.~Jassi, N.~S. Ananth, A.~Sadat, and A.~Fedorova.
+\newblock {Evaluation of the Intel{\textregistered} Core™ i7 Turbo Boost
+  feature}.
+\newblock In \emph{2009 IEEE International Symposium on Workload
+  Characterization (IISWC)}, pages 188--197. IEEE, 2009.
+
+\bibitem[ilu({\natexlab{a}})]{iluxonch23:online}
+Callgrind cpu cycles counter.
+\newblock \url{https://github.com/iluxonchik/callgrind-cpu-cycles-counter},
+  {\natexlab{a}}.
+\newblock (Accessed on 10/14/2018).
+
+\bibitem[ilu({\natexlab{b}})]{iluxonch67:online}
+Profile and collect papi metrics.
+\newblock \url{https://github.com/iluxonchik/python-papi-profiler},
+  {\natexlab{b}}.
+\newblock (Accessed on 04/22/2019).
+
+\bibitem[ilu({\natexlab{c}})]{iluxonch73:online}
+Unique encryption ciphersuites.
+\newblock
+  \url{https://github.com/iluxonchik/mbedtls-unique-encryption-ciphersuites},
+  {\natexlab{c}}.
+\newblock (Accessed on 10/14/2018).
+
+\bibitem[ilu({\natexlab{d}})]{iluxonch44:online}
+Callgrind profiling data analyzer.
+\newblock \url{https://github.com/iluxonchik/profiling-data-analyzer},
+  {\natexlab{d}}.
+\newblock (Accessed on 10/14/2018).
+
+\bibitem[ilu({\natexlab{e}})]{iluxonch24:online}
+Mbedtls code used for valgrind and papi profilings.
+\newblock \url{https://github.com/iluxonchik/mbed-tls-playground},
+  {\natexlab{e}}.
+\newblock (Accessed on 04/22/2019).
+
+\bibitem[Nadeem and Javed(2005)]{nadeem2005performance}
+A.~Nadeem and M.~Y. Javed.
+\newblock A performance comparison of data encryption algorithms.
+\newblock In \emph{Information and communication technologies, 2005. ICICT
+  2005. First international conference on}, pages 84--89. IEEE, 2005.
+
+\bibitem[Mathew and Jacob(2010)]{mathew2010performance}
+S.~Mathew and K.~P. Jacob.
+\newblock Performance evaluation of popular hash functions.
+\newblock \emph{World Academy of Science, Engineering and Technology},
+  61:\penalty0 449--452, 2010.
+
+\bibitem[Lenstra(2004)]{lenstra2004key}
+A.~K. Lenstra.
+\newblock Key length. contribution to the handbook of information security.
+\newblock 2004.
+
+\bibitem[Moriarty et~al.(2016)Moriarty, Kaliski, Jonsson, and Rusch]{RFC8017}
+K.~Moriarty, B.~Kaliski, J.~Jonsson, and A.~Rusch.
+\newblock {PKCS \#1: RSA Cryptography Specifications Version 2.2}.
+\newblock RFC 8017, RFC Editor, November 2016.
+
+\bibitem[Pornin(2013)]{RFC6979}
+T.~Pornin.
+\newblock {Deterministic Usage of the Digital Signature Algorithm (DSA) and
+  Elliptic Curve Digital Signature Algorithm (ECDSA)}.
+\newblock RFC 6979, Aug. 2013.
+\newblock URL \url{https://rfc-editor.org/rfc/rfc6979.txt}.
+
+\bibitem[Goo()]{GoogleIn11:online}
+Google internet authority g2 – google.
+\newblock \url{https://pki.google.com/}.
+\newblock (Accessed on 09/05/2018).
+
+\bibitem[Bro()]{BrowserS4:online}
+Browser statistics.
+\newblock \url{https://www.w3schools.com/browsers/}.
+\newblock (Accessed on 09/08/2018).
+
+\bibitem[Boneh and Shacham(2002)]{boneh2002fast}
+D.~Boneh and H.~Shacham.
+\newblock Fast variants of rsa.
+\newblock \emph{CryptoBytes}, 5\penalty0 (1):\penalty0 1--9, 2002.
+
+\bibitem[Muir(2006)]{muir2006seifert}
+J.~A. Muir.
+\newblock Seifert’s rsa fault attack: Simplified analysis and
+  generalizations.
+\newblock In \emph{International Conference on Information and Communications
+  Security}, pages 420--434. Springer, 2006.
+
+\bibitem[Jonsson and Kaliski(2003)]{RFC3447}
+J.~Jonsson and B.~Kaliski.
+\newblock {Public-Key Cryptography Standards (PKCS) \#1: RSA Cryptography
+  Specifications Version 2.1}.
+\newblock RFC 3447, Feb. 2003.
+\newblock URL \url{https://rfc-editor.org/rfc/rfc3447.txt}.
+
+\bibitem[Ertaul et~al.(2016)Ertaul, Mudan, and Sarfaraz]{ertaul2016performance}
+L.~Ertaul, A.~Mudan, and N.~Sarfaraz.
+\newblock Performance comparison of aes-ccm and aes-gcm authenticated
+  encryption modes.
+\newblock In \emph{Proceedings of the International Conference on Security and
+  Management (SAM)}, page 331. The Steering Committee of The World Congress in
+  Computer Science, Computer Engineering and Applied Computing (WorldComp),
+  2016.
+
+\bibitem[Yadin(2016)]{yadin2016computer}
+A.~Yadin.
+\newblock \emph{Computer Systems Architecture}, page 119.
+\newblock Chapman \& Hall/CRC Textbooks in Computing. Taylor \& Francis, 2016.
+\newblock ISBN 9781482231069.
+\newblock URL \url{https://books.google.pt/books?id=yMDBDAAAQBAJ}.
 
 \end{thebibliography}

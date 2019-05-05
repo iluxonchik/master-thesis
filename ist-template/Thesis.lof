@@ -1,14 +1,54 @@
 \babel@toc {english}{}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces TLS Record header}}{11}{figure.2.1}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces TLS (Sub)protocols and Layers}}{11}{figure.2.2}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces \gls {tls} $1.2$ message flow for a full handshake}}{12}{figure.2.3}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces DTLS handshake with HelloVerifyRequest containing the cookie}}{13}{figure.2.4}
+\contentsline {figure}{\numberline {2.5}{\ignorespaces TLS 1.2 Record Processing}}{16}{figure.2.5}
+\contentsline {figure}{\numberline {2.6}{\ignorespaces IPv6 Next Header Compression}}{24}{figure.2.6}
+\contentsline {figure}{\numberline {2.7}{\ignorespaces LOWPAN\_NHC\_RHS structure}}{24}{figure.2.7}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces How Valgrind works}}{33}{figure.3.1}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Client handshake cost for all of the $161$ ciphersuites}}{39}{figure.3.2}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Server handshake cost for all of the $161$ ciphersuites}}{40}{figure.3.3}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces RSA and ECDSA operations cost for normal security level}}{44}{figure.3.4}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces RSA operations costs for all security levels (logarithmic scale)}}{46}{figure.3.5}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Relative increase of RSA operation costs}}{47}{figure.3.6}
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Ratio between the most and the least costly operation for RSA and ECDSA}}{47}{figure.3.7}
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Relative increase of ECDSA operations cost}}{48}{figure.3.8}
+\contentsline {figure}{\numberline {3.9}{\ignorespaces ECDSA costs for all security levels}}{49}{figure.3.9}
+\contentsline {figure}{\numberline {3.10}{\ignorespaces RSA and ECDSA cost comparison}}{50}{figure.3.10}
+\contentsline {figure}{\numberline {3.11}{\ignorespaces Client authentication cost (logarithmic scale)}}{51}{figure.3.11}
+\contentsline {figure}{\numberline {3.12}{\ignorespaces Server authentication cost (logarithmic scale)}}{52}{figure.3.12}
+\contentsline {figure}{\numberline {3.13}{\ignorespaces ECDH and DH operations cost for normal security level}}{55}{figure.3.13}
+\contentsline {figure}{\numberline {3.14}{\ignorespaces ECDH operations costs for all security levels}}{56}{figure.3.14}
+\contentsline {figure}{\numberline {3.15}{\ignorespaces Relative increase of ECDH and DH operation costs}}{57}{figure.3.15}
+\contentsline {figure}{\numberline {3.16}{\ignorespaces DH operations costs for all security levels (logarithmic scale)}}{58}{figure.3.16}
+\contentsline {figure}{\numberline {3.17}{\ignorespaces ECDH and DH cost comparison (logarithmic scale)}}{59}{figure.3.17}
+\contentsline {figure}{\numberline {3.18}{\ignorespaces \gls {pfs} and \textit {ECDH} key exchange costs (logarithmic scale)}}{61}{figure.3.18}
+\contentsline {figure}{\numberline {3.19}{\ignorespaces Client handshake costs for all security levels}}{63}{figure.3.19}
+\contentsline {figure}{\numberline {3.20}{\ignorespaces Server handshake costs for all security levels}}{64}{figure.3.20}
+\contentsline {figure}{\numberline {3.21}{\ignorespaces \textbf {low} security level decision tree for the cheapest key exchange}}{66}{figure.3.21}
+\contentsline {figure}{\numberline {3.22}{\ignorespaces \textbf {normal} security level decision tree for the cheapest key exchange}}{66}{figure.3.22}
+\contentsline {figure}{\numberline {3.23}{\ignorespaces \textbf {high} security level decision tree for the cheapest key exchange}}{67}{figure.3.23}
+\contentsline {figure}{\numberline {3.24}{\ignorespaces \textbf {very high} security level decision tree for the cheapest key exchange}}{67}{figure.3.24}
+\contentsline {figure}{\numberline {3.25}{\ignorespaces Confidentiality and integrity cost with different algorithms}}{69}{figure.3.25}
+\contentsline {figure}{\numberline {3.26}{\ignorespaces Client handshake vs confidentiality cost for the \textbf {low} security level}}{71}{figure.3.26}
+\contentsline {figure}{\numberline {3.27}{\ignorespaces Client handshake vs confidentiality cost for the \textbf {normal} security level}}{71}{figure.3.27}
+\contentsline {figure}{\numberline {3.28}{\ignorespaces Client handshake vs confidentiality cost for the \textbf {high} security level}}{72}{figure.3.28}
+\contentsline {figure}{\numberline {3.29}{\ignorespaces Server handshake vs confidentiality cost for the \textbf {low} security level}}{72}{figure.3.29}
+\contentsline {figure}{\numberline {3.30}{\ignorespaces Server handshake vs confidentiality cost for the \textbf {normal} security level}}{73}{figure.3.30}
+\contentsline {figure}{\numberline {3.31}{\ignorespaces Server handshake vs confidentiality cost for the \textbf {high} security level}}{73}{figure.3.31}
+\contentsline {figure}{\numberline {3.32}{\ignorespaces Client handshake cost in microseconds for all security levels (logarithmic scale)}}{74}{figure.3.32}
+\contentsline {figure}{\numberline {3.33}{\ignorespaces Server handshake cost in microseconds for all security levels (logarithmic scale)}}{75}{figure.3.33}
+\contentsline {figure}{\numberline {3.34}{\ignorespaces Ratio of time taken between a set of related operations for \gls {papi} and \textit {callgrind} (logarithmic scale)}}{75}{figure.3.34}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Caption for figure in TOC.}}{9}{figure.4.1}
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Some aircrafts.}}{10}{figure.4.2}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Airbus A320}}}{10}{figure.4.2}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Bombardier CRJ200}}}{10}{figure.4.2}
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Schematic of some algorithm.}}{10}{figure.4.3}
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Figure and table side-by-side.}}{13}{figure.4.4}
-\addvspace {10\p@ }
-\addvspace {10\p@ }
-\addvspace {10\p@ }
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Authentication cost for the client in microseconds (logarithmic scale)}}{95}{figure.A.1}
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Authentication cost for the server in microseconds (logarithmic scale)}}{96}{figure.A.2}
+\contentsline {figure}{\numberline {A.3}{\ignorespaces ECDSA signature creation and verification costs in microseconds}}{96}{figure.A.3}
+\contentsline {figure}{\numberline {A.4}{\ignorespaces RSA signature creation and verification costs in microseconds (logarithmic scale)}}{97}{figure.A.4}
+\contentsline {figure}{\numberline {A.5}{\ignorespaces RSA encryption and decryption costs in microseconds (logarithmic scale)}}{97}{figure.A.5}
+\contentsline {figure}{\numberline {A.6}{\ignorespaces ECDH keypair and shared secret generation costs in microseconds (logarithmic scale)}}{98}{figure.A.6}
+\contentsline {figure}{\numberline {A.7}{\ignorespaces DH keypair and shared secret generation costs in microseconds (logarithmic scale)}}{98}{figure.A.7}

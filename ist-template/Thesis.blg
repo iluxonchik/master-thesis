@@ -4,13 +4,6 @@ The top-level auxiliary file: Thesis.aux
 The style file: abbrvunsrtnat.bst
 Database file #1: tls_for_iot.bib
 Database file #2: papers.bib
-Warning--I didn't find a database entry for "jameson:adjointns"
-Warning--I didn't find a database entry for "nocedal:opt"
-Warning--I didn't find a database entry for "marta:ijcfd"
-Warning--I didn't find a database entry for "marta:ijcfd1"
-Warning--I didn't find a database entry for "marta:ijcfd2"
-Warning--I didn't find a database entry for "marta:ijcfd3"
-Warning--I didn't find a database entry for "marta:ijcfd4"
 Warning--empty year in IoTnumb83:online
 Warning--empty journal in sec17ant94:online
 Warning--empty year in Mergepul65:online
@@ -20,45 +13,59 @@ Warning--empty year in sslserve89:onelin
 Warning--empty year in updatete23:online
 Warning--empty year in SSLLibra13:online
 Warning--empty year in QualysSS90:online
-You've used 14 entries,
+Warning--empty journal in Kryptogr1:online
+Warning--empty journal in Stateoft96:online
+Warning--empty year in ContikiT75:online
+Warning--empty year in IANA_ciphers_list:online
+Warning--empty year in mbedTLS_ciphers_list:online
+Warning--empty year in cachegrind_source:online
+Warning--empty year in iluxonch23:online
+Warning--empty year in iluxonch67:online
+Warning--empty year in iluxonch73:online
+Warning--empty year in iluxonch44:online
+Warning--empty year in iluxonch24:online
+Warning--empty journal in lenstra2004key
+Warning--empty year in GoogleIn11:online
+Warning--empty year in BrowserS4:online
+You've used 87 entries,
             2481 wiz_defined-function locations,
-            643 strings with 7018 characters,
-and the built_in function-call counts, 3927 in all, are:
-= -- 331
-> -- 149
-< -- 4
-+ -- 74
-- -- 46
-* -- 257
-:= -- 552
-add.period$ -- 46
-call.type$ -- 14
-change.case$ -- 28
-chr.to.int$ -- 14
-cite$ -- 32
-duplicate$ -- 207
-empty$ -- 429
-format.name$ -- 51
-if$ -- 867
-int.to.chr$ -- 1
-int.to.str$ -- 15
-missing$ -- 2
-newline$ -- 82
-num.names$ -- 15
-pop$ -- 180
+            1087 strings with 21441 characters,
+and the built_in function-call counts, 29200 in all, are:
+= -- 2608
+> -- 1425
+< -- 83
++ -- 598
+- -- 418
+* -- 2099
+:= -- 4640
+add.period$ -- 345
+call.type$ -- 87
+change.case$ -- 173
+chr.to.int$ -- 81
+cite$ -- 130
+duplicate$ -- 1510
+empty$ -- 2561
+format.name$ -- 515
+if$ -- 6275
+int.to.chr$ -- 7
+int.to.str$ -- 88
+missing$ -- 24
+newline$ -- 515
+num.names$ -- 201
+pop$ -- 785
 preamble$ -- 1
-purify$ -- 14
+purify$ -- 87
 quote$ -- 0
-skip$ -- 120
+skip$ -- 869
 stack$ -- 0
-substring$ -- 68
-swap$ -- 30
-text.length$ -- 2
+substring$ -- 632
+swap$ -- 338
+text.length$ -- 53
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 98
-warning$ -- 9
-while$ -- 12
+type$ -- 606
+warning$ -- 23
+while$ -- 177
 width$ -- 0
-write$ -- 177
-(There were 16 warnings)
+write$ -- 1246
+(There were 23 warnings)

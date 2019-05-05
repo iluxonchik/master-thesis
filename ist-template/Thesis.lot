@@ -1,13 +1,39 @@
 \babel@toc {english}{}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces Key exchange methods and security properties}}{18}{table.2.1}
+\contentsline {table}{\numberline {2.2}{\ignorespaces A summary of the differences between ultra-lightweight and IoT crypto}}{23}{table.2.2}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Local machine's characteristics}}{34}{table.3.1}
+\contentsline {table}{\numberline {3.2}{\ignorespaces Comparable symmetric and asymmetric key sizes (in bits)}}{37}{table.3.2}
+\contentsline {table}{\numberline {3.3}{\ignorespaces Security levels used in evaluation}}{38}{table.3.3}
+\contentsline {table}{\numberline {3.4}{\ignorespaces Security levels configuration}}{39}{table.3.4}
+\contentsline {table}{\numberline {3.5}{\ignorespaces Average handshake cost for the client in millions CPU cycles}}{40}{table.3.5}
+\contentsline {table}{\numberline {3.6}{\ignorespaces Average Handshake cost for the server in millions CPU cycles}}{40}{table.3.6}
+\contentsline {table}{\numberline {3.7}{\ignorespaces Cost of \gls {prf} and \textit {Finished} message}}{44}{table.3.7}
+\contentsline {table}{\numberline {3.8}{\ignorespaces Cost of using \textit {PKCS\#1 V2.1 RSAES-PKCS1-v1\_5} encryption and decryption schemes with various security levels}}{53}{table.3.8}
+\contentsline {table}{\numberline {3.9}{\ignorespaces Number of ciphersuites per key exchange method in \textit {mbedTLS 2.7.0}}}{62}{table.3.9}
+\contentsline {table}{\numberline {3.10}{\ignorespaces Security services offered by each key exchange}}{64}{table.3.10}
+\contentsline {table}{\numberline {3.11}{\ignorespaces Additional costs of parsing the certificate}}{68}{table.3.11}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces Table caption shown in TOC.}}{11}{table.4.1}
-\contentsline {table}{\numberline {4.2}{\ignorespaces Memory usage comparison (in MB).}}{12}{table.4.2}
-\contentsline {table}{\numberline {4.3}{\ignorespaces Another table caption.}}{12}{table.4.3}
-\contentsline {table}{\numberline {4.4}{\ignorespaces Yet another table caption.}}{12}{table.4.4}
-\contentsline {table}{\numberline {4.5}{\ignorespaces Very wide table.}}{12}{table.4.5}
-\addvspace {10\p@ }
-\addvspace {10\p@ }
-\addvspace {10\p@ }
+\contentsline {table}{\numberline {A.1}{\ignorespaces RSA and ECDSA signature creation and verification costs in number of CPU cycles. Numbers in parenthesis is the standard deviation}}{89}{table.A.1}
+\contentsline {table}{\numberline {A.2}{\ignorespaces RSA and ECDSA costs of signature creation + signature verification in number of CPU cycles}}{90}{table.A.2}
+\contentsline {table}{\numberline {A.3}{\ignorespaces Absolute increase of RSA operation costs from previous security level in number of CPU cycles}}{90}{table.A.3}
+\contentsline {table}{\numberline {A.4}{\ignorespaces Absolute increase of ECDSA operations cost from previous security level in number of CPU cycles}}{90}{table.A.4}
+\contentsline {table}{\numberline {A.5}{\ignorespaces Client authentication costs for all ciphersuites and security levels in number of CPU cycles}}{90}{table.A.5}
+\contentsline {table}{\numberline {A.6}{\ignorespaces Server authentication costs for all ciphersuites and security levels in number of CPU cycles}}{91}{table.A.6}
+\contentsline {table}{\numberline {A.7}{\ignorespaces ECDH and DH costs for all security levels in number of CPU cycles. Numbers in parenthesis are the standard deviation.}}{91}{table.A.7}
+\contentsline {table}{\numberline {A.8}{\ignorespaces ECDH and DH costs of the sum of keypair and shared secret generation in number of CPU cycles}}{91}{table.A.8}
+\contentsline {table}{\numberline {A.9}{\ignorespaces Absolute increase of ECDH operation costs from previous security level in number of CPU cycles}}{91}{table.A.9}
+\contentsline {table}{\numberline {A.10}{\ignorespaces Absolute increase of DH operation costs from previous security level in number of CPU cycles}}{91}{table.A.10}
+\contentsline {table}{\numberline {A.11}{\ignorespaces \gls {pfs} and \textit {ECDH} key exchange cost for the client in number of CPU cycles}}{92}{table.A.11}
+\contentsline {table}{\numberline {A.12}{\ignorespaces \gls {pfs} and \textit {ECDH} key exchange cost for the server in number of CPU cycles}}{92}{table.A.12}
+\contentsline {table}{\numberline {A.13}{\ignorespaces Handshake costs for the client in number of CPU cycles. Numbers in parenthesis are the standard deviation}}{92}{table.A.13}
+\contentsline {table}{\numberline {A.14}{\ignorespaces Handshake costs for the server in number of CPU cycles. Numbers in parenthesis are the standard deviation}}{93}{table.A.14}
+\contentsline {table}{\numberline {A.15}{\ignorespaces RSA and ECDSA signature creation and verification costs in microseconds. Numbers in parenthesis is the standard deviation}}{93}{table.A.15}
+\contentsline {table}{\numberline {A.16}{\ignorespaces Client authentication costs for all ciphersuites and security levels in microseconds}}{93}{table.A.16}
+\contentsline {table}{\numberline {A.17}{\ignorespaces Server authentication costs for all ciphersuites and security levels in microseconds}}{94}{table.A.17}
+\contentsline {table}{\numberline {A.18}{\ignorespaces ECDH and DH costs for all security levels in microseconds. Numbers in parenthesis are the standard deviation}}{94}{table.A.18}
+\contentsline {table}{\numberline {A.19}{\ignorespaces Handshake costs for the client in microseconds. Numbers in parenthesis are the standard deviation}}{94}{table.A.19}
+\contentsline {table}{\numberline {A.20}{\ignorespaces Handshake costs for the server in microseconds. Numbers in parenthesis are the standard deviation}}{95}{table.A.20}

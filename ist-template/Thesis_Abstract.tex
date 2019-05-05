@@ -13,9 +13,19 @@
 % Add entry in the table of contents as section
 \addcontentsline{toc}{section}{Abstract}
 
-Insert your abstract here with a maximum of 250 words, followed by 4 to 6 keywords...
+\gls{tls} is one of the most used communication security protocols in the world. It comes with many configurations. 
+Each configuration offers a set o security services, which has an implication on the 
+security level and computational cost.
+Not all of those configurations can be used with the resource constrained \gls{iot} devices, due to the
+high computational and memory demands. Most of the existing work focuses on \gls{dtls}
+and cannot be easily integrated with existing deployments. Existing work fails
+to evaluate the cost of various \gls{tls} configurations and its security services.
+This work focuses on cost analysis of the security services of the TLS protocol.
+We evaluate the number of CPU cycles used and time taken by each \gls{tls} configuration
+and security service. Software developers can use this information
+to make security/cost trade-offs based on the environment needs and limitations.  
 
 \vfill
 
-\textbf{\Large Keywords:} keyword1, keyword2,...
+\textbf{\Large Keywords:} TLS, DTLS, SSL, IoT, lightweight cryptograpy
 

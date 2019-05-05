@@ -11,19 +11,49 @@
 \chapter{Conclusions}
 \label{chapter:conclusions}
 
-Insert your chapter material here...
+The lack of security in \gls{iot} is a serious issue that can lead to a high monetary costs,
+especially when botnets infect the devices. Recent
+attacks clearly show that serious damage can be caused \cite{sec17ant94:online}. An old saying attributed to the
+\gls{nsa} states that "Attacks always get better; they never get worse".
+Combined with the fact that the number of \gls{iot} devices is growing at a high
+pace, without any major improvements to their security, makes it clear
+that it is fundamental for this issue to be addressed.
 
+\gls{tls} is one of the most used communication security protocols in the world. It offers the
+security services of authentication, confidentiality, privacy, integrity, replay
+protection and perfect forward secrecy. It is not a requirement to use all of
+those services for every TLS connection. The protocol is similar to
+a framework, in the sense that you can enable some of the security
+services on a per-connection basis.
 
-% ----------------------------------------------------------------------
-\section{Achievements}
-\label{section:achievements}
+While \gls{tls} does have many configurations, not all of them can be used with the \gls{iot},
+due to the constrained nature of the devices. In many cases it is necessary to make security/cost
+trade-offs. In order to be able to make them, it is important to know the costs of each security
+service. Current work offers no such information. Thus, a software developer wishing to use \gls{tls}
+for connection security in a constrained environment does not have a reference to go to.
 
-The major achievements of the present work...
+In our work, we decomposed \gls{tls} into individual parts and evaluated the cost of each security service.
+We have evaluated the cost of every \gls{tls} configuration available in \textit{mbedTLS 2.7.0} and the underlying
+algorithms. The herein presented results can be used to make informed decisions about the security/cost trade-offs,
+specific to the environment.
 
+First, we did a thorough analysis of \gls{tls}, by analyzing the number of estimated CPU cycles obtained with \textit{callgrind}.
+After that, we showed that the estimates are close to the real values, by comparing them to the time metrics obtained directly from
+the processor's registers. The results presented here were obtained on a powerful, modern-day computer. Despite that, they are still
+relevant when considering the costs on constrained \gls{iot} devices. While on a different device, the absolute cost 
+numbers will be different, they would still maintain a similar proportion one to another and follow a similar trend.
+Moreover, the developed tooling can be used to obtain profiling results on any machine, thus giving device-specific 
+cost information. The formula used to obtain the CPU cycle count estimate can also be changed to one's needs.
 
-% ----------------------------------------------------------------------
-\section{Future Work}
-\label{section:future}
+\subsubsection{Future Work}
 
-A few ideas for future work...
+In our work we obtained and analyzed a large number of metrics obtained with \textit{callgrind}. While \textit{callgrind}
+provides only an estiamtes of the CPU cycles used, we later showed  that they reflect real values by comparing them with the
+time results obtained with \gls{papi}. However, it is important to remember that those mertics were obtained on a general-purpose
+computer. While we fixed the CPU frequency and disabled some hardware optimizations, the environment on an \gls{iot} device is still
+expected to be very different, due factors such as a lower clock frequency, memory and cache size. Thus, it would be interesting to 
+measure time on an gls{iot} device, since the results will differ.
 
+Another characteristic of numerous \gls{iot} devices is limited power (\textit{e.g.} using battery as a power source). 
+Thus, it would be interesting analyze the cost of \gls{tls} in terms of power usage. This would also allow to reach 
+interesting conclusions, such as: \textit{Using the TLS configuration X would reduce the device's battery life by Y days}.

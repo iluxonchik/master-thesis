@@ -11,7 +11,14 @@
 \chapter{Results}
 \label{chapter:results}
 
-\section{Methodology}
+This chapter presents the obtained results, their analysis and the environment in which those results were obtained.
+We will begin with the description of \textit{how} we obtained the data and the limitations of our approach in Section
+\ref{sec:methodology}. After that, in Section \ref{sec:results} we will present and analyze the costs of the \gls{tls} protocol as a whole 
+and its individual constituents. The section will begin with a study of the estimated number of CPU cycles obtained with \textit{vallgrind}/\textit{callgrind},
+after which we will present the time metrics obtained with \gls{papi}. The comparison that follows will show that the estimates
+reflect the real values.
+
+\section{Methodology} \label{sec:methodology}
 
 In (D)\gls{tls} the key the authentication algorithm, the encryption algorithm, the
 data integrity algorithm, as well as the associated key sizes for each are all defined in a \textit{ciphersuite}.
@@ -63,7 +70,9 @@ and the real values showed that they are proportional one to another.
 analyze the costs of \gls{tls} at both, high and low levels. After that, we studied the costs obtained by reading
 the relevant counters directly from the processor and showed that they are proportional to the estimated ones.
 
-In the next section we will analyze the evaluated metrics in detail, as well as describe their limitations.
+In Section \ref{sec:eval-metrics-and-lims} we will analyze the evaluated metrics in detail, as well as describe their limitations.
+As a part of this work, we developed automated tooling to assist us in the collection and analysis of the results. Those
+tools are described in Section \ref{sec:developed-tools}.
 
 \subsection{Evaluated Metrics and Limitations} \label{sec:eval-metrics-and-lims}
 
@@ -182,7 +191,7 @@ and device-specific CPU cycle estimation. The same is true for \gls{papi}. In th
 to collect the metrics presented in this work. It is possible to use those tools in a local environment to 
 automate metric collection.
 
-\subsection{Developed Tools}
+\subsection{Developed Tools} \label{sec:developed-tools}
 
 \textit{mbedTLS 2.7.0} provides numerous possible configurations for a \gls{tls} connection. It would be unfeasible to
 perform a thorough and precise evaluation of its \gls{tls} implementation manually. For this reason, we developed a set
@@ -212,7 +221,7 @@ executables were developed \cite{iluxonch24:online}. Each executable accepts two
 peer. This set up allowed us to profile the costs of all security services for each one of the ciphersuites.
    \cite{iluxonch24:online}
 
-\section{Results and Data Analysis}
+\section{Results and Data Analysis} \label{sec:results}
 
 The \gls{tlsd} protocol consists of two sub-protocols: the Handshake protocol and the Record protocol.
 During the Handshake protocol, the peers authenticate one to another, agree on the data encryption and integrity
@@ -397,13 +406,13 @@ configurations.
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/hs_cost_cli.png}
-  \centering \caption{\label{fig:hs-all-ciphers-cli} Client handshake cost for all of the $161$ ciphersuites}
+  \centering \caption{\label{fig:hs-all-ciphers-cli} Client handshake cost in number of CPU cycles for all of the $161$ ciphersuites}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/hs_cost_srv.png}
-  \centering \caption{\label{fig:hs-all-ciphers-srv} Server handshake cost for all of the $161$ ciphersuites}
+  \centering \caption{\label{fig:hs-all-ciphers-srv} Server handshake cost in number of CPU cycles for all of the $161$ ciphersuites}
 \end{figure}
 
 Figures \ref{fig:hs-all-ciphers-cli} and \ref{fig:hs-all-ciphers-srv} depict a graph with the Handshake cost of each one
@@ -1359,11 +1368,13 @@ messages, namely the \textit{ServerKeyExchange} and the \textit{ClientKeyExchang
 
 \subsection{Confidentiality and Integrity Cost Analysis} \label{sec:confid-costs}
 
-Having analyzed the cost of authentication and \gls{pfs}, we will now briefly analyze the cost of the confidentiality and integrity services.
-In \gls{tls}, it does not make sense to analyze both of the services separately, since they're offered as a whole as a part of the ciphersuite.
-For this reason, we will analyze them together.
+Having analyzed the cost of authentication and \gls{pfs}, we will now analyze the cost of the confidentiality and integrity services.
+In \gls{tls}, it does not make sense to analyze these services separately, since they're offered as a whole as a part of the ciphersuite.
+For this reason, we will analyze them together. While the establishment of a secure communication channel between two peers is known as the
+Handhsake phase, the posterior use of that channel to exchange data under the guarantees of confidentiality and integrity (if applicable to the ciphersuite) 
+is known as the Record phase.
 
-In \textit{mbedTLS 2.7.0} implements $13$ non-null unique encryption algorithms and $4$ unique hash functions. There are $6$ \textit{AES} 
+\textit{mbedTLS 2.7.0} implements $13$ non-null unique encryption algorithms and $4$ unique hash functions. There are $6$ \textit{AES} 
 algorithms, $4$ \textit{CAMELLIA} algorithms,
 $1$ \textit{DES} algorithm, $1$ \textit{3DES} algorithm and $1$ \textit{RC4} algorithm. The $4$ available hash functions are \textit{SHA-1}, 
 \textit{SHA-256}, \textit{SHA-384} and \textit{MD5}.
@@ -1373,8 +1384,8 @@ to use an additional hash function.
 
 \begin{figure}
   \centering
-  \includegraphics[width=1.0\textwidth]{img/sym_algs_cc.png}
-  \centering \caption{\label{fig:symm-encr-all} Confidentiality and integrity cost with different algorithms}
+  \includegraphics[width=1.0\textwidth]{img/sym_algs_cc2.png}
+  \centering \caption{\label{fig:symm-encr-all} Confidentiality and integrity cost with different algorithms in estimated number of CPU cycles}
 \end{figure}
 
 Figure \ref{fig:symm-encr-all} shows the cost of encryption and \gls{mac} creation using each one of the $26$ symmetric encryption 
@@ -1382,75 +1393,93 @@ algorithm/hash function pairs available in \textit{mbedTLS 2.7.0}. As expected, 
 An analysis of the graph shows that \textit{3DES} with \textit{SHA} is the most costly combination of an encryption algorithm with a \gls{mac} function, 
 while \gls{aead} encryption algorithms 
 (\textit{AES} with \textit{GCM} and \textit{CCM} modes) are the least costly block cipher algorithms. 
-\textit{CAMELLIA} algorithms are more costly than their \textit{AES} counterparts.  The cost of integrity without encryption can be seen by looking at the null
-encryption ciphersuites: \textit{NULL-MD5}, \textit{NULL-SHA}, \textit{NULL-SHA256} and \textit{NULL-SHA384}.
-For both, \gls{aead} algorithms and non-\gls{aead} algorithms combined with a hash function, the majority of the cost comes from data encryption.
+\textit{CAMELLIA} algorithms are more costly than their \textit{AES} counterparts. \textit{NULL-MD5}, \textit{NULL-SHA}, \textit{NULL-SHA256} and \textit{NULL-SHA384}
+ciphersuites do not use any encryption algirithm. Their costs are presented in figure \ref{fig:hash-cost}.
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\textwidth]{img/hash-costs.png}
+  \centering \caption{\label{fig:hash-cost} Hashing operation costs in estimated number of CPU cycles}
+\end{figure}
+
+Figure \ref{fig:hash-cost} shows the cost of performing the hash operations only. An analysis of the figure shows that \textit{SHA-256} is the most
+costly hash function, while \textit{MD5} is the least costly one. However, it is important to consider that \textit{MD5} and \textit{SHA-1} are nowadays
+considered insecure and vulnerable to numerous attacks \cite{turner2011updated} \cite{polk2011security}. For this reason, one should preferably choose between
+\textit{SHA-256} and \textit{SHA-384} and the latter is the least expensive one.
+This analysis makes it clear that for both, \gls{aead} algorithms and non-\gls{aead} algorithms combined with a hash function, the majority of the cost 
+comes from data encryption/decryption.
 
 In Section \ref{sec:tls-hs-cost} we analyzed the cost of the handshake. However, it only makes sense to heavily optimize handshake
 if the amount of transmitted data is small. This is, in fact, true for many \gls{iot} devices. But what exactly is a \textit{small} amount of data?
 
-In order to answer those questions we profiled the costs of encrypting data with the \textit{AES-128-GCM} (\textbf{low} and 
-\textbf{normal} security levels) and \textit{AES-256-GCM} (\textbf{high} and \textbf{very high} security levels). 
+In order to answer that question we profiled the costs of encrypting data with the \textit{AES-128-GCM} (\textbf{low} and 
+\textbf{normal} security levels) and \textit{AES-256-GCM} (\textbf{high} and \textbf{very high} security levels) more thoroughly. 
 We selected those algorithms because they were among the cheapest ones to provide the required security level and are preferred by
 browsers, such as \textit{Google Chrome 67}. The cost of encryption and decryption for those algorithms are similar\cite{ertaul2016performance}.
-For each
-one of the algorithms, we encrypted data sizes from starting from $1$ byte up to $16250000$ bytes (approximately $15.5$ mega bytes),
-with $100$ byte increments in each run. Thus, a total of $162500$ runs was made with each algorithm. It is expected for encryption costs to
+For each one of the algorithms, we encrypted data sizes starting from $1$ byte up to $20971600$ bytes (approximately $20.9$ mega bytes),
+with $100$ byte increments in each run. Thus, a total of $209716$ runs was made with each algorithm. It is expected for encryption costs to
 grow linearly with the amount of encrypted data, thus we applied linear regression to the collected metrics in order in order to
-obtain a formula that approximates the cost of encryption for any amount of data. Our analysis yielded the following formulas for the
+obtain a formula that approximates the cost of encryption for a given amount of data. Our analysis yielded the following formulas for the
 cost of encryption with \textit{AES-128-GCM} and \textit{AES-256-GCM}, respectively: $NumCC=104*NumBytes+22680$ and $NumCC=105*NumBytes+22740$ ($R²=1$ for both).
-$NumCC$ is the number of CPU Cycles and $NumBytes$ is the number of bytes encrypted. As we cam see. the cost of \textit{AES-256-GCM} is slightly
-larger than of \textit{AES-128-GCM}.
+$NumCC$ is the number of CPU Cycles and $NumBytes$ is the number of bytes encrypted. As the formulas show, the cost of \textit{AES-256-GCM} is slightly
+larger than of \textit{AES-128-GCM}. This is expected due to the larger key size of the first one.
 
 The derived formulas can be used to answer the question of when the costs spent on data encryption equate the costs
-spent on performing the handshake. For example, let's compute this number for the client, when it performs an
+spent on performing the handshake. As an example, we will compute this number for the client, when it performs an
 \textit{ECDHE-ECDSA} handshake at the \textit{normal} security level. First, we obtain the number of CPU cycles
 used to perform the handshake from table \ref{table:client-hs-cost-all-sls}: $168954007$. After that we simply
 replace $NumCC$ with that value in the formula and solve for $NumBytes$: $168954007=104*NumBytes+22680 \Leftrightarrow NumBytes \approx 1624340$.
-Thus, the client needs to send $1624340$ bytes ($\approx 1.5$ mega bytes) for the encryption costs to equate the \textit{ECDHE-ECDSA} handshake cots.
+Thus, the client needs to encrypt $1624340$ bytes ($\approx 1.6$ mega bytes) for the encryption costs to equate the \textit{ECDHE-ECDSA} handshake cots.
+Given that the encryption and decryption costs are approximately the same, we can conclude that about $1.6$ mega bytes of data need to be exchanged between the
+peers for the client Record phase costs to match the Handshake costs.
 
-Figures \ref{fig:cli-conf-hs-low}, \ref{fig:cli-conf-hs-normal} and \ref{fig:cli-conf-hs-high} help to visualize when
-when the encryption/decryption costs equate the handshake costs for the \textbf{low}, \textbf{normal} and \textbf{high}
-security levels, respectively. Figures \ref{fig:srv-conf-hs-low}, \ref{fig:srv-conf-hs-normal} and \ref{fig:srv-conf-hs-high}
-show the same information for the server. We did not present the graphs for the \textit{very high} security level,
-because the overwhelming cost of some key exchange methods made the visual analysis of the graph hard (due to scale).
+Table \ref{tab:conf-hs-client} shows the amount of data that needs to be exhanged between the peers in order for the costs of the Handshake to equate
+the costs of the Record phase (\textit{i.e.} the costs of confidentiality and integrity) for the client. Table \ref{tab:conf-hs-server} presents the
+same information for the server. Data sizes are represented in megabytes (MB), according to the International Electrotechnical Commission (IEC)
+definition \cite{Definiti62:online}. An analysis of the tables makes it clear that it is not necessary to exchange large amounts of data
+before the costs of confidentiality and integrity catch up to the Handhsake ones. In $85\%$ of cases for the client, less than $2$ MB of data need to be exchanged for the Record phase costs to equate 
+the Handshake costs. For the server, that percentage
+is $72.5\%$. Considering that the device will perform a Handshake for each new connection, it only makes sense to focus on Handhake cost optimization if the amount of exhanged data is small. This is the case of many
+\gls{iot} devices, such as temperature sensors that periodically transmit temperature readings to antoher peer. 
 
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/cli_conf_hs_low.png}
-  \centering \caption{\label{fig:cli-conf-hs-low} Client handshake vs confidentiality cost for the \textbf{low} security level}
-\end{figure}
+\begin{table}[]
+  \begin{tabular}{|l|c|c|c|c|}
+  \hline
+\backslashbox{Key Exchange}{Security Level}  & \textbf{\begin{tabular}[c]{@{}c@{}}low\\ (MB)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}normal\\ (MB)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}high\\ (MB)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}very high\\ (MB)\end{tabular}} \\ \hline
+  \textbf{PSK}         & 0.01                                                        & 0.01                                                           & 0.01                                                         & 0.01                                                              \\ \hline
+  \textbf{RSA-PSK}     & 0.03                                                        & 0.04                                                           & 0.07                                                         & 0.18                                                              \\ \hline
+  \textbf{RSA}         & 0.03                                                        & 0.04                                                           & 0.07                                                         & 0.18                                                              \\ \hline
+  \textbf{ECDH-RSA}    & 0.27                                                        & 0.55                                                           & 0.89                                                         & 1.06                                                              \\ \hline
+  \textbf{ECDH-ECDSA}  & 0.80                                                        & 1.08                                                           & 1.41                                                         & 1.59                                                              \\ \hline
+  \textbf{ECDHE-PSK}   & 0.26                                                        & 0.54                                                           & 0.87                                                         & 1.04                                                              \\ \hline
+  \textbf{ECDHE-RSA}   & 0.28                                                        & 0.56                                                           & 0.92                                                         & 1.19                                                              \\ \hline
+  \textbf{ECDHE-ECDSA} & 1.06                                                        & 1.62                                                           & 2.31                                                         & 2.67                                                              \\ \hline
+  \textbf{DHE-PSK}     & 0.21                                                        & 1.30                                                           & 9.05                                                         & 68.40                                                             \\ \hline
+  \textbf{DHE-RSA}     & 0.23                                                        & 1.33                                                           & 9.10                                                         & 68.53                                                             \\ \hline
+  \end{tabular}
+  \caption{Amount of data in megabytes that that needs to be exchanged between the peers in order for the costs of the Handshake equate the costs of Record phase for the client.}
+  \label{tab:conf-hs-client}
+  \end{table}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/cli_conf_hs_normal.png}
-  \centering \caption{\label{fig:cli-conf-hs-normal} Client handshake vs confidentiality cost for the \textbf{normal} security level}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/cli_conf_hs_high.png}
-  \centering \caption{\label{fig:cli-conf-hs-high} Client handshake vs confidentiality cost for the \textbf{high} security level}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/srv_conf_hs_low.png}
-  \centering \caption{\label{fig:srv-conf-hs-low} Server handshake vs confidentiality cost for the \textbf{low} security level}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/srv_conf_hs_normal.png}
-  \centering \caption{\label{fig:srv-conf-hs-normal} Server handshake vs confidentiality cost for the \textbf{normal} security level}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=1.0\textwidth]{img/srv_conf_hs_high.png}
-  \centering \caption{\label{fig:srv-conf-hs-high} Server handshake vs confidentiality cost for the \textbf{high} security level}
-\end{figure}
-
+  \begin{table}[]
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+  \backslashbox{Key Exchange}{Security Level}                    & \textbf{\begin{tabular}[c]{@{}c@{}}low\\ (MB)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}normal\\ (MB)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}high\\ (MB)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}very high\\ (MB)\end{tabular}} \\ \hline
+    \textbf{PSK}         & 0.01                                                        & 0.01                                                           & 0.01                                                         & 0.01                                                              \\ \hline
+    \textbf{RSA-PSK}     & 0.22                                                        & 0.74                                                           & 3.02                                                         & 16.13                                                             \\ \hline
+    \textbf{RSA}         & 0.22                                                        & 0.74                                                           & 3.02                                                         & 16.14                                                             \\ \hline
+    \textbf{ECDH-RSA}    & 0.14                                                        & 0.28                                                           & 0.44                                                         & 0.53                                                              \\ \hline
+    \textbf{ECDH-ECDSA}  & 0.14                                                        & 0.28                                                           & 0.44                                                         & 0.53                                                              \\ \hline
+    \textbf{ECDHE-PSK}   & 0.26                                                        & 0.54                                                           & 0.87                                                         & 1.04                                                              \\ \hline
+    \textbf{ECDHE-RSA}   & 0.46                                                        & 1.27                                                           & 3.90                                                         & 17.24                                                             \\ \hline
+    \textbf{ECDHE-ECDSA} & 0.40                                                        & 0.83                                                           & 1.35                                                         & 1.62                                                              \\ \hline
+    \textbf{DHE-PSK}     & 0.21                                                        & 1.30                                                           & 9.05                                                         & 68.39                                                             \\ \hline
+    \textbf{DHE-RSA}     & 0.42                                                        & 2.04                                                           & 12.08                                                        & 84.61                                                             \\ \hline
+    \end{tabular}
+    \caption{Amount of data in megabytes that that needs to be exchanged between the peers in order for the costs of the Handshake equate the costs of Record phase for the server.}
+    \label{tab:conf-hs-server}
+    \end{table}
 
 \subsection{PAPI Time Cost Analysis and Comparison To Estimated CPU Cycles }
 
@@ -1551,12 +1580,19 @@ We compared the costs
 obtained from the formula to the actual handshake cost values that we acquired by profiling various client-server
 executions and showed that both are similar.
 
-Finally, we analyzed the costs of confidentiality and integrity. First, we compared the costs of all of the
+After that, we turned our focus to the analysis of the costs of confidentiality and integrity. First, we compared the costs of all of the
 symmetric algorithm/hash function combinations available in \textit{mbedTLS 2.7.0}. As expected,
-\gls{aead} algorithms preformed the best among the block ciphers. After that we chose two \gls{aead} ciphers and
-analyzed how much data it would be necessary to encrypt with them to equate the handshake costs.
+\gls{aead} algorithms preformed the best among the block ciphers. After that, we analyzed the costs of using each one of the
+hash functions. While \textit{MD5} and \textit{SHA-1} were the most performant ones of the group, they are subject to numerous attacks and are not considered
+to be secure.  For this reason, the recommended choice would be between \textit{SHA-256} and \textit{SHA-384}, and the latter one is the
+least costly of the group. Our next step was to choose two \gls{aead} ciphers, \textit{AES-128-GCM} (for \textbf{low} and 
+\textbf{normal} security levels) and \textit{AES-256-GCM} (for \textbf{high} and \textbf{very high} security levels), and
+analyzed how much data it would be necessary for the peers to exchange in order for the costs of confidentiality and integrity 
+to equate the Handshake costs. Our analsysis showed, that in $85\%$ of cases for the client, and in $72.5\%$ of cases for the server, 
+that number is less than $2$ MB. Thus, considering that a new Handshake is perfomed for each connection, 
+it only makes sense to focus on Handhake cost optimization if the amount of exhanged data is small.
 
-The analysis the \gls{papi} results showed us that the estimates obtained with \textit{valgrind} do reflect the real world values. 
+Finally, the analysis the \gls{papi} results showed us that the estimates obtained with \textit{valgrind} do reflect the real world values. 
 Not only the higher-level results are similar in comparison to one another, but at the lower level, the ratios between the algorithms 
 used by the security services also are. As the \textit{The iron law of processor performance} suggested, the time values can be approximated as 
 the estimated number of CPU cycles multiplied by a factor smaller than $1$. Thus, the estimates from the previous sections can be used for 

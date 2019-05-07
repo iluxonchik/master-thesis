@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.1.13)  5 MAY 2019 19:54
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.1.13)  7 MAY 2019 23:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -501,18 +501,18 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 )
 \Hy@SectionHShift=\skip77
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 458.
+Package hyperref Info: Option `colorlinks' set `true' on input line 459.
 
 
 Package hyperref Warning: Option `pagecolor' is not available anymore.
 
 
 Package hyperref Warning: Option `bookmarks' has already been used,
-(hyperref)                setting the option has no effect on input line 458.
+(hyperref)                setting the option has no effect on input line 459.
 
-Package hyperref Info: Option `bookmarksopen' set `false' on input line 458.
-Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 458.
-Package hyperref Info: Option `pdfdisplaydoctitle' set `true' on input line 458.
+Package hyperref Info: Option `bookmarksopen' set `false' on input line 459.
+Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 459.
+Package hyperref Info: Option `pdfdisplaydoctitle' set `true' on input line 459.
 (/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/hypcap.sty
 Package: hypcap 2016/05/16 v1.12 Adjusting the anchors of captions (HO)
 ) (/usr/local/texlive/2018/texmf-dist/tex/latex/natbib/natbib.sty
@@ -683,16 +683,16 @@ Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
 Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 ) (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_FrontCover.tex
 Package pdftex.def Info: Option `bb' equivalent to `viewport' with pdftex driver on input line 15.
-<IST_A_CMYK_POS.pdf, id=184, 845.0471pt x 597.51233pt>
+<IST_A_CMYK_POS.pdf, id=196, 845.0471pt x 597.51233pt>
 File: IST_A_CMYK_POS.pdf Graphic file (type pdf)
 <use IST_A_CMYK_POS.pdf>
 Package pdftex.def Info: IST_A_CMYK_POS.pdf  used on input line 15.
 (pdftex.def)             Requested size: -78.38533pt x -90.76195pt.
-<Figures/Airbus_A350.jpg, id=185, 1027.84pt x 770.88pt>
-File: Figures/Airbus_A350.jpg Graphic file (type jpg)
-<use Figures/Airbus_A350.jpg>
-Package pdftex.def Info: Figures/Airbus_A350.jpg  used on input line 22.
-(pdftex.def)             Requested size: 189.67691pt x 142.26378pt.
+<img/padlock.jpg, id=197, 7864.38126pt x 5242.58624pt>
+File: img/padlock.jpg Graphic file (type jpg)
+<use img/padlock.jpg>
+Package pdftex.def Info: img/padlock.jpg  used on input line 22.
+(pdftex.def)             Requested size: 213.36113pt x 142.26378pt.
 LaTeX Font Info:    Try loading font information for T1+phv on input line 26.
  (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
@@ -706,7 +706,7 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 38.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )) [1
 
-{/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map} </Users/gerasill/Documents/GitHub/master-thesis/ist-template/IST_A_CMYK_POS.pdf> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/Figures/Airbus_A350.jpg>] [2
+{/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map} </Users/gerasill/Documents/GitHub/master-thesis/ist-template/IST_A_CMYK_POS.pdf> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/padlock.jpg>] [2
 
 ] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Dedication.tex [3]) [4
 
@@ -755,322 +755,285 @@ Chapter 1.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <20.74> not available
 (Font)              Font shape `OT1/phv/b/n' tried instead on input line 11.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1348) has occurred while \output is active []
 
  [1
 
 
 
-] [2] [3]) [4] [5] [6
-
-] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Background.tex
+] [2] [3] [4]) [5] [6] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Background.tex
 Chapter 2.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 27.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 30.
 [7
+
 
 ]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\gls' on input line 65.
+(hyperref)                removing `\gls' on input line 68.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\gls' on input line 78.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\gls' on input line 97.
+(hyperref)                removing `\gls' on input line 81.
 
 [8]
-LaTeX Font Info:    Try loading font information for OMS+phv on input line 122.
- (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/omsphv.fd
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\gls' on input line 100.
+
+LaTeX Font Info:    Try loading font information for OMS+phv on input line 125.
+(/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/omsphv.fd
 File: omsphv.fd 
 )
 LaTeX Font Info:    Font shape `OMS/phv/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 122.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 125.
  [9]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\gls' on input line 174.
+(hyperref)                removing `\gls' on input line 177.
 
 [10]
-<img/record-header-3.png, id=617, 332.24126pt x 147.55125pt>
+<img/record-header-3.png, id=632, 332.24126pt x 147.55125pt>
 File: img/record-header-3.png Graphic file (type png)
 <use img/record-header-3.png>
-Package pdftex.def Info: img/record-header-3.png  used on input line 220.
+Package pdftex.def Info: img/record-header-3.png  used on input line 223.
 (pdftex.def)             Requested size: 273.14923pt x 121.31474pt.
-<img/tls-sub-protocols-3.png, id=619, 293.095pt x 82.3075pt>
+<img/tls-sub-protocols-3.png, id=634, 293.095pt x 82.3075pt>
 File: img/tls-sub-protocols-3.png Graphic file (type png)
 <use img/tls-sub-protocols-3.png>
-Package pdftex.def Info: img/tls-sub-protocols-3.png  used on input line 226.
+Package pdftex.def Info: img/tls-sub-protocols-3.png  used on input line 229.
 (pdftex.def)             Requested size: 273.14923pt x 76.70592pt.
- [11 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/record-header-3.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/tls-sub-protocols-3.png>]
-<img/tls-12-full-handshake2.png, id=628, 552.0625pt x 351.3125pt>
+ [11 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/record-header-3.png>]
+<img/tls-12-full-handshake2.png, id=643, 552.0625pt x 351.3125pt>
 File: img/tls-12-full-handshake2.png Graphic file (type png)
 <use img/tls-12-full-handshake2.png>
-Package pdftex.def Info: img/tls-12-full-handshake2.png  used on input line 258.
+Package pdftex.def Info: img/tls-12-full-handshake2.png  used on input line 261.
 (pdftex.def)             Requested size: 409.71692pt x 260.73909pt.
-<img/dtls-cookie.png, id=629, 632.3625pt x 353.32pt>
+<img/dtls-cookie.png, id=644, 632.3625pt x 353.32pt>
 File: img/dtls-cookie.png Graphic file (type png)
 <use img/dtls-cookie.png>
-Package pdftex.def Info: img/dtls-cookie.png  used on input line 264.
+Package pdftex.def Info: img/dtls-cookie.png  used on input line 267.
 (pdftex.def)             Requested size: 273.14923pt x 152.6201pt.
- [12 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/tls-12-full-handshake2.png>] [13 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/dtls-cookie.png>] [14]
+ [12 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/tls-sub-protocols-3.png>] [13 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/tls-12-full-handshake2.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/dtls-cookie.png>] [14] [15]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\gls' on input line 403.
+(hyperref)                removing `\gls' on input line 406.
 
-[15]
-<img/tls-record-processing-3.png, id=657, 565.11125pt x 413.545pt>
+<img/tls-record-processing-3.png, id=669, 565.11125pt x 413.545pt>
 File: img/tls-record-processing-3.png Graphic file (type png)
 <use img/tls-record-processing-3.png>
-Package pdftex.def Info: img/tls-record-processing-3.png  used on input line 429.
+Package pdftex.def Info: img/tls-record-processing-3.png  used on input line 432.
 (pdftex.def)             Requested size: 455.24411pt x 333.15227pt.
 
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\gls' on input line 439.
+
+[16] [17 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/tls-record-processing-3.png>] [18] [19] [20]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\gls' on input line 436.
+(hyperref)                removing `\gls' on input line 654.
 
-[16 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/tls-record-processing-3.png>] [17]
-Overfull \hbox (23.89359pt too wide) in paragraph at lines 558--567
-\OT1/phv/m/n/10 Hellman Ephemeral (ECDHE)) and au-then-ti-ca-tion (ECDSA) al-go-rithms with TLS is de-scribed in \OT1/phv/m/sl/10 RFC4492\OT1/phv/m/n/10 [[]].
- []
-
-[18] [19]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\gls' on input line 651.
-
-[20] [21] [22] [23]
-<img/6lowpan-header.png, id=738, 848.16875pt x 104.39pt>
+[21] [22] [23] [24]
+<img/6lowpan-header.png, id=757, 848.16875pt x 104.39pt>
 File: img/6lowpan-header.png Graphic file (type png)
 <use img/6lowpan-header.png>
-Package pdftex.def Info: img/6lowpan-header.png  used on input line 854.
+Package pdftex.def Info: img/6lowpan-header.png  used on input line 857.
 (pdftex.def)             Requested size: 409.71692pt x 50.42677pt.
-<img/6lowpan-ghc-rhs.png, id=739, 1071.00125pt x 250.9375pt>
+<img/6lowpan-ghc-rhs.png, id=758, 1071.00125pt x 250.9375pt>
 File: img/6lowpan-ghc-rhs.png Graphic file (type png)
 <use img/6lowpan-ghc-rhs.png>
-Package pdftex.def Info: img/6lowpan-ghc-rhs.png  used on input line 861.
+Package pdftex.def Info: img/6lowpan-ghc-rhs.png  used on input line 864.
 (pdftex.def)             Requested size: 273.14923pt x 63.99777pt.
- [24 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/6lowpan-header.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/6lowpan-ghc-rhs.png>] [25] [26] [27] [28]) [29] [30
-
-] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Results.tex
+ [25 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/6lowpan-header.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/6lowpan-ghc-rhs.png>] [26] [27] [28] [29]) [30] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Results.tex
 Chapter 3.
 [31
 
-]
-<img/how_valgrind_works.png, id=861, 955.57pt x 495.8525pt>
+
+] [32]
+<img/how_valgrind_works.png, id=886, 955.57pt x 495.8525pt>
 File: img/how_valgrind_works.png Graphic file (type png)
 <use img/how_valgrind_works.png>
-Package pdftex.def Info: img/how_valgrind_works.png  used on input line 95.
+Package pdftex.def Info: img/how_valgrind_works.png  used on input line 104.
 (pdftex.def)             Requested size: 455.24411pt x 236.22845pt.
- [32] [33 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/how_valgrind_works.png>] [34] [35] [36] [37] [38]
-<img/hs_cost_cli.png, id=953, 1387.584pt x 711.8595pt>
+ [33 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/how_valgrind_works.png>] [34] [35] [36]
+Underfull \vbox (badness 2213) has occurred while \output is active []
+
+ [37] [38]
+<img/hs_cost_cli.png, id=972, 1387.584pt x 711.8595pt>
 File: img/hs_cost_cli.png Graphic file (type png)
 <use img/hs_cost_cli.png>
-Package pdftex.def Info: img/hs_cost_cli.png  used on input line 399.
+Package pdftex.def Info: img/hs_cost_cli.png  used on input line 408.
 (pdftex.def)             Requested size: 455.24411pt x 233.54573pt.
-<img/hs_cost_srv.png, id=954, 1387.584pt x 711.8595pt>
+<img/hs_cost_srv.png, id=973, 1387.584pt x 711.8595pt>
 File: img/hs_cost_srv.png Graphic file (type png)
 <use img/hs_cost_srv.png>
-Package pdftex.def Info: img/hs_cost_srv.png  used on input line 405.
+Package pdftex.def Info: img/hs_cost_srv.png  used on input line 414.
 (pdftex.def)             Requested size: 455.24411pt x 233.54573pt.
- [39 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_cost_cli.png>] [40 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_cost_srv.png>] [41] [42] [43]
-<img/rsa_ecdsa_cost_normal_sl.png, id=1003, 795.97375pt x 491.8375pt>
+ [39] [40 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_cost_cli.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_cost_srv.png>] [41] [42] [43] [44]
+<img/rsa_ecdsa_cost_normal_sl.png, id=1029, 795.97375pt x 491.8375pt>
 File: img/rsa_ecdsa_cost_normal_sl.png Graphic file (type png)
 <use img/rsa_ecdsa_cost_normal_sl.png>
-Package pdftex.def Info: img/rsa_ecdsa_cost_normal_sl.png  used on input line 628.
+Package pdftex.def Info: img/rsa_ecdsa_cost_normal_sl.png  used on input line 637.
 (pdftex.def)             Requested size: 455.24411pt x 281.29588pt.
- [44 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/rsa_ecdsa_cost_normal_sl.png (PNG copy)>] [45]
-<img/rsa_cost_all_sls.png, id=1024, 984.67876pt x 608.2725pt>
+ [45 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/rsa_ecdsa_cost_normal_sl.png (PNG copy)>]
+<img/rsa_cost_all_sls.png, id=1045, 984.67876pt x 608.2725pt>
 File: img/rsa_cost_all_sls.png Graphic file (type png)
 <use img/rsa_cost_all_sls.png>
-Package pdftex.def Info: img/rsa_cost_all_sls.png  used on input line 682.
+Package pdftex.def Info: img/rsa_cost_all_sls.png  used on input line 691.
 (pdftex.def)             Requested size: 455.24411pt x 281.21953pt.
-<img/rsa_relative_increase.png, id=1025, 799.98875pt x 493.845pt>
+<img/rsa_relative_increase.png, id=1046, 799.98875pt x 493.845pt>
 File: img/rsa_relative_increase.png Graphic file (type png)
 <use img/rsa_relative_increase.png>
-Package pdftex.def Info: img/rsa_relative_increase.png  used on input line 688.
+Package pdftex.def Info: img/rsa_relative_increase.png  used on input line 697.
 (pdftex.def)             Requested size: 455.24411pt x 281.0349pt.
-<img/rsa_ecdsa_operation_ratio.png, id=1026, 727.71875pt x 449.68pt>
+<img/rsa_ecdsa_operation_ratio.png, id=1047, 727.71875pt x 449.68pt>
 File: img/rsa_ecdsa_operation_ratio.png Graphic file (type png)
 <use img/rsa_ecdsa_operation_ratio.png>
-Package pdftex.def Info: img/rsa_ecdsa_operation_ratio.png  used on input line 694.
+Package pdftex.def Info: img/rsa_ecdsa_operation_ratio.png  used on input line 703.
 (pdftex.def)             Requested size: 455.24411pt x 281.3169pt.
- [46 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/rsa_cost_all_sls.png (PNG copy)>] [47 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/rsa_relative_increase.png (PNG copy)> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/rsa_ecdsa_operation_ratio.png (PNG copy)>]
-<img/ecdsa_realtive_cost_increase.png, id=1048, 800.9925pt x 500.87125pt>
+ [46] [47 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/rsa_cost_all_sls.png (PNG copy)> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/rsa_relative_increase.png (PNG copy)>]
+<img/ecdsa_realtive_cost_increase.png, id=1068, 800.9925pt x 500.87125pt>
 File: img/ecdsa_realtive_cost_increase.png Graphic file (type png)
 <use img/ecdsa_realtive_cost_increase.png>
-Package pdftex.def Info: img/ecdsa_realtive_cost_increase.png  used on input line 729.
+Package pdftex.def Info: img/ecdsa_realtive_cost_increase.png  used on input line 738.
 (pdftex.def)             Requested size: 455.24411pt x 284.67416pt.
-<img/ecdsa_cost_all_sls.png, id=1049, 985.6825pt x 609.27625pt>
+<img/ecdsa_cost_all_sls.png, id=1069, 985.6825pt x 609.27625pt>
 File: img/ecdsa_cost_all_sls.png Graphic file (type png)
 <use img/ecdsa_cost_all_sls.png>
-Package pdftex.def Info: img/ecdsa_cost_all_sls.png  used on input line 735.
+Package pdftex.def Info: img/ecdsa_cost_all_sls.png  used on input line 744.
 (pdftex.def)             Requested size: 455.24411pt x 281.40468pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [48 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/ecdsa_realtive_cost_increase.png (PNG copy)>]
-<img/rsa_ecdsa_costs_all.png, id=1056, 955.57pt x 591.20876pt>
+ [48 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/rsa_ecdsa_operation_ratio.png (PNG copy)>] [49 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/ecdsa_realtive_cost_increase.png (PNG copy)> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/ecdsa_cost_all_sls.png (PNG copy)>]
+<img/rsa_ecdsa_costs_all.png, id=1080, 955.57pt x 591.20876pt>
 File: img/rsa_ecdsa_costs_all.png Graphic file (type png)
 <use img/rsa_ecdsa_costs_all.png>
-Package pdftex.def Info: img/rsa_ecdsa_costs_all.png  used on input line 754.
+Package pdftex.def Info: img/rsa_ecdsa_costs_all.png  used on input line 763.
 (pdftex.def)             Requested size: 455.24411pt x 281.65701pt.
- [49 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/ecdsa_cost_all_sls.png (PNG copy)>]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
  [50 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/rsa_ecdsa_costs_all.png (PNG copy)>]
-<img/tls-client-auth-cost.png, id=1073, 994.71625pt x 614.295pt>
+<img/tls-client-auth-cost.png, id=1093, 994.71625pt x 614.295pt>
 File: img/tls-client-auth-cost.png Graphic file (type png)
 <use img/tls-client-auth-cost.png>
-Package pdftex.def Info: img/tls-client-auth-cost.png  used on input line 803.
+Package pdftex.def Info: img/tls-client-auth-cost.png  used on input line 812.
 (pdftex.def)             Requested size: 455.24411pt x 281.14499pt.
-<img/tls-server-auth-cost.png, id=1074, 996.72375pt x 615.29875pt>
+<img/tls-server-auth-cost.png, id=1094, 996.72375pt x 615.29875pt>
 File: img/tls-server-auth-cost.png Graphic file (type png)
 <use img/tls-server-auth-cost.png>
-Package pdftex.def Info: img/tls-server-auth-cost.png  used on input line 809.
+Package pdftex.def Info: img/tls-server-auth-cost.png  used on input line 818.
 (pdftex.def)             Requested size: 455.24411pt x 281.03168pt.
- [51 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/tls-client-auth-cost.png>] [52 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/tls-server-auth-cost.png (PNG copy)>]
-Overfull \hbox (16.34148pt too wide) in paragraph at lines 860--868
+ [51] [52 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/tls-client-auth-cost.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/tls-server-auth-cost.png (PNG copy)>]
+Overfull \hbox (16.34148pt too wide) in paragraph at lines 869--877
 []\OT1/phv/m/n/10 In \OT1/phv/m/sl/10 RSA \OT1/phv/m/n/10 and \OT1/phv/m/sl/10 RSA-PSK \OT1/phv/m/n/10 ci-pher-suites, the client uses the \OT1/phv/m/sl/10 PKCS#1 v2.1 RSAES-PKCS1-V1[]5-ENCRYPT\OT1/phv/m/n/10 [[]]
  []
 
 [53] [54]
-<img/ecdh-dh-cost-normal-sl.png, id=1129, 999.735pt x 618.31pt>
+<img/ecdh-dh-cost-normal-sl.png, id=1150, 999.735pt x 618.31pt>
 File: img/ecdh-dh-cost-normal-sl.png Graphic file (type png)
 <use img/ecdh-dh-cost-normal-sl.png>
-Package pdftex.def Info: img/ecdh-dh-cost-normal-sl.png  used on input line 940.
+Package pdftex.def Info: img/ecdh-dh-cost-normal-sl.png  used on input line 949.
 (pdftex.def)             Requested size: 455.24411pt x 281.55792pt.
- [55 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/ecdh-dh-cost-normal-sl.png (PNG copy)>]
-<img/ecdh_cost_all_sls.png, id=1139, 942.52126pt x 582.175pt>
+ [55] [56 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/ecdh-dh-cost-normal-sl.png (PNG copy)>]
+<img/ecdh_cost_all_sls.png, id=1164, 942.52126pt x 582.175pt>
 File: img/ecdh_cost_all_sls.png Graphic file (type png)
 <use img/ecdh_cost_all_sls.png>
-Package pdftex.def Info: img/ecdh_cost_all_sls.png  used on input line 981.
+Package pdftex.def Info: img/ecdh_cost_all_sls.png  used on input line 990.
 (pdftex.def)             Requested size: 455.24411pt x 281.1997pt.
- [56 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/ecdh_cost_all_sls.png (PNG copy)>]
-<img/ecdh_dh_relative_cost_increase.png, id=1151, 941.5175pt x 582.175pt>
+<img/ecdh_dh_relative_cost_increase.png, id=1171, 941.5175pt x 582.175pt>
 File: img/ecdh_dh_relative_cost_increase.png Graphic file (type png)
 <use img/ecdh_dh_relative_cost_increase.png>
-Package pdftex.def Info: img/ecdh_dh_relative_cost_increase.png  used on input line 1004.
+Package pdftex.def Info: img/ecdh_dh_relative_cost_increase.png  used on input line 1013.
 (pdftex.def)             Requested size: 455.24411pt x 281.49286pt.
- [57 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/ecdh_dh_relative_cost_increase.png (PNG copy)>]
-<img/dh_costs_all_sls.png, id=1160, 941.5175pt x 582.175pt>
+ [57 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/ecdh_cost_all_sls.png (PNG copy)>]
+<img/dh_costs_all_sls.png, id=1179, 941.5175pt x 582.175pt>
 File: img/dh_costs_all_sls.png Graphic file (type png)
 <use img/dh_costs_all_sls.png>
-Package pdftex.def Info: img/dh_costs_all_sls.png  used on input line 1022.
+Package pdftex.def Info: img/dh_costs_all_sls.png  used on input line 1031.
 (pdftex.def)             Requested size: 455.24411pt x 281.49286pt.
- [58 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/dh_costs_all_sls.png (PNG copy)>]
-<img/ecdh_dh_costs_all.png, id=1174, 935.495pt x 578.16pt>
+
+Underfull \vbox (badness 2302) has occurred while \output is active []
+
+ [58 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/ecdh_dh_relative_cost_increase.png (PNG copy)>]
+<img/ecdh_dh_costs_all.png, id=1193, 935.495pt x 578.16pt>
 File: img/ecdh_dh_costs_all.png Graphic file (type png)
 <use img/ecdh_dh_costs_all.png>
-Package pdftex.def Info: img/ecdh_dh_costs_all.png  used on input line 1056.
+Package pdftex.def Info: img/ecdh_dh_costs_all.png  used on input line 1065.
 (pdftex.def)             Requested size: 455.24411pt x 281.35121pt.
- [59 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/ecdh_dh_costs_all.png (PNG copy)>]
-<img/pfs_cost_all_sls.png, id=1182, 942.52126pt x 583.17876pt>
+ [59 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/dh_costs_all_sls.png (PNG copy)>] [60 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/ecdh_dh_costs_all.png (PNG copy)>]
+<img/pfs_cost_all_sls.png, id=1206, 942.52126pt x 583.17876pt>
 File: img/pfs_cost_all_sls.png Graphic file (type png)
 <use img/pfs_cost_all_sls.png>
-Package pdftex.def Info: img/pfs_cost_all_sls.png  used on input line 1099.
+Package pdftex.def Info: img/pfs_cost_all_sls.png  used on input line 1108.
 (pdftex.def)             Requested size: 455.24411pt x 281.68454pt.
- [60] [61 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/pfs_cost_all_sls.png (PNG copy)>] [62]
-<img/client_hs_costs_all_sls.png, id=1230, 1284.8pt x 793.96625pt>
+ [61 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/pfs_cost_all_sls.png (PNG copy)>] [62]
+<img/client_hs_costs_all_sls.png, id=1240, 1284.8pt x 793.96625pt>
 File: img/client_hs_costs_all_sls.png Graphic file (type png)
 <use img/client_hs_costs_all_sls.png>
-Package pdftex.def Info: img/client_hs_costs_all_sls.png  used on input line 1207.
+Package pdftex.def Info: img/client_hs_costs_all_sls.png  used on input line 1216.
 (pdftex.def)             Requested size: 455.24411pt x 281.32088pt.
-<img/server_hs_costs_all_sls.png, id=1231, 1285.80376pt x 794.97pt>
+<img/server_hs_costs_all_sls.png, id=1241, 1285.80376pt x 794.97pt>
 File: img/server_hs_costs_all_sls.png Graphic file (type png)
 <use img/server_hs_costs_all_sls.png>
-Package pdftex.def Info: img/server_hs_costs_all_sls.png  used on input line 1213.
+Package pdftex.def Info: img/server_hs_costs_all_sls.png  used on input line 1222.
 (pdftex.def)             Requested size: 455.24411pt x 281.45818pt.
- [63 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/client_hs_costs_all_sls.png (PNG copy)>] [64 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/server_hs_costs_all_sls.png (PNG copy)>]
-<img/dt_low_sl.png, id=1255, 952.55875pt x 476.78125pt>
+ [63] [64 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/client_hs_costs_all_sls.png (PNG copy)> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/server_hs_costs_all_sls.png (PNG copy)>] [65]
+<img/dt_low_sl.png, id=1281, 952.55875pt x 476.78125pt>
 File: img/dt_low_sl.png Graphic file (type png)
 <use img/dt_low_sl.png>
-Package pdftex.def Info: img/dt_low_sl.png  used on input line 1275.
+Package pdftex.def Info: img/dt_low_sl.png  used on input line 1284.
 (pdftex.def)             Requested size: 455.24411pt x 227.86298pt.
-<img/dt_normal_sl.png, id=1256, 952.55875pt x 476.78125pt>
+<img/dt_normal_sl.png, id=1282, 952.55875pt x 476.78125pt>
 File: img/dt_normal_sl.png Graphic file (type png)
 <use img/dt_normal_sl.png>
-Package pdftex.def Info: img/dt_normal_sl.png  used on input line 1281.
+Package pdftex.def Info: img/dt_normal_sl.png  used on input line 1290.
 (pdftex.def)             Requested size: 455.24411pt x 227.86298pt.
-<img/dt_high_sl.png, id=1257, 952.55875pt x 476.78125pt>
+<img/dt_high_sl.png, id=1283, 952.55875pt x 476.78125pt>
 File: img/dt_high_sl.png Graphic file (type png)
 <use img/dt_high_sl.png>
-Package pdftex.def Info: img/dt_high_sl.png  used on input line 1287.
+Package pdftex.def Info: img/dt_high_sl.png  used on input line 1296.
 (pdftex.def)             Requested size: 455.24411pt x 227.86298pt.
-<img/dt_veryhigh_sl.png, id=1258, 952.55875pt x 476.78125pt>
+<img/dt_veryhigh_sl.png, id=1284, 952.55875pt x 476.78125pt>
 File: img/dt_veryhigh_sl.png Graphic file (type png)
 <use img/dt_veryhigh_sl.png>
-Package pdftex.def Info: img/dt_veryhigh_sl.png  used on input line 1293.
+Package pdftex.def Info: img/dt_veryhigh_sl.png  used on input line 1302.
 (pdftex.def)             Requested size: 455.24411pt x 227.86298pt.
- [65] [66 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/dt_low_sl.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/dt_normal_sl.png>] [67 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/dt_high_sl.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/dt_veryhigh_sl.png>]
-Underfull \vbox (badness 1661) has occurred while \output is active []
+ [66 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/dt_low_sl.png>] [67 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/dt_normal_sl.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/dt_high_sl.png>] [68 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/dt_veryhigh_sl.png>]
+<img/sym_algs_cc2.png, id=1322, 1126.2075pt x 689.57625pt>
+File: img/sym_algs_cc2.png Graphic file (type png)
+<use img/sym_algs_cc2.png>
+Package pdftex.def Info: img/sym_algs_cc2.png  used on input line 1387.
+(pdftex.def)             Requested size: 455.24411pt x 278.74022pt.
+<img/hash-costs.png, id=1325, 687.56876pt x 424.58624pt>
+File: img/hash-costs.png Graphic file (type png)
+<use img/hash-costs.png>
+Package pdftex.def Info: img/hash-costs.png  used on input line 1402.
+(pdftex.def)             Requested size: 455.24411pt x 281.12184pt.
+ [69] [70 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/sym_algs_cc2.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hash-costs.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [68]
-<img/sym_algs_cc.png, id=1302, 1138.2525pt x 703.62875pt>
-File: img/sym_algs_cc.png Graphic file (type png)
-<use img/sym_algs_cc.png>
-Package pdftex.def Info: img/sym_algs_cc.png  used on input line 1376.
-(pdftex.def)             Requested size: 455.24411pt x 281.4143pt.
-
-Underfull \vbox (badness 2334) has occurred while \output is active []
-
- [69 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/sym_algs_cc.png (PNG copy)>]
-<img/cli_conf_hs_low.png, id=1318, 1253.68375pt x 716.6775pt>
-File: img/cli_conf_hs_low.png Graphic file (type png)
-<use img/cli_conf_hs_low.png>
-Package pdftex.def Info: img/cli_conf_hs_low.png  used on input line 1420.
-(pdftex.def)             Requested size: 455.24411pt x 260.2455pt.
-<img/cli_conf_hs_normal.png, id=1319, 1253.68375pt x 716.6775pt>
-File: img/cli_conf_hs_normal.png Graphic file (type png)
-<use img/cli_conf_hs_normal.png>
-Package pdftex.def Info: img/cli_conf_hs_normal.png  used on input line 1426.
-(pdftex.def)             Requested size: 455.24411pt x 260.2455pt.
-<img/cli_conf_hs_high.png, id=1320, 1242.6425pt x 691.58376pt>
-File: img/cli_conf_hs_high.png Graphic file (type png)
-<use img/cli_conf_hs_high.png>
-Package pdftex.def Info: img/cli_conf_hs_high.png  used on input line 1432.
-(pdftex.def)             Requested size: 455.24411pt x 253.35988pt.
-<img/srv_conf_hs_low.png, id=1321, 1260.71pt x 719.68875pt>
-File: img/srv_conf_hs_low.png Graphic file (type png)
-<use img/srv_conf_hs_low.png>
-Package pdftex.def Info: img/srv_conf_hs_low.png  used on input line 1438.
-(pdftex.def)             Requested size: 455.24411pt x 259.87842pt.
-<img/srv_conf_hs_normal.png, id=1322, 1253.68375pt x 716.6775pt>
-File: img/srv_conf_hs_normal.png Graphic file (type png)
-<use img/srv_conf_hs_normal.png>
-Package pdftex.def Info: img/srv_conf_hs_normal.png  used on input line 1444.
-(pdftex.def)             Requested size: 455.24411pt x 260.2455pt.
-<img/srv_conf_hs_high.png, id=1323, 1242.6425pt x 691.58376pt>
-File: img/srv_conf_hs_high.png Graphic file (type png)
-<use img/srv_conf_hs_high.png>
-Package pdftex.def Info: img/srv_conf_hs_high.png  used on input line 1450.
-(pdftex.def)             Requested size: 455.24411pt x 253.35988pt.
- [70] [71 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/cli_conf_hs_low.png (PNG copy)> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/cli_conf_hs_normal.png (PNG copy)>] [72 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/cli_conf_hs_high.png (PNG copy)> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/srv_conf_hs_low.png (PNG copy)>] [73 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/srv_conf_hs_normal.png (PNG copy)> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/srv_conf_hs_high.png (PNG copy)>]
-<img/hs_papi_client.png, id=1343, 1030.85126pt x 637.38126pt>
+ [71] [72]
+<img/hs_papi_client.png, id=1359, 1030.85126pt x 637.38126pt>
 File: img/hs_papi_client.png Graphic file (type png)
 <use img/hs_papi_client.png>
-Package pdftex.def Info: img/hs_papi_client.png  used on input line 1474.
+Package pdftex.def Info: img/hs_papi_client.png  used on input line 1503.
 (pdftex.def)             Requested size: 455.24411pt x 281.47954pt.
-<img/hs_papi_server.png, id=1344, 1130.2225pt x 698.61pt>
+<img/hs_papi_server.png, id=1360, 1130.2225pt x 698.61pt>
 File: img/hs_papi_server.png Graphic file (type png)
 <use img/hs_papi_server.png>
-Package pdftex.def Info: img/hs_papi_server.png  used on input line 1480.
+Package pdftex.def Info: img/hs_papi_server.png  used on input line 1509.
 (pdftex.def)             Requested size: 455.24411pt x 281.38982pt.
-<img/papi-ratio.png, id=1351, 1192.455pt x 571.13374pt>
+<img/papi-ratio.png, id=1367, 1192.455pt x 571.13374pt>
 File: img/papi-ratio.png Graphic file (type png)
 <use img/papi-ratio.png>
-Package pdftex.def Info: img/papi-ratio.png  used on input line 1496.
+Package pdftex.def Info: img/papi-ratio.png  used on input line 1525.
 (pdftex.def)             Requested size: 455.24411pt x 218.04399pt.
- [74 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_papi_client.png>] [75 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_papi_server.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-ratio.png>] [76]) [77] [78
+ [73 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_papi_client.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Conclusions.tex
+ [74 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_papi_server.png>] [75 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-ratio.png>]) [76] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Conclusions.tex
 Chapter 4.
-[79
+[77
 
-]) [80] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.bbl
+
+]) [78] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.bbl
 Underfull \hbox (badness 7704) in paragraph at lines 37--41
 []\OT1/phv/m/n/10 Addition to tls 1.3 con-trib-u-tors list.  [][]$\OT1/cmtt/m/n/10 https : / / github\OML/cmm/m/it/10 :\OT1/cmtt/m/n/10 com / tlswg / tls13 -[] spec / commit /
  []
@@ -1080,145 +1043,124 @@ Underfull \hbox (badness 10000) in paragraph at lines 48--51
 []\OT1/phv/m/n/10 Commits by ilux-onchik tlswg/dtls13-spec.  [][]$\OT1/cmtt/m/n/10 https : / / github\OML/cmm/m/it/10 :\OT1/cmtt/m/n/10 com / tlswg / dtls13 -[] spec /
  []
 
-[81
+[79
 
 
 ]
-Underfull \hbox (badness 1057) in paragraph at lines 88--91
-[]\OT1/phv/m/n/10 mbed TLS (formely Po-larSSL): SSL/TLS Li-brary For Em-bed-ded De-vices.  URL [][]$\OT1/cmtt/m/n/10 https : / /
- []
-
-
-Underfull \hbox (badness 2073) in paragraph at lines 106--112
+Underfull \hbox (badness 2073) in paragraph at lines 96--102
 []\OT1/phv/m/n/10 Bundesamt fur Sicher-heit in der In-for-ma-tion-stech-nik (BSI).  Kryp-tographis-che Ver-fahren:
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 106--112
+Underfull \hbox (badness 10000) in paragraph at lines 96--102
 \OT1/cmtt/m/n/10 SharedDocs / Downloads / DE / BSI / Publikationen / TechnischeRichtlinien / TR02102 / BSI -[] TR -[]
  []
 
-[82]
-Underfull \hbox (badness 1655) in paragraph at lines 191--199
+
+Underfull \hbox (badness 1057) in paragraph at lines 111--114
+[]\OT1/phv/m/n/10 mbed TLS (formely Po-larSSL): SSL/TLS Li-brary For Em-bed-ded De-vices.  URL [][]$\OT1/cmtt/m/n/10 https : / /
+ []
+
+[80]
+Underfull \hbox (badness 1655) in paragraph at lines 186--194
 \OT1/phv/m/n/10 ietf-tls-tls13-22, IETF Sec-re-tariat, Novem-ber 2017.  URL [][]$\OT1/cmtt/m/n/10 http : / / www\OML/cmm/m/it/10 :\OT1/cmtt/m/n/10 ietf\OML/cmm/m/it/10 :\OT1/cmtt/m/n/10 org / internet -[]
  []
 
 
-Underfull \hbox (badness 1005) in paragraph at lines 216--224
+Underfull \hbox (badness 1005) in paragraph at lines 211--219
 []\OT1/phv/m/n/10 E. Rescorla, H. Tschofenig, and N. Modadugu.  The Data-gram Trans-port Layer Se-cu-rity
  []
 
-[83]
-Underfull \hbox (badness 2409) in paragraph at lines 322--330
+[81]
+Underfull \hbox (badness 2409) in paragraph at lines 317--325
 []\OT1/phv/m/n/10 S. Keoh, S. Ku-mar, and Z. Shelby.  Pro-fil-ing of DTLS for CoAP-based IoT Ap-pli-ca-
  []
 
-[84] [85]
-Underfull \hbox (badness 5862) in paragraph at lines 463--467
+[82] [83]
+Underfull \hbox (badness 5862) in paragraph at lines 458--462
 []\OT1/phv/m/n/10 LightweightM2M V1.0 Overview, 2017.  URL [][]$\OT1/cmtt/m/n/10 http : / / www\OML/cmm/m/it/10 :\OT1/cmtt/m/n/10 openmobilealliance\OML/cmm/m/it/10 :\OT1/cmtt/m/n/10 org / wp /
  []
 
 
-Underfull \hbox (badness 1178) in paragraph at lines 499--503
+Underfull \hbox (badness 1178) in paragraph at lines 494--498
 []\OT1/phv/m/n/10 globalconfig.cpp source file.  [][]$\OT1/cmtt/m/n/10 https : / / api\OML/cmm/m/it/10 :\OT1/cmtt/m/n/10 kde\OML/cmm/m/it/10 :\OT1/cmtt/m/n/10 org / 4\OML/cmm/m/it/10 :\OT1/cmtt/m/n/10 14 -[] api / kdesdk -[] apidocs / kcachegrind /
  []
 
 
-Underfull \hbox (badness 4556) in paragraph at lines 513--517
+Underfull \hbox (badness 4556) in paragraph at lines 508--512
 []\OT1/phv/m/n/10 Callgrind cpu cy-cles counter.  [][]$\OT1/cmtt/m/n/10 https : / / github\OML/cmm/m/it/10 :\OT1/cmtt/m/n/10 com / iluxonchik / callgrind -[] cpu -[] cycles -[]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 525--530
+Underfull \hbox (badness 10000) in paragraph at lines 520--525
 []\OT1/phv/m/n/10 Unique en-cryp-tion ci-pher-suites.  [][]$\OT1/cmtt/m/n/10 https : / / github\OML/cmm/m/it/10 :\OT1/cmtt/m/n/10 com / iluxonchik / mbedtls -[] unique -[]
  []
 
-[86]) [87] [88
+[84]
+Underfull \hbox (badness 1642) in paragraph at lines 623--626
+[]\OT1/phv/m/n/10 Definitions of the SI units: The bi-nary pre-fixes.  [][]$\OT1/cmtt/m/n/10 https : / / physics\OML/cmm/m/it/10 :\OT1/cmtt/m/n/10 nist\OML/cmm/m/it/10 :\OT1/cmtt/m/n/10 gov / cuu / Units /
+ []
 
-] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Appendix_A.tex
+[85]) [86] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Appendix_A.tex
 Appendix A.
-
-Overfull \hbox (55.83592pt too wide) in paragraph at lines 14--22
- [][] 
- []
-
-
-Overfull \hbox (86.07587pt too wide) in paragraph at lines 97--105
- [][] 
- []
-
-
-Overfull \hbox (111.64485pt too wide) in paragraph at lines 185--199
- [][] 
- []
-
-
-Overfull \hbox (117.20479pt too wide) in paragraph at lines 203--217
- [][] 
- []
-
-
-Overfull \hbox (27.29707pt too wide) in paragraph at lines 273--281
-[][] 
- []
-
-<img/papi-client-auth-cost.png, id=1566, 846.16125pt x 521.95pt>
+<img/papi-client-auth-cost.png, id=1579, 846.16125pt x 521.95pt>
 File: img/papi-client-auth-cost.png Graphic file (type png)
 <use img/papi-client-auth-cost.png>
-Package pdftex.def Info: img/papi-client-auth-cost.png  used on input line 325.
+Package pdftex.def Info: img/papi-client-auth-cost.png  used on input line 330.
 (pdftex.def)             Requested size: 455.24411pt x 280.81343pt.
-<img/papi-server-auth-cost.png, id=1567, 846.16125pt x 521.95pt>
+<img/papi-server-auth-cost.png, id=1580, 846.16125pt x 521.95pt>
 File: img/papi-server-auth-cost.png Graphic file (type png)
 <use img/papi-server-auth-cost.png>
-Package pdftex.def Info: img/papi-server-auth-cost.png  used on input line 331.
+Package pdftex.def Info: img/papi-server-auth-cost.png  used on input line 336.
 (pdftex.def)             Requested size: 455.24411pt x 280.81343pt.
-<img/papi-ecdsa-sign-verify.png, id=1568, 847.165pt x 523.9575pt>
+<img/papi-ecdsa-sign-verify.png, id=1581, 847.165pt x 523.9575pt>
 File: img/papi-ecdsa-sign-verify.png Graphic file (type png)
 <use img/papi-ecdsa-sign-verify.png>
-Package pdftex.def Info: img/papi-ecdsa-sign-verify.png  used on input line 337.
+Package pdftex.def Info: img/papi-ecdsa-sign-verify.png  used on input line 342.
 (pdftex.def)             Requested size: 455.24411pt x 281.55771pt.
-<img/papi-rsa-sign-verify.png, id=1569, 847.165pt x 523.9575pt>
+<img/papi-rsa-sign-verify.png, id=1582, 847.165pt x 523.9575pt>
 File: img/papi-rsa-sign-verify.png Graphic file (type png)
 <use img/papi-rsa-sign-verify.png>
-Package pdftex.def Info: img/papi-rsa-sign-verify.png  used on input line 343.
+Package pdftex.def Info: img/papi-rsa-sign-verify.png  used on input line 348.
 (pdftex.def)             Requested size: 455.24411pt x 281.55771pt.
 File: img/papi-rsa-sign-verify.png Graphic file (type png)
 <use img/papi-rsa-sign-verify.png>
-Package pdftex.def Info: img/papi-rsa-sign-verify.png  used on input line 349.
+Package pdftex.def Info: img/papi-rsa-sign-verify.png  used on input line 354.
 (pdftex.def)             Requested size: 455.24411pt x 281.55771pt.
-<img/papi-ecdh-cost.png, id=1570, 877.2775pt x 543.02875pt>
+<img/papi-ecdh-cost.png, id=1583, 877.2775pt x 543.02875pt>
 File: img/papi-ecdh-cost.png Graphic file (type png)
 <use img/papi-ecdh-cost.png>
-Package pdftex.def Info: img/papi-ecdh-cost.png  used on input line 355.
+Package pdftex.def Info: img/papi-ecdh-cost.png  used on input line 360.
 (pdftex.def)             Requested size: 455.24411pt x 281.79655pt.
 File: img/papi-ecdh-cost.png Graphic file (type png)
 <use img/papi-ecdh-cost.png>
-Package pdftex.def Info: img/papi-ecdh-cost.png  used on input line 361.
+Package pdftex.def Info: img/papi-ecdh-cost.png  used on input line 366.
 (pdftex.def)             Requested size: 455.24411pt x 281.79655pt.
-) [89
+) [87
 
-] [90] [91] [92] [93] [94] [95 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-client-auth-cost.png>] [96 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-server-auth-cost.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-ecdsa-sign-verify.png>] [97 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-rsa-sign-verify.png>] [98 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-ecdh-cost.png>]
+
+] [88] [89] [90] [91] [92] [93 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-client-auth-cost.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-server-auth-cost.png>] [94 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-ecdsa-sign-verify.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-rsa-sign-verify.png>] [95 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-ecdh-cost.png>] [96]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 263.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 263.
  (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 263.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 263.
 Package rerunfilecheck Info: File `Thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 6D7AFE338A8ADB57DA86C88E75FA25AB;3230.
+(rerunfilecheck)             Checksum: 18D7D434221E1F26AF84EA21AE842092;3445.
  ) 
 Here is how much of TeX's memory you used:
- 17543 strings out of 492649
- 285276 string characters out of 6129622
- 501450 words of memory out of 5000000
- 20601 multiletter control sequences out of 15000+600000
+ 17560 strings out of 492649
+ 285229 string characters out of 6129622
+ 502130 words of memory out of 5000000
+ 20624 multiletter control sequences out of 15000+600000
  41828 words of font info for 76 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 47i,18n,37p,2084b,589s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 47i,18n,37p,2084b,625s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/latxfont/line10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.pdf (114 pages, 2430829 bytes).
+Output written on /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.pdf (112 pages, 9981032 bytes).
 PDF statistics:
- 1745 PDF objects out of 2073 (max. 8388607)
- 1518 compressed objects within 16 object streams
+ 1759 PDF objects out of 2073 (max. 8388607)
+ 1537 compressed objects within 16 object streams
  400 named destinations out of 1000 (max. 500000)
- 601 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 600 words of extra memory for PDF output out of 10000 (max. 10000000)
 

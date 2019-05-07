@@ -11,6 +11,7 @@
 \chapter{Appendix A}
 
 \begin{table}[]
+	\resizebox{\textwidth}{!}{
 	\begin{tabular}{|l|l|l|l|l|}
 	\hline
 	\backslashbox{Security\\Level}{Operation}                  & \textbf{RSA Sign}    & \textbf{RSA Verify} & \textbf{ECDSA Sign} & \textbf{ECDSA Verify} \\ \hline
@@ -18,7 +19,7 @@
 	\textbf{normal}    & 75738802 (317047)    & 1117868 (748)       & 29512991 (95776)    & 56260702 (162365)     \\ \hline
 	\textbf{high}      & 317087210 (716961)   & 3295296 (254)       & 49150396 (82047)     & 94077150 (130275)     \\ \hline
 	\textbf{very high} & 1700652764 (2283718) & 13436728 (702)      & 59732056 (441815)   & 114744021 (843861)    \\ \hline
-	\end{tabular}
+	\end{tabular}}
 	\centering \caption{\label{table:rsa-costs-all-sls} RSA and ECDSA signature creation and verification costs in number of CPU cycles. Numbers in parenthesis is the standard deviation} \end{table}
   
   \begin{table}[]
@@ -94,6 +95,7 @@
   \end{table}
   
   \begin{table}[]
+  \resizebox{\textwidth}{!}{
   \begin{tabular}{|l|l|l|l|l|}
   \hline
    \backslashbox{Security\\Level}{Opeation}                   & \textbf{ECDH Gen Keypair} & \textbf{ECDH Gen Secret} & \textbf{DH Gen Keypair} & \textbf{DH Gen Secret} \\ \hline
@@ -101,7 +103,7 @@
   \textbf{normal}    & 27483912 (94940)          & 26958612 (137745)        & 67136033 (108793)       & 66712994 (107669)      \\ \hline
   \textbf{high}      & 45900358 (65731)          & 44331330 (100040)        & 474938146 (490496)      & 473634908 (493588)     \\ \hline
   \textbf{very high} & 54449740 (487567)         & 53531554 (776984)        & 3592631108 (2792006)    & 3586324217 (2791154)   \\ \hline
-  \end{tabular}
+  \end{tabular}}
   \centering \caption{\label{table:ecdh-dh-costs-all-sls} ECDH and DH costs for all security levels in number of CPU cycles. Numbers in parenthesis are the standard deviation.}
   \end{table}
   
@@ -182,6 +184,7 @@
   \end{table}
   
   \begin{table}[]
+	\resizebox{\textwidth}{!}{
 	\begin{tabular}{|l|l|l|l|l|}
 	\hline
 	 \backslashbox{Key\\Exchange}{Security\\Level}                     & \textbf{low}      & \textbf{normal}    & \textbf{high}      & \textbf{very high}   \\ \hline
@@ -195,11 +198,12 @@
 	\textbf{ECDHE-ECDSA} & 110524836 (93990) & 168954007 (267635) & 242501399 (149155) & 280626510 (1071418)  \\ \hline
 	\textbf{DHE-PSK}     & 22189619 (55603)  & 135442518 (309751) & 950212732 (787892) & 7181764421 (5195398) \\ \hline
 	\textbf{DHE-RSA}     & 24250886 (94421)  & 138197524 (198704) & 955840114 (861069) & 7196088947 (6405987) \\ \hline
-	\end{tabular}
+	\end{tabular}}
 	\centering \caption{\label{table:client-hs-cost-all-sls} Handshake costs for the client in number of CPU cycles. Numbers in parenthesis are the standard deviation}
 	\end{table}
   
 	\begin{table}[]
+		\resizebox{\textwidth}{!}{
   \begin{tabular}{|l|l|l|l|l|}
   \hline
    \backslashbox{Key\\Exchange}{Security\\Level}                     & \textbf{low}      & \textbf{normal}    & \textbf{high}       & \textbf{very high}   \\ \hline
@@ -213,7 +217,7 @@
   \textbf{ECDHE-ECDSA} & 41984222 (82371)  & 86096716 (192885)  & 141506181 (147013)  & 169996896 (1051307)  \\ \hline
   \textbf{DHE-PSK}     & 22308029 (76182)  & 135535409 (232955) & 950691653 (1289706) & 7181243788 (5402427) \\ \hline
   \textbf{DHE-RSA}     & 43602094 (154553) & 212251542 (364611) & 1268235354 (857921) & 8883866054 (5993186) \\ \hline
-  \end{tabular}
+  \end{tabular}}
 	\centering \centering \caption{\label{table:server-hs-cost-all-sls} Handshake costs for the server in number of CPU cycles. Numbers in parenthesis are the standard deviation}
   \end{table}
   
@@ -270,6 +274,7 @@
 			\end{table}
   
 			\begin{table}[]
+				\resizebox{\textwidth}{!}{
 			  \begin{tabular}{|l|l|l|l|l|}
 			  \hline
 			   \backslashbox{Security\\Level}{Operation}                  & \textbf{ECDH Gen Keypair} & \textbf{ECDH Gen Shared} & \textbf{DH Gen Keypair} & \textbf{DH Gen Shared} \\ \hline
@@ -277,7 +282,7 @@
 			  \textbf{normal}    & 15049 (158)                & 14693 (131)               & 37422 (325)              & 36969 (275)             \\ \hline
 			  \textbf{high}      & 25139 (305)                & 24297 (187)               & 263498 (843)             & 262432 (927)            \\ \hline
 			  \textbf{very high} & 31270 (342)                & 30830 (455)               & 1959755 (3784)           & 1955550 (4082)          \\ \hline
-			  \end{tabular}
+			  \end{tabular}}
 			  \caption{ECDH  and  DH  costs  for  all  security  levels  in  microseconds.  Numbers  in parenthesis are the standard deviation}
 			  \label{table:papi-ecd-dh-costs}
 			  \end{table}

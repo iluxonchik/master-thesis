@@ -1,4 +1,4 @@
-\begin{thebibliography}{87}
+\begin{thebibliography}{90}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -84,16 +84,6 @@ C.~Bormann, S.~Lemay, H.~Tschofenig, K.~Hartke, B.~Silverajan, and B.~Raymor.
 \newblock
   \url{http://www.ietf.org/internet-drafts/draft-ietf-core-coap-tcp-tls-11.txt}.
 
-\bibitem[SSL()]{SSLLibra13:online}
-{mbed TLS (formely PolarSSL): SSL/TLS Library For Embedded Devices}.
-\newblock URL \url{https://tls.mbed.org/}.
-\newblock (Accessed on 12/19/2017).
-
-\bibitem[Qua()]{QualysSS90:online}
-Qualys ssl labs - ssl pulse.
-\newblock \url{https://www.ssllabs.com/ssl-pulse/}.
-\newblock (Accessed on 09/08/2018).
-
 \bibitem[Barker(2016)]{Recommen44:online}
 E.~Barker.
 \newblock {Recommendation for Key Management, Part 1: General}.
@@ -116,6 +106,11 @@ C.~Bormann, M.~Ersue, and A.~Keranen.
 \newblock RFC 7228, RFC Editor, May 2014.
 \newblock URL \url{http://www.rfc-editor.org/rfc/rfc7228.txt}.
 \newblock \url{http://www.rfc-editor.org/rfc/rfc7228.txt}.
+
+\bibitem[SSL()]{SSLLibra13:online}
+{mbed TLS (formely PolarSSL): SSL/TLS Library For Embedded Devices}.
+\newblock URL \url{https://tls.mbed.org/}.
+\newblock (Accessed on 12/19/2017).
 
 \bibitem[Cooper et~al.(2008{\natexlab{a}})Cooper, Santesson, Farrell, Boeyen,
   Housley, and Polk]{rfc5280}
@@ -557,6 +552,11 @@ A.~K. Lenstra.
 \newblock Key length. contribution to the handbook of information security.
 \newblock 2004.
 
+\bibitem[Qua()]{QualysSS90:online}
+Qualys ssl labs - ssl pulse.
+\newblock \url{https://www.ssllabs.com/ssl-pulse/}.
+\newblock (Accessed on 09/08/2018).
+
 \bibitem[Moriarty et~al.(2016)Moriarty, Kaliski, Jonsson, and Rusch]{RFC8017}
 K.~Moriarty, B.~Kaliski, J.~Jonsson, and A.~Rusch.
 \newblock {PKCS \#1: RSA Cryptography Specifications Version 2.2}.
@@ -598,6 +598,18 @@ J.~Jonsson and B.~Kaliski.
 \newblock RFC 3447, Feb. 2003.
 \newblock URL \url{https://rfc-editor.org/rfc/rfc3447.txt}.
 
+\bibitem[Turner and Chen(2011)]{turner2011updated}
+S.~Turner and L.~Chen.
+\newblock Updated security considerations for the md5 message-digest and the
+  hmac-md5 algorithms.
+\newblock Technical report, 2011.
+
+\bibitem[Polk et~al.(2011)Polk, Chen, Turner, and Hoffman]{polk2011security}
+T.~Polk, L.~Chen, S.~Turner, and P.~Hoffman.
+\newblock Security considerations for the sha-0 and sha-1 message-digest
+  algorithms.
+\newblock Technical report, 2011.
+
 \bibitem[Ertaul et~al.(2016)Ertaul, Mudan, and Sarfaraz]{ertaul2016performance}
 L.~Ertaul, A.~Mudan, and N.~Sarfaraz.
 \newblock Performance comparison of aes-ccm and aes-gcm authenticated
@@ -606,6 +618,11 @@ L.~Ertaul, A.~Mudan, and N.~Sarfaraz.
   Management (SAM)}, page 331. The Steering Committee of The World Congress in
   Computer Science, Computer Engineering and Applied Computing (WorldComp),
   2016.
+
+\bibitem[Def()]{Definiti62:online}
+{Definitions of the SI units: The binary prefixes}.
+\newblock \url{https://physics.nist.gov/cuu/Units/binary.html}.
+\newblock (Accessed on 05/02/2019).
 
 \bibitem[Yadin(2016)]{yadin2016computer}
 A.~Yadin.

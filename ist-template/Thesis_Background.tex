@@ -10,9 +10,12 @@
 \chapter{Background}
 \label{chapter:background}
 
-\section{Cryptography}\label{crypto-background}
+This chapter will begin with a summary of the most relevant theoretical background. This is done is Section \ref{crypto-algs}.
+After that, in Section \ref{related-work} we describe the current state of art in the topic of this work.
 
-\gls{tls} is a complex protocol that relies on various concepts to provide
+\section{Cryptograpic Algorithms} \label{crypto-algs}
+
+\gls{tls} is a complex protocol that relies on various cryptographic algorithms to provide
 security. The most relevant ones will be described here.
 
 In a typical scenario, \gls{tls} uses \gls{ac} for peer authentication and \gls{sc} for bulk data
@@ -77,7 +80,7 @@ which makes then more suitable for low-bandwidth networks, since the messages to
 
 \subsection{\gls{ecc}} \label{eccsection}
 
-public key cryptography is based on the use of one-way math functions. Such
+Public key cryptography is based on the use of one-way math functions. Such
 functions make it easy to compute the answer given an input,
 but hard to compute the input given the answer. For example, RSA uses factoring
 as the one one way function: it is easy to multiply large numbers, but it is hard
@@ -686,7 +689,7 @@ that are made by \gls{tls}. The main differences from \gls{dtls} $1.2$ to \gls{t
   a fragment offset field and a fragment length field.
 \end{itemize}
 
-\section{Related Work}
+\section{Related Work} \label{related-work}
 
 Lightweight cryptography is an important topic in the context of \gls{iot} security, due to the resource-limited nature of the devices. This section will begin with the description of the work done in this area.
 

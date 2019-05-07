@@ -42,11 +42,15 @@
 \@writefile{toc}{\contentsline {section}{\numberline {1.1}Motivation}{2}{section.1.1}}
 \citation{S3KScala62:online}
 \citation{I-D.ietf-core-coap-tcp-tls}
-\citation{SSLLibra13:online}
-\citation{QualysSS90:online}
 \@writefile{toc}{\contentsline {section}{\numberline {1.2}Objectives}{3}{section.1.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {1.3}Results}{4}{section.1.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {1.4}Structure of The Document}{4}{section.1.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}Contributions}{4}{section.1.3}}
+\citation{RFC8446}
+\citation{DTLS13:online}
+\citation{NVDCVE2094:online}
+\citation{sslserve89:onelin}
+\citation{updatete23:online}
+\@writefile{toc}{\contentsline {section}{\numberline {1.4}Results}{5}{section.1.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.5}Structure of The Document}{6}{section.1.5}}
 \citation{Recommen44:online}
 \citation{Kryptogr1:online}
 \citation{RFC7228}
@@ -55,8 +59,8 @@
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \newlabel{chapter:background}{{2}{7}{Background}{chapter.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.1}Cryptography}{7}{section.2.1}}
-\newlabel{crypto-background}{{2.1}{7}{Cryptography}{section.2.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}Cryptograpic Algorithms}{7}{section.2.1}}
+\newlabel{crypto-algs}{{2.1}{7}{Cryptograpic Algorithms}{section.2.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1.1}Symmetric vs Asymmetric Cryptography}{7}{subsection.2.1.1}}
 \newlabel{sac}{{2.1.1}{7}{Symmetric vs Asymmetric Cryptography}{subsection.2.1.1}{}}
 \citation{rfc5280}
@@ -76,45 +80,46 @@
 \citation{RFC5077}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces  TLS Record header}}{11}{figure.2.1}}
 \newlabel{fig:tls-record-header}{{2.1}{11}{TLS Record header}{figure.2.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces  TLS (Sub)protocols and Layers}}{11}{figure.2.2}}
-\newlabel{fig:tls-subprotocols}{{2.2}{11}{TLS (Sub)protocols and Layers}{figure.2.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}TLS 1.2 Handshake Protocol}{11}{subsection.2.2.2}}
 \newlabel{hsp}{{2.2.2}{11}{TLS 1.2 Handshake Protocol}{subsection.2.2.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces  \gls {tls} $1.2$ message flow for a full handshake}}{12}{figure.2.3}}
-\newlabel{fig:tls-12-handshake}{{2.3}{12}{\gls {tls} $1.2$ message flow for a full handshake}{figure.2.3}{}}
-\citation{DualECJu15:online}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces  TLS (Sub)protocols and Layers}}{12}{figure.2.2}}
+\newlabel{fig:tls-subprotocols}{{2.2}{12}{TLS (Sub)protocols and Layers}{figure.2.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces  \gls {tls} $1.2$ message flow for a full handshake}}{13}{figure.2.3}}
+\newlabel{fig:tls-12-handshake}{{2.3}{13}{\gls {tls} $1.2$ message flow for a full handshake}{figure.2.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces  DTLS handshake with HelloVerifyRequest containing the cookie}}{13}{figure.2.4}}
 \newlabel{fig:dtls-cookie}{{2.4}{13}{DTLS handshake with HelloVerifyRequest containing the cookie}{figure.2.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}\gls {tls} Record Processing}{15}{subsection.2.2.3}}
-\newlabel{record}{{2.2.3}{15}{\gls {tls} Record Processing}{subsection.2.2.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.5}{\ignorespaces TLS 1.2 Record Processing}}{16}{figure.2.5}}
-\newlabel{fig:tls-record-processing}{{2.5}{16}{TLS 1.2 Record Processing}{figure.2.5}{}}
+\citation{DualECJu15:online}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}\gls {tls} Record Processing}{16}{subsection.2.2.3}}
+\newlabel{record}{{2.2.3}{16}{\gls {tls} Record Processing}{subsection.2.2.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2.4}\gls {tls} Keying Material}{16}{subsection.2.2.4}}
 \newlabel{keying}{{2.2.4}{16}{\gls {tls} Keying Material}{subsection.2.2.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.5}{\ignorespaces TLS 1.2 Record Processing}}{17}{figure.2.5}}
+\newlabel{fig:tls-record-processing}{{2.5}{17}{TLS 1.2 Record Processing}{figure.2.5}{}}
 \citation{RFC5246}
 \citation{RFC4492}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.5}TLS 1.2 Keying Material Generation}{17}{subsection.2.2.5}}
-\newlabel{keying-material}{{2.2.5}{17}{TLS 1.2 Keying Material Generation}{subsection.2.2.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.6}TLS 1.2 Key Exchange Methods}{17}{subsection.2.2.6}}
-\newlabel{key-exchange}{{2.2.6}{17}{TLS 1.2 Key Exchange Methods}{subsection.2.2.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.5}TLS 1.2 Keying Material Generation}{18}{subsection.2.2.5}}
+\newlabel{keying-material}{{2.2.5}{18}{TLS 1.2 Keying Material Generation}{subsection.2.2.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.6}TLS 1.2 Key Exchange Methods}{18}{subsection.2.2.6}}
+\newlabel{key-exchange}{{2.2.6}{18}{TLS 1.2 Key Exchange Methods}{subsection.2.2.6}{}}
 \citation{RFC7250}
 \citation{RFC4492}
-\@writefile{lot}{\contentsline {table}{\numberline {2.1}{\ignorespaces Key exchange methods and security properties}}{18}{table.2.1}}
-\newlabel{kemsp}{{2.1}{18}{Key exchange methods and security properties}{table.2.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2.1}{\ignorespaces Key exchange methods and security properties}}{19}{table.2.1}}
+\newlabel{kemsp}{{2.1}{19}{Key exchange methods and security properties}{table.2.1}{}}
 \citation{RFC4366}
 \citation{RFC2246}
 \citation{I-D.ietf-tls-tls13}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.7}TLS Extensions}{19}{subsection.2.2.7}}
-\newlabel{extensions}{{2.2.7}{19}{TLS Extensions}{subsection.2.2.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.8}TLS 1.3}{19}{subsection.2.2.8}}
-\newlabel{tls-13}{{2.2.8}{19}{TLS 1.3}{subsection.2.2.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.7}TLS Extensions}{20}{subsection.2.2.7}}
+\newlabel{extensions}{{2.2.7}{20}{TLS Extensions}{subsection.2.2.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.8}TLS 1.3}{20}{subsection.2.2.8}}
+\newlabel{tls-13}{{2.2.8}{20}{TLS 1.3}{subsection.2.2.8}{}}
 \citation{RFC5869}
 \citation{RFC6347}
 \citation{I-D.ietf-tls-dtls13}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.9}\gls {dtls}}{20}{subsection.2.2.9}}
-\newlabel{dtls}{{2.2.9}{20}{\gls {dtls}}{subsection.2.2.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.9}\gls {dtls}}{21}{subsection.2.2.9}}
+\newlabel{dtls}{{2.2.9}{21}{\gls {dtls}}{subsection.2.2.9}{}}
 \citation{Stateoft96:online}
-\@writefile{toc}{\contentsline {section}{\numberline {2.3}Related Work}{21}{section.2.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Related Work}{22}{section.2.3}}
+\newlabel{related-work}{{2.3}{22}{Related Work}{section.2.3}{}}
 \citation{cryptoeprint:2016:1047}
 \citation{b5b8db9716:online}
 \citation{S3KScala62:online}
@@ -125,16 +130,16 @@
 \citation{RFC7250}
 \citation{RFC4944}
 \citation{RFC6282}
-\@writefile{lot}{\contentsline {table}{\numberline {2.2}{\ignorespaces A summary of the differences between ultra-lightweight and IoT crypto}}{23}{table.2.2}}
-\newlabel{ul-iot}{{2.2}{23}{A summary of the differences between ultra-lightweight and IoT crypto}{table.2.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2.2}{\ignorespaces A summary of the differences between ultra-lightweight and IoT crypto}}{24}{table.2.2}}
+\newlabel{ul-iot}{{2.2}{24}{A summary of the differences between ultra-lightweight and IoT crypto}{table.2.2}{}}
 \citation{6LoWPANC53:online}
 \citation{RFC7400}
 \citation{RFC6282}
 \citation{RFC6282}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.6}{\ignorespaces  IPv6 Next Header Compression}}{24}{figure.2.6}}
-\newlabel{fig:6lowpan-header}{{2.6}{24}{IPv6 Next Header Compression}{figure.2.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.7}{\ignorespaces  LOWPAN\_NHC\_RHS structure}}{24}{figure.2.7}}
-\newlabel{fig:6lowpan-ghc-rhs}{{2.7}{24}{LOWPAN\_NHC\_RHS structure}{figure.2.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.6}{\ignorespaces  IPv6 Next Header Compression}}{25}{figure.2.6}}
+\newlabel{fig:6lowpan-header}{{2.6}{25}{IPv6 Next Header Compression}{figure.2.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.7}{\ignorespaces  LOWPAN\_NHC\_RHS structure}}{25}{figure.2.7}}
+\newlabel{fig:6lowpan-ghc-rhs}{{2.7}{25}{LOWPAN\_NHC\_RHS structure}{figure.2.7}{}}
 \citation{I-D.aayadi-6lowpan-tcphc}
 \citation{LitheLig40:online}
 \citation{6LoWPANC53:online}
@@ -186,6 +191,7 @@
 \@writefile{lot}{\addvspace {10\p@ }}
 \newlabel{chapter:results}{{3}{31}{Results}{chapter.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.1}Methodology}{31}{section.3.1}}
+\newlabel{sec:methodology}{{3.1}{31}{Methodology}{section.3.1}{}}
 \citation{dongarra2001using}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Evaluated Metrics and Limitations}{32}{subsection.3.1.1}}
 \newlabel{sec:eval-metrics-and-lims}{{3.1.1}{32}{Evaluated Metrics and Limitations}{subsection.3.1.1}{}}
@@ -197,7 +203,6 @@
 \@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces  Local machine's characteristics}}{34}{table.3.1}}
 \newlabel{table:local-machine}{{3.1}{34}{Local machine's characteristics}{table.3.1}{}}
 \@writefile{toc}{\contentsline {subsubsection}{Reading Values From Processor Counters with PAPI}{34}{section*.11}}
-\@writefile{toc}{\contentsline {subsubsection}{Limitations}{34}{section*.12}}
 \citation{iluxonch23:online}
 \citation{iluxonch67:online}
 \citation{iluxonch73:online}
@@ -207,150 +212,151 @@
 \citation{iluxonch24:online}
 \citation{iluxonch24:online}
 \citation{iluxonch24:online}
+\@writefile{toc}{\contentsline {subsubsection}{Limitations}{35}{section*.12}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Developed Tools}{35}{subsection.3.1.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}Results and Data Analysis}{35}{section.3.2}}
+\newlabel{sec:developed-tools}{{3.1.2}{35}{Developed Tools}{subsection.3.1.2}{}}
 \citation{nadeem2005performance}
 \citation{mathew2010performance}
 \citation{lenstra2004key}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Results and Data Analysis}{36}{section.3.2}}
+\newlabel{sec:results}{{3.2}{36}{Results and Data Analysis}{section.3.2}{}}
 \citation{RFC4492}
-\citation{QualysSS90:online}
-\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces  Comparable symmetric and asymmetric key sizes (in bits)}}{37}{table.3.2}}
-\newlabel{table:ecc-key-sizes}{{3.2}{37}{Comparable symmetric and asymmetric key sizes (in bits)}{table.3.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Security Levels}{37}{subsection.3.2.1}}
 \newlabel{sec:sls}{{3.2.1}{37}{Security Levels}{subsection.3.2.1}{}}
+\citation{QualysSS90:online}
 \citation{RFC8017}
 \citation{RFC6979}
 \citation{GoogleIn11:online}
 \citation{BrowserS4:online}
+\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces  Comparable symmetric and asymmetric key sizes (in bits)}}{38}{table.3.2}}
+\newlabel{table:ecc-key-sizes}{{3.2}{38}{Comparable symmetric and asymmetric key sizes (in bits)}{table.3.2}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {3.3}{\ignorespaces  Security levels used in evaluation}}{38}{table.3.3}}
 \newlabel{table:tls-sec-lvls}{{3.3}{38}{Security levels used in evaluation}{table.3.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Evaluation of Security Services in TLS}{38}{subsection.3.2.2}}
-\newlabel{sec:ss-overview}{{3.2.2}{38}{Evaluation of Security Services in TLS}{subsection.3.2.2}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {3.4}{\ignorespaces  Security levels configuration}}{39}{table.3.4}}
 \newlabel{table:sls-config-info}{{3.4}{39}{Security levels configuration}{table.3.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces  Client handshake cost for all of the $161$ ciphersuites}}{39}{figure.3.2}}
-\newlabel{fig:hs-all-ciphers-cli}{{3.2}{39}{Client handshake cost for all of the $161$ ciphersuites}{figure.3.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces  Server handshake cost for all of the $161$ ciphersuites}}{40}{figure.3.3}}
-\newlabel{fig:hs-all-ciphers-srv}{{3.3}{40}{Server handshake cost for all of the $161$ ciphersuites}{figure.3.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.5}{\ignorespaces  Average handshake cost for the client in millions CPU cycles}}{40}{table.3.5}}
-\newlabel{table:hs-all-ciphers-cli-aggr}{{3.5}{40}{Average handshake cost for the client in millions CPU cycles}{table.3.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.6}{\ignorespaces  Average Handshake cost for the server in millions CPU cycles}}{40}{table.3.6}}
-\newlabel{table:hs-all-ciphers-srv-aggr}{{3.6}{40}{Average Handshake cost for the server in millions CPU cycles}{table.3.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Evaluation of Security Services in TLS}{39}{subsection.3.2.2}}
+\newlabel{sec:ss-overview}{{3.2.2}{39}{Evaluation of Security Services in TLS}{subsection.3.2.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces  Client handshake cost in number of CPU cycles for all of the $161$ ciphersuites}}{40}{figure.3.2}}
+\newlabel{fig:hs-all-ciphers-cli}{{3.2}{40}{Client handshake cost in number of CPU cycles for all of the $161$ ciphersuites}{figure.3.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces  Server handshake cost in number of CPU cycles for all of the $161$ ciphersuites}}{40}{figure.3.3}}
+\newlabel{fig:hs-all-ciphers-srv}{{3.3}{40}{Server handshake cost in number of CPU cycles for all of the $161$ ciphersuites}{figure.3.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.5}{\ignorespaces  Average handshake cost for the client in millions CPU cycles}}{41}{table.3.5}}
+\newlabel{table:hs-all-ciphers-cli-aggr}{{3.5}{41}{Average handshake cost for the client in millions CPU cycles}{table.3.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.6}{\ignorespaces  Average Handshake cost for the server in millions CPU cycles}}{41}{table.3.6}}
+\newlabel{table:hs-all-ciphers-srv-aggr}{{3.6}{41}{Average Handshake cost for the server in millions CPU cycles}{table.3.6}{}}
 \@writefile{toc}{\contentsline {subsubsection}{Client}{41}{section*.13}}
 \@writefile{toc}{\contentsline {subsubsection}{Server}{42}{section*.14}}
-\@writefile{toc}{\contentsline {subsubsection}{Discussion}{42}{section*.15}}
+\@writefile{toc}{\contentsline {subsubsection}{Discussion}{43}{section*.15}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}PSK Authentication Cost Analysis}{43}{subsection.3.2.3}}
 \newlabel{sec:psk-cost-analysis}{{3.2.3}{43}{PSK Authentication Cost Analysis}{subsection.3.2.3}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {3.7}{\ignorespaces  Cost of \gls {prf} and \textit  {Finished} message}}{44}{table.3.7}}
 \newlabel{table:hs-key-gen-cost}{{3.7}{44}{Cost of \gls {prf} and \textit {Finished} message}{table.3.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces  RSA and ECDSA operations cost for normal security level}}{44}{figure.3.4}}
-\newlabel{fig:rsa-ecdsa-sign-ver-total-normal-sl}{{3.4}{44}{RSA and ECDSA operations cost for normal security level}{figure.3.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.4}Asymmetric Algorithms Authentication Cost Analysis}{44}{subsection.3.2.4}}
 \newlabel{sec:asym-algs-analysis}{{3.2.4}{44}{Asymmetric Algorithms Authentication Cost Analysis}{subsection.3.2.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces  RSA and ECDSA operations cost for normal security level}}{45}{figure.3.4}}
+\newlabel{fig:rsa-ecdsa-sign-ver-total-normal-sl}{{3.4}{45}{RSA and ECDSA operations cost for normal security level}{figure.3.4}{}}
 \@writefile{toc}{\contentsline {subsubsection}{RSA Cost Analysis}{45}{section*.16}}
 \citation{boneh2002fast}
 \citation{muir2006seifert}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces  RSA operations costs for all security levels (logarithmic scale)}}{46}{figure.3.5}}
-\newlabel{fig:rsa-costs-all-sls}{{3.5}{46}{RSA operations costs for all security levels (logarithmic scale)}{figure.3.5}{}}
 \@writefile{toc}{\contentsline {subsubsection}{ECDSA Cost Analysis}{46}{section*.17}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces  RSA operations costs for all security levels (logarithmic scale)}}{47}{figure.3.5}}
+\newlabel{fig:rsa-costs-all-sls}{{3.5}{47}{RSA operations costs for all security levels (logarithmic scale)}{figure.3.5}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces  Relative increase of RSA operation costs}}{47}{figure.3.6}}
 \newlabel{fig:rsa-pub-priv-cost-increase}{{3.6}{47}{Relative increase of RSA operation costs}{figure.3.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.7}{\ignorespaces  Ratio between the most and the least costly operation for RSA and ECDSA}}{47}{figure.3.7}}
-\newlabel{fig:rsa-ecdsa-pub-priv-ratio}{{3.7}{47}{Ratio between the most and the least costly operation for RSA and ECDSA}{figure.3.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.8}{\ignorespaces  Relative increase of ECDSA operations cost}}{48}{figure.3.8}}
-\newlabel{fig:ecdsa-relative-cost-incerase}{{3.8}{48}{Relative increase of ECDSA operations cost}{figure.3.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.7}{\ignorespaces  Ratio between the most and the least costly operation for RSA and ECDSA}}{48}{figure.3.7}}
+\newlabel{fig:rsa-ecdsa-pub-priv-ratio}{{3.7}{48}{Ratio between the most and the least costly operation for RSA and ECDSA}{figure.3.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.8}{\ignorespaces  Relative increase of ECDSA operations cost}}{49}{figure.3.8}}
+\newlabel{fig:ecdsa-relative-cost-incerase}{{3.8}{49}{Relative increase of ECDSA operations cost}{figure.3.8}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.9}{\ignorespaces  ECDSA costs for all security levels}}{49}{figure.3.9}}
 \newlabel{fig:ecdsa-costs-all-sls}{{3.9}{49}{ECDSA costs for all security levels}{figure.3.9}{}}
-\@writefile{toc}{\contentsline {subsubsection}{RSA vs ECDSA}{49}{section*.18}}
-\newlabel{sec:rsa-vs-ecdsa}{{3.2.4}{49}{RSA vs ECDSA}{section*.18}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.10}{\ignorespaces  RSA and ECDSA cost comparison}}{50}{figure.3.10}}
 \newlabel{fig:ecdsa-rsa-costs-all}{{3.10}{50}{RSA and ECDSA cost comparison}{figure.3.10}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.11}{\ignorespaces  Client authentication cost (logarithmic scale)}}{51}{figure.3.11}}
-\newlabel{fig:tls-auth-cost-client}{{3.11}{51}{Client authentication cost (logarithmic scale)}{figure.3.11}{}}
+\@writefile{toc}{\contentsline {subsubsection}{RSA vs ECDSA}{50}{section*.18}}
+\newlabel{sec:rsa-vs-ecdsa}{{3.2.4}{50}{RSA vs ECDSA}{section*.18}{}}
 \@writefile{toc}{\contentsline {subsubsection}{The Cost Of Authentication in TLS}{51}{section*.19}}
 \newlabel{sec:auth-cost-in-tls}{{3.2.4}{51}{The Cost Of Authentication in TLS}{section*.19}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.11}{\ignorespaces  Client authentication cost (logarithmic scale)}}{52}{figure.3.11}}
+\newlabel{fig:tls-auth-cost-client}{{3.11}{52}{Client authentication cost (logarithmic scale)}{figure.3.11}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.12}{\ignorespaces  Server authentication cost (logarithmic scale)}}{52}{figure.3.12}}
 \newlabel{fig:tls-auth-cost-server}{{3.12}{52}{Server authentication cost (logarithmic scale)}{figure.3.12}{}}
 \citation{RFC3447}
 \citation{RFC3447}
-\@writefile{lot}{\contentsline {table}{\numberline {3.8}{\ignorespaces  Cost of using \textit  {PKCS\#1 V2.1 RSAES-PKCS1-v1\_5} encryption and decryption schemes with various security levels}}{53}{table.3.8}}
-\newlabel{table:pkcs-cost}{{3.8}{53}{Cost of using \textit {PKCS\#1 V2.1 RSAES-PKCS1-v1\_5} encryption and decryption schemes with various security levels}{table.3.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.5}Perfect Forward Secrecy Cost Analysis}{54}{subsection.3.2.5}}
-\newlabel{sec:pfs-costs}{{3.2.5}{54}{Perfect Forward Secrecy Cost Analysis}{subsection.3.2.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.13}{\ignorespaces  ECDH and DH operations cost for normal security level}}{55}{figure.3.13}}
-\newlabel{fig:ecdh-dh-cost-normal-sl}{{3.13}{55}{ECDH and DH operations cost for normal security level}{figure.3.13}{}}
-\@writefile{toc}{\contentsline {subsubsection}{ECDH Cost Analysis}{55}{section*.20}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.14}{\ignorespaces  ECDH operations costs for all security levels}}{56}{figure.3.14}}
-\newlabel{fig:ecdh-costs-all-sls}{{3.14}{56}{ECDH operations costs for all security levels}{figure.3.14}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.15}{\ignorespaces  Relative increase of ECDH and DH operation costs}}{57}{figure.3.15}}
-\newlabel{fig:ecdh-dh-relative-cost-increase}{{3.15}{57}{Relative increase of ECDH and DH operation costs}{figure.3.15}{}}
-\@writefile{toc}{\contentsline {subsubsection}{DH Cost Analysis}{57}{section*.21}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.16}{\ignorespaces  DH operations costs for all security levels (logarithmic scale)}}{58}{figure.3.16}}
-\newlabel{fig:dh-costs-all-sls}{{3.16}{58}{DH operations costs for all security levels (logarithmic scale)}{figure.3.16}{}}
-\@writefile{toc}{\contentsline {subsubsection}{ECDH vs DH}{58}{section*.22}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.17}{\ignorespaces  ECDH and DH cost comparison (logarithmic scale)}}{59}{figure.3.17}}
-\newlabel{fig:ecdh-dh-costs-all}{{3.17}{59}{ECDH and DH cost comparison (logarithmic scale)}{figure.3.17}{}}
-\@writefile{toc}{\contentsline {subsubsection}{The Cost Of PFS In TLS}{59}{section*.23}}
-\newlabel{sec:pfs-cost-in-tls}{{3.2.5}{59}{The Cost Of PFS In TLS}{section*.23}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.8}{\ignorespaces  Cost of using \textit  {PKCS\#1 V2.1 RSAES-PKCS1-v1\_5} encryption and decryption schemes with various security levels}}{54}{table.3.8}}
+\newlabel{table:pkcs-cost}{{3.8}{54}{Cost of using \textit {PKCS\#1 V2.1 RSAES-PKCS1-v1\_5} encryption and decryption schemes with various security levels}{table.3.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.5}Perfect Forward Secrecy Cost Analysis}{55}{subsection.3.2.5}}
+\newlabel{sec:pfs-costs}{{3.2.5}{55}{Perfect Forward Secrecy Cost Analysis}{subsection.3.2.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.13}{\ignorespaces  ECDH and DH operations cost for normal security level}}{56}{figure.3.13}}
+\newlabel{fig:ecdh-dh-cost-normal-sl}{{3.13}{56}{ECDH and DH operations cost for normal security level}{figure.3.13}{}}
+\@writefile{toc}{\contentsline {subsubsection}{ECDH Cost Analysis}{56}{section*.20}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.14}{\ignorespaces  ECDH operations costs for all security levels}}{57}{figure.3.14}}
+\newlabel{fig:ecdh-costs-all-sls}{{3.14}{57}{ECDH operations costs for all security levels}{figure.3.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.15}{\ignorespaces  Relative increase of ECDH and DH operation costs}}{58}{figure.3.15}}
+\newlabel{fig:ecdh-dh-relative-cost-increase}{{3.15}{58}{Relative increase of ECDH and DH operation costs}{figure.3.15}{}}
+\@writefile{toc}{\contentsline {subsubsection}{DH Cost Analysis}{58}{section*.21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.16}{\ignorespaces  DH operations costs for all security levels (logarithmic scale)}}{59}{figure.3.16}}
+\newlabel{fig:dh-costs-all-sls}{{3.16}{59}{DH operations costs for all security levels (logarithmic scale)}{figure.3.16}{}}
+\@writefile{toc}{\contentsline {subsubsection}{ECDH vs DH}{59}{section*.22}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.17}{\ignorespaces  ECDH and DH cost comparison (logarithmic scale)}}{60}{figure.3.17}}
+\newlabel{fig:ecdh-dh-costs-all}{{3.17}{60}{ECDH and DH cost comparison (logarithmic scale)}{figure.3.17}{}}
+\@writefile{toc}{\contentsline {subsubsection}{The Cost Of PFS In TLS}{60}{section*.23}}
+\newlabel{sec:pfs-cost-in-tls}{{3.2.5}{60}{The Cost Of PFS In TLS}{section*.23}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.18}{\ignorespaces  \gls {pfs} and \textit  {ECDH} key exchange costs (logarithmic scale)}}{61}{figure.3.18}}
 \newlabel{fig:pfs-cost-all-sls}{{3.18}{61}{\gls {pfs} and \textit {ECDH} key exchange costs (logarithmic scale)}{figure.3.18}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.6}TLS Handshake Cost Analysis}{61}{subsection.3.2.6}}
-\newlabel{sec:tls-hs-cost}{{3.2.6}{61}{TLS Handshake Cost Analysis}{subsection.3.2.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.9}{\ignorespaces  Number of ciphersuites per key exchange method in \textit  {mbedTLS 2.7.0}}}{62}{table.3.9}}
-\newlabel{table:mbedtls-num-ciphers}{{3.9}{62}{Number of ciphersuites per key exchange method in \textit {mbedTLS 2.7.0}}{table.3.9}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.19}{\ignorespaces  Client handshake costs for all security levels}}{63}{figure.3.19}}
-\newlabel{fig:client-hs-cost-all-sls}{{3.19}{63}{Client handshake costs for all security levels}{figure.3.19}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.6}TLS Handshake Cost Analysis}{62}{subsection.3.2.6}}
+\newlabel{sec:tls-hs-cost}{{3.2.6}{62}{TLS Handshake Cost Analysis}{subsection.3.2.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.9}{\ignorespaces  Number of ciphersuites per key exchange method in \textit  {mbedTLS 2.7.0}}}{63}{table.3.9}}
+\newlabel{table:mbedtls-num-ciphers}{{3.9}{63}{Number of ciphersuites per key exchange method in \textit {mbedTLS 2.7.0}}{table.3.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.19}{\ignorespaces  Client handshake costs for all security levels}}{64}{figure.3.19}}
+\newlabel{fig:client-hs-cost-all-sls}{{3.19}{64}{Client handshake costs for all security levels}{figure.3.19}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.20}{\ignorespaces  Server handshake costs for all security levels}}{64}{figure.3.20}}
 \newlabel{fig:server-hs-cost-all-sls}{{3.20}{64}{Server handshake costs for all security levels}{figure.3.20}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.10}{\ignorespaces  Security services offered by each key exchange}}{64}{table.3.10}}
-\newlabel{table:key-exch-sec-ser}{{3.10}{64}{Security services offered by each key exchange}{table.3.10}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.10}{\ignorespaces  Security services offered by each key exchange}}{65}{table.3.10}}
+\newlabel{table:key-exch-sec-ser}{{3.10}{65}{Security services offered by each key exchange}{table.3.10}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.21}{\ignorespaces  \textbf  {low} security level decision tree for the cheapest key exchange}}{66}{figure.3.21}}
 \newlabel{fig:dt-low-sl}{{3.21}{66}{\textbf {low} security level decision tree for the cheapest key exchange}{figure.3.21}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.22}{\ignorespaces  \textbf  {normal} security level decision tree for the cheapest key exchange}}{66}{figure.3.22}}
-\newlabel{fig:dt-normal-sl}{{3.22}{66}{\textbf {normal} security level decision tree for the cheapest key exchange}{figure.3.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.22}{\ignorespaces  \textbf  {normal} security level decision tree for the cheapest key exchange}}{67}{figure.3.22}}
+\newlabel{fig:dt-normal-sl}{{3.22}{67}{\textbf {normal} security level decision tree for the cheapest key exchange}{figure.3.22}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.23}{\ignorespaces  \textbf  {high} security level decision tree for the cheapest key exchange}}{67}{figure.3.23}}
 \newlabel{fig:dt-high-sl}{{3.23}{67}{\textbf {high} security level decision tree for the cheapest key exchange}{figure.3.23}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.24}{\ignorespaces  \textbf  {very high} security level decision tree for the cheapest key exchange}}{67}{figure.3.24}}
-\newlabel{fig:dt-veryhigh-sl}{{3.24}{67}{\textbf {very high} security level decision tree for the cheapest key exchange}{figure.3.24}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.24}{\ignorespaces  \textbf  {very high} security level decision tree for the cheapest key exchange}}{68}{figure.3.24}}
+\newlabel{fig:dt-veryhigh-sl}{{3.24}{68}{\textbf {very high} security level decision tree for the cheapest key exchange}{figure.3.24}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {3.11}{\ignorespaces   Additional costs of parsing the certificate}}{68}{table.3.11}}
 \newlabel{table:cert-parse-cost}{{3.11}{68}{Additional costs of parsing the certificate}{table.3.11}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.25}{\ignorespaces  Confidentiality and integrity cost with different algorithms}}{69}{figure.3.25}}
-\newlabel{fig:symm-encr-all}{{3.25}{69}{Confidentiality and integrity cost with different algorithms}{figure.3.25}{}}
+\citation{turner2011updated}
+\citation{polk2011security}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.7}Confidentiality and Integrity Cost Analysis}{69}{subsection.3.2.7}}
 \newlabel{sec:confid-costs}{{3.2.7}{69}{Confidentiality and Integrity Cost Analysis}{subsection.3.2.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.25}{\ignorespaces  Confidentiality and integrity cost with different algorithms in estimated number of CPU cycles}}{70}{figure.3.25}}
+\newlabel{fig:symm-encr-all}{{3.25}{70}{Confidentiality and integrity cost with different algorithms in estimated number of CPU cycles}{figure.3.25}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.26}{\ignorespaces  Hashing operation costs in estimated number of CPU cycles}}{70}{figure.3.26}}
+\newlabel{fig:hash-cost}{{3.26}{70}{Hashing operation costs in estimated number of CPU cycles}{figure.3.26}{}}
 \citation{ertaul2016performance}
+\citation{Definiti62:online}
+\@writefile{lot}{\contentsline {table}{\numberline {3.12}{\ignorespaces Amount of data in megabytes that that needs to be exchanged between the peers in order for the costs of the Handshake equate the costs of Record phase for the client.}}{72}{table.3.12}}
+\newlabel{tab:conf-hs-client}{{3.12}{72}{Amount of data in megabytes that that needs to be exchanged between the peers in order for the costs of the Handshake equate the costs of Record phase for the client}{table.3.12}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.13}{\ignorespaces Amount of data in megabytes that that needs to be exchanged between the peers in order for the costs of the Handshake equate the costs of Record phase for the server.}}{72}{table.3.13}}
+\newlabel{tab:conf-hs-server}{{3.13}{72}{Amount of data in megabytes that that needs to be exchanged between the peers in order for the costs of the Handshake equate the costs of Record phase for the server}{table.3.13}{}}
 \citation{yadin2016computer}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.8}PAPI Time Cost Analysis and Comparison To Estimated CPU Cycles }{70}{subsection.3.2.8}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.26}{\ignorespaces  Client handshake vs confidentiality cost for the \textbf  {low} security level}}{71}{figure.3.26}}
-\newlabel{fig:cli-conf-hs-low}{{3.26}{71}{Client handshake vs confidentiality cost for the \textbf {low} security level}{figure.3.26}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.27}{\ignorespaces  Client handshake vs confidentiality cost for the \textbf  {normal} security level}}{71}{figure.3.27}}
-\newlabel{fig:cli-conf-hs-normal}{{3.27}{71}{Client handshake vs confidentiality cost for the \textbf {normal} security level}{figure.3.27}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.28}{\ignorespaces  Client handshake vs confidentiality cost for the \textbf  {high} security level}}{72}{figure.3.28}}
-\newlabel{fig:cli-conf-hs-high}{{3.28}{72}{Client handshake vs confidentiality cost for the \textbf {high} security level}{figure.3.28}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.29}{\ignorespaces  Server handshake vs confidentiality cost for the \textbf  {low} security level}}{72}{figure.3.29}}
-\newlabel{fig:srv-conf-hs-low}{{3.29}{72}{Server handshake vs confidentiality cost for the \textbf {low} security level}{figure.3.29}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.30}{\ignorespaces  Server handshake vs confidentiality cost for the \textbf  {normal} security level}}{73}{figure.3.30}}
-\newlabel{fig:srv-conf-hs-normal}{{3.30}{73}{Server handshake vs confidentiality cost for the \textbf {normal} security level}{figure.3.30}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.31}{\ignorespaces  Server handshake vs confidentiality cost for the \textbf  {high} security level}}{73}{figure.3.31}}
-\newlabel{fig:srv-conf-hs-high}{{3.31}{73}{Server handshake vs confidentiality cost for the \textbf {high} security level}{figure.3.31}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.32}{\ignorespaces  Client handshake cost in microseconds for all security levels (logarithmic scale)}}{74}{figure.3.32}}
-\newlabel{fig:client-hs-cost-all-sls-papi}{{3.32}{74}{Client handshake cost in microseconds for all security levels (logarithmic scale)}{figure.3.32}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Handhsake Time Cost Analysis}{74}{section*.24}}
-\newlabel{sec:papi-handshake}{{3.2.8}{74}{Handhsake Time Cost Analysis}{section*.24}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.27}{\ignorespaces  Client handshake cost in microseconds for all security levels (logarithmic scale)}}{73}{figure.3.27}}
+\newlabel{fig:client-hs-cost-all-sls-papi}{{3.27}{73}{Client handshake cost in microseconds for all security levels (logarithmic scale)}{figure.3.27}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.8}PAPI Time Cost Analysis and Comparison To Estimated CPU Cycles }{73}{subsection.3.2.8}}
+\@writefile{toc}{\contentsline {subsubsection}{Handhsake Time Cost Analysis}{73}{section*.24}}
+\newlabel{sec:papi-handshake}{{3.2.8}{73}{Handhsake Time Cost Analysis}{section*.24}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.28}{\ignorespaces  Server handshake cost in microseconds for all security levels (logarithmic scale)}}{74}{figure.3.28}}
+\newlabel{fig:server-hs-cost-all-sls-papi}{{3.28}{74}{Server handshake cost in microseconds for all security levels (logarithmic scale)}{figure.3.28}{}}
 \@writefile{toc}{\contentsline {subsubsection}{PAPI and Valgrind Ratios Comparison}{74}{section*.25}}
 \newlabel{sec:papi-valgrind-ratios}{{3.2.8}{74}{PAPI and Valgrind Ratios Comparison}{section*.25}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.33}{\ignorespaces  Server handshake cost in microseconds for all security levels (logarithmic scale)}}{75}{figure.3.33}}
-\newlabel{fig:server-hs-cost-all-sls-papi}{{3.33}{75}{Server handshake cost in microseconds for all security levels (logarithmic scale)}{figure.3.33}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.34}{\ignorespaces  Ratio of time taken between a set of related operations for \gls {papi} and \textit  {callgrind} (logarithmic scale)}}{75}{figure.3.34}}
-\newlabel{fig:papi-operations-ratio}{{3.34}{75}{Ratio of time taken between a set of related operations for \gls {papi} and \textit {callgrind} (logarithmic scale)}{figure.3.34}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.9}Discussion}{76}{subsection.3.2.9}}
-\newlabel{sec:ss-cost-conclusions}{{3.2.9}{76}{Discussion}{subsection.3.2.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.29}{\ignorespaces  Ratio of time taken between a set of related operations for \gls {papi} and \textit  {callgrind} (logarithmic scale)}}{75}{figure.3.29}}
+\newlabel{fig:papi-operations-ratio}{{3.29}{75}{Ratio of time taken between a set of related operations for \gls {papi} and \textit {callgrind} (logarithmic scale)}{figure.3.29}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.9}Discussion}{75}{subsection.3.2.9}}
+\newlabel{sec:ss-cost-conclusions}{{3.2.9}{75}{Discussion}{subsection.3.2.9}{}}
 \citation{sec17ant94:online}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Conclusions}{79}{chapter.4}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Conclusions and Future Work}{77}{chapter.4}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chapter:conclusions}{{4}{79}{Conclusions}{chapter.4}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Future Work}{80}{section*.26}}
+\newlabel{chapter:conclusions}{{4}{77}{Conclusions and Future Work}{chapter.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Conclusions}{77}{section.4.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Future Work}{78}{section.4.2}}
 \bibstyle{abbrvunsrtnat}
 \bibdata{tls_for_iot,papers}
 \bibcite{IoTnumb83:online}{{1}{}{{IoT}}{{}}}
@@ -365,73 +371,73 @@
 \bibcite{updatete23:online}{{10}{}{{upd}}{{}}}
 \bibcite{S3KScala62:online}{{11}{2016}{{Raza et~al.}}{{Raza, Seitz, Sitenkov, and Selander}}}
 \bibcite{I-D.ietf-core-coap-tcp-tls}{{12}{2017}{{Bormann et~al.}}{{Bormann, Lemay, Tschofenig, Hartke, Silverajan, and Raymor}}}
-\@writefile{toc}{\contentsline {chapter}{Bibliography}{81}{section*.27}}
-\bibcite{SSLLibra13:online}{{13}{}{{SSL}}{{}}}
-\bibcite{QualysSS90:online}{{14}{}{{Qua}}{{}}}
-\bibcite{Recommen44:online}{{15}{2016}{{Barker}}{{}}}
-\bibcite{Kryptogr1:online}{{16}{2017}{{Bundesamt fur Sicherheit in der Informationstechnik (BSI)}}{{}}}
-\bibcite{RFC7228}{{17}{2014}{{Bormann et~al.}}{{Bormann, Ersue, and Keranen}}}
-\bibcite{rfc5280}{{18}{2008{}}{{Cooper et~al.}}{{Cooper, Santesson, Farrell, Boeyen, Housley, and Polk}}}
-\bibcite{RFC5246}{{19}{2008}{{Dierks and Rescorla}}{{}}}
-\bibcite{RFC6101}{{20}{2011}{{Freier et~al.}}{{Freier, Karlton, and Kocher}}}
-\bibcite{RFC5077}{{21}{2008}{{Salowey et~al.}}{{Salowey, Zhou, Eronen, and Tschofenig}}}
-\bibcite{DualECJu15:online}{{22}{2016}{{Checkoway et~al.}}{{Checkoway, Maskiewicz, Garman, Fried, Cohney, Green, Heninger, Weinmann, Rescorla, and Shacham}}}
-\bibcite{RFC4492}{{23}{2006{}}{{Blake-Wilson et~al.}}{{Blake-Wilson, Bolyard, Gupta, Hawk, and Moeller}}}
-\bibcite{RFC7250}{{24}{2014}{{Wouters et~al.}}{{Wouters, Tschofenig, Gilmore, Weiler, and Kivinen}}}
-\bibcite{RFC4366}{{25}{2006{}}{{Blake-Wilson et~al.}}{{Blake-Wilson, Nystrom, Hopwood, Mikkelsen, and Wright}}}
-\bibcite{RFC2246}{{26}{1999}{{Dierks and Allen}}{{}}}
-\bibcite{I-D.ietf-tls-tls13}{{27}{2017}{{Rescorla}}{{}}}
-\bibcite{RFC5869}{{28}{2010}{{Krawczyk and Eronen}}{{}}}
-\bibcite{RFC6347}{{29}{2012}{{Rescorla and Modadugu}}{{}}}
-\bibcite{I-D.ietf-tls-dtls13}{{30}{2017}{{Rescorla et~al.}}{{Rescorla, Tschofenig, and Modadugu}}}
-\bibcite{Stateoft96:online}{{31}{2017}{{Biryukov and Perrin}}{{}}}
-\bibcite{cryptoeprint:2016:1047}{{32}{2017}{{Ronen et~al.}}{{Ronen, Shamir, Weingarten, and O\IeC {\textquoteright }Flynn}}}
-\bibcite{b5b8db9716:online}{{33}{2012}{{Katagi and Moriai}}{{}}}
-\bibcite{RFC4120}{{34}{2005}{{Neuman et~al.}}{{Neuman, Yu, Hartman, and Raeburn}}}
-\bibcite{RFC4279}{{35}{2005}{{Eronen and Tschofenig}}{{}}}
-\bibcite{RFC4944}{{36}{2007}{{Montenegro et~al.}}{{Montenegro, Kushalnagar, Hui, and Culler}}}
-\bibcite{RFC6282}{{37}{2011}{{Hui and Thubert}}{{}}}
-\bibcite{6LoWPANC53:online}{{38}{2012}{{Raza et~al.}}{{Raza, Trabalza, and Voigt}}}
-\bibcite{RFC7400}{{39}{2014}{{Bormann}}{{}}}
-\bibcite{I-D.aayadi-6lowpan-tcphc}{{40}{2010}{{Ayadi et~al.}}{{Ayadi, Ros, and Toutain}}}
-\bibcite{LitheLig40:online}{{41}{2013}{{Raza et~al.}}{{Raza, Shafagh, Hewage, Hummen, and Voigt}}}
-\bibcite{RFC7959}{{42}{2016}{{Bormann and Shelby}}{{}}}
-\bibcite{ContikiT75:online}{{43}{}{{Con}}{{}}}
-\bibcite{Security5:online}{{44}{2015}{{Capossele et~al.}}{{Capossele, Cervo, De~Cicco, and Petrioli}}}
-\bibcite{I-D.keoh-dtls-profile-iot}{{45}{2013}{{Keoh et~al.}}{{Keoh, Kumar, and Shelby}}}
-\bibcite{RFC7252}{{46}{2014}{{Shelby et~al.}}{{Shelby, Hartke, and Bormann}}}
-\bibcite{Comparin25:Online}{{47}{2004}{{Gura et~al.}}{{Gura, Patel, Wander, Eberle, and Shantz}}}
-\bibcite{LowcostS87:online}{{48}{2013}{{Ateniese et~al.}}{{Ateniese, Bianchi, Capossele, and Petrioli}}}
-\bibcite{RFC7925}{{49}{2016}{{Tschofenig and Fossati}}{{}}}
-\bibcite{rfc5216}{{50}{2008}{{Simon et~al.}}{{Simon, Aboba, and Hurst}}}
-\bibcite{RFCabc}{{51}{2008{}}{{Cooper et~al.}}{{Cooper, Santesson, Farrell, Boeyen, Housley, and Polk}}}
-\bibcite{RFC7924}{{52}{2016}{{Santesson and Tschofenig}}{{}}}
-\bibcite{RFC6960}{{53}{2013}{{Santesson et~al.}}{{Santesson, Myers, Ankney, Malpani, Galperin, and Adams}}}
-\bibcite{RFC6066}{{54}{2011}{{Eastlake}}{{}}}
-\bibcite{RFC7525}{{55}{2015}{{Sheffer et~al.}}{{Sheffer, Holz, and Saint-Andre}}}
-\bibcite{Microsof72:online}{{56}{2013}{{Tal~Be'ery}}{{}}}
-\bibcite{RFC6520}{{57}{2012}{{Seggelmann et~al.}}{{Seggelmann, Tuexen, and Williams}}}
-\bibcite{rfc4086}{{58}{2005}{{Eastlake et~al.}}{{Eastlake, Schiller, and Crocker}}}
-\bibcite{RFC7366}{{59}{2014}{{Gutmann}}{{}}}
-\bibcite{RFC7627}{{60}{2015}{{Bhargavan et~al.}}{{Bhargavan, Delignat-Lavaud, Pironti, Langley, and Ray}}}
-\bibcite{TripleHa89:online}{{61}{2014}{{Bhargavan et~al.}}{{Bhargavan, Lavaud, Fournet, Pironti, and Strub}}}
-\bibcite{RFC5746}{{62}{2010}{{Rescorla et~al.}}{{Rescorla, Ray, Dispensa, and Oskov}}}
-\bibcite{RFC7465}{{63}{2015}{{Popov}}{{}}}
-\bibcite{OpenMobi29:online}{{64}{2017}{{Ope}}{{}}}
-\bibcite{I-D.moran-suit-architecture}{{65}{2017}{{Moran et~al.}}{{Moran, Meriac, and Tschofenig}}}
-\bibcite{IANA_ciphers_list:online}{{66}{}{{IANA}}{{}}}
-\bibcite{mbedTLS_ciphers_list:online}{{67}{}{{mbe}}{{}}}
-\bibcite{dongarra2001using}{{68}{2010}{{Terpstra et~al.}}{{Terpstra, Jagode, You, and Dongarra}}}
-\bibcite{cachegrind_source:online}{{69}{}{{cac}}{{}}}
-\bibcite{charles2009evaluation}{{70}{2009}{{Charles et~al.}}{{Charles, Jassi, Ananth, Sadat, and Fedorova}}}
-\bibcite{iluxonch23:online}{{71}{}{{ilu}}{{}}}
-\bibcite{iluxonch67:online}{{72}{}{{ilu}}{{}}}
-\bibcite{iluxonch73:online}{{73}{}{{ilu}}{{}}}
-\bibcite{iluxonch44:online}{{74}{}{{ilu}}{{}}}
-\bibcite{iluxonch24:online}{{75}{}{{ilu}}{{}}}
-\bibcite{nadeem2005performance}{{76}{2005}{{Nadeem and Javed}}{{}}}
-\bibcite{mathew2010performance}{{77}{2010}{{Mathew and Jacob}}{{}}}
-\bibcite{lenstra2004key}{{78}{2004}{{Lenstra}}{{}}}
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{79}{section*.26}}
+\bibcite{Recommen44:online}{{13}{2016}{{Barker}}{{}}}
+\bibcite{Kryptogr1:online}{{14}{2017}{{Bundesamt fur Sicherheit in der Informationstechnik (BSI)}}{{}}}
+\bibcite{RFC7228}{{15}{2014}{{Bormann et~al.}}{{Bormann, Ersue, and Keranen}}}
+\bibcite{SSLLibra13:online}{{16}{}{{SSL}}{{}}}
+\bibcite{rfc5280}{{17}{2008{}}{{Cooper et~al.}}{{Cooper, Santesson, Farrell, Boeyen, Housley, and Polk}}}
+\bibcite{RFC5246}{{18}{2008}{{Dierks and Rescorla}}{{}}}
+\bibcite{RFC6101}{{19}{2011}{{Freier et~al.}}{{Freier, Karlton, and Kocher}}}
+\bibcite{RFC5077}{{20}{2008}{{Salowey et~al.}}{{Salowey, Zhou, Eronen, and Tschofenig}}}
+\bibcite{DualECJu15:online}{{21}{2016}{{Checkoway et~al.}}{{Checkoway, Maskiewicz, Garman, Fried, Cohney, Green, Heninger, Weinmann, Rescorla, and Shacham}}}
+\bibcite{RFC4492}{{22}{2006{}}{{Blake-Wilson et~al.}}{{Blake-Wilson, Bolyard, Gupta, Hawk, and Moeller}}}
+\bibcite{RFC7250}{{23}{2014}{{Wouters et~al.}}{{Wouters, Tschofenig, Gilmore, Weiler, and Kivinen}}}
+\bibcite{RFC4366}{{24}{2006{}}{{Blake-Wilson et~al.}}{{Blake-Wilson, Nystrom, Hopwood, Mikkelsen, and Wright}}}
+\bibcite{RFC2246}{{25}{1999}{{Dierks and Allen}}{{}}}
+\bibcite{I-D.ietf-tls-tls13}{{26}{2017}{{Rescorla}}{{}}}
+\bibcite{RFC5869}{{27}{2010}{{Krawczyk and Eronen}}{{}}}
+\bibcite{RFC6347}{{28}{2012}{{Rescorla and Modadugu}}{{}}}
+\bibcite{I-D.ietf-tls-dtls13}{{29}{2017}{{Rescorla et~al.}}{{Rescorla, Tschofenig, and Modadugu}}}
+\bibcite{Stateoft96:online}{{30}{2017}{{Biryukov and Perrin}}{{}}}
+\bibcite{cryptoeprint:2016:1047}{{31}{2017}{{Ronen et~al.}}{{Ronen, Shamir, Weingarten, and O\IeC {\textquoteright }Flynn}}}
+\bibcite{b5b8db9716:online}{{32}{2012}{{Katagi and Moriai}}{{}}}
+\bibcite{RFC4120}{{33}{2005}{{Neuman et~al.}}{{Neuman, Yu, Hartman, and Raeburn}}}
+\bibcite{RFC4279}{{34}{2005}{{Eronen and Tschofenig}}{{}}}
+\bibcite{RFC4944}{{35}{2007}{{Montenegro et~al.}}{{Montenegro, Kushalnagar, Hui, and Culler}}}
+\bibcite{RFC6282}{{36}{2011}{{Hui and Thubert}}{{}}}
+\bibcite{6LoWPANC53:online}{{37}{2012}{{Raza et~al.}}{{Raza, Trabalza, and Voigt}}}
+\bibcite{RFC7400}{{38}{2014}{{Bormann}}{{}}}
+\bibcite{I-D.aayadi-6lowpan-tcphc}{{39}{2010}{{Ayadi et~al.}}{{Ayadi, Ros, and Toutain}}}
+\bibcite{LitheLig40:online}{{40}{2013}{{Raza et~al.}}{{Raza, Shafagh, Hewage, Hummen, and Voigt}}}
+\bibcite{RFC7959}{{41}{2016}{{Bormann and Shelby}}{{}}}
+\bibcite{ContikiT75:online}{{42}{}{{Con}}{{}}}
+\bibcite{Security5:online}{{43}{2015}{{Capossele et~al.}}{{Capossele, Cervo, De~Cicco, and Petrioli}}}
+\bibcite{I-D.keoh-dtls-profile-iot}{{44}{2013}{{Keoh et~al.}}{{Keoh, Kumar, and Shelby}}}
+\bibcite{RFC7252}{{45}{2014}{{Shelby et~al.}}{{Shelby, Hartke, and Bormann}}}
+\bibcite{Comparin25:Online}{{46}{2004}{{Gura et~al.}}{{Gura, Patel, Wander, Eberle, and Shantz}}}
+\bibcite{LowcostS87:online}{{47}{2013}{{Ateniese et~al.}}{{Ateniese, Bianchi, Capossele, and Petrioli}}}
+\bibcite{RFC7925}{{48}{2016}{{Tschofenig and Fossati}}{{}}}
+\bibcite{rfc5216}{{49}{2008}{{Simon et~al.}}{{Simon, Aboba, and Hurst}}}
+\bibcite{RFCabc}{{50}{2008{}}{{Cooper et~al.}}{{Cooper, Santesson, Farrell, Boeyen, Housley, and Polk}}}
+\bibcite{RFC7924}{{51}{2016}{{Santesson and Tschofenig}}{{}}}
+\bibcite{RFC6960}{{52}{2013}{{Santesson et~al.}}{{Santesson, Myers, Ankney, Malpani, Galperin, and Adams}}}
+\bibcite{RFC6066}{{53}{2011}{{Eastlake}}{{}}}
+\bibcite{RFC7525}{{54}{2015}{{Sheffer et~al.}}{{Sheffer, Holz, and Saint-Andre}}}
+\bibcite{Microsof72:online}{{55}{2013}{{Tal~Be'ery}}{{}}}
+\bibcite{RFC6520}{{56}{2012}{{Seggelmann et~al.}}{{Seggelmann, Tuexen, and Williams}}}
+\bibcite{rfc4086}{{57}{2005}{{Eastlake et~al.}}{{Eastlake, Schiller, and Crocker}}}
+\bibcite{RFC7366}{{58}{2014}{{Gutmann}}{{}}}
+\bibcite{RFC7627}{{59}{2015}{{Bhargavan et~al.}}{{Bhargavan, Delignat-Lavaud, Pironti, Langley, and Ray}}}
+\bibcite{TripleHa89:online}{{60}{2014}{{Bhargavan et~al.}}{{Bhargavan, Lavaud, Fournet, Pironti, and Strub}}}
+\bibcite{RFC5746}{{61}{2010}{{Rescorla et~al.}}{{Rescorla, Ray, Dispensa, and Oskov}}}
+\bibcite{RFC7465}{{62}{2015}{{Popov}}{{}}}
+\bibcite{OpenMobi29:online}{{63}{2017}{{Ope}}{{}}}
+\bibcite{I-D.moran-suit-architecture}{{64}{2017}{{Moran et~al.}}{{Moran, Meriac, and Tschofenig}}}
+\bibcite{IANA_ciphers_list:online}{{65}{}{{IANA}}{{}}}
+\bibcite{mbedTLS_ciphers_list:online}{{66}{}{{mbe}}{{}}}
+\bibcite{dongarra2001using}{{67}{2010}{{Terpstra et~al.}}{{Terpstra, Jagode, You, and Dongarra}}}
+\bibcite{cachegrind_source:online}{{68}{}{{cac}}{{}}}
+\bibcite{charles2009evaluation}{{69}{2009}{{Charles et~al.}}{{Charles, Jassi, Ananth, Sadat, and Fedorova}}}
+\bibcite{iluxonch23:online}{{70}{}{{ilu}}{{}}}
+\bibcite{iluxonch67:online}{{71}{}{{ilu}}{{}}}
+\bibcite{iluxonch73:online}{{72}{}{{ilu}}{{}}}
+\bibcite{iluxonch44:online}{{73}{}{{ilu}}{{}}}
+\bibcite{iluxonch24:online}{{74}{}{{ilu}}{{}}}
+\bibcite{nadeem2005performance}{{75}{2005}{{Nadeem and Javed}}{{}}}
+\bibcite{mathew2010performance}{{76}{2010}{{Mathew and Jacob}}{{}}}
+\bibcite{lenstra2004key}{{77}{2004}{{Lenstra}}{{}}}
+\bibcite{QualysSS90:online}{{78}{}{{Qua}}{{}}}
 \bibcite{RFC8017}{{79}{2016}{{Moriarty et~al.}}{{Moriarty, Kaliski, Jonsson, and Rusch}}}
 \bibcite{RFC6979}{{80}{2013}{{Pornin}}{{}}}
 \bibcite{GoogleIn11:online}{{81}{}{{Goo}}{{}}}
@@ -439,55 +445,58 @@
 \bibcite{boneh2002fast}{{83}{2002}{{Boneh and Shacham}}{{}}}
 \bibcite{muir2006seifert}{{84}{2006}{{Muir}}{{}}}
 \bibcite{RFC3447}{{85}{2003}{{Jonsson and Kaliski}}{{}}}
-\bibcite{ertaul2016performance}{{86}{2016}{{Ertaul et~al.}}{{Ertaul, Mudan, and Sarfaraz}}}
-\bibcite{yadin2016computer}{{87}{2016}{{Yadin}}{{}}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}Appendix A}{89}{appendix.A}}
+\bibcite{turner2011updated}{{86}{2011}{{Turner and Chen}}{{}}}
+\bibcite{polk2011security}{{87}{2011}{{Polk et~al.}}{{Polk, Chen, Turner, and Hoffman}}}
+\bibcite{ertaul2016performance}{{88}{2016}{{Ertaul et~al.}}{{Ertaul, Mudan, and Sarfaraz}}}
+\bibcite{Definiti62:online}{{89}{}{{Def}}{{}}}
+\bibcite{yadin2016computer}{{90}{2016}{{Yadin}}{{}}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Appendix A}{87}{appendix.A}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{lot}{\contentsline {table}{\numberline {A.1}{\ignorespaces  RSA and ECDSA signature creation and verification costs in number of CPU cycles. Numbers in parenthesis is the standard deviation}}{89}{table.A.1}}
-\newlabel{table:rsa-costs-all-sls}{{A.1}{89}{RSA and ECDSA signature creation and verification costs in number of CPU cycles. Numbers in parenthesis is the standard deviation}{table.A.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.2}{\ignorespaces  RSA and ECDSA costs of signature creation + signature verification in number of CPU cycles}}{90}{table.A.2}}
-\newlabel{table:rsa-costs-all-sls-total}{{A.2}{90}{RSA and ECDSA costs of signature creation + signature verification in number of CPU cycles}{table.A.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.3}{\ignorespaces  Absolute increase of RSA operation costs from previous security level in number of CPU cycles}}{90}{table.A.3}}
-\newlabel{table:rsa-absolute-cost-increase}{{A.3}{90}{Absolute increase of RSA operation costs from previous security level in number of CPU cycles}{table.A.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.4}{\ignorespaces  Absolute increase of ECDSA operations cost from previous security level in number of CPU cycles}}{90}{table.A.4}}
-\newlabel{table:ecdsa-absolute-cost-increase}{{A.4}{90}{Absolute increase of ECDSA operations cost from previous security level in number of CPU cycles}{table.A.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.5}{\ignorespaces  Client authentication costs for all ciphersuites and security levels in number of CPU cycles}}{90}{table.A.5}}
-\newlabel{table:tls-auth-cost-client}{{A.5}{90}{Client authentication costs for all ciphersuites and security levels in number of CPU cycles}{table.A.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.6}{\ignorespaces  Server authentication costs for all ciphersuites and security levels in number of CPU cycles}}{91}{table.A.6}}
-\newlabel{table:tls-auth-cost-server}{{A.6}{91}{Server authentication costs for all ciphersuites and security levels in number of CPU cycles}{table.A.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.7}{\ignorespaces  ECDH and DH costs for all security levels in number of CPU cycles. Numbers in parenthesis are the standard deviation.}}{91}{table.A.7}}
-\newlabel{table:ecdh-dh-costs-all-sls}{{A.7}{91}{ECDH and DH costs for all security levels in number of CPU cycles. Numbers in parenthesis are the standard deviation}{table.A.7}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.8}{\ignorespaces  ECDH and DH costs of the sum of keypair and shared secret generation in number of CPU cycles}}{91}{table.A.8}}
-\newlabel{table:ecdh-dh-costs-total-all-sls}{{A.8}{91}{ECDH and DH costs of the sum of keypair and shared secret generation in number of CPU cycles}{table.A.8}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.9}{\ignorespaces  Absolute increase of ECDH operation costs from previous security level in number of CPU cycles}}{91}{table.A.9}}
-\newlabel{table:ecdh-absolute-cost-increase}{{A.9}{91}{Absolute increase of ECDH operation costs from previous security level in number of CPU cycles}{table.A.9}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.10}{\ignorespaces  Absolute increase of DH operation costs from previous security level in number of CPU cycles}}{91}{table.A.10}}
-\newlabel{table:dh-absolute-cost-increase}{{A.10}{91}{Absolute increase of DH operation costs from previous security level in number of CPU cycles}{table.A.10}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.11}{\ignorespaces  \gls {pfs} and \textit  {ECDH} key exchange cost for the client in number of CPU cycles}}{92}{table.A.11}}
-\newlabel{table:pfs-cost-client}{{A.11}{92}{\gls {pfs} and \textit {ECDH} key exchange cost for the client in number of CPU cycles}{table.A.11}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.12}{\ignorespaces  \gls {pfs} and \textit  {ECDH} key exchange cost for the server in number of CPU cycles}}{92}{table.A.12}}
-\newlabel{table:pfs-cost-server}{{A.12}{92}{\gls {pfs} and \textit {ECDH} key exchange cost for the server in number of CPU cycles}{table.A.12}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.13}{\ignorespaces  Handshake costs for the client in number of CPU cycles. Numbers in parenthesis are the standard deviation}}{92}{table.A.13}}
-\newlabel{table:client-hs-cost-all-sls}{{A.13}{92}{Handshake costs for the client in number of CPU cycles. Numbers in parenthesis are the standard deviation}{table.A.13}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.14}{\ignorespaces  Handshake costs for the server in number of CPU cycles. Numbers in parenthesis are the standard deviation}}{93}{table.A.14}}
-\newlabel{table:server-hs-cost-all-sls}{{A.14}{93}{Handshake costs for the server in number of CPU cycles. Numbers in parenthesis are the standard deviation}{table.A.14}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.15}{\ignorespaces RSA and ECDSA signature creation and verification costs in microseconds. Numbers in parenthesis is the standard deviation}}{93}{table.A.15}}
-\newlabel{table:rsa-ecdsa-costs-papi}{{A.15}{93}{RSA and ECDSA signature creation and verification costs in microseconds. Numbers in parenthesis is the standard deviation}{table.A.15}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.16}{\ignorespaces Client authentication costs for all ciphersuites and security levels in microseconds}}{93}{table.A.16}}
-\newlabel{table:papi-cli-auth-cost}{{A.16}{93}{Client authentication costs for all ciphersuites and security levels in microseconds}{table.A.16}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.17}{\ignorespaces Server authentication costs for all ciphersuites and security levels in microseconds}}{94}{table.A.17}}
-\newlabel{table:server-auth-costs-papi}{{A.17}{94}{Server authentication costs for all ciphersuites and security levels in microseconds}{table.A.17}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.18}{\ignorespaces ECDH and DH costs for all security levels in microseconds. Numbers in parenthesis are the standard deviation}}{94}{table.A.18}}
-\newlabel{table:papi-ecd-dh-costs}{{A.18}{94}{ECDH and DH costs for all security levels in microseconds. Numbers in parenthesis are the standard deviation}{table.A.18}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.19}{\ignorespaces Handshake costs for the client in microseconds. Numbers in parenthesis are the standard deviation}}{94}{table.A.19}}
-\newlabel{table:hs-costs-cli-papi}{{A.19}{94}{Handshake costs for the client in microseconds. Numbers in parenthesis are the standard deviation}{table.A.19}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {A.20}{\ignorespaces Handshake costs for the server in microseconds. Numbers in parenthesis are the standard deviation}}{95}{table.A.20}}
-\newlabel{table:server-hs-costs-papi}{{A.20}{95}{Handshake costs for the server in microseconds. Numbers in parenthesis are the standard deviation}{table.A.20}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.1}{\ignorespaces Authentication cost for the client in microseconds (logarithmic scale)}}{95}{figure.A.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.2}{\ignorespaces Authentication cost for the server in microseconds (logarithmic scale)}}{96}{figure.A.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.3}{\ignorespaces ECDSA signature creation and verification costs in microseconds}}{96}{figure.A.3}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.4}{\ignorespaces RSA signature creation and verification costs in microseconds (logarithmic scale)}}{97}{figure.A.4}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.5}{\ignorespaces RSA encryption and decryption costs in microseconds (logarithmic scale)}}{97}{figure.A.5}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.6}{\ignorespaces ECDH keypair and shared secret generation costs in microseconds (logarithmic scale)}}{98}{figure.A.6}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.7}{\ignorespaces DH keypair and shared secret generation costs in microseconds (logarithmic scale)}}{98}{figure.A.7}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.1}{\ignorespaces  RSA and ECDSA signature creation and verification costs in number of CPU cycles. Numbers in parenthesis is the standard deviation}}{87}{table.A.1}}
+\newlabel{table:rsa-costs-all-sls}{{A.1}{87}{RSA and ECDSA signature creation and verification costs in number of CPU cycles. Numbers in parenthesis is the standard deviation}{table.A.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.2}{\ignorespaces  RSA and ECDSA costs of signature creation + signature verification in number of CPU cycles}}{88}{table.A.2}}
+\newlabel{table:rsa-costs-all-sls-total}{{A.2}{88}{RSA and ECDSA costs of signature creation + signature verification in number of CPU cycles}{table.A.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.3}{\ignorespaces  Absolute increase of RSA operation costs from previous security level in number of CPU cycles}}{88}{table.A.3}}
+\newlabel{table:rsa-absolute-cost-increase}{{A.3}{88}{Absolute increase of RSA operation costs from previous security level in number of CPU cycles}{table.A.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.4}{\ignorespaces  Absolute increase of ECDSA operations cost from previous security level in number of CPU cycles}}{88}{table.A.4}}
+\newlabel{table:ecdsa-absolute-cost-increase}{{A.4}{88}{Absolute increase of ECDSA operations cost from previous security level in number of CPU cycles}{table.A.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.5}{\ignorespaces  Client authentication costs for all ciphersuites and security levels in number of CPU cycles}}{88}{table.A.5}}
+\newlabel{table:tls-auth-cost-client}{{A.5}{88}{Client authentication costs for all ciphersuites and security levels in number of CPU cycles}{table.A.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.6}{\ignorespaces  Server authentication costs for all ciphersuites and security levels in number of CPU cycles}}{89}{table.A.6}}
+\newlabel{table:tls-auth-cost-server}{{A.6}{89}{Server authentication costs for all ciphersuites and security levels in number of CPU cycles}{table.A.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.7}{\ignorespaces  ECDH and DH costs for all security levels in number of CPU cycles. Numbers in parenthesis are the standard deviation.}}{89}{table.A.7}}
+\newlabel{table:ecdh-dh-costs-all-sls}{{A.7}{89}{ECDH and DH costs for all security levels in number of CPU cycles. Numbers in parenthesis are the standard deviation}{table.A.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.8}{\ignorespaces  ECDH and DH costs of the sum of keypair and shared secret generation in number of CPU cycles}}{89}{table.A.8}}
+\newlabel{table:ecdh-dh-costs-total-all-sls}{{A.8}{89}{ECDH and DH costs of the sum of keypair and shared secret generation in number of CPU cycles}{table.A.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.9}{\ignorespaces  Absolute increase of ECDH operation costs from previous security level in number of CPU cycles}}{89}{table.A.9}}
+\newlabel{table:ecdh-absolute-cost-increase}{{A.9}{89}{Absolute increase of ECDH operation costs from previous security level in number of CPU cycles}{table.A.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.10}{\ignorespaces  Absolute increase of DH operation costs from previous security level in number of CPU cycles}}{89}{table.A.10}}
+\newlabel{table:dh-absolute-cost-increase}{{A.10}{89}{Absolute increase of DH operation costs from previous security level in number of CPU cycles}{table.A.10}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.11}{\ignorespaces  \gls {pfs} and \textit  {ECDH} key exchange cost for the client in number of CPU cycles}}{90}{table.A.11}}
+\newlabel{table:pfs-cost-client}{{A.11}{90}{\gls {pfs} and \textit {ECDH} key exchange cost for the client in number of CPU cycles}{table.A.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.12}{\ignorespaces  \gls {pfs} and \textit  {ECDH} key exchange cost for the server in number of CPU cycles}}{90}{table.A.12}}
+\newlabel{table:pfs-cost-server}{{A.12}{90}{\gls {pfs} and \textit {ECDH} key exchange cost for the server in number of CPU cycles}{table.A.12}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.13}{\ignorespaces  Handshake costs for the client in number of CPU cycles. Numbers in parenthesis are the standard deviation}}{90}{table.A.13}}
+\newlabel{table:client-hs-cost-all-sls}{{A.13}{90}{Handshake costs for the client in number of CPU cycles. Numbers in parenthesis are the standard deviation}{table.A.13}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.14}{\ignorespaces  Handshake costs for the server in number of CPU cycles. Numbers in parenthesis are the standard deviation}}{91}{table.A.14}}
+\newlabel{table:server-hs-cost-all-sls}{{A.14}{91}{Handshake costs for the server in number of CPU cycles. Numbers in parenthesis are the standard deviation}{table.A.14}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.15}{\ignorespaces RSA and ECDSA signature creation and verification costs in microseconds. Numbers in parenthesis is the standard deviation}}{91}{table.A.15}}
+\newlabel{table:rsa-ecdsa-costs-papi}{{A.15}{91}{RSA and ECDSA signature creation and verification costs in microseconds. Numbers in parenthesis is the standard deviation}{table.A.15}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.16}{\ignorespaces Client authentication costs for all ciphersuites and security levels in microseconds}}{91}{table.A.16}}
+\newlabel{table:papi-cli-auth-cost}{{A.16}{91}{Client authentication costs for all ciphersuites and security levels in microseconds}{table.A.16}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.17}{\ignorespaces Server authentication costs for all ciphersuites and security levels in microseconds}}{91}{table.A.17}}
+\newlabel{table:server-auth-costs-papi}{{A.17}{91}{Server authentication costs for all ciphersuites and security levels in microseconds}{table.A.17}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.18}{\ignorespaces ECDH and DH costs for all security levels in microseconds. Numbers in parenthesis are the standard deviation}}{92}{table.A.18}}
+\newlabel{table:papi-ecd-dh-costs}{{A.18}{92}{ECDH and DH costs for all security levels in microseconds. Numbers in parenthesis are the standard deviation}{table.A.18}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.19}{\ignorespaces Handshake costs for the client in microseconds. Numbers in parenthesis are the standard deviation}}{92}{table.A.19}}
+\newlabel{table:hs-costs-cli-papi}{{A.19}{92}{Handshake costs for the client in microseconds. Numbers in parenthesis are the standard deviation}{table.A.19}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.20}{\ignorespaces Handshake costs for the server in microseconds. Numbers in parenthesis are the standard deviation}}{92}{table.A.20}}
+\newlabel{table:server-hs-costs-papi}{{A.20}{92}{Handshake costs for the server in microseconds. Numbers in parenthesis are the standard deviation}{table.A.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.1}{\ignorespaces Authentication cost for the client in microseconds (logarithmic scale)}}{93}{figure.A.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.2}{\ignorespaces Authentication cost for the server in microseconds (logarithmic scale)}}{93}{figure.A.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.3}{\ignorespaces ECDSA signature creation and verification costs in microseconds}}{94}{figure.A.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.4}{\ignorespaces RSA signature creation and verification costs in microseconds (logarithmic scale)}}{94}{figure.A.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.5}{\ignorespaces RSA encryption and decryption costs in microseconds (logarithmic scale)}}{95}{figure.A.5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.6}{\ignorespaces ECDH keypair and shared secret generation costs in microseconds (logarithmic scale)}}{95}{figure.A.6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.7}{\ignorespaces DH keypair and shared secret generation costs in microseconds (logarithmic scale)}}{96}{figure.A.7}}

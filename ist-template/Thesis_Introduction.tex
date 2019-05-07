@@ -40,14 +40,16 @@ In the process of the work on this dissertation, we have made several
 contributions to the \gls{tls} $1.3$ specification, and were formally recognized as 
 contributors\cite{Mergepul65:online}. Our name can be found in the document specifying \gls{tls} $1.3$\cite{RFC8446}.
 Although to the lesser extent, we have also contributed to \gls{dtls} $1.3$ specification\cite{DTLS13:online}.
-We have found a security issue within the
+We have found a security vulnerability and a nonconformity to the standard in the
 \gls{tls} implementation of the \textit{mbedTLS} library. We reported it and it
-has been assigned a \textit{CVE} with the id \textit{CVE-2018-1000520}\cite{NVDCVE2094:online}.
-It is an authentication problem, where certificates signed with an incorrect algorithm
+has been assigned a \gls{cve} with the id \textit{CVE-2018-1000520}\cite{NVDCVE2094:online}.
+It is a vulnerability in the authentication part of the \gls{tls} protocol, where certificates signed with an incorrect algorithm
 were accepted in some cases. More specifically, \textit{ECDH(E)-RSA} ciphersuites allowed \gls{ecdsa}-signed
 certificates, when only \gls{rsa}-signed ones should have been. We also found a bug in \textit{mbedTLS}'s test suite
 related to the use of deprecated \textit{SHA-1}-signed certificates and submitted a code fix to 
-it\cite{sslserve89:onelin}\cite{updatete23:online}.
+it\cite{sslserve89:onelin}\cite{updatete23:online}. We have also developed an extensive set of tooling which
+can be used to further study the costs of \gls{tls}, by allowing to automate metric collection and analysis on
+different hardware and environments.
 
 \section{Motivation}
 %
@@ -57,7 +59,7 @@ to ensure the security of that communication. For example, when you log
 in to your online banking account, you do not want others to be
 able to see your password, as this may lead to the compromise of your
 account. Having your account compromised means that a malicious entity
-might steal your money. Similarly, when you are transferring funds via
+might take a hold of your money. Similarly, when you are transferring funds via
 online banking, you want the contents of that operation to be
 invisible to an observer, for privacy reasons. It is also desirable
 that no party is able to tamper with the data en transit,
@@ -128,11 +130,11 @@ personal projects or projects for small businesses, leaving the communications i
 in the worse case scenario. Therefore a solution that is protocol independent and fully 
 compatible with the \gls{tlsd} standard and existing infrastructure is desired.
 
-Another issue with the existing literature is that it almost exclusively focuses on \gls{dtls} optimization
+Another area that the existing literature fails to address is that it almost exclusively focuses on \gls{dtls} optimization
 and not all of it can be applied to \gls{tls}. Herein we want to further explore \gls{tls} optimization. 
 There is clearly a need for that,
 especially with \gls{coap} over TCP and \gls{tls} standard\cite{I-D.ietf-core-coap-tcp-tls} being currently developed. The
-mentioned standard does not explore any \gls{tls} optimizations, and since any
+aforementioned standard does not explore any \gls{tls} optimizations, and since any
 \gls{iot} device using it in the future would benefit from them, this is an important
 area to explore.
 
@@ -149,12 +151,12 @@ existing infrastructure and targeting \gls{tls} optimization specifically.
 The objective of this work is to provide a means of assisting application developers
 who wish to include secure communications in their applications to make
 security/resource usage trade-offs, according to the environment's needs
-and limitations. We will give a general overview of of the costs of the \gls{tls} protocol as a whole and
-of its individual parts. This is will allow us to answer questions such as \textit{How much will we save if we use protocol X instead of Y for authentication?}.
+and limitations. We aim to provide a general overview of of the costs of the \gls{tls} protocol as a whole and
+of its individual parts. This is will allow to answer questions such as \textit{How much will we save if we use protocol X instead of Y for authentication?}.
 Thus, performing evaluations on specific \gls{iot} hardware or analyzing \gls{tls}-specific optimizations
 on it is outside of the scope of this paper.
 
-In order to achieve our goal, the cost of each individual security service
+In order to achieve our goals, the cost of each individual security service
 will be evaluated. With this information, the programer will be able to choose a configuration that
 meets his security requirements and device constraints. If the limitations of the device's hardware
 do not allow to meet the requirements, the programer may decide on an alternative configuration, possibly with
@@ -162,43 +164,72 @@ a loss of some security services and a lower security level, or forgo using (D)\
 Thus, this work is targeted towards developers and InfoSec professionals who wish to add communication security
 to applications in the IoT environment.
 
-In our work, we evaluated the \textit{mbedTLS 2.7.0}'s\cite{SSLLibra13:online} implementation of the \gls{tls} protocol version $1.2$.
-\textit{mbedTLS} is among the most popular libraries with a \gls{tls} implementation for embedded systems. \gls{tls} protocol 
-version $1.2$ is currently the most used version of \gls{tls} on the internet \cite{QualysSS90:online}. The work on
+\section{Contributions}
+
+In our work, we performed a thorough cost evaluation of the \gls{tls} $1.2$ implementation in \textit{mbedTLS 2.7.0}.
+\textit{mbedTLS} is among the most popular \gls{tls} implementation libraries for embedded systems. We evaluated costs 
+in terms of the estimated number of CPU cycles and time taken. The time values were read directly from
+the processor's registers. In our analysis we will show that the estimates do reflect real values, by comparing them to time
+measurements obtained directly from the CPU registers. We evaluated every single one of the $161$ \gls{tls} configurations available 
+in \textit{mbedTLS 2.7.0}, at $4$ different security levels. Each security level differs one from another by the size of the asymmetric keys
+that were used.
+
+A \gls{tls} connection consists of two main parts: first, the peers establish a secure communication channel in the Handshake phase,
+followed by the data exchange using that channel in the Record phase. We focused on the Handshake part of the protocol for two main reasons.
+First, it is the part with the most variability in terms of cost, due to the complex combinations of different possible algorithms.
+Second, it is part which has been the least studied by existing work. The Record phase mainly consists in the use symmetric encryption algorithms and hash functions. Their costs has already been thoroughly studied by existing work.
+
+Although our focus was on the Handshake, we also profiled the costs of the symmetric encryption algorithms and hash functions. While the cost of the
+Handshake might dominate when small amounts of data are transmitted, the natural question that arises is at how much transferred data the cost of
+the Handshake becomes negligible? Our conclusions were that when the devices are expected to transfer a large amount of data 
+(a few megabytes, for a typical configuration used on the internet), the focus should not be on
+optimizing the Handshake, but rather the algorithms used to to provide data confidentiality and integrity.
+
+We performed evaluations at the high, the middle and the low levels. At the high level, we analyzed and compared the cost of the Handshake for each 
+one of the \gls{tls} configurations as a whole. This allowed us to identify groups of configurations with similar costs. Those costs were different for the client and the server. For this reason,
+the answer to the question of which configuration is the least costly one for a given set of security service requirements is not straightforward. 
+It depends not only on whether our goal is to minimize the cost for the client, the server or both, but also on the security level in use.
+
+At the middle level, we analyzed the cost of each one of the security services offered by \gls{tls}: confidentiality, integrity, \gls{pfs}
+and authentication. We explored how a different choice of algorithms for a security service affected its costs. Here, once again, the choice
+of the least costly algorithm depends not only on whether the goal is to optimize the client, the server or the cumulative cost, but also on the
+security level used.
+
+Finally, at the low level, we analyzed and compared the costs of each one of the individual algorithms used to provide the security services. This allowed us
+to further understand the differences in costs observed at the high and middle levels.
+For the authentication security service, we profiled the costs of \gls{rsa} and \gls{ecdsa}. Our analysis showed that \gls{rsa} is faster at public key operations
+and \gls{ecdsa} at private key operations. Moreover, with the increase of the security level, the costs of \gls{rsa} increase exponentially, while the
+costs of \gls{ecdsa} logarithmically. For the \gls{pfs} security service, we profiled the costs of \gls{dh} and \gls{ecdh}. As the security level increased,
+the costs of \gls{dh} rose exponentially and the costs of \gls{ecdh} logarithmically. In that sense, gls{dh} is similar
+to \gls{rsa} and \gls{ecdh} to \gls{ecdsa}. This is a result of them sharing the same underlying mathematical operations: modular exponentiation for the first group and
+multiplication of a scalar by a point on the elliptic curve in the second group.
+Finally, for the confidentiality and integrity security services, we profiled each one of the $26$ combinations of a symmetric encryption algorithm and hash function available in \textit{mbedTLS 2.7.0}.
+
+The work on
 the dissertation started before \gls{tls} protocol's version $1.3$ specification was finished and there were no embedded device
 libraries which implemented it.  For this reason we did not evaluate \gls{tls} $1.3$. Despite that, the results
 obtained in this work apply to it as well, since the core functionality of the security services remained mostly unchanged.
-
-We used two cost metrics: the estimated number of CPU cycles and the time taken. The time values were read direcly from
-the processor's registers. The profiled instructions are CPU-bound, thus the number of CPU cycles will be proportional to time,
-as will later show in our analysis. Later in the text we will show that our esitmates do reflect real values, by comparing them to time
-measurments obtained directly from the CPU registers. Section \ref{sec:eval-metrics-and-lims} contains a detailed description of the 
-evaluated costs and their limitations.
+In the same manner, the information presented here is also relevant for \gls{dtls} versions $1.2$ and the upcoming version $1.3$.
 
 \section{Results}
 
 In summary, the results of this work are enumerated as follows:
 
 \begin{enumerate}
-  \item Evaluate the costs of the security services of confidentiality, integrity, \gls{pfs} and authentication in \gls{tls}
-  \item Evaluate and compare the costs of various alternative algorithms which can be used to provide each one of the security services
-  \item Evaluate and compare the costs of all of the possible \gls{tls} configurations present in \textit{mbedTLS 2.7.0}
-  \item Contribute to the \gls{tls} protocol's version $1.3$ specification
-  \item Contribute to the \gls{dtls} protocol's version $1.3$ specification
-  \item Find and report a security vulnerability present in \textit{mbedTLS 2.7.0}
-  \item Find, report and submit a patch to fix a bug present in \textit{mbedTLS 2.7.0}
+  \item Evaluation of the costs of the security services of confidentiality, integrity, \gls{pfs} and authentication in \gls{tls}. This evaluation 
+  is done in terms of execution time and estimated number of CPU cycles
+  \item Evaluation and comparison of the costs of various alternative algorithms which can be used to provide each one of the security services
+  \item Evaluation and comparison the costs of all of the possible \gls{tls} configurations present in \textit{mbedTLS 2.7.0}
+  \item Contributions to the \gls{tls} protocol's version $1.3$ specification, for which we were formally recognized, by having our name added to the document specifying \gls{tls} $1.3$\cite{RFC8446}
+  \item Contributions to the \gls{dtls} protocol's version $1.3$ specification\cite{DTLS13:online}
+  \item Finding and reporting a security vulnerability in the peer authentication phase of the protocol and a deviation from the \gls{tls} specification in \textit{mbedTLS 2.7.0}, which was assigned a \gls{cve} with id \textit{CVE-2018-1000520}\cite{NVDCVE2094:online}
+  \item Finding and reporting a bug present in \textit{mbedTLS 2.7.0}, as well as submitting a patch to fix to it \cite{sslserve89:onelin}\cite{updatete23:online}
 \end{enumerate}
 
 \section{Structure of The Document}
 
-The document is organized as follows: Section 2 describes the background. It
-introduces some of the concepts that will be used throughout
-the document. Section 3 describes the \gls{tls} and \gls{dtls} protocol
-versions $1.2$ and $1.3$, with a focus on the version $1.2$ since
-it is the latest and the most used version of the protocol at the time we started this work (version $1.3$ was still in
-draft mode). Section 4 describes all of the related work done in the area and
-the current state of the art. Section 5 describes the objectives of the work and evaluation 
-are described in more detail. 
-Section 6
-covers the evaluation's methodology and limitations. In Section 7 we evaluate the costs of the various \gls{tls}
-configurations and their individual parts. Finally, the conclusion of the work is done in Section 8.
+This document is organized as follows. Chapter $2$ describes the most relevant cryptographic concepts and algorithms
+that will be used throughout this work, provides and overview of the \gls{tls} and \gls{dtls} protocols 
+and presents a summary of the related work. Chapter $3$ focuses on the analysis of the results obtained experimentally,
+as well as explains how they were obtained. Finally, Chapter $4$ concludes this document by summarizing the main achievements
+and future work.

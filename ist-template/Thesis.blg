@@ -11,9 +11,8 @@ Warning--empty year in DTLS13:online
 Warning--empty year in NVDCVE2094:online
 Warning--empty year in sslserve89:onelin
 Warning--empty year in updatete23:online
-Warning--empty year in SSLLibra13:online
-Warning--empty year in QualysSS90:online
 Warning--empty journal in Kryptogr1:online
+Warning--empty year in SSLLibra13:online
 Warning--empty journal in Stateoft96:online
 Warning--empty year in ContikiT75:online
 Warning--empty year in IANA_ciphers_list:online
@@ -25,47 +24,51 @@ Warning--empty year in iluxonch73:online
 Warning--empty year in iluxonch44:online
 Warning--empty year in iluxonch24:online
 Warning--empty journal in lenstra2004key
+Warning--empty year in QualysSS90:online
 Warning--empty year in GoogleIn11:online
 Warning--empty year in BrowserS4:online
-You've used 87 entries,
+Warning--empty institution in turner2011updated
+Warning--empty institution in polk2011security
+Warning--empty year in Definiti62:online
+You've used 90 entries,
             2481 wiz_defined-function locations,
-            1087 strings with 21441 characters,
-and the built_in function-call counts, 29200 in all, are:
-= -- 2608
-> -- 1425
-< -- 83
-+ -- 598
-- -- 418
-* -- 2099
-:= -- 4640
-add.period$ -- 345
-call.type$ -- 87
-change.case$ -- 173
-chr.to.int$ -- 81
-cite$ -- 130
-duplicate$ -- 1510
-empty$ -- 2561
-format.name$ -- 515
-if$ -- 6275
+            1098 strings with 21868 characters,
+and the built_in function-call counts, 30022 in all, are:
+= -- 2678
+> -- 1467
+< -- 84
++ -- 616
+- -- 430
+* -- 2155
+:= -- 4772
+add.period$ -- 354
+call.type$ -- 90
+change.case$ -- 181
+chr.to.int$ -- 84
+cite$ -- 137
+duplicate$ -- 1552
+empty$ -- 2635
+format.name$ -- 531
+if$ -- 6447
 int.to.chr$ -- 7
-int.to.str$ -- 88
+int.to.str$ -- 91
 missing$ -- 24
-newline$ -- 515
-num.names$ -- 201
-pop$ -- 785
+newline$ -- 530
+num.names$ -- 207
+pop$ -- 815
 preamble$ -- 1
-purify$ -- 87
+purify$ -- 90
 quote$ -- 0
-skip$ -- 869
+skip$ -- 895
 stack$ -- 0
-substring$ -- 632
-swap$ -- 338
+substring$ -- 639
+swap$ -- 342
 text.length$ -- 53
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 606
-warning$ -- 23
-while$ -- 177
+type$ -- 627
+warning$ -- 26
+while$ -- 181
 width$ -- 0
-write$ -- 1246
-(There were 23 warnings)
+write$ -- 1281
+(There were 26 warnings)

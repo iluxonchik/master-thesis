@@ -35,31 +35,32 @@
 \contentsline {subsubsection}{Reading Values From Processor Counters with PAPI}{34}{section*.11}
 \contentsline {subsubsection}{Limitations}{35}{section*.12}
 \contentsline {subsection}{\numberline {3.1.2}Developed Tools}{35}{subsection.3.1.2}
-\contentsline {section}{\numberline {3.2}Results and Data Analysis}{36}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Security Levels}{37}{subsection.3.2.1}
-\contentsline {subsection}{\numberline {3.2.2}Evaluation of Security Services in TLS}{39}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.1.3}Security Levels}{36}{subsection.3.1.3}
+\contentsline {section}{\numberline {3.2}Evaluation of The Costs Of The TLS Protocol}{37}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}TLS Security Services Cost Overview}{39}{subsection.3.2.1}
 \contentsline {subsubsection}{Client}{41}{section*.13}
 \contentsline {subsubsection}{Server}{42}{section*.14}
-\contentsline {subsubsection}{Discussion}{43}{section*.15}
-\contentsline {subsection}{\numberline {3.2.3}PSK Authentication Cost Analysis}{43}{subsection.3.2.3}
-\contentsline {subsection}{\numberline {3.2.4}Asymmetric Algorithms Authentication Cost Analysis}{44}{subsection.3.2.4}
-\contentsline {subsubsection}{RSA Cost Analysis}{45}{section*.16}
-\contentsline {subsubsection}{ECDSA Cost Analysis}{46}{section*.17}
-\contentsline {subsubsection}{RSA vs ECDSA}{50}{section*.18}
-\contentsline {subsubsection}{The Cost Of Authentication in TLS}{51}{section*.19}
-\contentsline {subsection}{\numberline {3.2.5}Perfect Forward Secrecy Cost Analysis}{55}{subsection.3.2.5}
-\contentsline {subsubsection}{ECDH Cost Analysis}{56}{section*.20}
-\contentsline {subsubsection}{DH Cost Analysis}{58}{section*.21}
-\contentsline {subsubsection}{ECDH vs DH}{59}{section*.22}
-\contentsline {subsubsection}{The Cost Of PFS In TLS}{60}{section*.23}
-\contentsline {subsection}{\numberline {3.2.6}TLS Handshake Cost Analysis}{62}{subsection.3.2.6}
-\contentsline {subsection}{\numberline {3.2.7}Confidentiality and Integrity Cost Analysis}{69}{subsection.3.2.7}
-\contentsline {subsection}{\numberline {3.2.8}PAPI Time Cost Analysis and Comparison To Estimated CPU Cycles }{72}{subsection.3.2.8}
-\contentsline {subsubsection}{Handhsake Time Cost Analysis}{74}{section*.24}
-\contentsline {subsubsection}{PAPI and Valgrind Ratios Comparison}{74}{section*.25}
-\contentsline {subsection}{\numberline {3.2.9}Discussion}{75}{subsection.3.2.9}
+\contentsline {subsubsection}{Discussion}{42}{section*.15}
+\contentsline {subsection}{\numberline {3.2.2}Authentication Cost Analysis}{43}{subsection.3.2.2}
+\contentsline {subsubsection}{PSK Authentication Cost Analysis}{43}{section*.16}
+\contentsline {subsubsection}{Asymmetric Algorithms Authentication Cost Analysis}{44}{section*.17}
+\contentsline {subsubsection}{RSA Cost Analysis}{44}{section*.18}
+\contentsline {subsubsection}{ECDSA Cost Analysis}{48}{section*.19}
+\contentsline {subsubsection}{RSA and ECDSA Cost Comparison}{49}{section*.20}
+\contentsline {subsubsection}{Authentication Security Service Cost in TLS}{51}{section*.21}
+\contentsline {subsection}{\numberline {3.2.3}Perfect Forward Secrecy Cost Analysis}{54}{subsection.3.2.3}
+\contentsline {subsubsection}{ECDH Cost Analysis}{56}{section*.22}
+\contentsline {subsubsection}{DH Cost Analysis}{58}{section*.23}
+\contentsline {subsubsection}{ECDH and DH Cost Comparison}{59}{section*.24}
+\contentsline {subsubsection}{PFS Security Service Cost In TLS}{60}{section*.25}
+\contentsline {subsection}{\numberline {3.2.4}Handshake Cost Analysis}{62}{subsection.3.2.4}
+\contentsline {subsection}{\numberline {3.2.5}Confidentiality and Integrity Cost Analysis}{69}{subsection.3.2.5}
+\contentsline {subsection}{\numberline {3.2.6}PAPI Time Cost Analysis and Comparison To Estimated CPU Cycles }{72}{subsection.3.2.6}
+\contentsline {subsubsection}{Handhsake Time Cost Analysis}{72}{section*.26}
+\contentsline {subsubsection}{PAPI and Valgrind Ratios Comparison}{72}{section*.27}
+\contentsline {subsection}{\numberline {3.2.7}Discussion}{74}{subsection.3.2.7}
 \contentsline {chapter}{\numberline {4}Conclusions and Future Work}{77}{chapter.4}
 \contentsline {section}{\numberline {4.1}Conclusions}{77}{section.4.1}
 \contentsline {section}{\numberline {4.2}Future Work}{78}{section.4.2}
-\contentsline {chapter}{Bibliography}{79}{section*.26}
+\contentsline {chapter}{Bibliography}{79}{section*.28}
 \contentsline {chapter}{\numberline {A}Appendix A}{87}{appendix.A}

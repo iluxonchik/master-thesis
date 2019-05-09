@@ -72,7 +72,7 @@ the relevant counters directly from the processor and showed that they are propo
 
 In Section \ref{sec:eval-metrics-and-lims} we will analyze the evaluated metrics in detail, as well as describe their limitations.
 As a part of this work, we developed automated tooling to assist us in the collection and analysis of the results. Those
-tools are described in Section \ref{sec:developed-tools}.
+tools are described in Section \ref{sec:developed-tools}. Finally, Section \ref{sec:sls} describes the various security levels used for evaluation. 
 
 \subsection{Evaluated Metrics and Limitations} \label{sec:eval-metrics-and-lims}
 
@@ -219,78 +219,6 @@ In order to collect the \textit{valgrind} metrics, no modification of \textit{mb
 parts of the \textit{mbedTLS} code had to be instrumented with \gls{papi} \cite{iluxonch24:online}. In both cases, dedicated client and server
 executables were developed \cite{iluxonch24:online}. Each executable accepts two arguments: the \textit{id} of the ciphersuite to use and the number of bytes to transmit to the other
 peer. This set up allowed us to profile the costs of all security services for each one of the ciphersuites.
-   \cite{iluxonch24:online}
-
-\section{Results and Data Analysis} \label{sec:results}
-
-The \gls{tlsd} protocol consists of two sub-protocols: the Handshake protocol and the Record protocol.
-During the Handshake protocol, the peers authenticate one to another, agree on the data encryption and integrity
-algorithms and establish the shared keys. During the Record protocol the peers exchange the data securely,
-using the algorithms and keys negotiated during the Handshake protocol. Those algorithms support the security
-services provided by \gls{tlsd}. For example, peer entity authentication is usually offered by algorithms, such
-as \gls{rsa} or \gls{ecdsa}. The cost of the Handshake phase depends on the security services used. The cost
-of the Record phase depends on the amount of data transmitted.
-
-The core of the Record protocol is the use of a symmetric encryption algorithm (\textit{e.g} AES), used to
-provide confidentiality and an \gls{hmac} algorithm, used to provide data integrity and data origin authentication.
-The \gls{hmac} algorithm is not used if the symmetric encryption algorithm is an \gls{aead} cipher, which already
-provides data integrity guarantees. Each encryption algorithm has a few possible varieties (\textit{e.g.} the CBC, GCM and CCM modes in AES)
-and key sizes  (\textit{e.g.}, $128$ and $256$ bit for AES). The same is true for \gls{hmac} algorithms, which
-have a well defined \gls{mac} function, key size and output length. The performance of symmetric encryption
-algorithms and hash functions has been studied in detail by existing work \cite{nadeem2005performance} \cite{mathew2010performance}.
-There is an approximately linear relation between the amount of data encrypted and the the cost, as we 
-show in Section \ref{sec:confid-costs}.
-
-The previous paragraph does not apply to the Handshake protocol. In this part, there is more variety in the
-computational cost outcomes. There are a few reasons for that:
-
-\begin{itemize}
-
-  \item Asymmetric cryptography algorithms are used to provide security services of authentication
-  and \gls{pfs}. For each algorithm, there are significantly more possible key sizes, when compared to
-  symmetric encryption algorithms. Theoretically there is an infinite number of them, however practical limits exist\cite{lenstra2004key}.
-
-  \item In \gls{tlsd}, various algorithms, in various combinations can be used to provide authentication and \gls{pfs}.
-  Two types of public key algorithms than can be used: \gls{ecc}-based and non-\gls{ecc}-based. It is also possible
-  to have authentication without asymmetric cryptography. \gls{psk}-based ciphersuites allow peers to
-  authenticate one to another by the means of a shared secret. This shared secret is then input to the \gls{prf}
-  in the premaster key generation, without the use of public key cryptography.
-
-  \item The use of asymmetric cryptography leads to asymmetric costs (\textit{i.e.} distinct costs) for the client and the server. The costs of asymmetric
-  encryption algorithms vary greatly depending if the public or the private key is used. Also, while \gls{ecc}
-  algorithms tend to have a smaller computational footprint, this is not always the case.
-  Some operations (\textit{e.g} signature verification) is faster on the non-\gls{ecc} counterparts.
-  It is important to consider those factors, when for example, only one of the peers is constrained, since the costs for the client and the server will be different.
-  In the Record phase we do not have that problem, since the costs of \gls{hmac} and encryption/decryption in
-  symmetrical encryption algorithms is approximately the same.
-
-\end{itemize}
-
-Another cryptographic operation that is done in the Handshake phase is \gls{prf} keying material generation. This part, however,
-does not have a major influence on the computational costs and is the same for both peers, since it is essentially
-hashing operations.
-
-It is clear that the Handshake protocol is significantly more complex, with more possible cost variations.
-Furthermore, existing work neither evaluated the costs of individual security services of \gls{tls}, nor
-their various combinations. For this reason, our work is concentrated around the Handshake protocol.
-
-This section as structured as follows. Section \ref{sec:sls} describes the various security levels used for evaluation. 
-Section \ref{sec:ss-overview}
-presents an overview of the costs of authentication and \gls{pfs}. Section \ref{sec:psk-cost-analysis} discusses the costs of symmetric (or \gls{psk})
-authentication. In Section \ref{sec:asym-algs-analysis} we analyze the costs of asymmetric authentication. We begin by analyzing the cost of \gls{rsa}'s
-and \gls{ecdsa}'s  operations and then put everything together and present the authentication cost for each key exchange method (thus, for each ciphersuite).
-Section \ref{sec:pfs-costs} does a similar analysis, but his time for the cost of \gls{pfs}. Here, once again, we begin by analyzing the costs of
-\gls{ecdh} and \gls{dh}, after which we use that information to arrive at the \gls{pfs} cost for each key exchange method (thus, for each ciphersuite).
-Section \ref{sec:tls-hs-cost} puts the information from the previous sections together and analyzes the cost of the \gls{tls} handshake as a whole.
-We do both, present actual handshake cost values obtained by profiling its cost directly, and show how to use the information from the previous sections to 
-arrive to those cost values without the need of executing and profiling the handshake costs directly. We decompose \gls{tls} costs into a single formula.
-In Section \ref{sec:confid-costs} we discuss costs of confidentiality in \gls{tls} and compare the performance of all of the symmetric encryption algorithms
-present in \textit{mbedTLS 2.7.0}. Having analyzed the estimates obtained with \textit{valgrind}, we will turn our focus to time costs obtained with \gls{papi}.
-Section \ref{sec:papi-handshake} presents handshake time measurments collected with \gls{papi} and compares them to
-the \textit{valgrind} ones from Section \ref{sec:tls-hs-cost}. As we will show, they are similar. In Section \ref{sec:papi-valgrind-ratios} we go further,
-and compare \gls{papi}'s ratios of related algorithm opearations to the \textit{valgrind} ones. In essence, we will compare \gls{papi}'s results to the valgrind
-one's analyzed in Sections \ref{sec:asym-algs-analysis} and \ref{sec:pfs-costs}, and once again show that they are similar.
-Finally, in section \ref{sec:ss-cost-conclusions} we present some conclusions.
 
 \subsection{Security Levels} \label{sec:sls}
 
@@ -383,25 +311,86 @@ ECC Curve      & secp192k1    & secp256r1       & secp384r1     & secp521r1     
 \centering \caption{\label{table:sls-config-info} Security levels configuration}
 \end{table}
 
-\subsection{Evaluation of Security Services in TLS} \label{sec:ss-overview}
+\section{Evaluation of The Costs Of The TLS Protocol} \label{sec:results}
 
-The \gls{tls} protocol offers various security services. The list of security services offered by a connection
-depends on the ciphersuite in use. Each ciphersuite consists of a set of algorithms, which have an implication
-on the performance and cost. It is important to evaluate the cost of each security service to assist the developer in making
-security/performance trade-offs. In this section we will make a first, high level analysis of the
-costs of security services in \gls{tls}.
+The \gls{tlsd} protocol consists of two sub-protocols: the Handshake protocol and the Record protocol.
+During the Handshake protocol, the peers authenticate one to another, agree on the data encryption and integrity
+algorithms and establish the shared keys. During the Record protocol the peers exchange the data securely,
+using the algorithms and keys negotiated during the Handshake protocol. Those algorithms support the security
+services provided by \gls{tlsd}. For example, peer entity authentication is usually offered by algorithms, such
+as \gls{rsa} or \gls{ecdsa}. The cost of the Handshake phase depends on the security services used. The cost
+of the Record phase depends on the amount of data exchanged.
 
-As mentioned previously, the cost of the Handshake varies greatly, depending on the security level and algorithms used.
-In this section an overview of the Handshake costs for the various configurations will be presented. For this
+The core of the Record protocol is the use of a symmetric encryption algorithm (\textit{e.g} AES), used to
+provide confidentiality and an \gls{hmac} algorithm, used to provide data integrity and data origin authentication.
+The \gls{hmac} algorithm is not used if the symmetric encryption algorithm is an \gls{aead} cipher, which already
+provides data integrity guarantees. Each encryption algorithm has a few possible varieties (\textit{e.g.} the CBC, GCM and CCM modes in AES)
+and key sizes  (\textit{e.g.}, $128$ and $256$ bit for AES). The same is true for \gls{hmac} algorithms, which
+have a well defined \gls{mac} function, key size and output length. The performance of symmetric encryption
+algorithms and hash functions has been studied in detail by existing work \cite{nadeem2005performance} \cite{mathew2010performance}.
+There is an approximately linear relation between the amount of data encrypted and the cost, as we 
+show in Section \ref{sec:confid-costs}.
+
+In the Handhake protocol there is more variety in the computational cost outcomes. There are a numerous reasons for that:
+
+\begin{itemize}
+
+  \item Asymmetric cryptography algorithms are used to provide security services of authentication
+  and \gls{pfs}. For each algorithm, there are significantly more possible key sizes, when compared to
+  symmetric encryption algorithms. Theoretically there is an infinite number of them, however practical limits exist\cite{lenstra2004key}.
+
+  \item In \gls{tlsd}, various algorithms, in various combinations can be used to provide authentication and \gls{pfs}.
+  Two types of public key algorithms than can be used: \gls{ecc}-based and non-\gls{ecc}-based. It is also possible
+  to have authentication without asymmetric cryptography. \gls{psk}-based ciphersuites allow peers to
+  authenticate one to another by the means of a shared secret. This shared secret is then directly used as an input to the \gls{prf}
+  in the premaster key generation, without the use of public key cryptography.
+
+  \item The use of asymmetric cryptography leads to asymmetric costs (\textit{i.e.} distinct costs) for the client and the server. The costs of asymmetric
+  encryption algorithms vary greatly depending if the public or the private key is used. While \gls{ecc}
+  algorithms tend to have a smaller computational footprint, this is not always the case.
+  Some operations (\textit{e.g} signature verification) are faster on the non-\gls{ecc} counterparts.
+  It is important to consider those factors, when for example, only one of the peers is constrained, since the costs for the client and the server will be different.
+  In the Record phase we do not have that problem, since the costs of \gls{hmac} and the encryption/decryption oparations in
+  symmetric encryption algorithms is approximately the same.
+
+\end{itemize}
+
+Another cryptographic operation that is done in the Handshake phase is \gls{prf} keying material generation. This part, however,
+does not have a major influence on the computational costs and is the same for both peers, since it is essentially involves
+hashing operations.
+
+It is clear that the Handshake protocol is significantly more complex, with more possible cost variations.
+Furthermore, existing work neither evaluated the costs of individual security services of \gls{tls}, nor
+their various combinations. For this reason, our work is concentrated around the Handshake protocol.
+
+This section as structured as follows. 
+Section \ref{sec:ss-overview}
+presents an overview of the costs of the of the \gls{tls} Handhake and security services. Section \ref{sec:psk-cost-analysis} discusses the costs of symmetric (or \gls{psk})
+authentication. In Section \ref{sec:asym-algs-analysis} we analyze the costs of asymmetric authentication. We begin by analyzing the cost of \gls{rsa}'s
+and \gls{ecdsa}'s  operations and then put everything together and present the authentication cost for each key exchange method (thus, for each ciphersuite).
+In Section \ref{sec:pfs-costs} we perform a similar analysis for the cost of \gls{pfs}. We begin by analyzing the costs of
+\gls{ecdh} and \gls{dh}, after which we use that information to arrive at the \gls{pfs} cost for each key exchange method (thus, for each ciphersuite).
+Section \ref{sec:tls-hs-cost} puts the information from the previous sections together and analyzes the cost of the \gls{tls} handshake as a whole.
+First, we will present the Handshake costs for each key exchange method that we obtained during profiling. After that, we will show how to use the 
+results from the previous sections to arrive at the Handshake costs independently. In order to achieve that, we will decompose the costs of the \gls{tls} Handshake 
+into a single formula.
+In Section \ref{sec:confid-costs} we discuss costs of confidentiality in \gls{tls} and compare the performance of all of the symmetric encryption algorithms
+present in \textit{mbedTLS 2.7.0}. Having analyzed the estimates obtained with \textit{valgrind}, we will turn our focus to time costs obtained with \gls{papi}.
+Section \ref{sec:papi-handshake} presents handshake time measurments collected with \gls{papi} and compares them to
+the \textit{valgrind} estimates analylzed in the previous secitons. As we will show, they are similar.
+Finally, in section \ref{sec:ss-cost-conclusions} we present some conclusions.
+
+\subsection{TLS Security Services Cost Overview} \label{sec:ss-overview}
+
+As mentioned previously, the cost of the Handshake varies greatly, depending on the security level and the ciphersuite used.
+A ciphersuite consits of a set of algirithms, which determine the security services that will be offered by a connection.
+In this section, an overview of the Handshake and the security services costs will be presented. For this
 first evaluation, we will concentrate on the \textbf{normal} security level, which was defined in the text above.
 \textit{mbedTLS 2.7.0} includes a total of $161$ ciphersuites, with $10$ unique key exchange methods, with $13$ unique
 symmetric key encryption algorithms and $4$ unique hash functions. Some of the ciphersuites are disabled by default,
 since they are considered weak. In the sphere of \gls{iot}, however, it might still make sense to use them in certain
 scenarios, if their cost is considerably lower. For this reason, we have enabled and evaluated all of the possible configurations.
-
-Since in our evaluations, the server authenticates, but the client does not,
-a separate analysis for both peers will be made. We will begin with an overview of the costs for the various \gls{tls}
-configurations.
+Since in our evaluations, the server authenticates, but the client does not, a separate analysis for each one of the peers will be done.
 
 \begin{figure}
   \centering
@@ -415,7 +404,7 @@ configurations.
   \centering \caption{\label{fig:hs-all-ciphers-srv} Server handshake cost in number of CPU cycles for all of the $161$ ciphersuites}
 \end{figure}
 
-Figures \ref{fig:hs-all-ciphers-cli} and \ref{fig:hs-all-ciphers-srv} depict a graph with the Handshake cost of each one
+Figures \ref{fig:hs-all-ciphers-cli} and \ref{fig:hs-all-ciphers-srv} depict the Handshake cost of each one
 of the ciphersuites, for the client and the server, respectively. In both graphs, $y$ axis represents the number of
 CPU cycles executed. The ciphersuites have been grouped by the key exchange method. Each bar within a key
 exchange method group represents a different combination of a symmetric encryption function and a hash function.
@@ -423,7 +412,7 @@ The pink rectangles group the ciphersuites by the key exchange method. The numbe
 number of CPU  cycles, in millions, used to perform the handshake for that key exchange method.
 An analysis of both figures shows that there is very little variation in costs within
 each key exchange method group. This is due to the fact that most of the resources are spent in authenticating and
-generating keying material for \gls{pfs}.
+generating the keying material for \gls{pfs}.
 
 From the analysis of Figures \ref{fig:hs-all-ciphers-cli} and \ref{fig:hs-all-ciphers-srv}, it becomes obvious
 that some of the ciphersuites have  much lower handshake costs than the others. For the client, the \textit{PSK} based
@@ -468,12 +457,9 @@ more detailed evaluation for all security levels.
 
 \subsubsection{Client}
 
-By analyzing table \ref{table:hs-all-ciphers-cli-aggr}  we can approximate
-the costs of the security services of authentication and \gls{pfs} for the client. Even though those values are approximations,
-they are very close actual numbers, since they dominate the costs of the Handshake. All of the costs presented in the 
-analysis that follows are taken directly from table \ref{table:hs-all-ciphers-cli-aggr} and will be in millions CPU cycles,
-rounded to $3$ decimal places.
-
+By analyzing table \ref{table:hs-all-ciphers-cli-aggr} we can approximate
+the costs of the security services of authentication and \gls{pfs} for the client.
+All of the results will be rounded to $3$ decimal places.
 If \gls{pfs} is used, the cost of the Handshake varies from $55.805$ to $135.443$
 million CPU cycles for \gls{psk} based authentication, and from $58.608$ to $168.954$ million CPU cycles for
 asymmetric authentication. If the security service of \gls{pfs} is foregone, the cost
@@ -482,16 +468,16 @@ and from $4.559$ to $112.585$ for asymmetric authentication.
 
 If we analyze the values in the \textit{ECDHE} column in table \ref{table:hs-all-ciphers-cli-aggr}, thus fixing the
 algorithm used to offer \gls{pfs} we can compare the costs of authentication for various algorithms on the client-side.
-For example, we can see that \textit{RSA} authentication costs $2.803$  ($58.608 - 55.805$)
+By performing this analysis we can see that \textit{RSA} authentication costs $2.803$  ($58.608 - 55.805$)
 more than \gls{psk} authentication and \textit{ECDSA} authentication costs $110.346$ ($168.954 - 58.608$)
 million CPU cycles more than
 \textit{RSA} authentication. The total cost of using \gls{psk} for authentication can be estimated by looking at the
 value in the \textit{PSK} row and \textit{X} column, thus fixing authentication to \textit{PSK} and not using any other
-algorithm for key agreement: $1.354$. In fact, we can consider this value to be the overhead of \gls{tls} for the client,
+algorithm for key agreement: $1.354$ million CPU cycles. In fact, we can consider this value to be the overhead of \gls{tls} for the client,
 since this is the cost of establishing the most basic \gls{tls} connection available in \textit{mbedTLS 2.7.0}.
 In the same manner, the cost of using \textit{RSA} for authentication can
 be approximated by taking the value located in row \textit{RSA} and column \textit{X}, thus fixing authentication
-to \gls{rsa} and not using any other algorithm for key agreement: $4.559$. Even though we cannot estimate the cost
+to \gls{rsa} and not using any other algorithm for key agreement: $4.559$ million CPU cycles. Even though we cannot estimate the cost
 of using \textit{ECDSA} for authentication directly from the table, we have already seen that \textit{ECDSA} authentication
 is $110.346$ more costly than \textit{RSA} authentication. Thus, the cost of using \textit{ECDSA} for authentication
 is of $114.905 (4.559+110.346)$ million CPU cycles. When compared, authentication with \gls{rsa} is
@@ -499,10 +485,10 @@ $236.7\%$ more expensive than with \gls{psk} and authentication with \gls{ecdsa}
 expensive than with \gls{rsa}.
 
 Similarly, we can compare the costs of using \gls{dh} vs \gls{ecdh} to provide \gls{pfs}, by
-looking at the \gls{psk} (or \gls{rsa}) row, thus fixing the authentication algorithm. Using \textit{DHE} is
+looking at the \gls{psk} row, thus fixing the authentication algorithm. Using \textit{DHE} is
 $76.638$ ($135.443 - 55.805$) million CPU cycles more $(+142.7\%)$ expensive than using \textit{ECDHE}.
 The total cost of \gls{pfs}
-using the \gls{ecdh} algorithm can be computed by fixing the \textit{PSK} row (or \gls{rsa} row)
+using the \gls{ecdh} algorithm can be computed by fixing the \textit{PSK} row 
 and subtracting the value in the \textit{ECDHE} column from the value in the \textit{X} column. By doing this, we are
 fixing the authentication algorithm to \gls{psk} and subtracting the cost of the Handshake when no \gls{pfs} is used,
 from the cost of the handshake when \textit{ECDHE} is used to provide \gls{pfs}. Thus, the cost of using \textit{ECDHE}
@@ -517,20 +503,20 @@ Once again, the presented costs will be approximations in
 being millions CPU cycles rounded to $3$ decimal places.
 
 If \gls{pfs} is used, the cost of the Handshake varies from $56.021$ to $135.535$
-million CPU instructions for \gls{psk} based authentication, and from $86.097$ to $212.255$ million CPU cycles for
+million CPU cycles for \gls{psk} based authentication, and from $86.097$ to $212.255$ million CPU cycles for
 asymmetric authentication. If the security service of \gls{pfs} is foregone, the cost
 of the Handshake varies from $1.383$  to $77.369$ for \gls{psk} based authentication,
 and from $27.094$ to $77.261$ for asymmetric authentication.
 
 If we analyze the values in the \textit{ECDHE} column in table \ref{table:hs-all-ciphers-srv-aggr}, thus fixing the
-algorithm used to offer \gls{pfs} we can compare the costs of authentication for various algorithms on the server-side.
-For example, we can see that \textit{RSA} authentication costs $76.412$ ($132.433-56.021$) more than \gls{psk}
+algorithm used to offer \gls{pfs}, we can compare the costs of authentication for various algorithms on the server-side.
+By performing this analysis, we can see that \textit{RSA} authentication costs $76.412$ ($132.433-56.021$) more than \gls{psk}
 authentication and \textit{ECDSA} authentication costs $46.336$ ($132.433-86.097$) million CPU cycles less
 than \textit{RSA} authentication. The total cost of using \gls{psk} for authentication can be estimated
 by looking at the
 value in the \textit{PSK} row and \textit{X} column, thus fixing authentication to \textit{PSK} and not using any other
-algorithm for key agreement: $1.383$. In fact, we can consider this value to be the overhead of \gls{tls} for the client,
-since this is basically the cost of establishing the most basic \gls{tls} connection available in \textit{mbedTLS 2.7.0}.
+algorithm for key agreement: $1.383$ million CPU cycles. We can consider this value to be the overhead of \gls{tls} for the server,
+since this is the cost of establishing the most basic \gls{tls} connection available in \textit{mbedTLS 2.7.0}.
 In the same manner, the cost of using \textit{RSA} for authentication can
 be approximated by taking the value located in row \textit{RSA} and column \textit{X}, thus fixing authentication
 to \gls{rsa} and not using any other algorithm for key agreement: $77.261$. Even though we cannot estimate the cost
@@ -541,9 +527,9 @@ $2136.1\%$ more expensive than with \gls{psk} and authentication with \gls{rsa} 
 than with \gls{ecdsa}.
 
 Similarly, we can compare the costs of using \gls{dh} vs \gls{ecdh} to provide \gls{pfs}, by
-looking at the \gls{psk} (or \gls{rsa}) row, thus fixing the authentication algorithm. Using \textit{DHE} is
+looking at the \gls{psk} row, thus fixing the authentication algorithm. Using \textit{DHE} is
 $79.514$ ($135.535 - 56.021$) million CPU cycles more expensive $(+141.9\%)$ than using \textit{ECDHE}. The total cost of \gls{pfs}
-using the \gls{ecdh} algorithm can be computed by fixing the \textit{PSK} row (or \gls{rsa} row)
+using the \gls{ecdh} algorithm can be computed by fixing the \textit{PSK} row 
 and subtracting the value in the \textit{ECDHE} column from the value in the \textit{X} column. By doing this, we are
 fixing the authentication algorithm to \gls{psk} and subtracting the cost of the Handshake when no \gls{pfs} is used,
 from the cost of the handshake when \textit{ECDHE} is used to provide \gls{pfs}. Thus, the cost of using \textit{ECDHE}
@@ -561,44 +547,47 @@ services of authentication and \gls{pfs}, as well as of the algorithms used to o
 use or non-use of a security service can have a big impact on the cost of establishing a \gls{tls} connection.
 
 Our analysis showed that \textit{PSK} based ciphersuites are the most efficient ones overall, for both, the client
-and the server, thus their popularity in the \gls{iot} environment. Symmetric authentication is, by far,
-the least costly one for both peers. For the client, \gls{rsa} is the second least costly authentication and \gls{ecdsa}
+and the server, thus their popularity in the \gls{iot} environment.
+For the client, \gls{rsa} is the second least costly authentication and \gls{ecdsa}
 is the most costly one of them. For the server, this situation is reversed. The reasons for that will be explained in
 Section \ref{sec:asym-algs-analysis}, when we analyze the Handshake costs in detail.
 
-As for the \gls{pfs}, in both cases \textit{ECDHE} is about $1.5$ less costly than \textit{DHE}. This gives us a glimpse
+As for \gls{pfs}, in both cases \textit{ECDHE} is about $1.5$ less costly than \textit{DHE}. This gives us a glimpse
 into the benefits of elliptic curve cryptography. The costs of \gls{pfs} are identical for both peers. In the next
-section we will analyze both of the security services in more detail.
+sections we will analyze both of the security services in more detail.
 
-\subsection{PSK Authentication Cost Analysis} \label{sec:psk-cost-analysis}
+\subsection{Authentication Cost Analysis}
 
-In the previous section we compared the costs of different authentication methods by analyzing the total cost of the
-Handshake with different ciphersuites. In this section and section \ref{sec:asym-algs-analysis}, we will analyze this 
-security service in detail, including the underlying algorithms it. 
-
+In this section we will analyze the authentication security service in detail, inlcuding the costs of the underlying algorithms.
 In \gls{tls} there are two ways of doing authentication: either by using a \gls{psk} or by using asymmetric cryptography.
-If asymmetric cryptography is used, there are two choices for the algorithm: \gls{rsa} or \gls{ecdsa}. We will begin 
-with an analysis of \gls{psk} authentication cost in this section and analyze asymmetric authentication costs 
-in Section \ref{sec:asym-algs-analysis}.
+If asymmetric cryptography is used, there are two choices for the algorithm: \gls{rsa} or \gls{ecdsa}. We will analyze both,
+starting with \gls{psk} authentication.
+
+\subsubsection{PSK Authentication Cost Analysis} \label{sec:psk-cost-analysis}
 
 In the previous section we approximated the cost of \gls{psk} authentication to be $1.354$ million CPU cycles
-for the client and $1.383$ million CPU cycles for the server. In reality, this cost is very close to zero, since
-both of the parties already have the authentication key. The approximated value is actually the cost of performing the
-smallest and least costly handshake in \textit{mbedTLS}.
-This value can be considered as the TLS overhead, since it is in essence, the cost of establishing the simplest possible \gls{tls} connection,
-without using asymmetric authentication or \gls{pfs}. The majority of those costs are spent in the \gls{prf}, when generating the
-shared keying material and in reading/writing the \textit{Finished} message. 
+for the client and $1.383$ million CPU cycles for the server. In reality, we can consider this cost to be zero.
+With \gls{psk} authentication, both of the peers already posses the secret that they use to authenticate one to another.
+This secret is then used as an input to the \gls{prf} when generating the keying material. Mutual authentication is
+achieved if the integrity check of the \textit{Finished} message is successfull. This is only possible if both of the peers
+generated the same keying material, which can only happen if they used the same \gls{psk} as an input to the \gls{prf}.
+Thus, the client and the server authenticate one to another, without any explicit authentication step.
+
+The cost of the \gls{psk} Handshake can be considered as the TLS overhead, since it is in essence, the cost of establishing 
+the most basic \gls{tls} connection, without using asymmetric authentication or \gls{pfs}. The majority of the costs 
+come from generating the shared keying material with a \gls{prf} and parsing/generating the \textit{Finished} message.
+
 
 Table \ref{table:hs-key-gen-cost} shows the number of CPU cycles spent in the \gls{prf}
 and in computing the \textit{Finished} message for all of the defined security levels.
 This number is the average of the runs with each one the $161$ ciphersuites for both of the peers. Thus, it is
-an average of $322$ samples. The standard deviation shown in parenthesis.
+an average of $322$ samples. The standard deviation is shown in the parenthesis.
 An analysis of the table shows that the cost of \gls{prf} is almost the same for all security levels. This can be explained by
 the fact that it's essentially composed of hashing operations and even if the input size varies
 by a few hundred bytes, the total cost does not change by a significant amount.
 In \textit{mbedTLS 2.7.0} there are $26$ unique encryption/hash algorithm combinations, $4$ of which use a \textit{NULL} encryption algorithm.
 The \textit{Finished} message is the first encrypted message in \gls{tls}. Different encryption algorithms have different
-performances. Due to this heterogeneity, the standard deviation is relatively higher for writing and parsing the 
+costs. Due to this heterogeneity, the standard deviation is relatively higher for writing and parsing the 
 \textit{Finished} message.
 
 \begin{table}[]
@@ -606,20 +595,24 @@ performances. Due to this heterogeneity, the standard deviation is relatively hi
 \hline
  \backslashbox{Opeation}{Security\\Level}                       & \textbf{low}   & \textbf{normal} & \textbf{high}  & \textbf{very high} \\ \hline
 \textbf{PRF}            & 982957 (14830) & 986854 (19227)  & 992441 (29439) & 1009178 (50185)    \\ \hline
-\textbf{Finished Write} & 158717 (22451) & 157912 (23253)  & 156648 (21950) & 158306 (22561)     \\ \hline
+\textbf{Finished Generate} & 158717 (22451) & 157912 (23253)  & 156648 (21950) & 158306 (22561)     \\ \hline
 \textbf{Finished Parse} & 164680 (23952) & 164984 (26244)  & 163501 (24703) & 164897 (25322)     \\ \hline
 \end{tabular}
 \centering \caption{\label{table:hs-key-gen-cost} Cost of \gls{prf} and \textit{Finished} message}
 \end{table}
 
-The values in table \ref{table:hs-key-gen-cost} remain valid for all key exchange methods, and as we will see,
-become insignificant.
+If we sum the values under the \textbf{normal} column from table \ref{table:hs-key-gen-cost} we will get $1.309$ million CPU cycles as the result.
+Thus, those $3$ operations account for $96.7\%$ of the costs for the client and $94.6\%$ for the server when perfroming the \gls{psk} Handshake
+at the \textbf{normal} security level. The remainder of the costs comes from operations such as parsing and generating the \gls{tls} message structures,
+as well as writing them to the network. The values in table \ref{table:hs-key-gen-cost} remain valid for all key exchange methods, and as we will see,
+become insignificant when asymmetric authentication and/or \gls{pfs} is used.
 
-\subsection{Asymmetric Algorithms Authentication Cost Analysis} \label{sec:asym-algs-analysis}
+\subsubsection{Asymmetric Algorithms Authentication Cost Analysis} \label{sec:asym-algs-analysis}
 
-If asymmetric cryptography is used for authentication, there are two
+If asymmetric cryptography is used for authentication in \gls{tls}, there are two
 choices of algorithms: \gls{rsa} and \gls{ecdsa}. Each one of them has advantages and disadvantages, depending on the
-scenario. We will analyze them now.
+opeation and the key size. First, we will analyze the costs of \gls{rsa} and \gls{ecdsa} independently from \gls{tls},
+and then use that information to dissect the cost of the authentication security service as a part of the protocol.
 
 In \textit{mbedTLS 2.7.0}, there are $31$ ciphersuites that use \gls{rsa} to authenticate ephemeral \gls{dh}/\gls{ecdh} parameters
 and $17$ ciphersuites that use \gls{ecdsa} to authenticate ephemeral \gls{dh}/\gls{ecdh} parameters. The metrics from those
@@ -642,10 +635,10 @@ By analyzing the graph, we can can observe two things:
 
 \begin{itemize}
   \item \gls{rsa} is more efficient at performing public key operations, \textit{i.e.} verifying the signature
-  \item \gls{ecdsa} is more efficient at performing private key operations, \textit{i.e.} making the signature
+  \item \gls{ecdsa} is more efficient at performing private key operations, \textit{i.e.} creating the signature
 \end{itemize}
 
-This holds true for other security levels too, as will be shown further down the text. Let us now analyze each one
+This holds true for other security levels too, as will be shown later in the text. Let us now analyze each one
 of the algorithms and their costs in more detail.
 
 \subsubsection{RSA Cost Analysis}
@@ -660,24 +653,27 @@ Table \ref{table:rsa-costs-all-sls-total} presents the sum of the signing and ve
 In out tests, both \gls{rsa} and \gls{ecdsa} signed certificates have signatures over a $32$ byte value (output of \textit{SHA-256}), so
 the values in Table \ref{table:rsa-costs-all-sls} apply to those costs too.
 
-Figure \ref{fig:rsa-costs-all-sls} depicts the costs of \gls{rsa} operations graphically. The data is presented in a logarithmic
-scale. An analysis of the data shows that the exponential trendline is the one that best fits the cost increase for both, signature creation and
-verification. This is a result of modular exponentiation being \gls{rsa}'s core operation. Moreover, for all security levels, the cost of
+Figure \ref{fig:rsa-costs-all-sls} depicts the \gls{rsa} costs from tables \ref{table:rsa-costs-all-sls} and \ref{table:rsa-costs-all-sls-total} graphically. 
+The data is presented in a logarithmic
+scale. An analysis of the graph shows that the exponential trendline is the one that best fits the cost increase for both, signature creation and
+verification. This is a result of modular exponentiation being \gls{rsa}'s core operation. 
+The consequences of the exponential cost increase are shown in table \ref{table:rsa-absolute-cost-increase}, which presents this relative increase
+in terms of absolute values. The numbers are increasing, with the signature creation increase being significantly larger
+than the signature verification one.
+Moreover, for all security levels, the cost of
 private key operations is significantly higher than
 of the public key ones. The cost of the former also increases more, as the security level raises. For example, there is an increase
 of $2145\%$ from the \textit{normal} to \textit{very high} security level for signature creation and of $1102\%$ for signature verification.
 
 This results in a big difference between the cost of creating and verifying signatures, which becomes larger as the security level increases.
-For example, at the \textit{normal} security level signature verification is approximately $74.6$ million CPU cycles more expensive,
-while at the \textit{very high} security level, this value raises to over $1687$ million, \textit{i.e.} a $2161\%$ increase.
+For example, at the \textit{normal} security level, signature verification is approximately $74.6$ million CPU cycles more expensive than signature verficiation,
+while at the \textit{very high} security level, this difference raises to over $1687$ million, \textit{i.e.} a $2161\%$ increase.
 
-This increase more modest for public key operations, as is shown in Figure \ref{fig:rsa-pub-priv-cost-increase}.
-The percentages show the relative cost increase from the previous security level. For example, creating an \gls{rsa} signature costs
-$268.4\%$ more at \textit{normal} than at \textit{low} security level. For all operations, the cost increase is exponential.
-The consequences of the exponential cost increase are shown in table \ref{table:rsa-absolute-cost-increase}, which presents this relative increase
-in terms of absolute values. The numbers are increasing, with the signature creation increase being significantly larger
-than the signature verification one. An analysis Figure \ref{fig:rsa-pub-priv-cost-increase}
-explains the difference between the costs of private and public key operations. As the security level increases, the relative cost
+This increase is more modest for public key operations, as is shown in Figure \ref{fig:rsa-pub-priv-cost-increase}.
+The percentages show the relative cost increase from the previous security level. For example, \gls{rsa} signature creation costs
+$268.4\%$ more at \textit{normal} than at \textit{low} security level, while for signature verification this increase is of $180.5\%$. 
+An analysis Figure \ref{fig:rsa-pub-priv-cost-increase}
+explains why the difference between the costs of private and public key operations is always growing. As the security level increases, the relative cost
 increase is larger for signing than for verifying. On average, the signing operation cost increase from one security level to another
 is about $1.5$ larger than the verifying one. This has a cumulative effect: the constantly larger value increases even more.
 This is shown graphically in Figure \ref{fig:rsa-ecdsa-pub-priv-ratio}, which for \gls{rsa}, presents the ratio between the cost of private and
@@ -714,13 +710,16 @@ key operations with \gls{rsa} are faster than private key ones.
 \subsubsection{ECDSA Cost Analysis}
 
 After analyzing the costs of \gls{rsa}, we will now perform a similar analysis for \gls{ecdsa}. Figure \ref{fig:ecdsa-costs-all-sls}
-shows the costs of \gls{ecdsa} operations graphically. The values are taken from Table \ref{table:rsa-costs-all-sls}. Unlike in \gls{rsa},
-in \gls{ecdsa} the private key operation is the least costly one. Figure \ref{fig:rsa-ecdsa-pub-priv-ratio} shows this ratio for both,
+shows the costs of \gls{ecdsa} operations for all security levels graphically. The values are taken from Table \ref{table:rsa-costs-all-sls}. 
+A logarithmic trendline is the one 
+that best fits the cost increase for both, signature creation and verification. This is a result of \gls{ecdsa}'s core mathematical operation being
+multiplication of a scalar by a point on the elliptic curve.
+Unlike in \gls{rsa},
+in \gls{ecdsa} the private key operation is the least costly one. Figure \ref{fig:rsa-ecdsa-pub-priv-ratio} shows the ratio between the most
+and the least costly operation for both,
 \gls{rsa} and \gls{ecdsa}. Besides the ratio being a lot smaller for \gls{ecdsa}, it varies very little. This means, that no matter
 the security level, \gls{ecdsa} signature verification will always be about $2$ times more costly than signature creation.
 
-As it is shown in figure \ref{fig:ecdsa-costs-all-sls}, a logarithmic trendline is the one that best fits the cost increase for both,
-signature creation and verification.
 Figure \ref{fig:ecdsa-relative-cost-incerase} shows the relative cost increase of of \gls{ecdsa}'s operations. The percentages
 are the relative cost increase from the previous security level. There are two major differences from \gls{rsa}. First, the relative cost increase
 of signature creation and verification is very similar. Consequently, the same is true for the total cost increase. This can be confirmed
@@ -728,9 +727,8 @@ graphically in Figure \ref{fig:ecdsa-relative-cost-incerase}, where all of the l
 close one to another. As a result, even with the increase of security level, none of the operations will dominate in cost as much as it happens
 in \gls{rsa}. Second, as the security level increases, the cost increase from the previous security level becomes smaller. In fact, after the
 \textbf{high} security level, the absolute cost increase starts decreasing as well. We can see this in table \ref{table:ecdsa-absolute-cost-increase}.
-This is a consequence of the cost increase being logarithmic, which is a result of \gls{ecdsa}'s core mathematical operation being
-multiplication of a scalar by a point on the curve. Although not presented here, this trend continues for higher security levels.
-Those properties of \gls{ecdsa} makes the security level increase more manageable. It's not as costly to increase the security level for
+This is a consequence of the cost increase being logarithmic. Although not presented here, this trend continues for higher security levels.
+Those properties of \gls{ecdsa} make the security level increase more manageable. It's not as costly to increase the security level for
 \gls{ecdsa} as it for \gls{rsa}.
 
 \begin{figure}
@@ -745,26 +743,27 @@ Those properties of \gls{ecdsa} makes the security level increase more manageabl
   \centering \caption{\label{fig:ecdsa-costs-all-sls} ECDSA costs for all security levels}
 \end{figure}
 
-In the previous subsection we have described an optimization in the choice of keys for \gls{rsa}. There are no such optimizations
-for \gls{ecdsa}. For this reason, it is expected that the cost of both operations will increase in similar proportion. The non-optimized
-key (private for \gls{rsa}, private and public for \gls{ecdsa}) operation cost increase is a lot smaller for \gls{ecdsa}. This can be
-explained by the fact that smaller keys are used in \gls{ecdsa}, as we have already seen in Table \ref{table:ecc-key-sizes},
-and is a big advantage of \gls{ecc}.
+Earlier in the text we have described an optimization in the choice of keys for \gls{rsa}. There are no such optimizations
+for \gls{ecdsa}. For this reason, it is expected that the cost of both operations will increase in similar proportion. 
+Smaller key sizes are one of the advantages of \gls{ecc}, as we have aleready seen in Table \ref{table:ecc-key-sizes}.
+As a result of \gls{ecdsa} being an \gls{ecc} algorithm, the non-optimized
+key (private for \gls{rsa}; private and public for \gls{ecdsa}) operation cost increase is a lot smaller for \gls{ecdsa}.
 
-\subsubsection{RSA vs ECDSA} \label{sec:rsa-vs-ecdsa}
+\subsubsection{RSA and ECDSA Cost Comparison} \label{sec:rsa-vs-ecdsa}
 
-After having analyzed the costs of \gls{rsa} and \gls{ecdsa}, we will now compare both and draw some conclusions. The answer to the
-question of which one of algorithms is less costly will vary depending on the security level and the operation. Figure \ref{fig:ecdsa-rsa-costs-all}
+Having analyzed the costs of \gls{rsa} and \gls{ecdsa}, we will now perform a more thourough comparison between both and draw some conclusions. 
+The answer to the
+question of which algorithm is less costly will vary depending on the security level and the operation. Figure \ref{fig:ecdsa-rsa-costs-all}
 shows the costs of both, \gls{rsa}'s and \gls{ecdsa}'s operations. The data is presented in logarithmic scale. Since for \gls{rsa} most
 of the \textit{Total} cost comes from the signature creation operation, those two lines overlap in the graph.
 
 \begin{figure}
   \centering
-  \includegraphics[width=1.0\textwidth]{img/rsa_ecdsa_costs_all.png}
+  \includegraphics[width=1.0\textwidth]{img/rsa_ecdsa_costs_all_2.png}
   \centering \caption{\label{fig:ecdsa-rsa-costs-all} RSA and ECDSA cost comparison}
 \end{figure}
 
-By analyzing Figure \ref{fig:ecdsa-rsa-costs-all}, we can answer the question of \textit{Which algorithm is less costly?}:
+By analyzing Figure \ref{fig:ecdsa-rsa-costs-all}, we can answer the question o which algorithm is less costly:
 
 \begin{itemize}
   \item \gls{rsa} is always less costly at signature verification
@@ -775,11 +774,13 @@ By analyzing Figure \ref{fig:ecdsa-rsa-costs-all}, we can answer the question of
   \item Total cost of \gls{ecdsa} is smaller for the \textit{high} and \textit{very high} security levels
 \end{itemize}
 
-By analyzing figures \ref{fig:rsa-pub-priv-cost-increase} and \ref{fig:ecdsa-relative-cost-incerase}, and tables \ref{table:rsa-absolute-cost-increase} and
-\ref{table:ecdsa-absolute-cost-increase} which show the relative and absolute cost increases for \gls{rsa} and \gls{ecdsa} operations,
-we can see that as the security level increases, the cost increase of \gls{rsa} operations from the previous security level always always increases, 
-while after the \textbf{normal} security level, the cost increase of \gls{ecdsa} operations from the previous security level starts decreasing.
-Although not presented here,  our tests show that this trend holds true
+
+As the security level increases, the cost increase of \gls{rsa} operations from the previous security level always always increases, 
+while for \gls{ecdsa}, the cost increase becomes smaller after the \textbf{normal} security level.
+This can be seen by analyzing Figures \ref{fig:rsa-pub-priv-cost-increase}, \ref{fig:ecdsa-relative-cost-incerase}, and 
+tables \ref{table:rsa-absolute-cost-increase}, \ref{table:ecdsa-absolute-cost-increase}, which show the relative and absolute cost increases for 
+\gls{rsa} and \gls{ecdsa} operations, respectively.
+Although not presented here, our evaluation showed that this trend holds true
 for higher security levels as well. This is a consequence of \gls{rsa} having an exponential cost increase, while \gls{ecdsa} a logarithmic one.
 For this reason, it is safe to say that for security levels higher than the ones that we defined, \gls{ecdsa} would be the preferred choice.
 \gls{rsa}'s cost increases exponentially due to the mathematical operation at the algorithm's core: modular exponentiation. Similarly, the cost
@@ -790,7 +791,7 @@ So which algorithm should be used for each security level? The answer to this qu
 For example, if the scenario is a constrained client and a non-constrained server, \gls{rsa} would be the least costly choice. If, on the
 other hand, the server is the constrained node, \gls{ecdsa} would be the least costly algorithm. If both of the nodes are
 constrained minimizing \textit{Total} cost is the goal, thus \gls{rsa} would be the least costly choice for the \textit{low} and 
-\textit{normal} security levels, and \gls{ecdsa} for the remaining ones. If the objective is to have the costs for both peers as similar as 
+\textit{normal} security levels, and \gls{ecdsa} for the remaining ones. If the objective is to distrubte the costs among the peers as evenly as 
 possible, \gls{ecdsa} is the algorithm to use.
 
 This information can also be used to make
@@ -800,9 +801,9 @@ certificate from the constrained node would minimize the costs for the constrain
 choice of the least costly algorithm will be guided by the \textit{Total} cost: \gls{rsa} for the \textit{low} and \textit{normal}
 security levels and \gls{ecdsa} for the \textit{high} and \textit{very high} security levels.
 
-\subsubsection{The Cost Of Authentication in TLS} \label{sec:auth-cost-in-tls}
+\subsubsection{Authentication Security Service Cost in TLS} \label{sec:auth-cost-in-tls}
 
-Having analyzed the costs of the algorithms that can be used for authentication, we will now describe the cost of this security service
+Having analyzed the costs of the algorithms that can be used for authentication, we will now analyze the cost of this security service
 for each one of the ciphersuites for the client and the server. Table \ref{table:tls-auth-cost-client} shows authentication costs for each
 ciphersuite for the client. Table \ref{table:tls-auth-cost-server} shows the same information for the server. Each row specifies a key
 exchange method and each column the security level.
@@ -842,17 +843,17 @@ For the server, those groups are:
   \item \textit{RSA}, \textit{RSA-PSK}
 \end{enumerate}
 
-Inside every group, the authentication cost is the same, regardless of the security level. Group numbers are ordered in ascending cost order, with Group $1$
+For each security level, inside every group, the authentication cost is identical. Group numbers are ordered in ascending cost order, with Group $1$
 being the least costly one, Group $2$ the second least costly one, and so on. All ciphersuites in the same group share a common set of operations that
 are performed to provide authentication. We will discuss what those operations are further down in the text. Each ciphersuite uses either \gls{psk},
 \gls{rsa} or \gls{ecdsa} for authentication. If only \gls{psk} is used for authentication, the cost of authentication is $0$. This is the case of Group
-$1$ for the client and the server. At the end of the previous section we discussed which algorithm, \gls{rsa} or \gls{ecdsa} would be the least costly
-choice. An analysis of authentication costs in \gls{tls} goes in hand with that discussion. By analyzing tables 
-\ref{table:tls-auth-cost-client} and \ref{table:tls-auth-cost-server}, and figures \ref{fig:tls-auth-cost-client} and 
-\ref{fig:tls-auth-cost-server}, we can see that the cheapest choice for the client is \gls{rsa} and for the
+$1$ for the client and the server. Earlier in the text, we studied the costs of \gls{rsa} and \gls{ecdsa} in detail.
+The costs of authentication in \gls{tls} are closely related to those results. An analysis of tables 
+\ref{table:tls-auth-cost-client},\ref{table:tls-auth-cost-server}, and figures \ref{fig:tls-auth-cost-client},
+\ref{fig:tls-auth-cost-server}, shows that the least costly choice for the client is \gls{rsa} and for the
 server is \gls{ecdsa}. Similarly, for \gls{pfs} enabled ciphersuites, if the goal is to make the cost distribution as even as possible among 
 the peers, \gls{ecdsa} is the preferred choice. Having presented the costs of authentication for various key exchange methods 
-and made a high-level analysis, we will now go into more detail and justify each value.
+and perfomed a high-level analysis, we will now study them in detail.
 
 In \gls{tls} it hard to talk about the cost of authentication without  talking about \gls{pfs}. If a \gls{pfs}-enabled
 ciphersuite is used, an additional piece of information is authenticated in all non-\gls{psk} ciphersuites: the \textit{ServerKeyExchange} message.
@@ -916,10 +917,10 @@ and perform a \textit{PKCS\#1 v2.1 RSAES-PKCS1\-V1\_5} encryption, while the ser
 \textit{PKCS\#1 v2.1 RSAES-PKCS1\-V1\_5} decryption. Thus, the authentication cost for the client will be $1117868+1504367=2622235$ and for the server
 $75129504$. The remaining entries in tables \ref{table:tls-auth-cost-client} and \ref{table:tls-auth-cost-server} are computed in a similar manner.
 It is important to remember that independently of the security level, in our evaluation the server's certificates are always signed with either a 
-$2048$ bit \gls{rsa} keys or $256$ bit \gls{ecdsa} keys. Thus, for the certificate signature verification cost on the client side, 
+$2048$ bit \gls{rsa} key or $256$ bit \gls{ecdsa} key. Thus, for the certificate signature verification cost on the client side, 
 the values from the \textit{normal} security row of table \ref{table:rsa-costs-all-sls} are used.
 
-Since in our evaluated scenario only the server authenticates, tables \ref{table:tls-auth-cost-client} and \ref{table:tls-auth-cost-server}
+Since in our evaluated scenario only the server authenticates, Figures \ref{fig:tls-auth-cost-client} and \ref{fig:tls-auth-cost-server}, and tables \ref{table:tls-auth-cost-client} and \ref{table:tls-auth-cost-server}
 are non-identical. If mutual authentication was used (\textit{i.e.} with both, the client and server authenticating one to another), there would be
 an additional cost of creating a signature for the client and of verifying the corresponding signature for the server.
 
@@ -960,10 +961,10 @@ observe two things:
 \end{itemize}
 
 The first observation is true starting from the \textbf{normal} security level and onwards.
-The fact that for each algorithm the cost of generating the public/private keypair is very similar to the cost of generating secret is not a coincidence.
-\gls{ecdh} and \gls{dh} use different mathematical operations, but for each algorithm, those operations are the same for the operations of keypair
+The fact that for each algorithm the cost of generating the public/private keypair is very similar to the cost of generating the secret is not a coincidence.
+\gls{ecdh} and \gls{dh} use different mathematical operations, but for each algorithm, those operations are the same for keypair and
 shared secret generation. Thus, it is expected for the cost of both steps being almost identical. We will now analyze each one of the algorithms and
-their costs in more detail.
+their costs in detail.
 
 \subsubsection{ECDH Cost Analysis}
 
@@ -980,10 +981,12 @@ Table \ref{table:ecdh-dh-costs-total-all-sls} presents the sum of keypair and sh
 which we call the \textit{Total} cost. For both algorithms, the cost of generating the private key is less than $1\%$ of the keypair generation operation.
 This is expected as the private key is just a randomly generated number, with size specific to the elliptic curve's group.
 
-Figure \ref{fig:ecdh-costs-all-sls} depicts the cost of \gls{ecdh} operations graphically. For all security levels the total cost is almost
-evenly divided between the keypair and the shared secret generation. This is justified by the fact that the underlying mathematical operation is
+Figure \ref{fig:ecdh-costs-all-sls} depicts the cost of \gls{ecdh} operations from tables \ref{table:ecdh-dh-costs-all-sls} and \ref{table:ecdh-dh-costs-total-all-sls} graphically. 
+For all security levels the total cost is almost
+evenly divided between the keypair and the shared secret generation. As previously mentioned, this is justified by the fact that the underlying mathematical operation is
 the same when generating the public/private keys and the shared secret: multiplications of a scalar by a point on the curve. An analysis of the figure
-also shows that a logarithmic trendline is the one that best fits the cost increase for all operations.
+also shows that a logarithmic trendline is the one that best fits the cost increase for all operations. This is a result of the \gls{ecc} properties of the
+algorithm.
 
 \begin{figure}
   \centering
@@ -991,13 +994,13 @@ also shows that a logarithmic trendline is the one that best fits the cost incre
   \centering \caption{\label{fig:ecdh-costs-all-sls} ECDH operations costs for all security levels}
 \end{figure}
 
-Figure \ref{fig:ecdh-dh-relative-cost-increase} shows the relative cost increase of \gls{ecdh} operations from the previous security.
+Figure \ref{fig:ecdh-dh-relative-cost-increase} shows the relative cost increase of \gls{ecdh} operations from the previous security level.
 The cost increase of generating the keypair, the shared secret, and consequently of their sum, is very similar, thus the $3$ lines overlap.
 As expected, the total relative cost increase represents the average of the values of keypair and shared secret generation relative increase.
 By analyzing the graph, we can see  that as the security level increases, the cost increase  from the previous security
-level becomes smaller. The effect decrease on the absolute cost increase can be seen in table \ref{table:ecdh-absolute-cost-increase}.
+level becomes smaller. The effect of this decrease on the absolute cost increase can be seen in table \ref{table:ecdh-absolute-cost-increase}.
 This table shows the absolute increase in the number of CPU cycles from
-the previous security level. What can be clearly seen in this table is that after the \textbf{high} security level, the absolute cost increase starts
+the previous security level. After the \textbf{high} security level, the absolute cost increase starts
 going down. Although not presented here, those trends continue for higher security levels.
 
 There is a striking resemblance between the cost analysis of \gls{ecdh} and \gls{ecdsa}. In both algorithms, the cost increase is logarithmic.
@@ -1006,7 +1009,7 @@ and \ref{fig:ecdh-dh-relative-cost-increase}, we can see that the numbers are ve
 trend that can be seen in tables \ref{table:ecdsa-absolute-cost-increase} and \ref{table:ecdh-absolute-cost-increase}, where in both cases, the
 absolute cost increase starts going down from the \textbf{high} security level and onwards. Those similarities are not a coincidence, but rather
 a result of the \gls{ecc} properties of both algorithms, more specifically, a consequence of the multiplication of a scalar by a point on
-the curve being the core mathematical operation.
+the curve being their core mathematical operation.
 
   \begin{figure}
     \centering
@@ -1023,7 +1026,7 @@ generated number. The costly part is the computation of the public key and the s
 We will once again refer to table \ref{table:ecdh-dh-costs-all-sls} for the cost analysis, but this time focusing on \gls{dh}. Figure
 \ref{fig:dh-costs-all-sls} shows the costs of \gls{dh}'s operations for all security levels graphically, in logarithmic scale. Just like in \gls{ecdh}, the total cost
 is almost evenly divided between the keypair and shared secret generation. This is a consequence of the fact that generating the public/private keys
-and the shared secret involves the same type of mathematical operations, thus their costs are similar. An analysis of the figure
+and the shared secret involves the same type of mathematical operations. An analysis of the figure
 also shows that an exponential trendline is the one that best fits the cost increase for all operations.
 
   \begin{figure}
@@ -1035,7 +1038,7 @@ also shows that an exponential trendline is the one that best fits the cost incr
 Figure \ref{fig:ecdh-dh-relative-cost-increase} shows the relative cost increase of \gls{dh} operations from the previous security level.
 The cost increase of generating the keypair, the shared secret, and consequently of their sum, is very similar, thus the $3$ lines overlap.
 As expected, the total relative cost increase represents the average of the values of keypair and shared secret generation relative increase.
-An analyzis of figure \ref{fig:ecdh-dh-relative-cost-increase} shows as the security level increases, the relative 
+An analyzis of Figure \ref{fig:ecdh-dh-relative-cost-increase} shows that as the security level increases, the relative 
 \gls{dh} cost increase becomes larger. In fact, this cost increase is exponential. Although not presented here, this holds true for 
 security levels higher than \textbf{very high}. The effect of this exponential increase can be seen in table 
 \ref{table:dh-absolute-cost-increase}, which shows the absolute cost increase from the previous security level.
@@ -1043,21 +1046,20 @@ security levels higher than \textbf{very high}. The effect of this exponential i
 Similarly to \gls{rsa}, \gls{dh} has an exponential cost increase. This similarity is a consequence of both algorithms having the same mathematical
 operation at their core: modular exponentiation.
 
-\subsubsection{ECDH vs DH}
+\subsubsection{ECDH and DH Cost Comparison}
 
 Having analyzed the costs of \gls{ecdh} and \gls{dh}, we will now compare them and draw some conclusions. Unlike in our comparison of
 \gls{rsa} and \gls{ecdsa} in Section \ref{sec:rsa-vs-ecdsa}, the answer to which one of the algorithms is less costly, is straightforward.
 In \gls{rsa} and \gls{ecdsa} the cost the signature creation and verification operations is different, so the choice of the least costly
 option depended not only on the security level, but also on whether we were optimizing for the signature creation or verification. In \gls{ecdh} and \gls{dh},
 the total cost is almost evenly divided between the keypair and the shared secret generation. Thus, we can make our decision simply
-by analyzing table \ref{table:ecdh-dh-costs-total-all-sls} and choosing which algorithm has the smallest value for each security level.
-However, in order to simplify the analysis, we have plotted the table \ref{table:ecdh-dh-costs-all-sls} in figure \ref{fig:ecdh-dh-costs-all}, which
+by analyzing table \ref{table:ecdh-dh-costs-total-all-sls}, which shows the total costs for \gls{ecdh} and \gls{dh}, and choosing which algorithm has the smallest value for each security level.
+However, in order to simplify the analysis, we have plotted the tables \ref{table:ecdh-dh-costs-all-sls} and \ref{table:ecdh-dh-costs-total-all-sls} in Figure \ref{fig:ecdh-dh-costs-all}, which
 presents the data in logarithmic scale.
 
 By looking at figure \ref{fig:ecdh-dh-costs-all} it is easy to see which algorithm has the smallest costs. If the \textbf{low} security level is being used,
-\gls{dh} is the least costly choice, if the \textbf{normal} or any security level above is being used, \gls{ecdh} is. Moreover, we can clearly see that
-for each algorithm, the costs of their operations is very similar, since we have overlapping lines. The logarithmic and exponential properties of
-\gls{ecdh} and \gls{dh}, respectively, are also visible by shape of the lines. Since we are using logarithmic scale for the $y$ axis, the
+\gls{dh} is the least costly choice, if the \textbf{normal} or any security level above is being used, \gls{ecdh} is. The logarithmic and exponential 
+properties of \gls{ecdh} and \gls{dh}, respectively, are also visible by shape of the lines. Since we are using logarithmic scale for the $y$ axis, the
 exponential cost growth of \gls{dh} manifests in the shape of a $y=mx+b$ line.
 
 \begin{figure}
@@ -1068,12 +1070,13 @@ exponential cost growth of \gls{dh} manifests in the shape of a $y=mx+b$ line.
 
 Although not presented here, the logarithmic and exponential growth trends for \gls{ecdh} and \gls{dh}, respectively, hold true even for
 security levels higher than \textbf{very high}. For security levels above \textbf{low}, there are no cost or security
-advantages of choosing \gls{dh} over \gls{ecdh}, for either peer. For this reason, for security level above \textbf{low} it makes sense to abandon the
-use of \gls{dh}, in favor of \gls{ecdh} completely. As a benefit of removing the \gls{dh} code implementation, the storage footprint will be smaller.
+advantages of choosing \gls{dh} over \gls{ecdh}, for either peer. Thus, for those security levels, it makes sense to abandon the
+use of \gls{dh}, in favor of \gls{ecdh} completely. As a benefit of removing the \gls{dh} code implementation, the storage footprint will be smaller, due
+to the smaller key sizes.
 
 % NOTE: regarding the dhm code size look at mbedtls-2.7.0/library/CMakeFiles/mbedcrypto.dir/dhm.c.o
 
-\subsubsection{The Cost Of PFS In TLS} \label{sec:pfs-cost-in-tls}
+\subsubsection{PFS Security Service Cost In TLS} \label{sec:pfs-cost-in-tls}
 
 Having analyzed the costs of the algorithms that can be used for \gls{pfs}, in this section we will describe the cost of this security service
 for each one of the ciphersuites for the client and the server. In order to avoid confusion in the text that follows, it is important to
@@ -1092,14 +1095,14 @@ can be computed (if the client's public \gls{ecdh} parameters that are sent in t
 the past communications. The distinction between the \textit{DH} ciphersuite from \gls{dh} algorithm is equivalent. Although \textit{DH} (\textit{i.e}
 non-ephemeral \gls{dh}) ciphersuites exist in \gls{tls}, they are not implemented in \textit{mbedTLS 2.7.0}.
 
-Even though the \textit{ECDH} key exchange does not offer \gls{pfs}, it is still closely related to the \textit{ECDHE}, since both use
+Even though the \textit{ECDH} key exchange does not offer \gls{pfs}, it is still closely related to the \textit{ECDHE} one, since both use
 the \gls{ecdh} algorithm. The additional costs for \textit{ECDH} ciphersuites are significant, and in our evaluated scenario where only the server
 authenticates to the client, there is no distinction in costs between \textit{ECDHE} and \textit{ECDH} ciphersuites for the client. Instead of
-presenting multiple tables, we decided to show the cost of \gls{pfs} and the \textit{ECDH} key exchange in a single one.
+presenting multiple tables/figures, we decided to present the costs of \gls{pfs} and the \textit{ECDH} ciphersuites in a single one.
 
 Table \ref{table:pfs-cost-client} shows the cots of \gls{pfs} and the \gls{ecdh} key exchange for the client and table \ref{table:pfs-cost-server}
-for the server. As a reminder, only \textit{ECDHE} and \textit{DHE} ciphersuites offer \gls{pfs}. \textit{ECDH-RSA} and \textit{ECDH-ECDSA}
-ciphersuites (rows highlighted in gray) do not offer \gls{pfs} and the presented costs are the ones of \textit{ECDH} key exchange. Note, that the
+for the server. Figure \ref{fig:pfs-cost-all-sls} shows both of the tables graphically, in logarithmic scale. As a reminder, only \textit{ECDHE} and \textit{DHE} ciphersuites offer \gls{pfs}. \textit{ECDH-RSA} and \textit{ECDH-ECDSA}
+ciphersuites (rows highlighted in gray in table \ref{table:pfs-cost-client}) do not offer \gls{pfs} and the presented costs are the ones of \textit{ECDH} key exchange. Note, that the
 highlighted rows are the only ones whose cost differs for
 the client and the server. For the server, the cost of \gls{ecdh} key exchange is the cost of generating the shared secret only.
 
@@ -1109,7 +1112,6 @@ the client and the server. For the server, the cost of \gls{ecdh} key exchange i
   \centering \caption{\label{fig:pfs-cost-all-sls} \gls{pfs} and \textit{ECDH} key exchange costs (logarithmic scale)}
 \end{figure}
 
-Figure \ref{fig:pfs-cost-all-sls} shows the costs of tables \ref{table:pfs-cost-client} and \ref{table:pfs-cost-server} graphically, in logarithmic scale.
  Since the costs
 of \textit{ECDH} ciphersuites are the only ones that differ between the client and the server, we decided to present both of the tables in a
 single graph. Notice how the costs of \textit{ECDH-RSA} and \textit{ECDH-ECDSA} are distinguished explicitly for the client and the server.
@@ -1119,7 +1121,7 @@ In the figure, we can group the costs into $4$ groups, presented in increasing c
   \item non-ECDH(E)/DH(E) ciphersuites, which have the total cost of $0$
   \item \textit{ECDH} server-side ciphersuites
   \item \textit{ECDH} client-side and \textit{ECDHE} ciphersuites
-  \item \textit{DHE} ciphersuite
+  \item \textit{DHE} ciphersuites
 \end{enumerate}
 
 In the evaluated scenario, only the server authenticates to the client. If mutual authentication was used (\textit{i.e.} with both, the client
@@ -1134,13 +1136,13 @@ but now there would be no \textit{ECDH} client/server side separation:
   \item non-ECDH(E)/DH(E) ciphersuites, which have the total cost of $0$
   \item \textit{ECDH} ciphersuites
   \item \textit{ECDHE} ciphersuites
-  \item \textit{DHE} ciphersuite
+  \item \textit{DHE} ciphersuites
 \end{enumerate}
 
-\subsection{TLS Handshake Cost Analysis} \label{sec:tls-hs-cost}
+\subsection{Handshake Cost Analysis} \label{sec:tls-hs-cost}
 
-Having analyzed the costs of the authentication and \gls{pfs} security services in \gls{tls}, we will now put everything together and
-analyze the total cost of the handshake. We have already seen the Handshake cost for the \textbf{normal} security level in
+Having analyzed the costs of the authentication and \gls{pfs} security services in \gls{tls}, we will now put this information together and
+analyze the total cost of the Handshake. We have already seen the Handshake cost for the \textbf{normal} security level in
 Section \ref{sec:ss-overview}. In this section, we will present a more detailed analysis of this and the remaining security levels.
 
 Tables \ref{table:client-hs-cost-all-sls} and \ref{table:server-hs-cost-all-sls} show the average handshake cost for each one of the
@@ -1149,7 +1151,8 @@ The evaluated scenario is the most common one: only the server authenticates to 
 
 In \textit{mbedTLS 2.7.0} there is a total of $161$ ciphersuites. Table \ref{table:mbedtls-num-ciphers} shows the number of
 ciphersuites per each key exchange method available in \textit{mbedTLS 2.7.0}. For each key exchange method, the average was obtained
-from a run with each one of the ciphersuites that use that key exchange.
+from a run with each one of the ciphersuites that use that key exchange. Thus, for example, the Handhake costs for the \textit{ECDHE-ECDSA}
+key exchange are an average of perfroming the Handshake with each one of the $17$ cipehrsuites.
 
 \begin{table}[]
 \begin{tabular}{ll}
@@ -1173,9 +1176,9 @@ Total                                      & 161
 
 Figures \ref{fig:client-hs-cost-all-sls} and \ref{fig:server-hs-cost-all-sls} are a graphical representation of tables \ref{table:client-hs-cost-all-sls}
 and \ref{table:server-hs-cost-all-sls}, respectively. The $x$ axis specifies the security level. The $y$ axis presents the number
-of CPU cycles used when performing the handshake with the specified key exchange method and security level.
-The values are presented in logarithmic scale.  What can be clearly seen in those
-graphs, is that even though there are $10$ unique key exchange methods, the costs of some of them overlap, because they are similar.
+of CPU cycles used when performing the Handshake with the specified key exchange method and security level.
+The values are presented in logarithmic scale.  An analysis of the graphs shows, that that while there are $10$ unique key 
+exchange methods, the costs of some of them are identical.
 If two or more key exchange methods have similar costs, we say that they belong to the same \textit{cost group}. A \textit{cost group}
 can also contain a single key exchange method, if its costs are significantly different from all others. In figures
 \ref{fig:client-hs-cost-all-sls} and \ref{fig:server-hs-cost-all-sls} two or more key exchange methods belong to the same
@@ -1206,10 +1209,10 @@ Similarly, by analyzing figure \ref{fig:server-hs-cost-all-sls}, we can find $8$
 The groups are presented in ascending cost order. For both, the client and the server, the \textit{PSK} key exchange is, by far,
 the cheapest option. The most expensive key exchange method depends on the peer and the security level. If we had to choose one
 option for the title of the most expensive one, \textit{DHE-RSA} would be the answer, since this is true starting from
-\textbf{normal} security level for the client and \textbf{low} security level for the server. \textit{DHE-PSK} costs come very close, 
+\textbf{normal} security level for the client and \textbf{low} security level for the server. \textit{DHE-PSK} follow a similar trend, 
 especially for the client. Once again we see the advantage of \gls{ecc}, with the cost increase of
 key exchanges that use \textit{ECDH(E)} and/or \textit{ECDSA} being much lower than of the ones that use \textit{DHE} and \textit{RSA}
-instead. This is a manifestation of logarithmic (for \gls{ecc}) vs exponential (for non-\gls{ecc}) cost increase.
+instead. This is a consequence of logarithmic (for \gls{ecc}) vs exponential (for non-\gls{ecc}) cost increase.
 
 \begin{figure}
   \centering
@@ -1266,7 +1269,7 @@ the ciphersuites within the same cost group are very small and can be ignored. I
 ciphersuites are ordered to minimize client/server costs. If the choice is choice is to optimize for both, the
 ciphersuite are ordered to minimize the total costs, \textit{i.e.} the sum of the costs for the client and the server.
 
-As an example of how to use the decision trees in order to select the cheapest key exchange method, let us consider the scenario
+As an example of how to use the decision trees to select the cheapest key exchange method, let us consider the scenario
 where the desired security level is \textbf{normal}, asymmetric authentication is required, \gls{pfs} is not and we would like to
 minimize the cost for the client. Since the chosen security level is normal, figure \ref{fig:dt-normal-sl} will be used.
 We begin at the \textit{Optimize For} node and go left, to follow the \textit{client} path, since that's the peer that we
@@ -1304,7 +1307,7 @@ use them can be chosen.
 \end{figure}
 
 In section \ref{sec:auth-cost-in-tls} we analyzed the cost of authentication in \gls{tls} and in section \ref{sec:pfs-cost-in-tls}
-the cost of \gls{pfs} in \gls{tls}. Tables \ref{table:tls-auth-cost-client}, \ref{table:pfs-cost-server},
+the cost of \gls{pfs} in \gls{tls}. Tables \ref{table:tls-auth-cost-client}, \ref{table:tls-auth-cost-server},
 \ref{table:pfs-cost-client} and \ref{table:pfs-cost-server} show the authentication and \gls{pfs} costs for the client and the server,
 respectively. However, in order to compute the cost of the Handshake for a given key exchange method and security level, it
 is not enough to sum the corresponding values from the authentication and \gls{pfs} cost tables. There is also an overhead of 
@@ -1350,20 +1353,20 @@ algorithms and security levels.
 
 \end{table}
 
-As an example, we will compute the client's Handshake cost for the \textbf{high} security level with \textit{ECHDE-RSA}
-key exchange, from the \gls{tls} security service costs that we presented in sections \ref{sec:auth-cost-in-tls} and \ref{sec:pfs-cost-in-tls}.
+As an example, we will use our formula to compute the client's Handshake cost for the \textit{ECHDE-RSA}
+key exchange at the \textbf{high} security level.
 First, we will need to get the \textit{TLSOverhead} value. We can obtain in from the entry located at the
 \textit{ECDHE-RSA} row and \textit{high} column in table \ref{table:client-hs-cost-all-sls}: $1355005$. \textit{AuthCost} can be obtained
 from the \textit{ECDHE-RSA} row and \textit{high} column in table \ref{table:tls-auth-cost-client}: $4413164$. Similarly \textit{PFSCost}
 can be obtained from table \ref{table:pfs-cost-client}, where the \textit{PSK} row and \textit{high} column intersect: $90231688$.
 For the additional certificate parsing costs, we will consult table \ref{table:cert-parse-cost}. Since the certificate is an \gls{rsa} signed one,
-we will use the value from \textit{RSA} row and \textit{high} column: $607542$. All that's left now is insert those values in the formula:
+we will use the value from \textit{RSA} row and \textit{high} column: $607542$. All that is left now is to substitute those values in the formula:
 $Handshake Cost = TLS Overhead + Auth Cost + PFS Cost + Additional Costs = 1355005 + 4413164 + 90231688 + 607542 = 96607399$.
 
 This value was obtained by decomposing the \gls{tls} Handshake into the security services and adding up their costs. As we can see,
 the cost computed using the formula is very close to the actual Handshake cost when evaluated as a whole,
 which can be found in in table \ref{table:client-hs-cost-all-sls} (\textit{ECDHE-RSA} row and \textit{high} column): $96730901$.
-The difference of $123502$ ($96730901-96607399$) CPU cycles comes from other additional costs, such as reading and writing slightly larger
+The difference of $123502$ ($96730901-96607399$) CPU cycles, or $0.13\%$ comes from other additional costs, such as reading and writing slightly larger
 messages, namely the \textit{ServerKeyExchange} and the \textit{ClientKeyExchange}.
 
 \subsection{Confidentiality and Integrity Cost Analysis} \label{sec:confid-costs}
@@ -1487,14 +1490,14 @@ Considering that the device will perform a Handshake for each new connection, it
 \subsection{PAPI Time Cost Analysis and Comparison To Estimated CPU Cycles }
 
 We also used \gls{papi} to measure time. In this section, we will compare the estimates of the number of CPU cycles
-obtained with \textit{valgrind} with the time values obtained with \gls{papi}. In order to obtain the time metrics with
-\gls{papi} we used the same approach and the same number of runs as with \textit{valgrind}. The 
+obtained with \textit{valgrind}/\textit{callgrind} with the time values obtained with \gls{papi}.
+With \gls{papi}, we performed the evaluation under the same conditions and in the same manner as we did with \textit{valgrind}/\textit{callgrind}. 
 
 \textit{The iron law of processor performance}\cite{yadin2016computer} states that the time
 taken by a program execution is proportional to the number of instuctions (\textit{I}), 
 the average number of cycles per instruction (\textit{CPI}) and the amount of time per each processor
 cycle (\textit{CT}): $CPU Time = I * CPI * CT$. The number of CPU cycles can be approximated as 
-follows: $CPU Cycles = I * CPI$. This means taht the program execution time can be expressed 
+follows: $CPU Cycles = I * CPI$. This means that the program execution time can be expressed 
 as a product of the number of CPU cycles and a constant: $CPU Time = CPU Cycles * CT$.
 Thus, we expect the graphs with time in the $y$ axis to look similar, but have smaller
 values. The results obtained with \gls{papi} matched our expectations.
@@ -1516,8 +1519,8 @@ values. The results obtained with \gls{papi} matched our expectations.
 Figures \ref{fig:client-hs-cost-all-sls-papi} and \ref{fig:server-hs-cost-all-sls-papi} show the time taken to preform the handshake with each one
 of the ciphersuites, for each one of the security levels. The $x$ axis specifies the security level. The $y$ axis specifies the time taken in microseconds,
 when performing the handshake with the specified key exchange method and security level. The values are presented in logarithmic scale. A comparison of
-\ref{fig:client-hs-cost-all-sls-papi} to \ref{fig:client-hs-cost-all-sls} and of \ref{fig:server-hs-cost-all-sls-papi} to \ref{fig:server-hs-cost-all-sls-papi} shows that they look identical,
-differing only on the $y$ values. This holds true not only for the overally \textit{handshake} cost, but for all other costs that we analyzed as well. The ratio between
+figure \ref{fig:client-hs-cost-all-sls-papi} to \ref{fig:client-hs-cost-all-sls} and of figure \ref{fig:server-hs-cost-all-sls-papi} to \ref{fig:server-hs-cost-all-sls} shows that they look identical,
+differing only on the $y$ values. This holds true not only for the overall Handhake cost, but for all other costs that we analyzed as well. The ratio between
 each realted set of operations is also similar.
 
 \subsubsection{PAPI and Valgrind Ratios Comparison} \label{sec:papi-valgrind-ratios}
@@ -1525,26 +1528,28 @@ each realted set of operations is also similar.
 
 \begin{figure}
   \centering
-  \includegraphics[width=1.0\textwidth]{img/papi-ratio.png}
-  \centering \caption{\label{fig:papi-operations-ratio} Ratio of time taken between a set of related operations for \gls{papi} and \textit{callgrind} (logarithmic scale)}
+  \includegraphics[width=1.0\textwidth]{img/papi-ratio-2.png}
+  \centering \caption{\label{fig:papi-operations-ratio} Ratio of time taken between a set of related operations for \gls{papi} and \textit{valgrind}/\textit{callgrind} (logarithmic scale)}
 \end{figure}
 
 Figure \ref{fig:papi-operations-ratio} depicts the ratio between \gls{rsa} signature creation and verification, \gls{rsa}
 encryption and decryption, \gls{ecdsa} signature verification and creation, \gls{ecdh} keypair and shared secret generation and
-\gls{dh} keypair and shared secret generation for both, \textit{valgrind} and \gls{papi}. We purpusefuly devided the more
+\gls{dh} keypair and shared secret generation for both, \textit{valgrind} and \gls{papi}. We purpusefuly divided the more
 costly operation by the least costly one, so that all of the ratios are positive. The results are presented in logarithmic scale. An analysis of the figure shows that
 both, the \textit{valgrind} and the \gls{papi} ratios are very similar. This is specially true for the \gls{ecdh}, \gls{dh}
-and \gls{ecdsa}. For \gls{dh} there is no difference, for \gls{ecdh}, \textit{callgrind}'s ratio is $0.96\%$ larger at the \textit{high} and
-\textit{very high} security levels, and for \gls{ecdsa} the ratio differs only for the \textit{low} 
-security level, where it's $9.2\%$ larger in \textit{callgrind} than in \textit{papi}. The largest difference in ratio
+and \gls{ecdsa}. For \gls{dh} there is no difference, for \gls{ecdh}, \textit{valgrind}'s ratio is $0.96\%$ larger at the \textit{high} and
+\textbf{very high} security levels, and for \gls{ecdsa} the ratio differs only for the \textbf{low} 
+security level, where it's $9.2\%$ larger in \textit{valgrind} than in \textit{papi}. The largest difference in ratio
 is observed for opeartions that use \gls{rsa}, but this difference gets smaller as the security level increases. In fact,
-this is the general trend for all of the cases. \textit{callgrind}'s \gls{rsa}'s sign/verify ratio is $24.87\%$ larger than \gls{papi}'s
-for the \textit{low} security level this differnce is only $3.6\%$. Following the trend, \textit{callgrind}'s \gls{rsa}'s encrypt/decrypt ratio is $19.41\%$ higher
-than \textit{papi}'s for the low security level, and $7.3\%$ higher for the \textit{high} security level.
+this is the general trend for all of the cases. \textit{Valgrind}'s \gls{rsa}'s sign/verify ratio is $24.87\%$ larger than \gls{papi}'s
+for the \textbf{low} security level, but only $3.6\%$ larger for the \textbf{very high} security level. Following this trend, 
+\textit{callgrind}'s \gls{rsa}'s encrypt/decrypt ratio is $19.41\%$ higher
+than \textit{papi}'s for the low security level, and $7.3\%$ higher for the \textbf{high} security level.
 
 Given that the ratios described above are similar, the algorithm cost comparisons for the various security levels remain valid for \gls{papi}'s time values as well.
 Consequently, this is also true for the security services, since they are composed of those algirithms. The graphs for the security services and algorithms look very similar
-the \textit{valgrind} ones, for this reason, they have been included in the annex without any further analysis.
+the \textit{valgrind} ones, for this reason, they have been included in the annex in Figures \ref{af:1}, \ref{af:2}, \ref{af:3}, \ref{af:4}, 
+\ref{af:5}, \ref{af:6} and \ref{af:7} without any further analysis.
 
 \subsection{Discussion} \label{sec:ss-cost-conclusions}
 

@@ -535,23 +535,6 @@ Mbedtls code used for valgrind and papi profilings.
   {\natexlab{e}}.
 \newblock (Accessed on 04/22/2019).
 
-\bibitem[Nadeem and Javed(2005)]{nadeem2005performance}
-A.~Nadeem and M.~Y. Javed.
-\newblock A performance comparison of data encryption algorithms.
-\newblock In \emph{Information and communication technologies, 2005. ICICT
-  2005. First international conference on}, pages 84--89. IEEE, 2005.
-
-\bibitem[Mathew and Jacob(2010)]{mathew2010performance}
-S.~Mathew and K.~P. Jacob.
-\newblock Performance evaluation of popular hash functions.
-\newblock \emph{World Academy of Science, Engineering and Technology},
-  61:\penalty0 449--452, 2010.
-
-\bibitem[Lenstra(2004)]{lenstra2004key}
-A.~K. Lenstra.
-\newblock Key length. contribution to the handbook of information security.
-\newblock 2004.
-
 \bibitem[Qua()]{QualysSS90:online}
 Qualys ssl labs - ssl pulse.
 \newblock \url{https://www.ssllabs.com/ssl-pulse/}.
@@ -578,6 +561,23 @@ Google internet authority g2 – google.
 Browser statistics.
 \newblock \url{https://www.w3schools.com/browsers/}.
 \newblock (Accessed on 09/08/2018).
+
+\bibitem[Nadeem and Javed(2005)]{nadeem2005performance}
+A.~Nadeem and M.~Y. Javed.
+\newblock A performance comparison of data encryption algorithms.
+\newblock In \emph{Information and communication technologies, 2005. ICICT
+  2005. First international conference on}, pages 84--89. IEEE, 2005.
+
+\bibitem[Mathew and Jacob(2010)]{mathew2010performance}
+S.~Mathew and K.~P. Jacob.
+\newblock Performance evaluation of popular hash functions.
+\newblock \emph{World Academy of Science, Engineering and Technology},
+  61:\penalty0 449--452, 2010.
+
+\bibitem[Lenstra(2004)]{lenstra2004key}
+A.~K. Lenstra.
+\newblock Key length. contribution to the handbook of information security.
+\newblock 2004.
 
 \bibitem[Boneh and Shacham(2002)]{boneh2002fast}
 D.~Boneh and H.~Shacham.

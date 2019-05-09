@@ -54,8 +54,8 @@
 \contentsline {subsubsection}{The Cost Of PFS In TLS}{60}{section*.23}
 \contentsline {subsection}{\numberline {3.2.6}TLS Handshake Cost Analysis}{62}{subsection.3.2.6}
 \contentsline {subsection}{\numberline {3.2.7}Confidentiality and Integrity Cost Analysis}{69}{subsection.3.2.7}
-\contentsline {subsection}{\numberline {3.2.8}PAPI Time Cost Analysis and Comparison To Estimated CPU Cycles }{73}{subsection.3.2.8}
-\contentsline {subsubsection}{Handhsake Time Cost Analysis}{73}{section*.24}
+\contentsline {subsection}{\numberline {3.2.8}PAPI Time Cost Analysis and Comparison To Estimated CPU Cycles }{72}{subsection.3.2.8}
+\contentsline {subsubsection}{Handhsake Time Cost Analysis}{74}{section*.24}
 \contentsline {subsubsection}{PAPI and Valgrind Ratios Comparison}{74}{section*.25}
 \contentsline {subsection}{\numberline {3.2.9}Discussion}{75}{subsection.3.2.9}
 \contentsline {chapter}{\numberline {4}Conclusions and Future Work}{77}{chapter.4}

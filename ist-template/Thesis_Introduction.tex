@@ -179,12 +179,6 @@ followed by the data exchange using that channel in the Record phase. We focused
 First, it is the part with the most variability in terms of cost, due to the complex combinations of different possible algorithms.
 Second, it is part which has been the least studied by existing work. The Record phase mainly consists in the use symmetric encryption algorithms and hash functions. Their costs has already been thoroughly studied by existing work.
 
-Although our focus was on the Handshake, we also profiled the costs of the symmetric encryption algorithms and hash functions. While the cost of the
-Handshake might dominate when small amounts of data are transmitted, the natural question that arises is at how much transferred data the cost of
-the Handshake becomes negligible? Our conclusions were that when the devices are expected to transfer a large amount of data 
-(a few megabytes, for a typical configuration used on the internet), the focus should not be on
-optimizing the Handshake, but rather the algorithms used to to provide data confidentiality and integrity.
-
 We performed evaluations at the high, the middle and the low levels. At the high level, we analyzed and compared the cost of the Handshake for each 
 one of the \gls{tls} configurations as a whole. This allowed us to identify groups of configurations with similar costs. Those costs were different for the client and the server. For this reason,
 the answer to the question of which configuration is the least costly one for a given set of security service requirements is not straightforward. 
@@ -205,8 +199,13 @@ to \gls{rsa} and \gls{ecdh} to \gls{ecdsa}. This is a result of them sharing the
 multiplication of a scalar by a point on the elliptic curve in the second group.
 Finally, for the confidentiality and integrity security services, we profiled each one of the $26$ combinations of a symmetric encryption algorithm and hash function available in \textit{mbedTLS 2.7.0}.
 
-The work on
-the dissertation started before \gls{tls} protocol's version $1.3$ specification was finished and there were no embedded device
+Although our focus was on the Handshake, we also profiled the costs of the symmetric encryption algorithms and hash functions. While the cost of the
+Handshake might dominate when small amounts of data are transmitted, the natural question that arises is at how much transferred data the cost of
+the Handshake becomes negligible? In order to answer to this question, we measured how much data needs to be exchanged between the peers in order for the
+costs of the Record phase to equate the costs of the Handhake phase. Our conclusions were that, for the typical configurations used on the internet, 
+tha number is between $560$KB and $1.62$MB for the client and between $830$KB and $1.27$MB for the server.
+
+The work on the dissertation started before \gls{tls} protocol's version $1.3$ specification was finished and there were no embedded device
 libraries which implemented it.  For this reason we did not evaluate \gls{tls} $1.3$. Despite that, the results
 obtained in this work apply to it as well, since the core functionality of the security services remained mostly unchanged.
 In the same manner, the information presented here is also relevant for \gls{dtls} versions $1.2$ and the upcoming version $1.3$.

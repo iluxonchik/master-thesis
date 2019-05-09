@@ -36,8 +36,8 @@
 \contentsline {figure}{\numberline {3.25}{\ignorespaces Confidentiality and integrity cost with different algorithms in estimated number of CPU cycles}}{70}{figure.3.25}
 \contentsline {figure}{\numberline {3.26}{\ignorespaces Hashing operation costs in estimated number of CPU cycles}}{70}{figure.3.26}
 \contentsline {figure}{\numberline {3.27}{\ignorespaces Client handshake cost in microseconds for all security levels (logarithmic scale)}}{73}{figure.3.27}
-\contentsline {figure}{\numberline {3.28}{\ignorespaces Server handshake cost in microseconds for all security levels (logarithmic scale)}}{74}{figure.3.28}
-\contentsline {figure}{\numberline {3.29}{\ignorespaces Ratio of time taken between a set of related operations for \gls {papi} and \textit {callgrind} (logarithmic scale)}}{75}{figure.3.29}
+\contentsline {figure}{\numberline {3.28}{\ignorespaces Server handshake cost in microseconds for all security levels (logarithmic scale)}}{73}{figure.3.28}
+\contentsline {figure}{\numberline {3.29}{\ignorespaces Ratio of time taken between a set of related operations for \gls {papi} and \textit {callgrind} (logarithmic scale)}}{74}{figure.3.29}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {A.1}{\ignorespaces Authentication cost for the client in microseconds (logarithmic scale)}}{93}{figure.A.1}

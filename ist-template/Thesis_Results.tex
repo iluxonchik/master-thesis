@@ -475,7 +475,7 @@ analysis that follows are taken directly from table \ref{table:hs-all-ciphers-cl
 rounded to $3$ decimal places.
 
 If \gls{pfs} is used, the cost of the Handshake varies from $55.805$ to $135.443$
-million CPU instructions for \gls{psk} based authentication, and from $58.608$ to $168.954$ million CPU cycles for
+million CPU cycles for \gls{psk} based authentication, and from $58.608$ to $168.954$ million CPU cycles for
 asymmetric authentication. If the security service of \gls{pfs} is foregone, the cost
 of the Handshake varies from $1.354$ to $4.543$ for \gls{psk} based authentication,
 and from $4.559$ to $112.585$ for asymmetric authentication.
@@ -1440,7 +1440,10 @@ same information for the server. Data sizes are represented in megabytes (MB), a
 definition \cite{Definiti62:online}. An analysis of the tables makes it clear that it is not necessary to exchange large amounts of data
 before the costs of confidentiality and integrity catch up to the Handhsake ones. In $85\%$ of cases for the client, less than $2$ MB of data need to be exchanged for the Record phase costs to equate 
 the Handshake costs. For the server, that percentage
-is $72.5\%$. Considering that the device will perform a Handshake for each new connection, it only makes sense to focus on Handhake cost optimization if the amount of exhanged data is small. This is the case of many
+is $72.5\%$. Currenlty, \textit{ECDHE-ECDSA} and \textit{ECDHE-RSA} at the normal security level are the most used \gls{tls} configurations\cite{QualysSS90:online}. 
+For those ciphersuites, the client only needs to send about $1.62$MB for the first key exchange and $560$KB for the second one. For the server, those numbers are 
+$830$KB, and $1,27$MB, respectively.
+Considering that the device will perform a Handshake for each new connection, it only makes sense to focus on Handhake cost optimization if the amount of exhanged data is small. This is the case of many
 \gls{iot} devices, such as temperature sensors that periodically transmit temperature readings to antoher peer. 
 
 \begin{table}[]

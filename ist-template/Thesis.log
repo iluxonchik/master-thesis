@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.1.13)  7 MAY 2019 23:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.1.13)  8 MAY 2019 13:35
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -843,7 +843,7 @@ Package pdftex.def Info: img/6lowpan-header.png  used on input line 857.
 <img/6lowpan-ghc-rhs.png, id=758, 1071.00125pt x 250.9375pt>
 File: img/6lowpan-ghc-rhs.png Graphic file (type png)
 <use img/6lowpan-ghc-rhs.png>
-Package pdftex.def Info: img/6lowpan-ghc-rhs.png  used on input line 864.
+Package pdftex.def Info: img/6lowpan-ghc-rhs.png  used on input line 863.
 (pdftex.def)             Requested size: 273.14923pt x 63.99777pt.
  [25 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/6lowpan-header.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/6lowpan-ghc-rhs.png>] [26] [27] [28] [29]) [30] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Results.tex
 Chapter 3.
@@ -1007,28 +1007,29 @@ File: img/hash-costs.png Graphic file (type png)
 Package pdftex.def Info: img/hash-costs.png  used on input line 1402.
 (pdftex.def)             Requested size: 455.24411pt x 281.12184pt.
  [69] [70 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/sym_algs_cc2.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hash-costs.png>]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 2503) has occurred while \output is active []
 
- [71] [72]
-<img/hs_papi_client.png, id=1359, 1030.85126pt x 637.38126pt>
+ [71]
+<img/hs_papi_client.png, id=1356, 1030.85126pt x 637.38126pt>
 File: img/hs_papi_client.png Graphic file (type png)
 <use img/hs_papi_client.png>
-Package pdftex.def Info: img/hs_papi_client.png  used on input line 1503.
+Package pdftex.def Info: img/hs_papi_client.png  used on input line 1506.
 (pdftex.def)             Requested size: 455.24411pt x 281.47954pt.
-<img/hs_papi_server.png, id=1360, 1130.2225pt x 698.61pt>
+<img/hs_papi_server.png, id=1357, 1130.2225pt x 698.61pt>
 File: img/hs_papi_server.png Graphic file (type png)
 <use img/hs_papi_server.png>
-Package pdftex.def Info: img/hs_papi_server.png  used on input line 1509.
+Package pdftex.def Info: img/hs_papi_server.png  used on input line 1512.
 (pdftex.def)             Requested size: 455.24411pt x 281.38982pt.
-<img/papi-ratio.png, id=1367, 1192.455pt x 571.13374pt>
+
+Underfull \vbox (badness 6157) has occurred while \output is active []
+
+ [72] [73 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_papi_client.png> </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_papi_server.png>]
+<img/papi-ratio.png, id=1376, 1192.455pt x 571.13374pt>
 File: img/papi-ratio.png Graphic file (type png)
 <use img/papi-ratio.png>
-Package pdftex.def Info: img/papi-ratio.png  used on input line 1525.
+Package pdftex.def Info: img/papi-ratio.png  used on input line 1528.
 (pdftex.def)             Requested size: 455.24411pt x 218.04399pt.
- [73 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_papi_client.png>]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [74 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_papi_server.png>] [75 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-ratio.png>]) [76] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Conclusions.tex
+ [74 </Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-ratio.png>] [75]) [76] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Conclusions.tex
 Chapter 4.
 [77
 
@@ -1103,22 +1104,22 @@ Underfull \hbox (badness 1642) in paragraph at lines 623--626
 
 [85]) [86] (/Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Appendix_A.tex
 Appendix A.
-<img/papi-client-auth-cost.png, id=1579, 846.16125pt x 521.95pt>
+<img/papi-client-auth-cost.png, id=1580, 846.16125pt x 521.95pt>
 File: img/papi-client-auth-cost.png Graphic file (type png)
 <use img/papi-client-auth-cost.png>
 Package pdftex.def Info: img/papi-client-auth-cost.png  used on input line 330.
 (pdftex.def)             Requested size: 455.24411pt x 280.81343pt.
-<img/papi-server-auth-cost.png, id=1580, 846.16125pt x 521.95pt>
+<img/papi-server-auth-cost.png, id=1581, 846.16125pt x 521.95pt>
 File: img/papi-server-auth-cost.png Graphic file (type png)
 <use img/papi-server-auth-cost.png>
 Package pdftex.def Info: img/papi-server-auth-cost.png  used on input line 336.
 (pdftex.def)             Requested size: 455.24411pt x 280.81343pt.
-<img/papi-ecdsa-sign-verify.png, id=1581, 847.165pt x 523.9575pt>
+<img/papi-ecdsa-sign-verify.png, id=1582, 847.165pt x 523.9575pt>
 File: img/papi-ecdsa-sign-verify.png Graphic file (type png)
 <use img/papi-ecdsa-sign-verify.png>
 Package pdftex.def Info: img/papi-ecdsa-sign-verify.png  used on input line 342.
 (pdftex.def)             Requested size: 455.24411pt x 281.55771pt.
-<img/papi-rsa-sign-verify.png, id=1582, 847.165pt x 523.9575pt>
+<img/papi-rsa-sign-verify.png, id=1583, 847.165pt x 523.9575pt>
 File: img/papi-rsa-sign-verify.png Graphic file (type png)
 <use img/papi-rsa-sign-verify.png>
 Package pdftex.def Info: img/papi-rsa-sign-verify.png  used on input line 348.
@@ -1127,7 +1128,7 @@ File: img/papi-rsa-sign-verify.png Graphic file (type png)
 <use img/papi-rsa-sign-verify.png>
 Package pdftex.def Info: img/papi-rsa-sign-verify.png  used on input line 354.
 (pdftex.def)             Requested size: 455.24411pt x 281.55771pt.
-<img/papi-ecdh-cost.png, id=1583, 877.2775pt x 543.02875pt>
+<img/papi-ecdh-cost.png, id=1584, 877.2775pt x 543.02875pt>
 File: img/papi-ecdh-cost.png Graphic file (type png)
 <use img/papi-ecdh-cost.png>
 Package pdftex.def Info: img/papi-ecdh-cost.png  used on input line 360.
@@ -1157,10 +1158,10 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  47i,18n,37p,2084b,625s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/latxfont/line10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.pdf (112 pages, 9981032 bytes).
+Output written on /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.pdf (112 pages, 9981330 bytes).
 PDF statistics:
- 1759 PDF objects out of 2073 (max. 8388607)
- 1537 compressed objects within 16 object streams
+ 1760 PDF objects out of 2073 (max. 8388607)
+ 1538 compressed objects within 16 object streams
  400 named destinations out of 1000 (max. 500000)
  600 words of extra memory for PDF output out of 10000 (max. 10000000)
 

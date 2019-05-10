@@ -13,17 +13,19 @@
 % Add entry in the table of contents as section
 \addcontentsline{toc}{section}{Abstract}
 
-\gls{tls} is one of the most used communication security protocols in the world. It comes with many configurations. 
-Each configuration offers a set o security services, which has an implication on the 
-security level and computational cost.
-Not all of those configurations can be used with the resource constrained \gls{iot} devices, due to the
-high computational and memory demands. Most of the existing work focuses on \gls{dtls}
-and cannot be easily integrated with existing deployments. Existing work fails
-to evaluate the cost of various \gls{tls} configurations and its security services.
-This work focuses on cost analysis of the security services of the TLS protocol.
-We evaluate the number of CPU cycles used and time taken by each \gls{tls} configuration
-and security service. Software developers can use this information
-to make security/cost trade-offs based on the environment needs and limitations.  
+\gls{tls} is one of the most used communication security protocols in the world. 
+Its main goal is to provide a secure communication channel with the security services of confidentiality, 
+integrity, authentication, and \gls{pfs}. Each security service can be implemented by one of the multiple available algorithms. 
+TLS was not designed for the constrained environment and is too computationally demanding for many \gls{iot} devices. 
+However, it is a malleable protocol and individual security services can be enabled and disabled on a per-connection basis. 
+Foregoing a security service or using a cheaper algorithm to implement it reduces the utilized computational resources. 
+The security properties of a connection are defined by a TLS configuration. Some of those configurations can be used with the 
+resource-constrained IoT devices. Existing work focuses on Datagram TLS (DTLS) and is either tied to a specific protocol or requires 
+the usage of a third-party entity. For this reason, it cannot be easily integrated with existing deployments. In this work, we 
+perform a thorough evaluation of the TLS protocol and its security services. We present a framework that can be used by software developers 
+and security professionals to select the cheapest TLS configuration for their environment's needs and limitations. 
+We evaluate the TLS implementation of the \textit{mbedTLS} library using two cost metrics: the estimated number of CPU cycles, 
+obtained with \textit{valgrind}, and time, obtained with \textit{PAPI}. In the end, we will show that the estimated values are close to the real ones.
 
 \vfill
 

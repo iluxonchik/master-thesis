@@ -324,7 +324,23 @@
 				  \caption{Handshake costs for the server in microseconds. Numbers in parenthesis are the standard deviation}
 				  \label{table:server-hs-costs-papi}
 				  \end{table}
-  
+				  
+				  \begin{figure}
+					\centering
+					\includegraphics[width=1.0\textwidth]{img/chart-20.png}
+					\centering \caption{Handshake cost for the client in estimated number of CPU cycles (logarithmic scale). This representation 
+					of the Handshake costs assists in visual comparison between the results obtained with \gls{papi} and \textit{valgrind}.}
+					\label{fig:a-cli}
+				  \end{figure}
+
+				  \begin{figure}
+					\centering
+					\includegraphics[width=1.0\textwidth]{img/chart-21.png}
+					\centering \caption{Handshake cost for the client in estimated number of CPU cycles (logarithmic scale). This representation 
+					of the Handshake costs assists in visual comparison between the results obtained with \gls{papi} and \textit{valgrind}.}
+					\label{fig:a-srv}
+				  \end{figure}
+
 				  \begin{figure}
 					\centering
 					\includegraphics[width=1.0\textwidth]{img/papi-client-auth-cost.png}

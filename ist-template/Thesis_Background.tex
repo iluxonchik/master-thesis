@@ -101,8 +101,8 @@ states that finding the integer $k$, such that $Q=kP$ is a very hard problem.
 
 \gls{tls} is a \textbf{client-server} protocol
 that runs on top a \textbf{connection-oriented and reliable transport protocol},
-such as \textbf{TCP}. Its main goal is to provide \textbf{privacy} and \textbf{integrity}
-between the two communicating peers. Privacy implies that a third party will not
+such as \textbf{TCP}. Its main goal is to provide \textbf{confidentiality} and \textbf{integrity}
+between the two communicating peers. Confidentiality implies that a third party will not
 be able to read the data, while integrity means that a third party will not be
 able to alter the data.
 
@@ -117,7 +117,7 @@ second phase, they exchange cryptographically protected data under
 the previously negotiated parameters. The first phase is done under the
 Handshake Protocol and the second under the Record Protocol. In order to
 achieve its goals, during the Handshake Protocol the client and the server
-exchange various messages. The message flow is depicted in Figure \ref{fig:tls-12-handshake} and described in more detail in Section
+exchange various messages. This message flow is depicted in Figure \ref{fig:tls-12-handshake} and described in more detail in Section
 \ref{hsp}.
 
 \gls{tls} provides the following \textbf{security services}:

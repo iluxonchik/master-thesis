@@ -15,7 +15,7 @@
 \contentsline {table}{\numberline {3.9}{\ignorespaces Number of ciphersuites per key exchange method in \textit {mbedTLS 2.7.0}}}{62}{table.3.9}
 \contentsline {table}{\numberline {3.10}{\ignorespaces Security services offered by each key exchange}}{63}{table.3.10}
 \contentsline {table}{\numberline {3.11}{\ignorespaces Additional costs of parsing the certificate}}{68}{table.3.11}
-\contentsline {table}{\numberline {3.12}{\ignorespaces Amount of data in megabytes that that needs to be exchanged between the peers in order for the costs of the Handshake equate the costs of Record phase for the client.}}{71}{table.3.12}
+\contentsline {table}{\numberline {3.12}{\ignorespaces Amount of data in megabytes that that needs to be exchanged between the peers in order for the costs of the Handshake equate the costs of Record phase for the client.}}{72}{table.3.12}
 \contentsline {table}{\numberline {3.13}{\ignorespaces Amount of data in megabytes that that needs to be exchanged between the peers in order for the costs of the Handshake equate the costs of Record phase for the server.}}{72}{table.3.13}
 \addvspace {10\p@ }
 \addvspace {10\p@ }

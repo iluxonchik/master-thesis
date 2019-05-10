@@ -13,32 +13,43 @@
 
 \section{Conclusions}
 
-The lack of security in \gls{iot} is a serious issue that can lead to a high monetary costs,
-especially when botnets infect the devices. Recent
-attacks clearly show that serious damage can be caused \cite{sec17ant94:online}. An old saying attributed to the
-\gls{nsa} states that "Attacks always get better; they never get worse".
-Combined with the fact that the number of \gls{iot} devices is growing at a high
-pace, without any major improvements to their security, makes it clear
-that it is fundamental for this issue to be addressed.
+This dissertation presented a thorough evaluation of the \gls{tls} protocol, in light of its usage in the \gls{iot} environment. 
+We analyzed the  costs of \gls{tls} at the low, middle and the high levels. At the low level, we studied and compared,
+the costs of each one of the algorithms that enable the security sevices. We concluded that the choice
+of the cheapest algorithm, depended not only on the key size, but also on the peer whose costs we wanted to
+minimize. 
 
-\gls{tls} is one of the most used communication security protocols in the world. It offers the
-security services of authentication, confidentiality, privacy, integrity, replay
-protection and perfect forward secrecy. It is not a requirement to use all of
-those services for every TLS connection. The protocol is similar to
-a framework, in the sense that you can enable some of the security
-services on a per-connection basis.
+At the middle level, we analyzed the costs of the security services of authentication and \gls{pfs}.
+We answered the question of how much each security service costs in terms of the number of CPU cycles and time.
+The costs of each security service were dissected in light of the results obtained in the analysis of the
+individual algorithms at the low level.
 
-While \gls{tls} does have many configurations, not all of them can be used with the \gls{iot},
-due to the constrained nature of the devices. In many cases it is necessary to make security/cost
-trade-offs. In order to be able to make them, it is important to know the costs of each security
-service. Current work offers no such information. Thus, a software developer wishing to use \gls{tls}
-for connection security in a constrained environment does not have a reference to go to.
+At the high level, we analyzed the cost of the Handhshake as a whole. We presented several decision trees that can be
+used as a framework to select the cheapest \gls{tls} configuration, according to one's environments needs and limitaitons.
+The cost of the Handhshake was dissected in light of the costs of the security services. As a result, we derived a formula
+that decomposes the costs of the \gls{tls} Handhshake into individual parts.
 
-In our work, we decomposed \gls{tls} into individual parts and evaluated the cost of each security service.
-We have evaluated the cost of every \gls{tls} configuration available in \textit{mbedTLS 2.7.0} and the underlying
-algorithms. The herein presented results can be used to make informed decisions about the security/cost trade-offs,
+While the focus thoroughout this work as on the costs of the Handhshake, we also evaluted the costs of the security services of
+confidentiality and itegrity. The asymetric encryption algorithms were profiled in order to answer the question of when the costs
+of the Handhshake equate the costs of confidentiality and itegrity. Our analysis showed that, in a typical configuration that is used
+on the internet, less than $1.7$MB of data need to be exchanged between the peers in order for that to happen. For this reason, we 
+concluded that it only made sense to heavily optimize the Handhshake if the amount of exchanged data is small.
+
+As a result, we presented the most complete and detailed analysis of the costs of the \gls{tls} protocol that exists to date.
+The herein presented results can be used by software engineers and security professionals to make informed decisions about the security/cost trade-offs,
 specific to the environment.
 
+In the process of the work on this thesis, we not only evaluated \gls{tls} at the level that was never done before, 
+but also contributed to the global security community, by:
+
+\begin{enumerate}
+    \item contributing to the specification of the \gls{tls} protocol version $1.3$, and to the lesser extent, of \gls{dtls} protocol verison $1.3$
+    \item finding and reporting a security vulnerability in \textit{mbedTLS}, which was assigned a \gls{cve} with id \textit{CVE-2018-1000520}
+\end{enumerate}
+
+For the evaluation,
+we used the \gls{tls} implementaiton of the \textit{mbedTLS} library, which is one of the most
+popular \gls{tls} implementaiton libraries for embedded systems. We used two cost metrics
 First, we did a thorough analysis of \gls{tls}, by analyzing the number of estimated CPU cycles obtained with \textit{callgrind}.
 After that, we showed that the estimates are close to the real values, by comparing them to the time metrics obtained directly from
 the processor's registers. The results presented here were obtained on a powerful, modern-day computer. Despite that, they are still

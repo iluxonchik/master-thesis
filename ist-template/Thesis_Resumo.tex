@@ -13,9 +13,33 @@
 % Add entry in the table of contents as section
 \addcontentsline{toc}{section}{Resumo}
 
-Inserir o resumo em Portugu\^{e}s aqui com o máximo de 250 palavras e acompanhado de 4 a 6 palavras-chave...
+
+\newacronym{idc}{IdC}{Internet das Coisas}
+\newacronym{sfp}{SPF}{Segurança Fututra Perfeita}
+
+\textit{Transport Layer Security} (TLS) é um dos protocolos de segurança de comunicação mais
+usados no mundo. O seu objectivo principal é fornecer um canal de comunicação seguro
+com garantias de confidencialidade, integridade, autenticidade e \gls{sfp}.
+Cada um dos seus serviços de segurança pode ser implementado por um dos vários
+algoritmos disponíveis. TLS não foi desenhado para o ambiente constrangido
+das \gls{idc}, sendo demasiado exigente para tais dispositivos. Contudo, é um
+protocolo maleável e os seus serviços de segurança podem sem activados ou
+desactivados por conexão. A abdicação de um serviço de segurança ou uso de um
+algoritmo menos exigente computacionalmente, reduz os recursos utilizados.
+As propriedades de segurança da conexão são definidas pela configuração TLS
+em uso. Algumas das configurações podem ser usadas em ambiente das \gls{idc}.
+O trabalho existente foca-se no protocolo Datagram TLS e, ou está intimamente
+ligado ao uso de um protocolo específico ou requer o uso de uma entidade
+externa. Nesta tese nós iremos fazer uma análise completa do protocolo TLS e
+dos seus serviços de segurança. Os resultados e diagramas aqui apresentados
+podem ser usados pelos programadores e profissionais de segurança para seleccionar
+a configuração de TLS mais leve, conforme os requisitos e limitações
+do seu ambiente. Iremos avaliar a implementação do protocolo TLS pela
+biblioteca \textit{mbedTLS}, usando duas métricas de custo: o número estimado
+de ciclos da CPU, obtidos com \textit{valgrind}, e tempo, obtido com PAPI.
+De seguida, iremos comprovar que os valores estimados estão perto da realidade.
 
 \vfill
 
-\textbf{\Large Palavras-chave:} palavra-chave1, palavra-chave2,...
+\textbf{\Large Palavras-chave:} TLS, DTLS, SSL, Internet das Coisas, Sistemas Embebidos
 

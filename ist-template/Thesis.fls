@@ -286,7 +286,11 @@ INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/helvetic/phvb7t.vf
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/helvetic/phvb8r.tfm
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Resumo.tex
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Resumo.tex
+OUTPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.glsdefs
+INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/helvetic/phvro7t.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/helvetic/phvb7t.tfm
+INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/helvetic/phvro7t.vf
+INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/helvetic/phvro8r.tfm
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Abstract.tex
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Abstract.tex
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/helvetic/phvr7t.tfm
@@ -308,9 +312,6 @@ INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/helvetic/phvb8r.tfm
 OUTPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.toc
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.lot
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.lot
-INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/helvetic/phvro7t.tfm
-INPUT /usr/local/texlive/2018/texmf-dist/fonts/vf/adobe/helvetic/phvro7t.vf
-INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/adobe/helvetic/phvro8r.tfm
 OUTPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.lot
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.lof
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.lof
@@ -447,9 +448,9 @@ INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_papi_cl
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_papi_server.png
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_papi_server.png
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/hs_papi_server.png
-INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-ratio-2.png
-INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-ratio-2.png
-INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-ratio-2.png
+INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/chart-23.png
+INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/chart-23.png
+INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/chart-23.png
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Conclusions.tex
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Conclusions.tex
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis.bbl
@@ -459,6 +460,12 @@ INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmtt8.tfm
 INPUT /usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmtt8.tfm
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Appendix_A.tex
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/Thesis_Appendix_A.tex
+INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/chart-20.png
+INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/chart-20.png
+INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/chart-20.png
+INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/chart-21.png
+INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/chart-21.png
+INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/chart-21.png
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-client-auth-cost.png
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-client-auth-cost.png
 INPUT /Users/gerasill/Documents/GitHub/master-thesis/ist-template/img/papi-client-auth-cost.png

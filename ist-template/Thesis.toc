@@ -46,19 +46,19 @@
 \contentsline {subsubsection}{Asymmetric Algorithms Authentication Cost Analysis}{44}{section*.17}
 \contentsline {subsubsection}{RSA Cost Analysis}{44}{section*.18}
 \contentsline {subsubsection}{ECDSA Cost Analysis}{48}{section*.19}
-\contentsline {subsubsection}{RSA and ECDSA Cost Comparison}{49}{section*.20}
+\contentsline {subsubsection}{RSA and ECDSA Cost Comparison}{48}{section*.20}
 \contentsline {subsubsection}{Authentication Security Service Cost in TLS}{51}{section*.21}
 \contentsline {subsection}{\numberline {3.2.3}Perfect Forward Secrecy Cost Analysis}{54}{subsection.3.2.3}
 \contentsline {subsubsection}{ECDH Cost Analysis}{56}{section*.22}
-\contentsline {subsubsection}{DH Cost Analysis}{58}{section*.23}
+\contentsline {subsubsection}{DH Cost Analysis}{57}{section*.23}
 \contentsline {subsubsection}{ECDH and DH Cost Comparison}{59}{section*.24}
-\contentsline {subsubsection}{PFS Security Service Cost In TLS}{60}{section*.25}
+\contentsline {subsubsection}{PFS Security Service Cost In TLS}{59}{section*.25}
 \contentsline {subsection}{\numberline {3.2.4}Handshake Cost Analysis}{62}{subsection.3.2.4}
 \contentsline {subsection}{\numberline {3.2.5}Confidentiality and Integrity Cost Analysis}{69}{subsection.3.2.5}
 \contentsline {subsection}{\numberline {3.2.6}PAPI Time Cost Analysis and Comparison To Estimated CPU Cycles }{72}{subsection.3.2.6}
-\contentsline {subsubsection}{Handhsake Time Cost Analysis}{72}{section*.26}
-\contentsline {subsubsection}{PAPI and Valgrind Ratios Comparison}{72}{section*.27}
-\contentsline {subsection}{\numberline {3.2.7}Discussion}{74}{subsection.3.2.7}
+\contentsline {subsubsection}{Handhsake Time Cost Analysis}{74}{section*.26}
+\contentsline {subsubsection}{PAPI and Valgrind Ratios Comparison}{74}{section*.27}
+\contentsline {subsection}{\numberline {3.2.7}Discussion}{75}{subsection.3.2.7}
 \contentsline {chapter}{\numberline {4}Conclusions and Future Work}{77}{chapter.4}
 \contentsline {section}{\numberline {4.1}Conclusions}{77}{section.4.1}
 \contentsline {section}{\numberline {4.2}Future Work}{78}{section.4.2}

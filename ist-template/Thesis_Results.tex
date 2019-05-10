@@ -685,7 +685,7 @@ than the signing operation cost increase.
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/rsa_cost_all_sls.png}
-  \centering \caption{\label{fig:rsa-costs-all-sls} RSA operations costs for all security levels (logarithmic scale)}
+  \centering \caption{\label{fig:rsa-costs-all-sls} RSA operations costs for all security levels in estimated number of CPU cycles (logarithmic scale)}
 \end{figure}
 
 \begin{figure}
@@ -740,7 +740,7 @@ Those properties of \gls{ecdsa} make the security level increase more manageable
 \begin{figure}
   \centering
   \includegraphics[width=1.0\textwidth]{img/ecdsa_cost_all_sls.png}
-  \centering \caption{\label{fig:ecdsa-costs-all-sls} ECDSA costs for all security levels}
+  \centering \caption{\label{fig:ecdsa-costs-all-sls} ECDSA costs for all security levels in estimated number of CPU cycles}
 \end{figure}
 
 Earlier in the text we have described an optimization in the choice of keys for \gls{rsa}. There are no such optimizations
@@ -791,7 +791,7 @@ So which algorithm should be used for each security level? The answer to this qu
 For example, if the scenario is a constrained client and a non-constrained server, \gls{rsa} would be the least costly choice. If, on the
 other hand, the server is the constrained node, \gls{ecdsa} would be the least costly algorithm. If both of the nodes are
 constrained minimizing \textit{Total} cost is the goal, thus \gls{rsa} would be the least costly choice for the \textit{low} and 
-\textit{normal} security levels, and \gls{ecdsa} for the remaining ones. If the objective is to distrubte the costs among the peers as evenly as 
+\textit{normal} security levels, and \gls{ecdsa} for the remaining ones. If the objective is to distribute the costs among the peers as evenly as 
 possible, \gls{ecdsa} is the algorithm to use.
 
 This information can also be used to make
@@ -970,7 +970,7 @@ their costs in detail.
 
 In \gls{ecdh}, two basic operations are performed by each peer: first, a public/private \gls{ecc} keypair is generated, followed by generation of
 the shared secret. The resulting shared secret will be a 2D $(x,y)$ coordinate on the curve. In \gls{tls} the $y$ value is discarded and $x$ is
-used as the preshared secret. Computing the private key is cheap, since it is just a randomly generated number. The costly part is the computation of
+used as the premaster secret. Computing the private key is cheap, since it is just a randomly generated number. The costly part is the computation of
 the public key and the shared secret, since for both it involves multiplications of a scalar by a point on the elliptic curve.
 
 We have already seen the costs of \gls{ecdh} for the \textbf{normal} security level and now we will analyze the remaining ones. Table
@@ -1059,7 +1059,7 @@ presents the data in logarithmic scale.
 
 By looking at figure \ref{fig:ecdh-dh-costs-all} it is easy to see which algorithm has the smallest costs. If the \textbf{low} security level is being used,
 \gls{dh} is the least costly choice, if the \textbf{normal} or any security level above is being used, \gls{ecdh} is. The logarithmic and exponential 
-properties of \gls{ecdh} and \gls{dh}, respectively, are also visible by shape of the lines. Since we are using logarithmic scale for the $y$ axis, the
+properties of \gls{ecdh} and \gls{dh}, respectively, are also visible by shape of the trendlines. Since we are using logarithmic scale for the $y$ axis, the
 exponential cost growth of \gls{dh} manifests in the shape of a $y=mx+b$ line.
 
 \begin{figure}
@@ -1118,7 +1118,7 @@ single graph. Notice how the costs of \textit{ECDH-RSA} and \textit{ECDH-ECDSA} 
 In the figure, we can group the costs into $4$ groups, presented in increasing cost order:
 
 \begin{enumerate}
-  \item non-ECDH(E)/DH(E) ciphersuites, which have the total cost of $0$
+  \item non-ECDH(E)/DHE ciphersuites, which have a total cost of $0$
   \item \textit{ECDH} server-side ciphersuites
   \item \textit{ECDH} client-side and \textit{ECDHE} ciphersuites
   \item \textit{DHE} ciphersuites
@@ -1133,7 +1133,7 @@ ciphersuite costs would become the same as the server's. Thus, the costs could s
 but now there would be no \textit{ECDH} client/server side separation:
 
 \begin{enumerate}
-  \item non-ECDH(E)/DH(E) ciphersuites, which have the total cost of $0$
+  \item non-ECDH(E)/DHE ciphersuites, which have the total cost of $0$
   \item \textit{ECDH} ciphersuites
   \item \textit{ECDHE} ciphersuites
   \item \textit{DHE} ciphersuites
@@ -1194,7 +1194,7 @@ find $6$ cost groups at the client-side:
   \item \textit{DHE-PSK}, \textit{DHE-RSA}
 \end{enumerate}
 
-Similarly, by analyzing figure \ref{fig:server-hs-cost-all-sls}, we can find $8$ cost groups for the server side:
+Similarly, by analyzing figure \ref{fig:server-hs-cost-all-sls}, we can find $7$ cost groups for the server side:
 
 \begin{enumerate}
   \item \textit{PSK}
@@ -1371,10 +1371,10 @@ messages, namely the \textit{ServerKeyExchange} and the \textit{ClientKeyExchang
 
 \subsection{Confidentiality and Integrity Cost Analysis} \label{sec:confid-costs}
 
-Having analyzed the cost of authentication and \gls{pfs}, we will now analyze the cost of the confidentiality and integrity services.
+Having analyzed the cost of authentication, \gls{pfs} and the Handshake, we will now analyze the cost of the confidentiality and integrity services.
 In \gls{tls}, it does not make sense to analyze these services separately, since they're offered as a whole as a part of the ciphersuite.
 For this reason, we will analyze them together. While the establishment of a secure communication channel between two peers is known as the
-Handhsake phase, the posterior use of that channel to exchange data under the guarantees of confidentiality and integrity (if applicable to the ciphersuite) 
+Handshake phase, the posterior use of that channel to exchange data under the guarantees of confidentiality and integrity (if applicable to the ciphersuite) 
 is known as the Record phase.
 
 \textit{mbedTLS 2.7.0} implements $13$ non-null unique encryption algorithms and $4$ unique hash functions. There are $6$ \textit{AES} 
@@ -1414,7 +1414,7 @@ This analysis makes it clear that for both, \gls{aead} algorithms and non-\gls{a
 comes from data encryption/decryption.
 
 In Section \ref{sec:tls-hs-cost} we analyzed the cost of the handshake. However, it only makes sense to heavily optimize handshake
-if the amount of transmitted data is small. This is, in fact, true for many \gls{iot} devices. But what exactly is a \textit{small} amount of data?
+if the amount of transmitted data is small. But what exactly is a \textit{small} amount of data?
 
 In order to answer that question we profiled the costs of encrypting data with the \textit{AES-128-GCM} (\textbf{low} and 
 \textbf{normal} security levels) and \textit{AES-256-GCM} (\textbf{high} and \textbf{very high} security levels) more thoroughly. 
@@ -1441,9 +1441,9 @@ Table \ref{tab:conf-hs-client} shows the amount of data that needs to be exhange
 the costs of the Record phase (\textit{i.e.} the costs of confidentiality and integrity) for the client. Table \ref{tab:conf-hs-server} presents the
 same information for the server. Data sizes are represented in megabytes (MB), according to the International Electrotechnical Commission (IEC)
 definition \cite{Definiti62:online}. An analysis of the tables makes it clear that it is not necessary to exchange large amounts of data
-before the costs of confidentiality and integrity catch up to the Handhsake ones. In $85\%$ of cases for the client, less than $2$ MB of data need to be exchanged for the Record phase costs to equate 
+before the costs of confidentiality and integrity catch up to the Handhsake ones. In $85\%$ of cases for the client, less than $2$MB of data need to be exchanged for the Record phase costs to equate 
 the Handshake costs. For the server, that percentage
-is $72.5\%$. Currenlty, \textit{ECDHE-ECDSA} and \textit{ECDHE-RSA} at the normal security level are the most used \gls{tls} configurations\cite{QualysSS90:online}. 
+is $72.5\%$. Currently, \textit{ECDHE-ECDSA} and \textit{ECDHE-RSA} at the normal security level are the most used \gls{tls} configurations\cite{QualysSS90:online}. 
 For those ciphersuites, the client only needs to send about $1.62$MB for the first key exchange and $560$KB for the second one. For the server, those numbers are 
 $830$KB, and $1,27$MB, respectively.
 Considering that the device will perform a Handshake for each new connection, it only makes sense to focus on Handhake cost optimization if the amount of exhanged data is small. This is the case of many
@@ -1494,7 +1494,7 @@ obtained with \textit{valgrind}/\textit{callgrind} with the time values obtained
 With \gls{papi}, we performed the evaluation under the same conditions and in the same manner as we did with \textit{valgrind}/\textit{callgrind}. 
 
 \textit{The iron law of processor performance}\cite{yadin2016computer} states that the time
-taken by a program execution is proportional to the number of instuctions (\textit{I}), 
+taken by a program execution is proportional to the number of instructions (\textit{I}), 
 the average number of cycles per instruction (\textit{CPI}) and the amount of time per each processor
 cycle (\textit{CT}): $CPU Time = I * CPI * CT$. The number of CPU cycles can be approximated as 
 follows: $CPU Cycles = I * CPI$. This means that the program execution time can be expressed 
@@ -1518,38 +1518,40 @@ values. The results obtained with \gls{papi} matched our expectations.
 
 Figures \ref{fig:client-hs-cost-all-sls-papi} and \ref{fig:server-hs-cost-all-sls-papi} show the time taken to preform the handshake with each one
 of the ciphersuites, for each one of the security levels. The $x$ axis specifies the security level. The $y$ axis specifies the time taken in microseconds,
-when performing the handshake with the specified key exchange method and security level. The values are presented in logarithmic scale. A comparison of
-figure \ref{fig:client-hs-cost-all-sls-papi} to \ref{fig:client-hs-cost-all-sls} and of figure \ref{fig:server-hs-cost-all-sls-papi} to \ref{fig:server-hs-cost-all-sls} shows that they look identical,
-differing only on the $y$ values. This holds true not only for the overall Handhake cost, but for all other costs that we analyzed as well. The ratio between
-each realted set of operations is also similar.
+when performing the handshake with the specified key exchange method and security level. The values are presented in logarithmic scale. 
+Figures \ref{fig:a-cli} and \ref{fig:a-srv} present the same information as Figures \ref{fig:client-hs-cost-all-sls} and \ref{fig:server-hs-cost-all-sls}, respectively,
+but in the same format as figures \ref{fig:client-hs-cost-all-sls-papi} and \ref{fig:server-hs-cost-all-sls-papi}
+A comparison of figure \ref{fig:client-hs-cost-all-sls-papi} to \ref{fig:a-cli} and of figure \ref{fig:server-hs-cost-all-sls-papi} to \ref{fig:a-srv} 
+shows that they look identical, differing only on the $y$ values. This holds true not only for the overall Handhake cost, but for all other 
+costs that we analyzed as well. The ratio between each realted set of operations is also similar.
 
 \subsubsection{PAPI and Valgrind Ratios Comparison} \label{sec:papi-valgrind-ratios}
 
-
 \begin{figure}
   \centering
-  \includegraphics[width=1.0\textwidth]{img/papi-ratio-2.png}
-  \centering \caption{\label{fig:papi-operations-ratio} Ratio of time taken between a set of related operations for \gls{papi} and \textit{valgrind}/\textit{callgrind} (logarithmic scale)}
+  \includegraphics[width=1.0\textwidth]{img/chart-23.png}
+  \centering \caption{\label{fig:papi-operations-ratio}Ratio of time taken between a set of related operations for \gls{papi} and \textit{valgrind}/\textit{callgrind} (logarithmic scale)}
 \end{figure}
 
 Figure \ref{fig:papi-operations-ratio} depicts the ratio between \gls{rsa} signature creation and verification, \gls{rsa}
 encryption and decryption, \gls{ecdsa} signature verification and creation, \gls{ecdh} keypair and shared secret generation and
-\gls{dh} keypair and shared secret generation for both, \textit{valgrind} and \gls{papi}. We purpusefuly divided the more
+\gls{dh} keypair and shared secret generation for both, \textit{valgrind} and \gls{papi}. We purposefully divided the more
 costly operation by the least costly one, so that all of the ratios are positive. The results are presented in logarithmic scale. An analysis of the figure shows that
 both, the \textit{valgrind} and the \gls{papi} ratios are very similar. This is specially true for the \gls{ecdh}, \gls{dh}
 and \gls{ecdsa}. For \gls{dh} there is no difference, for \gls{ecdh}, \textit{valgrind}'s ratio is $0.96\%$ larger at the \textit{high} and
 \textbf{very high} security levels, and for \gls{ecdsa} the ratio differs only for the \textbf{low} 
-security level, where it's $9.2\%$ larger in \textit{valgrind} than in \textit{papi}. The largest difference in ratio
+security level, where it's $9.2\%$ larger in \textit{valgrind} than in \gls{papi}. The largest difference in ratio
 is observed for opeartions that use \gls{rsa}, but this difference gets smaller as the security level increases. In fact,
 this is the general trend for all of the cases. \textit{Valgrind}'s \gls{rsa}'s sign/verify ratio is $24.87\%$ larger than \gls{papi}'s
 for the \textbf{low} security level, but only $3.6\%$ larger for the \textbf{very high} security level. Following this trend, 
 \textit{callgrind}'s \gls{rsa}'s encrypt/decrypt ratio is $19.41\%$ higher
-than \textit{papi}'s for the low security level, and $7.3\%$ higher for the \textbf{high} security level.
+than \gls{papi}'s for the low security level, and $7.3\%$ higher for the \textbf{high} security level.
 
 Given that the ratios described above are similar, the algorithm cost comparisons for the various security levels remain valid for \gls{papi}'s time values as well.
 Consequently, this is also true for the security services, since they are composed of those algirithms. The graphs for the security services and algorithms look very similar
 the \textit{valgrind} ones, for this reason, they have been included in the annex in Figures \ref{af:1}, \ref{af:2}, \ref{af:3}, \ref{af:4}, 
-\ref{af:5}, \ref{af:6} and \ref{af:7} without any further analysis.
+\ref{af:5}, \ref{af:6}, \ref{af:7} and Tables \ref{table:rsa-ecdsa-costs-papi}, \ref{table:papi-cli-auth-cost}, \ref{table:server-auth-costs-papi},
+\ref{table:papi-ecd-dh-costs}, \ref{table:hs-costs-cli-papi}, \ref{table:server-hs-costs-papi} without any further analysis.
 
 \subsection{Discussion} \label{sec:ss-cost-conclusions}
 
@@ -1597,7 +1599,7 @@ least costly of the group. Our next step was to choose two \gls{aead} ciphers, \
 \textbf{normal} security levels) and \textit{AES-256-GCM} (for \textbf{high} and \textbf{very high} security levels), and
 analyzed how much data it would be necessary for the peers to exchange in order for the costs of confidentiality and integrity 
 to equate the Handshake costs. Our analsysis showed, that in $85\%$ of cases for the client, and in $72.5\%$ of cases for the server, 
-that number is less than $2$ MB. Thus, considering that a new Handshake is perfomed for each connection, 
+that number is less than $2$MB. Thus, considering that a new Handshake is perfomed for each connection, 
 it only makes sense to focus on Handhake cost optimization if the amount of exhanged data is small.
 
 Finally, the analysis the \gls{papi} results showed us that the estimates obtained with \textit{valgrind} do reflect the real world values. 
